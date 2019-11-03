@@ -16,4 +16,4 @@ COPY . /app/
 RUN cp -a /tmp/node_modules /app/
 
 # run server
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
