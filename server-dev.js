@@ -2,7 +2,6 @@ const express = require('express')
 const httpProxy = require('http-proxy')
 const Webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
-const WebpackMiddleware = require('webpack-dev-middleware')
 const WebpackHotMiddleware = require('webpack-hot-middleware')
 
 const proxy = httpProxy.createProxyServer()
@@ -13,14 +12,6 @@ const compiler = Webpack(config)
 
 const portWebpack = 8080
 const portProxy = 8081
-
-compiler.plugin('compile', () => {
-  console.log('Bundling...')
-})
-
-compiler.plugin('done', () => {
-  console.log('Bundled!')
-})
 
 const bundler = new WebpackDevServer(compiler, {
   publicPath: '/',

@@ -19,9 +19,7 @@
     "sass": "^1.23.3",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
-    "webpack": "^4.41.2",
-    "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack": "^4.41.2"
   },
   "scripts": {
     "start": "node server-dev",
@@ -54,6 +52,7 @@
     "http-proxy": "^1.18.0",
     "standard": "^14.3.1",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.9.0",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }
