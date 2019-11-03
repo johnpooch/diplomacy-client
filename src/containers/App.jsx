@@ -1,13 +1,14 @@
 import React from 'react'
-import './app.css'
+
+import './App.scss'
+import mapImage from '../images/map.svg'
 
 function App () {
   return (
     <div className="app">
       <header className="app-header">
-        <p>
-          Hello world
-        </p>
+        <h1>Diplomacy app</h1>
+        <img src={mapImage} alt="Diplomacy map" />
       </header>
     </div>
   )

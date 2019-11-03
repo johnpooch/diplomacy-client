@@ -1,0 +1,28 @@
+@import "../utils/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  font-family: $sans-stack;
+}
+
+.app {
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    color: $primary-color;
+    margin: 0 0 $p*2 + px;
+  }
+
+  img {
+    width: 500px;
+    max-width: 100%;
+  }
+}
