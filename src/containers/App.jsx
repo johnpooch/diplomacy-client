@@ -7,10 +7,8 @@ function App () {
   return (
     <div className="app">
       <header className="app-header">
-        <p>
-          Hello world
-        </p>
-        <img src={mapImage} alt="Page Logo" />
+        <h1>Diplomacy app</h1>
+        <img src={mapImage} alt="Diplomacy map" />
       </header>
     </div>
   )
