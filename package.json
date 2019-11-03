@@ -3,11 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
     "express": "^4.17.1",
+    "fibers": "^4.0.2",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.13.0",
     "react": "^16.11.0",
-    "react-dom": "npm:@hot-loader/react-dom"
+    "react-dom": "^16.11.0",
+    "react-hot-loader": "^4.12.15",
+    "sass": "^1.23.3",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.2"
   },
   "scripts": {
+    "start": "npm run prod",
     "dev": "rm -rf dist && webpack-dev-server --hot --inline --env=dev",
     "prod": "rm -rf dist && webpack --env=prod && node server/server.js",
     "buildDev": "webpack --env=dev",
@@ -27,11 +42,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-react": "^7.6.3",
-    "babel-loader": "^8.0.6",
-    "css-loader": "^3.2.0",
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
@@ -39,14 +49,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
-    "file-loader": "^4.2.0",
-    "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.13.0",
-    "react-hot-loader": "^4.12.15",
-    "sass-loader": "^8.0.0",
     "standard": "^14.3.1",
-    "style-loader": "^1.0.0",
-    "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   }

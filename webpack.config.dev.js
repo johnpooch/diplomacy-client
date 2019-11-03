@@ -11,7 +11,7 @@ module.exports = {
     main: './src/index.js'
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, './dist'),
     filename: '[name].js'
   },
   plugins: [htmlPlugin],
@@ -29,7 +29,7 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif)$/,
         loader: 'file-loader',
-        options: { name: '[name].[ext]' }
+        options: { name: './static/[name].[ext]' }
       }
     ]
   },
