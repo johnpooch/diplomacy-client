@@ -22,9 +22,9 @@
     "webpack": "^4.41.2"
   },
   "scripts": {
-    "start": "npm run prod",
-    "dev": "rm -rf dist && webpack-dev-server --hot --inline --env=dev",
-    "prod": "rm -rf dist && webpack --env=prod && node server/server.js",
+    "start": "node server-dev",
+    "dev": "rm -rf dist && node server-dev",
+    "prod": "rm -rf dist && yarn run buildProd && node server-prod",
     "buildDev": "webpack --env=dev",
     "buildProd": "webpack --env=prod",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -49,8 +49,10 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
+    "http-proxy": "^1.18.0",
     "standard": "^14.3.1",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.9.0",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }
