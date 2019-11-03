@@ -7,7 +7,7 @@ const WebpackHotMiddleware = require('webpack-hot-middleware')
 const proxy = httpProxy.createProxyServer()
 const app = express()
 
-const config = require('./webpack.config.dev.js')
+const config = require('../webpack.config.dev.js')
 const compiler = Webpack(config)
 
 const portWebpack = 8080

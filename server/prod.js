@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 
-const DIST_DIR = path.join(__dirname, 'dist')
+const DIST_DIR = path.join(__dirname, '../dist')
 const port = 8080
 
 const app = express()

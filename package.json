@@ -22,9 +22,9 @@
     "webpack": "^4.41.2"
   },
   "scripts": {
-    "start": "node server-dev",
-    "dev": "rm -rf dist && node server-dev",
-    "prod": "rm -rf dist && yarn run buildProd && node server-prod",
+    "start": "node server/dev",
+    "dev": "rm -rf dist && node server/dev",
+    "prod": "rm -rf dist && webpack --env=prod && node server/prod",
     "buildDev": "webpack --env=dev",
     "buildProd": "webpack --env=prod",
     "test": "echo \"Error: no test specified\" && exit 1"
