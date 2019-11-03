@@ -1,5 +1,7 @@
 import React from 'react'
-import './app.css'
+
+import './App.scss'
+import mapImage from '../images/map.svg'
 
 function App () {
   return (
@@ -8,6 +10,7 @@ function App () {
         <p>
           Hello world
         </p>
+        <img src={mapImage} alt="Page Logo" />
       </header>
     </div>
   )
