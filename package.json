@@ -22,25 +22,19 @@
     "webpack": "^4.41.2"
   },
   "scripts": {
-    "start": "node server-dev",
-    "dev": "rm -rf dist && node server-dev",
-    "prod": "rm -rf dist && yarn run buildProd && node server-prod",
-    "buildDev": "webpack --env=dev",
-    "buildProd": "webpack --env=prod",
+    "start": "yarn run dev",
+    "dev": "NODE_ENV=development node server",
+    "prod": "yarn run buildProd && NODE_ENV=production node server",
+    "buildDev": "rm -rf dist && webpack --env=dev",
+    "buildProd": "rm -rf dist && webpack --env=prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "maintained node versions",
+    "not dead"
+  ],
   "devDependencies": {
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
