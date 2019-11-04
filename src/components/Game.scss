@@ -1,5 +1,8 @@
 @import "../utils/variables";
 
 .game {
-  padding: $p + px;
+  padding: $p/2 + px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: stretch;
 }

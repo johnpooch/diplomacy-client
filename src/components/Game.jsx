@@ -8,7 +8,7 @@ import nationsData from '../json/nations.json'
 import piecesData from '../json/pieces.json'
 
 import Territory from './Territory.jsx'
-import Piece from './Piece.jsx'
+// import Piece from './Piece.jsx'
 
 class Game extends React.Component {
   constructor (props) {
@@ -57,6 +57,7 @@ class Game extends React.Component {
 
     this.state.territories.forEach(t => {
       const nation = this.getNationByKey(t.controlled_by)
+      const piece = this.getPieceByTerritory(t.pk)
 
       territories.push(
         <Territory
@@ -67,6 +68,7 @@ class Game extends React.Component {
           shared_coasts={t.shared_coasts}
           type={t.type}
           nation={nation}
+          piece={piece}
         />
       )
     })
@@ -74,41 +76,46 @@ class Game extends React.Component {
     return territories
   }
 
-  renderPieces () {
-    const pieces = []
+  // renderPieces () {
+  //   const pieces = []
 
-    this.state.pieces.forEach(p => {
-      const nation = this.getNationByKey(p.nation)
-      const territory = this.getTerritoryByKey(p.territory)
+  //   this.state.pieces.forEach(p => {
+  //     const nation = this.getNationByKey(p.nation)
+  //     const territory = this.getTerritoryByKey(p.territory)
 
-      pieces.push(
-        <Piece
-          key={p.pk}
-          type={p.type}
-          territory={territory}
-          nation={nation}
-        />
-      )
-    })
+  //     pieces.push(
+  //       <Piece
+  //         key={p.pk}
+  //         type={p.type}
+  //         territory={territory}
+  //         nation={nation}
+  //       />
+  //     )
+  //   })
 
-    return pieces
-  }
+  //   return pieces
+  // }
 
   getNationByKey (pk) {
     const nation = this.state.nations.find(n => { return n.pk === pk })
     return nation
   }
 
-  getTerritoryByKey (pk) {
-    const territory = this.state.territories.find(t => { return t.pk === pk })
-    return territory
+  // getTerritoryByKey (pk) {
+  //   const territory = this.state.territories.find(t => { return t.pk === pk })
+  //   return territory
+  // }
+
+  getPieceByTerritory (pk) {
+    const piece = this.state.pieces.find(p => { return p.territory === pk })
+    return piece
   }
 
   render () {
     return (
       <main className="game">
         {this.renderTerritories()}
-        {this.renderPieces()}
+        {/* {this.renderPieces()} */}
       </main>
     )
   }

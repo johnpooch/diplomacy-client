@@ -1,22 +1,32 @@
 @import "../utils/variables";
 
+@mixin darker($c) {
+  color: desaturate(darken($c, 10%), 25%);
+}
+
 .territory {
-  display: inline-block;
+  margin: $p/2 + px;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: $p + px;
   border: 5px solid transparent;
 
   &[data-type=sea] {
     background: $sea-color;
-    color: desaturate(darken($sea-color, 10%), 25%);
+    @include darker($sea-color);
+    border-color: currentColor;
   }
-
+  
   &[data-type=land] {
     background: $land-color;
-    color: desaturate(darken($land-color, 10%), 25%);
+    @include darker($land-color);
+    border-color: currentColor;
   }
 
   &[data-coastal=true] {
-    border-color: $sea-color;
+    background: radial-gradient($land-color 50%, $sea-color 100%);
   }
 
   @include nationColors();

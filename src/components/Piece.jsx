@@ -15,20 +15,17 @@ class Piece extends React.Component {
       <div
         className="piece"
         data-type={this.props.type}
-        data-nation={this.props.nation.pk}
         onMouseOver={() => this.hoverStart()}
         onMouseOut={() => this.hoverEnd()}
       >
-        {this.props.type}
+        <span className="type">{this.props.type}</span>
       </div>
     )
   }
 }
 
 Piece.propTypes = {
-  type: PropTypes.string,
-  nation: PropTypes.object,
-  territory: PropTypes.object
+  type: PropTypes.string
 }
 
 export default Piece

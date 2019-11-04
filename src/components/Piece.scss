@@ -1,8 +1,13 @@
 @import "../utils/variables";
 
 .piece {
-  display: inline-block;
+  margin-left: $p + px;
   padding: $p + px;
+  border: 1px solid currentColor;
+
+  .type {
+    text-transform: uppercase;
+  }
 
   @include nationColors();
 }
