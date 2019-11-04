@@ -4,13 +4,11 @@ import PropTypes from 'prop-types'
 import './Piece.scss'
 
 class Piece extends React.Component {
-  // hoverStart () {
-  //   console.log(this.props.neighbours)
-  // }
+  hoverStart () {
+  }
 
-  // hoverEnd () {
-
-  // }
+  hoverEnd () {
+  }
 
   render () {
     return (
@@ -18,9 +16,8 @@ class Piece extends React.Component {
         className="piece"
         data-type={this.props.type}
         data-nation={this.props.nation.pk}
-        // data-territory={this.props.territory.pk}
-        // onMouseOver={() => this.hoverStart()}
-        // onMouseOut={() => this.hoverEnd()}
+        onMouseOver={() => this.hoverStart()}
+        onMouseOut={() => this.hoverEnd()}
       >
         {this.props.type}
       </div>

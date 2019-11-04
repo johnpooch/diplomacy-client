@@ -7,12 +7,12 @@
 
   &[data-type=sea] {
     background: $sea-color;
-    color: darken($sea-color, 15%);
+    color: desaturate(darken($sea-color, 10%), 25%);
   }
 
   &[data-type=land] {
     background: $land-color;
-    color: darken($land-color, 15%);
+    color: desaturate(darken($land-color, 10%), 25%);
   }
 
   &[data-coastal=true] {
