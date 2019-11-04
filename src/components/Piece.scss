@@ -1,0 +1,8 @@
+@import "../utils/variables";
+
+.piece {
+  display: inline-block;
+  padding: $p + px;
+
+  @include nationColors();
+}

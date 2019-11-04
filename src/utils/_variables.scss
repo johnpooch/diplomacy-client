@@ -2,7 +2,29 @@
 $sans-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
 // colors
-$primary-color: #333;
+$primary-color: gray;
+
+$sea-color: lightblue;
+$land-color: PapayaWhip;
+
+$nation-colors:
+  blue // England
+  darkturquoise // France
+  darkslategray // Germany
+  red // ustria-Hungary
+  yellowgreen // Italy
+  darkgreen // Russia
+  darkorange // Turkey
+;
 
 // sizes
 $p: 16;
+
+// mixins
+@mixin nationColors($from: 1, $to: 8){
+  @for $i from $from to $to {
+    &[data-nation="#{$i}"] {
+      color: nth($nation-colors, $i);
+    }
+  }
+}  

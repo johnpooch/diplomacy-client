@@ -1,0 +1,23 @@
+@import "../utils/variables";
+
+.territory {
+  display: inline-block;
+  padding: $p + px;
+  border: 5px solid transparent;
+
+  &[data-type=sea] {
+    background: $sea-color;
+    color: darken($sea-color, 15%);
+  }
+
+  &[data-type=land] {
+    background: $land-color;
+    color: darken($land-color, 15%);
+  }
+
+  &[data-coastal=true] {
+    border-color: $sea-color;
+  }
+
+  @include nationColors();
+}
