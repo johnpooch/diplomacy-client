@@ -3,18 +3,46 @@
 .territory {
   display: inline-block;
   padding: $p + px;
-  color: white;
   border: 5px solid transparent;
+  // color: white;
 
   &[data-type=sea] {
-    background: blue;
+    background: $sea-color;
   }
 
   &[data-type=land] {
-    background: green;
+    background: $land-color;
   }
 
   &[data-coastal=true] {
-    border: 5px solid blue;
+    border-color: $coast-color;
+  }
+
+  &[data-nation="1"] {
+    color: $player-1-color;
+  }
+
+  &[data-nation="2"] {
+    color: $player-2-color;
+  }
+
+  &[data-nation="3"] {
+    color: $player-3-color;
+  }
+
+  &[data-nation="4"] {
+    color: $player-4-color;
+  }
+
+  &[data-nation="5"] {
+    color: $player-5-color;
+  }
+
+  &[data-nation="6"] {
+    color: $player-6-color;
+  }
+
+  &[data-nation="7"] {
+    color: $player-7-color;
   }
 }

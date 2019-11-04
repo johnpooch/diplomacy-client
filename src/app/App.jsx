@@ -3,13 +3,13 @@ import React from 'react'
 import './App.scss'
 
 import AppHeader from './AppHeader.jsx'
-import Map from '../components/Map.jsx'
+import Game from '../components/Game.jsx'
 
 function App () {
   return (
     <div className="app">
       <AppHeader />
-      <Map />
+      <Game />
     </div>
   )
 }
