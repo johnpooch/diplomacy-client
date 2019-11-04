@@ -1,0 +1,14 @@
+@import "../utils/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+}
+
+.app {
+  font-family: $sans-stack;
+  min-height: 100vh;
+}

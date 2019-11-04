@@ -1,0 +1,11 @@
+@import "../utils/variables";
+
+.app-header {
+  background: $primary-color;
+
+  h1 {
+    color: white;
+    margin: 0;
+    padding: $p + px;
+  }
+}

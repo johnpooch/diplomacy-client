@@ -1,0 +1,20 @@
+@import "../utils/variables";
+
+.territory {
+  display: inline-block;
+  padding: $p + px;
+  color: white;
+  border: 5px solid transparent;
+
+  &[data-type=sea] {
+    background: blue;
+  }
+
+  &[data-type=land] {
+    background: green;
+  }
+
+  &[data-coastal=true] {
+    border: 5px solid blue;
+  }
+}
