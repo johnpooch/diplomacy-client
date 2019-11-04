@@ -3,4 +3,6 @@
 .piece {
   display: inline-block;
   padding: $p + px;
+
+  @include nationColors();
 }

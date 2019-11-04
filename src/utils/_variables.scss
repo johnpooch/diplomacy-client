@@ -4,17 +4,27 @@ $sans-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans
 // colors
 $primary-color: gray;
 
-$sea-color: skyblue;
-$land-color: tan;
-$coast-color: skyblue;
+$sea-color: lightblue;
+$land-color: PapayaWhip;
 
-$player-1-color: blue; // England
-$player-2-color: cyan; // France
-$player-3-color: gray; // Germany
-$player-4-color: red; // Austria-Hungary
-$player-5-color: lime; // Italy
-$player-6-color: green; // Russia
-$player-7-color: yellow; // Turkey
+$nation-colors:
+  blue // England
+  darkturquoise // France
+  darkslategray // Germany
+  red // ustria-Hungary
+  yellowgreen // Italy
+  darkgreen // Russia
+  darkorange // Turkey
+;
 
 // sizes
 $p: 16;
+
+// mixins
+@mixin nationColors($from: 1, $to: 8){
+  @for $i from $from to $to {
+    &[data-nation="#{$i}"] {
+      color: nth($nation-colors, $i);
+    }
+  }
+}  
