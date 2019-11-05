@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './Game.scss'
+import './Board.scss'
 
 // import mapImage from '../images/map.svg'
 import territoriesData from '../json/territories.json'
@@ -8,7 +8,7 @@ import nationsData from '../json/nations.json'
 import piecesData from '../json/pieces.json'
 
 import Territory from './Territory.jsx'
-// import Piece from './Piece.jsx'
+import Tooltip from './Tooltip.jsx'
 
 class Game extends React.Component {
   constructor (props) {
@@ -21,7 +21,8 @@ class Game extends React.Component {
     this.state = {
       pieces: pieces,
       territories: territories,
-      nations: nations
+      nations: nations,
+      tooltip: false
     }
   }
 
@@ -52,6 +53,52 @@ class Game extends React.Component {
     })
   }
 
+  hoverStart (e) {
+    const territory = e.target.closest('.territory')
+    if (!territory) {
+      return
+    }
+
+    const fields = territory.dataset
+    const tooltip = {
+      name: fields.name,
+      type: fields.type,
+      coastal: fields.coastal
+    }
+
+    if (fields.nation) {
+      const nationKey = parseInt(fields.nation)
+      const nation = this.getNationByKey(nationKey)
+      tooltip.nation = nation.name
+
+      const territoryKey = parseInt(fields.id)
+      const piece = this.getPieceByTerritory(territoryKey)
+      if (piece) {
+        tooltip.piece = piece.type
+      }
+    }
+
+    this.setState({
+      tooltip: tooltip
+    })
+  }
+
+  hoverEnd (e) {
+    this.setState({
+      tooltip: false
+    })
+  }
+
+  getNationByKey (pk) {
+    const nation = this.state.nations.find(n => { return n.pk === pk })
+    return nation
+  }
+
+  getPieceByTerritory (pk) {
+    const piece = this.state.pieces.find(p => { return p.territory === pk })
+    return piece
+  }
+
   renderTerritories () {
     const territories = []
 
@@ -62,6 +109,7 @@ class Game extends React.Component {
       territories.push(
         <Territory
           key={t.pk}
+          id={t.pk}
           name={t.name}
           coastal={t.coastal}
           neighbours={t.neighbours}
@@ -69,6 +117,8 @@ class Game extends React.Component {
           type={t.type}
           nation={nation}
           piece={piece}
+          onMouseOver={this.hoverStart.bind(this)}
+          onMouseOut={this.hoverEnd.bind(this)}
         />
       )
     })
@@ -76,46 +126,21 @@ class Game extends React.Component {
     return territories
   }
 
-  // renderPieces () {
-  //   const pieces = []
+  renderTooltip () {
+    if (!this.state.tooltip) {
+      return null
+    }
 
-  //   this.state.pieces.forEach(p => {
-  //     const nation = this.getNationByKey(p.nation)
-  //     const territory = this.getTerritoryByKey(p.territory)
-
-  //     pieces.push(
-  //       <Piece
-  //         key={p.pk}
-  //         type={p.type}
-  //         territory={territory}
-  //         nation={nation}
-  //       />
-  //     )
-  //   })
-
-  //   return pieces
-  // }
-
-  getNationByKey (pk) {
-    const nation = this.state.nations.find(n => { return n.pk === pk })
-    return nation
-  }
-
-  // getTerritoryByKey (pk) {
-  //   const territory = this.state.territories.find(t => { return t.pk === pk })
-  //   return territory
-  // }
-
-  getPieceByTerritory (pk) {
-    const piece = this.state.pieces.find(p => { return p.territory === pk })
-    return piece
+    return <Tooltip
+      tooltip={this.state.tooltip}
+    />
   }
 
   render () {
     return (
-      <main className="game">
+      <main className="board">
         {this.renderTerritories()}
-        {/* {this.renderPieces()} */}
+        {this.renderTooltip()}
       </main>
     )
   }
