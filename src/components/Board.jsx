@@ -22,7 +22,8 @@ class Game extends React.Component {
       pieces: pieces,
       territories: territories,
       nations: nations,
-      tooltip: false
+      tooltip: false,
+      player: 1
     }
   }
 
@@ -53,29 +54,34 @@ class Game extends React.Component {
     })
   }
 
-  hoverStart (e) {
-    const territory = e.target.closest('.territory')
-    if (!territory) {
-      return
-    }
+  onMouseOver (e) {
+    const data = this.getTerritoryDataFromEvent(e)
 
-    const fields = territory.dataset
     const tooltip = {
-      name: fields.name,
-      type: fields.type,
-      coastal: fields.coastal
+      name: data.territory.name,
+      type: data.territory.type,
+      coastal: data.territory.coastal.toString()
     }
 
-    if (fields.nation) {
-      const nationKey = parseInt(fields.nation)
-      const nation = this.getNationByKey(nationKey)
-      tooltip.nation = nation.name
+    if (data.nation) {
+      tooltip.nation = data.nation.name
+    }
 
-      const territoryKey = parseInt(fields.id)
-      const piece = this.getPieceByTerritory(territoryKey)
-      if (piece) {
-        tooltip.piece = piece.type
-      }
+    if (data.piece) {
+      tooltip.piece = data.piece.type
+    }
+
+    const neighbours = data.territory.neighbours
+    if (neighbours) {
+      const neighbourNames = []
+      neighbours.forEach(key => {
+        const neighbour = this.getTerritoryByKey(key)
+        if (neighbour) {
+          neighbourNames.push(neighbour.name)
+        }
+      })
+      const neighboursString = neighbourNames.join(', ')
+      tooltip.neighbours = neighboursString
     }
 
     this.setState({
@@ -83,20 +89,68 @@ class Game extends React.Component {
     })
   }
 
-  hoverEnd (e) {
+  onMouseOut (e) {
     this.setState({
       tooltip: false
     })
   }
 
+  onClick (e) {
+    const data = this.getTerritoryDataFromEvent(e)
+    console.log(data)
+  }
+
+  getTerritoryDataFromEvent (e) {
+    if (!e) {
+      return
+    }
+
+    const el = e.target.closest('.territory')
+    if (!el) {
+      return
+    }
+
+    const key = el.dataset.id
+    return this.getTerritoryDataFromKey(key)
+  }
+
+  getTerritoryDataFromKey (pk) {
+    const key = parseInt(pk)
+    const territory = this.getTerritoryByKey(key)
+
+    const data = {
+      territory: territory
+    }
+
+    if (territory.controlled_by) {
+      const nation = this.getNationByKey(territory.controlled_by)
+
+      if (nation) {
+        data.nation = nation
+      }
+
+      const piece = this.getPieceByTerritory(key)
+      if (piece) {
+        data.piece = piece
+      }
+    }
+
+    return data
+  }
+
+  getTerritoryByKey (pk) {
+    const key = parseInt(pk)
+    return this.state.territories.find(obj => { return obj.pk === key })
+  }
+
   getNationByKey (pk) {
-    const nation = this.state.nations.find(n => { return n.pk === pk })
-    return nation
+    const key = parseInt(pk)
+    return this.state.nations.find(obj => { return obj.pk === key })
   }
 
   getPieceByTerritory (pk) {
-    const piece = this.state.pieces.find(p => { return p.territory === pk })
-    return piece
+    const key = parseInt(pk)
+    return this.state.pieces.find(obj => { return obj.territory === key })
   }
 
   renderTerritories () {
@@ -117,8 +171,9 @@ class Game extends React.Component {
           type={t.type}
           nation={nation}
           piece={piece}
-          onMouseOver={this.hoverStart.bind(this)}
-          onMouseOut={this.hoverEnd.bind(this)}
+          onMouseOver={this.onMouseOver.bind(this)}
+          onMouseOut={this.onMouseOut.bind(this)}
+          onClick={this.onClick.bind(this)}
         />
       )
     })

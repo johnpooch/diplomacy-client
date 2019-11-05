@@ -35,6 +35,7 @@ class Territory extends React.Component {
         data-nation={nationKey}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
+        onClick={this.props.onClick}
       >
         <span className="name">{this.props.name}</span>
         {this.renderPiece()}
@@ -52,7 +53,8 @@ Territory.propTypes = {
   nation: PropTypes.object,
   piece: PropTypes.object,
   onMouseOver: PropTypes.func,
-  onMouseOut: PropTypes.func
+  onMouseOut: PropTypes.func,
+  onClick: PropTypes.func
 }
 
 export default Territory
