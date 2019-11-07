@@ -24,14 +24,16 @@ class Territory extends React.Component {
   render () {
     const nation = this.props.nation
     const nationKey = nation ? nation.pk : null
+    const className = this.props.selection ? 'territory ' + this.props.selection : 'territory'
 
     return (
       <div
-        className="territory"
+        className={className}
         data-id={this.props.id}
         data-name={this.props.name}
         data-type={this.props.type}
         data-coastal={this.props.coastal}
+        data-supply-center={this.props.supplyCenter}
         data-nation={nationKey}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
@@ -50,8 +52,10 @@ Territory.propTypes = {
   type: PropTypes.string,
   coastal: PropTypes.bool,
   neighbours: PropTypes.arrayOf(PropTypes.number),
+  supplyCenter: PropTypes.bool,
   nation: PropTypes.object,
   piece: PropTypes.object,
+  selection: PropTypes.oneOf(['selected', 'movable']),
   onMouseOver: PropTypes.func,
   onMouseOut: PropTypes.func,
   onClick: PropTypes.func

@@ -1,7 +1,9 @@
 @import "../utils/variables";
 
 @mixin darker($c) {
-  color: desaturate(darken($c, 10%), 25%);
+  $d: desaturate(darken($c, 10%), 25%);
+  color: $d;
+  // border-color: $d;
 }
 
 .territory {
@@ -11,9 +13,9 @@
   align-items: center;
   justify-content: center;
   padding: $p + px;
-  border: 5px solid transparent;
-  transition: all .1s linear;
-  cursor: help;
+  border: 5px solid currentColor;
+  transition: transform .1s linear;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.1);
@@ -22,18 +24,25 @@
   &[data-type=sea] {
     background: $sea-color;
     @include darker($sea-color);
-    border-color: currentColor;
   }
   
   &[data-type=land] {
     background: $land-color;
     @include darker($land-color);
-    border-color: currentColor;
   }
 
-  &[data-coastal=true] {
-    background: radial-gradient($land-color 50%, $sea-color 100%);
-  }
+  // &[data-coastal=true] {
+  //   background: radial-gradient($land-color 50%, $sea-color 100%);
+  // }
 
   @include nationColors();
+
+  &.selected {
+    outline: thick dashed lawngreen;
+  }
+
+  &.movable {
+    outline: thick dashed gold;
+  }
+
 }
