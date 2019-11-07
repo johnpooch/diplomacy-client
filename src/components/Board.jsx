@@ -6,6 +6,7 @@ import './Board.scss'
 import territoriesData from '../json/territories.json'
 import nationsData from '../json/nations.json'
 import piecesData from '../json/pieces.json'
+import supplyCentersData from '../json/supply_centers.json'
 
 import Territory from './Territory.jsx'
 import Tooltip from './Tooltip.jsx'
@@ -19,11 +20,13 @@ class Game extends React.Component {
     const nations = this.getNations()
 
     this.state = {
+      player: 1,
       pieces: pieces,
       territories: territories,
       nations: nations,
       tooltip: false,
-      player: 1
+      selected: false,
+      selectedNeighbours: []
     }
   }
 
@@ -40,7 +43,11 @@ class Game extends React.Component {
     // remap the json data
     return territoriesData.map(t => {
       const fields = t.fields
+      const supplyCenter = this.getSupplyCenterByTerritory(t.pk)
+
       fields.pk = t.pk
+      fields.supplyCenter = !!supplyCenter
+
       return fields
     })
   }
@@ -55,12 +62,14 @@ class Game extends React.Component {
   }
 
   onMouseOver (e) {
-    const data = this.getTerritoryDataFromEvent(e)
+    const key = this.getTerritoryKeyFromEvent(e)
+    const data = this.getTerritoryDataFromKey(key)
 
     const tooltip = {
       name: data.territory.name,
       type: data.territory.type,
-      coastal: data.territory.coastal.toString()
+      coastal: data.territory.coastal.toString(),
+      supplyCenter: data.territory.supplyCenter.toString()
     }
 
     if (data.nation) {
@@ -96,22 +105,35 @@ class Game extends React.Component {
   }
 
   onClick (e) {
-    const data = this.getTerritoryDataFromEvent(e)
-    console.log(data)
+    const key = this.getTerritoryKeyFromEvent(e)
+    const territory = this.getTerritoryByKey(key)
+    const selectedNeighbours = territory.neighbours
+
+    if (this.state.selected === key) {
+      this.setState({
+        selected: false,
+        selectedNeighbours: []
+      })
+    } else {
+      this.setState({
+        selected: key,
+        selectedNeighbours: selectedNeighbours
+      })
+    }
   }
 
-  getTerritoryDataFromEvent (e) {
+  getTerritoryKeyFromEvent (e) {
     if (!e) {
-      return
+      return false
     }
 
-    const el = e.target.closest('.territory')
-    if (!el) {
-      return
+    const territory = e.target.closest('.territory')
+    if (!territory) {
+      return false
     }
 
-    const key = el.dataset.id
-    return this.getTerritoryDataFromKey(key)
+    const key = parseInt(territory.dataset.id)
+    return key
   }
 
   getTerritoryDataFromKey (pk) {
@@ -153,12 +175,26 @@ class Game extends React.Component {
     return this.state.pieces.find(obj => { return obj.territory === key })
   }
 
+  getSupplyCenterByTerritory (pk) {
+    const key = parseInt(pk)
+    return supplyCentersData.find(obj => { return obj.fields.territory === key })
+  }
+
   renderTerritories () {
     const territories = []
 
     this.state.territories.forEach(t => {
       const nation = this.getNationByKey(t.controlled_by)
       const piece = this.getPieceByTerritory(t.pk)
+
+      let selection
+
+      if (this.state.selected === t.pk) {
+        selection = 'selected'
+      } else if (Array.isArray(this.state.selectedNeighbours) &&
+                 this.state.selectedNeighbours.includes(t.pk)) {
+        selection = 'movable'
+      }
 
       territories.push(
         <Territory
@@ -169,8 +205,10 @@ class Game extends React.Component {
           neighbours={t.neighbours}
           shared_coasts={t.shared_coasts}
           type={t.type}
+          supplyCenter={t.supplyCenter}
           nation={nation}
           piece={piece}
+          selection={selection}
           onMouseOver={this.onMouseOver.bind(this)}
           onMouseOut={this.onMouseOut.bind(this)}
           onClick={this.onClick.bind(this)}
