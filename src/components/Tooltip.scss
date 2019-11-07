@@ -1,0 +1,15 @@
+@import "../utils/variables";
+
+.tooltip {
+  position: fixed;
+  padding: $p + px;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, .9);
+  pointer-events: none;
+
+  .key {
+    font-weight: bold;
+    margin-right: $p/2 + px;
+  }
+}
