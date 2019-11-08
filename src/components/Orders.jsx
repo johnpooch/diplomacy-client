@@ -1,5 +1,4 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
 
 import './Orders.scss'
 
@@ -17,8 +16,5 @@ class Orders extends React.Component {
     )
   }
 }
-
-// Orders.propTypes = {
-// }
 
 export default Orders

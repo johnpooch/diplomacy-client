@@ -35,9 +35,9 @@ class Territory extends React.Component {
         data-coastal={this.props.coastal}
         data-supply-center={this.props.supplyCenter}
         data-nation={nationKey}
-        onMouseOver={this.props.onMouseOver}
-        onMouseOut={this.props.onMouseOut}
-        onClick={this.props.onClick}
+        onMouseOver={this.props._onMousEnter}
+        onMouseOut={this.props._onMouseLeave}
+        onClick={this.props._onClick}
       >
         <span className="name">{this.props.name}</span>
         {this.renderPiece()}
@@ -56,9 +56,9 @@ Territory.propTypes = {
   nation: PropTypes.object,
   piece: PropTypes.object,
   selection: PropTypes.oneOf(['selected', 'movable']),
-  onMouseOver: PropTypes.func,
-  onMouseOut: PropTypes.func,
-  onClick: PropTypes.func
+  _onMouseEnter: PropTypes.func,
+  _onMouseLeave: PropTypes.func,
+  _onClick: PropTypes.func
 }
 
 export default Territory

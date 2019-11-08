@@ -15,7 +15,6 @@
     "node-sass": "^4.13.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-hot-loader": "^4.12.15",
     "sass": "^1.23.3",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
@@ -27,7 +26,7 @@
     "prod": "yarn run buildProd && NODE_ENV=production node server",
     "buildDev": "rm -rf dist && webpack --env=dev",
     "buildProd": "rm -rf dist && webpack --env=prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "browserslist": [
     "last 1 version",
@@ -36,6 +35,10 @@
     "not dead"
   ],
   "devDependencies": {
+    "babel-jest": "^24.9.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
@@ -44,9 +47,23 @@
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
     "http-proxy": "^1.18.0",
+    "jest": "^24.9.0",
+    "jest-css-modules": "^2.1.0",
+    "react-hot-loader": "^4.12.15",
     "standard": "^14.3.1",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",
     "webpack-hot-middleware": "^2.25.0"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "setupFiles": [
+      "./src/setupTests.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules"
+    }
   }
 }

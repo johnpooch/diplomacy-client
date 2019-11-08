@@ -1,8 +1,8 @@
+
 import React from 'react'
 
 import './Board.scss'
 
-// import mapImage from '../images/map.svg'
 import territoriesData from '../json/territories.json'
 import nationsData from '../json/nations.json'
 import piecesData from '../json/pieces.json'
@@ -62,7 +62,7 @@ class Game extends React.Component {
     })
   }
 
-  onMouseOver (e) {
+  _onMouseEnter (e) {
     const key = this.getTerritoryKeyFromEvent(e)
     const data = this.getTerritoryDataFromKey(key)
 
@@ -99,13 +99,13 @@ class Game extends React.Component {
     })
   }
 
-  onMouseOut (e) {
+  _onMouseLeave (e) {
     this.setState({
       tooltip: false
     })
   }
 
-  onClick (e) {
+  _onClick (e) {
     const key = this.getTerritoryKeyFromEvent(e)
     const territory = this.getTerritoryByKey(key)
     const selectedNeighbours = territory.neighbours
@@ -213,9 +213,9 @@ class Game extends React.Component {
           nation={nation}
           piece={piece}
           selection={selection}
-          onMouseOver={this.onMouseOver.bind(this)}
-          onMouseOut={this.onMouseOut.bind(this)}
-          onClick={this.onClick.bind(this)}
+          _onMouseEnter={this._onMouseEnter.bind(this)}
+          _onMouseLeave={this._onMouseLeave.bind(this)}
+          _onClick={this._onClick.bind(this)}
         />
       )
     })
