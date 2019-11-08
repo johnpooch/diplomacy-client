@@ -12,3 +12,8 @@
 
   @include nationColors();
 }
+
+.territory.selected .piece {
+  color: black;
+  background: lawngreen;
+}
