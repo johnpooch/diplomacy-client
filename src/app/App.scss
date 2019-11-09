@@ -12,3 +12,26 @@ html, body {
   font-family: $sans-stack;
   min-height: 100vh;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.button {
+  display: inline-block;
+  min-width: $p*12 + px;
+  padding: $p + px;
+  background: white;
+  border: 1px solid black;
+  outline: none;
+  box-shadow: none;
+  text-align: center;
+  cursor: pointer;
+}

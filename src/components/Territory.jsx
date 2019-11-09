@@ -4,43 +4,89 @@ import PropTypes from 'prop-types'
 import './Territory.scss'
 
 import Piece from './Piece.jsx'
+import SupplyCenter from './SupplyCenter.jsx'
 
 class Territory extends React.Component {
+  _onMouseEnterTerritory (e) {
+    const id = this.getTerritoryFromEvent(e)
+    if (id !== false) {
+      this.props._onMouseEnterTerritory(id)
+    }
+  }
+
+  _onMouseLeaveTerritory (e) {
+    this.props._onMouseLeaveTerritory()
+  }
+
+  _onClickTerritory (e) {
+    const id = this.getTerritoryFromEvent(e)
+    if (id !== false) {
+      this.props._onClickTerritory(id)
+    }
+  }
+
+  getTerritoryFromEvent (e) {
+    if (!e) {
+      return false
+    }
+
+    const territory = e.target.closest('.territory')
+    if (!territory) {
+      return false
+    }
+
+    if ('id' in territory.dataset) {
+      const id = parseInt(territory.dataset.id)
+      return id
+    }
+
+    return false
+  }
+
   renderPiece () {
-    if (this.props.piece) {
-      const piece = this.props.piece
+    const piece = this.props.piece
+    if (piece) {
+      const key = 'piece_' + piece.pk
       return (
         <Piece
-          key={piece.pk}
+          key={key}
           type={piece.type}
-          nation={piece.nation}
         />
       )
     }
+  }
 
-    return null
+  renderSupplyCenter () {
+    const supplyCenter = this.props.supplyCenter
+    if (supplyCenter) {
+      const key = 'supplyCenter_' + supplyCenter.pk
+      return (
+        <SupplyCenter
+          key={key}
+          coastal={this.props.coastal}
+        />
+      )
+    }
   }
 
   render () {
-    const nation = this.props.nation
-    const nationKey = nation ? nation.pk : null
-    const className = this.props.selection ? 'territory ' + this.props.selection : 'territory'
-
     return (
       <div
-        className={className}
+        className={'territory'}
         data-id={this.props.id}
         data-name={this.props.name}
         data-type={this.props.type}
         data-coastal={this.props.coastal}
-        data-supply-center={this.props.supplyCenter}
-        data-nation={nationKey}
-        onMouseOver={this.props._onMousEnter}
-        onMouseOut={this.props._onMouseLeave}
-        onClick={this.props._onClick}
+        data-controlled-by={this.props.controlledBy}
+        data-selected={this.props.isSelected}
+        data-selected-neighbour={this.props.isSelectedNeighbour}
+        onMouseEnter={this._onMouseEnterTerritory.bind(this)}
+        onMouseLeave={this._onMouseLeaveTerritory.bind(this)}
+        onClick={this._onClickTerritory.bind(this)}
       >
         <span className="name">{this.props.name}</span>
         {this.renderPiece()}
+        {this.renderSupplyCenter()}
       </div>
     )
   }
@@ -52,13 +98,15 @@ Territory.propTypes = {
   type: PropTypes.string,
   coastal: PropTypes.bool,
   neighbours: PropTypes.arrayOf(PropTypes.number),
-  supplyCenter: PropTypes.bool,
-  nation: PropTypes.object,
+  sharedCoasts: PropTypes.arrayOf(PropTypes.number),
+  controlledBy: PropTypes.number,
+  supplyCenter: PropTypes.object,
   piece: PropTypes.object,
-  selection: PropTypes.oneOf(['selected', 'movable']),
-  _onMouseEnter: PropTypes.func,
-  _onMouseLeave: PropTypes.func,
-  _onClick: PropTypes.func
+  isSelected: PropTypes.bool,
+  isSelectedNeighbour: PropTypes.bool,
+  _onMouseEnterTerritory: PropTypes.func,
+  _onMouseLeaveTerritory: PropTypes.func,
+  _onClickTerritory: PropTypes.func
 }
 
 export default Territory

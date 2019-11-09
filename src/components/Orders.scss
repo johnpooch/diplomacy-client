@@ -1,14 +1,21 @@
 @import "../utils/variables";
 
 .orders {
-  display: flex;
   position: fixed;
-  top: 0;
+  padding: $p + px;
+  bottom: 0;
   right: 0;
-  background: rgba(0, 0, 0, .95);
-  color: white;
+  background: rgba(0, 0, 0, .8);
 
-  div {
-    padding: $p + px;
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    list-style: none;
+    &:not(:last-child) {
+      margin-bottom: $p + px;
+    }
   }
 }
