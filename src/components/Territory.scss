@@ -12,11 +12,12 @@
   justify-content: center;
   padding: $p + px;
   border: 5px solid currentColor;
-  transition: transform .1s linear;
+  transition: transform .075s linear;
+  text-transform: capitalize;
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.075);
   }
 
   &[data-type=sea] {
@@ -33,14 +34,13 @@
   //   background: radial-gradient($land-color 50%, $sea-color 100%);
   // }
 
-  @include nationColors();
-
-  &.selected {
+  &[data-selected=true] {
     outline: thick dashed lawngreen;
   }
 
-  &.movable {
+  &[data-selected-neighbour=true] {
     outline: thick dashed gold;
   }
 
+  @include controlledByColors();
 }

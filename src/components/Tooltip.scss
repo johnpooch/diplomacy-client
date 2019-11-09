@@ -7,6 +7,7 @@
   left: 0;
   background: rgba(255, 255, 255, .95);
   pointer-events: none;
+  text-transform: capitalize;
 
   ul {
     padding: 0;
@@ -15,8 +16,6 @@
 
   li {
     display: flex;
-    flex-direction: column;
-
     &:not(:last-child) {
       margin-bottom: $p + px;
     }
@@ -24,6 +23,6 @@
 
   .key {
     font-weight: bold;
-    margin-bottom: $p/2 + px;
+    margin-right: $p/2 + px;
   }
 }

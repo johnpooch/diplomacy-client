@@ -21,9 +21,9 @@ $nation-colors:
 $p: 16;
 
 // mixins
-@mixin nationColors($from: 1, $to: 8){
+@mixin controlledByColors($from: 1, $to: 8){
   @for $i from $from to $to {
-    &[data-nation="#{$i}"] {
+    &[data-controlled-by="#{$i}"] {
       color: nth($nation-colors, $i);
     }
   }
