@@ -3,10 +3,9 @@
 .orders {
   position: fixed;
   padding: $p + px;
-  top: 0;
+  bottom: 0;
   right: 0;
-  background: rgba(0, 0, 0, .95);
-  color: white;
+  background: rgba(0, 0, 0, .8);
 
   ul {
     padding: 0;
@@ -14,8 +13,7 @@
   }
 
   li {
-    display: flex;
-    cursor: pointer;
+    list-style: none;
     &:not(:last-child) {
       margin-bottom: $p + px;
     }

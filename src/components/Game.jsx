@@ -1,5 +1,6 @@
 
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import './Board.scss'
 
@@ -17,7 +18,6 @@ class Game extends React.Component {
     super(props)
 
     this.state = {
-      player: 1,
       data: {
         nations: {},
         territories: {},
@@ -129,8 +129,8 @@ class Game extends React.Component {
   renderOrders () {
     if (this.state.selectTarget) {
       return <Orders
+        player={this.props.player}
         selectTarget={this.state.selectTarget}
-        player={this.state.player}
         data={this.state.data}
       />
     }
@@ -161,6 +161,10 @@ class Game extends React.Component {
 
     return this.renderGame()
   }
+}
+
+Game.propTypes = {
+  player: PropTypes.number
 }
 
 export default Game

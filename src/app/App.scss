@@ -23,3 +23,15 @@ html, body {
   height: 100vh;
   pointer-events: none;
 }
+
+.button {
+  display: inline-block;
+  min-width: $p*12 + px;
+  padding: $p + px;
+  background: white;
+  border: 1px solid black;
+  outline: none;
+  box-shadow: none;
+  text-align: center;
+  cursor: pointer;
+}

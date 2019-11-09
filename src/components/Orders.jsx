@@ -12,7 +12,7 @@ class Orders extends React.Component {
     const selectTarget = this.props.selectTarget
     const territory = utils.getObjectByKey(selectTarget, this.props.data.territories)
     const controlledBy = territory.controlled_by
-    if (controlledBy !== player) {
+    if (player !== controlledBy) {
       return false
     }
 
@@ -50,7 +50,7 @@ class Orders extends React.Component {
       const value = orders[index]
       elements.push(
         <li key={key}>
-          <span className="order">{value}</span>
+          <span className="button">{value}</span>
         </li>
       )
     }
@@ -64,8 +64,8 @@ class Orders extends React.Component {
 }
 
 Orders.propTypes = {
-  selectTarget: PropTypes.number,
   player: PropTypes.number,
+  selectTarget: PropTypes.number,
   data: PropTypes.object
 }
 
