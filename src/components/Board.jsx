@@ -10,6 +10,7 @@ import supplyCentersData from '../json/supply_centers.json'
 
 import Territory from './Territory.jsx'
 import Tooltip from './Tooltip.jsx'
+import Orders from './Orders.jsx'
 
 class Game extends React.Component {
   constructor (props) {
@@ -80,18 +81,18 @@ class Game extends React.Component {
       tooltip.piece = data.piece.type
     }
 
-    const neighbours = data.territory.neighbours
-    if (neighbours) {
-      const neighbourNames = []
-      neighbours.forEach(key => {
-        const neighbour = this.getTerritoryByKey(key)
-        if (neighbour) {
-          neighbourNames.push(neighbour.name)
-        }
-      })
-      const neighboursString = neighbourNames.join(', ')
-      tooltip.neighbours = neighboursString
-    }
+    // const neighbours = data.territory.neighbours
+    // if (neighbours) {
+    //   const neighbourNames = []
+    //   neighbours.forEach(key => {
+    //     const neighbour = this.getTerritoryByKey(key)
+    //     if (neighbour) {
+    //       neighbourNames.push(neighbour.name)
+    //     }
+    //   })
+    //   const neighboursString = neighbourNames.join(', ')
+    //   tooltip.neighbours = neighboursString
+    // }
 
     this.setState({
       tooltip: tooltip
@@ -112,12 +113,15 @@ class Game extends React.Component {
     if (this.state.selected === key) {
       this.setState({
         selected: false,
-        selectedNeighbours: []
+        selectedNeighbours: [],
+        orders: false
       })
     } else {
+      const orders = this.getOrders(key)
       this.setState({
         selected: key,
-        selectedNeighbours: selectedNeighbours
+        selectedNeighbours: selectedNeighbours,
+        orders: orders
       })
     }
   }
@@ -219,6 +223,20 @@ class Game extends React.Component {
     return territories
   }
 
+  getOrders (selected) {
+    const piece = this.getPieceByTerritory(selected)
+    if (!piece) {
+      return false
+    }
+
+    const territory = this.getTerritoryByKey(selected)
+    if (!territory || territory.controlled_by !== this.state.player) {
+      return false
+    }
+
+    return true
+  }
+
   renderTooltip () {
     if (!this.state.tooltip) {
       return null
@@ -229,11 +247,22 @@ class Game extends React.Component {
     />
   }
 
+  renderOrders () {
+    if (!this.state.orders) {
+      return null
+    }
+
+    return <Orders
+      // orders={this.state.orders}
+    />
+  }
+
   render () {
     return (
       <main className="board">
         {this.renderTerritories()}
         {this.renderTooltip()}
+        {this.renderOrders()}
       </main>
     )
   }
