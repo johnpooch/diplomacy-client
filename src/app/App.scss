@@ -11,6 +11,7 @@ html, body {
 .app {
   font-family: $sans-stack;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .loading {
