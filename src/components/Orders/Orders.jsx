@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import './Orders.scss'
 
-const utils = require('../utils/utils.js')
+const utils = require('Utilities/utils.js')
 
 class Orders extends React.Component {
   buildOrders () {

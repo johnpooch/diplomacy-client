@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 
 import './Board.scss'
 
-import Territory from './Territory.jsx'
+import Territory from 'Components/Territory/Territory.jsx'
 
-const utils = require('../utils/utils.js')
+const utils = require('Utilities/utils.js')
 
 class Board extends React.Component {
   renderTerritories () {
