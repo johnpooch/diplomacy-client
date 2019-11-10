@@ -4,9 +4,6 @@ exports[`App should render correctly in "debug" mode 1`] = `
 <div
   className="app"
 >
-  <GameHeader
-    player={1}
-  />
   <Game
     player={1}
   />
