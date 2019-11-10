@@ -1,5 +1,8 @@
 # diplomacy-client
 
+A client for [@johnpooch](https://github.com/johnpooch)'s Diplomacy service: https://github.com/johnpooch/diplomacy
+
+
 ## Setting up a development environment
 - Install Docker (see https://docs.docker.com/install/)
 - Clone repo and `cd` into directory
