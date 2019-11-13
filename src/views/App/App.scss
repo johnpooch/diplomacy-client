@@ -1,4 +1,4 @@
-@import "../utils/variables";
+@import "~Utilities/variables";
 
 * {
   box-sizing: border-box;
@@ -12,17 +12,6 @@ html, body {
   font-family: $sans-stack;
   min-height: 100vh;
   overflow-x: hidden;
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
 }
 
 .button {

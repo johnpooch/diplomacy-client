@@ -1,4 +1,4 @@
-@import "../utils/variables";
+@import "~Utilities/variables";
 
 @mixin darker($c) {
   color: desaturate(darken($c, 10%), 25%);

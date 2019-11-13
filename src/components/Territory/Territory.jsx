@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 
 import './Territory.scss'
 
-import Piece from './Piece.jsx'
-import SupplyCenter from './SupplyCenter.jsx'
+import Piece from 'Components/Piece/Piece.jsx'
+import SupplyCenter from 'Components/SupplyCenter/SupplyCenter.jsx'
 
 class Territory extends React.Component {
   _onMouseEnterTerritory (e) {

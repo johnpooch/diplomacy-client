@@ -2,8 +2,7 @@ import React from 'react'
 
 import './App.scss'
 
-import GameHeader from '../components/GameHeader.jsx'
-import Game from '../components/Game.jsx'
+import Game from 'Views/Game/Game.jsx'
 
 class App extends React.Component {
   constructor (props) {
@@ -17,12 +16,7 @@ class App extends React.Component {
   render () {
     return (
       <div className="app">
-        <GameHeader
-          player={this.state.player}
-        />
-        <Game
-          player={this.state.player}
-        />
+        <Game player={this.state.player} />
       </div>
     )
   }

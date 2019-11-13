@@ -1,13 +1,19 @@
-@import "../utils/variables";
+@import "~Utilities/variables";
 
-.supply-center {
+.piece {
   margin-left: $p + px;
   padding: $p + px;
   border: 1px solid currentColor;
   transition: all .1s linear;
-  border-radius: $p + px;
 
   .type {
     text-transform: uppercase;
   }
+
+  @include controlledByColors();
+}
+
+.territory.selected .piece {
+  color: black;
+  background: lawngreen;
 }

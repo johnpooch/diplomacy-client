@@ -2,16 +2,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import './Board.scss'
+import './Game.scss'
 
-import territoriesData from '../json/territories.json'
-import nationsData from '../json/nations.json'
-import piecesData from '../json/pieces.json'
-import supplyCentersData from '../json/supply_centers.json'
+import territoriesData from 'JSON/territories.json'
+import nationsData from 'JSON/nations.json'
+import piecesData from 'JSON/pieces.json'
+import supplyCentersData from 'JSON/supply_centers.json'
 
-import Board from './Board.jsx'
-import Tooltip from './Tooltip.jsx'
-import Orders from './Orders.jsx'
+import GameHeader from 'Components/GameHeader/GameHeader.jsx'
+import Board from 'Components/Board/Board.jsx'
+import Tooltip from 'Components/Tooltip/Tooltip.jsx'
+import Orders from 'Components/Orders/Orders.jsx'
 
 class Game extends React.Component {
   constructor (props) {
@@ -147,6 +148,7 @@ class Game extends React.Component {
   renderGame () {
     return (
       <main className="game">
+        <GameHeader player={this.props.player} />
         {this.renderBoard()}
         {this.renderTooltip()}
         {this.renderOrders()}
