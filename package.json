@@ -63,7 +63,12 @@
       "./src/setupTests.js"
     ],
     "moduleNameMapper": {
-      "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules"
+      "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules",
+      "Views/(.*)$": "<rootDir>/src/views/$1",
+      "Components/(.*)$": "<rootDir>/src/components/$1",
+      "Utilities/(.*)$": "<rootDir>/src/utils/$1",
+      "Assets/(.*)$": "<rootDir>/src/assets/$1",
+      "JSON/(.*)$": "<rootDir>/src/json/$1"
     }
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import './Tooltip.scss'
 
-const utils = require('../utils/utils.js')
+const utils = require('Utilities/utils.js')
 
 class Tooltip extends React.Component {
   buildTooltip () {

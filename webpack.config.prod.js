@@ -33,5 +33,14 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    alias: {
+      Views: path.resolve(__dirname, 'src/views/'),
+      Components: path.resolve(__dirname, 'src/components/'),
+      Utilities: path.resolve(__dirname, 'src/utils/'),
+      Assets: path.resolve(__dirname, 'src/assets/'),
+      JSON: path.resolve(__dirname, 'src/json/')
+    }
+  },
   stats: { children: false }
 }
