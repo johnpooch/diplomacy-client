@@ -129,62 +129,62 @@ class Game extends React.Component {
     })
   }
 
-  _onMouseEnterTerritory (target) {
-    this.setState({
-      isHovering: true,
-      hoverTarget: target
-    })
-  }
+  // _onMouseEnterTerritory (target) {
+  //   this.setState({
+  //     isHovering: true,
+  //     hoverTarget: target
+  //   })
+  // }
 
-  _onMouseLeaveTerritory () {
-    this.setState({
-      isHovering: false,
-      hoverTarget: null
-    })
-  }
+  // _onMouseLeaveTerritory () {
+  //   this.setState({
+  //     isHovering: false,
+  //     hoverTarget: null
+  //   })
+  // }
 
-  _onClickTerritory (target) {
-    if (this.state.selectTarget !== target) {
-      this.setState({
-        isSelected: true,
-        selectTarget: target
-      })
-    } else {
-      this.setState({
-        isSelected: false,
-        selectTarget: null
-      })
-    }
-  }
+  // _onClickTerritory (target) {
+  //   if (this.state.selectTarget !== target) {
+  //     this.setState({
+  //       isSelected: true,
+  //       selectTarget: target
+  //     })
+  //   } else {
+  //     this.setState({
+  //       isSelected: false,
+  //       selectTarget: null
+  //     })
+  //   }
+  // }
 
-  renderBoard () {
-    return <Board
-      data={this.state.data}
-      selectTarget={this.state.selectTarget}
-      _onMouseEnterTerritory={this._onMouseEnterTerritory.bind(this)}
-      _onMouseLeaveTerritory={this._onMouseLeaveTerritory.bind(this)}
-      _onClickTerritory={this._onClickTerritory.bind(this)}
-    />
-  }
+  // renderBoard () {
+  //   return <Board
+  //     data={this.state.data}
+  //     selectTarget={this.state.selectTarget}
+  //     _onMouseEnterTerritory={this._onMouseEnterTerritory.bind(this)}
+  //     _onMouseLeaveTerritory={this._onMouseLeaveTerritory.bind(this)}
+  //     _onClickTerritory={this._onClickTerritory.bind(this)}
+  //   />
+  // }
 
-  renderTooltip () {
-    if (this.state.hoverTarget) {
-      return <Tooltip
-        data={this.state.data}
-        hoverTarget={this.state.hoverTarget}
-      />
-    }
-  }
+  // renderTooltip () {
+  //   if (this.state.hoverTarget) {
+  //     return <Tooltip
+  //       data={this.state.data}
+  //       hoverTarget={this.state.hoverTarget}
+  //     />
+  //   }
+  // }
 
-  renderOrders () {
-    if (this.state.selectTarget) {
-      return <Orders
-        player={this.props.player}
-        selectTarget={this.state.selectTarget}
-        data={this.state.data}
-      />
-    }
-  }
+  // renderOrders () {
+  //   if (this.state.selectTarget) {
+  //     return <Orders
+  //       player={this.props.player}
+  //       selectTarget={this.state.selectTarget}
+  //       data={this.state.data}
+  //     />
+  //   }
+  // }
 
   renderLoading () {
     return (
@@ -205,8 +205,8 @@ class Game extends React.Component {
       <main className="game">
         <GameHeader player={this.props.player} />
         {this.renderMap()}
-        {this.renderTooltip()}
-        {this.renderOrders()}
+        {/* {this.renderTooltip()} */}
+        {/* {this.renderOrders()} */}
       </main>
     )
   }
