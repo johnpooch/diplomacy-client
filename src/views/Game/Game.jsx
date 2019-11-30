@@ -29,7 +29,9 @@ class Game extends React.Component {
       },
       isLoaded: false,
       hoverTarget: null,
-      selectTarget: null
+      selectTarget: null,
+      headers: this.getAuthHeaders('admin', 'admin'),
+      games: []
     }
   }
 
@@ -39,7 +41,7 @@ class Game extends React.Component {
     const pieces = this.fetchPieces()
     const supplyCenters = this.fetchSupplyCenters()
 
-    this.listGames()
+    this.getAllGames()
 
     this.setState({
       data: {
@@ -52,18 +54,43 @@ class Game extends React.Component {
     })
   }
 
-  listGames () {
-    fetch(API.GAMESURL, {
+  getAllGames () {
+    fetch(API.ALLGAMESURL, {
       method: 'GET',
-      headers: this.getHeaders('admin', 'admin')
+      headers: this.state.headers
     })
       .then(res => res.json())
       .then((data) => {
+        if (!data.length) return
+
+        this.setState({
+          games: data.slice()
+        })
+
+        // Grab the state for first game
+        if (!data.length) return
+        const game = data.pop()
+        if (typeof game.id !== 'number') return
+        this.getGame(game.id)
+      })
+  }
+
+  getGame (id) {
+    const url = API.GAMESTATEURL.replace('<int:game>', id)
+    fetch(url, {
+      method: 'GET',
+      headers: this.state.headers
+    })
+      .then(res => res.json())
+      .then((data) => {
+        this.setState({
+          game: data
+        })
         console.log(data)
       })
   }
 
-  getHeaders (username, password) {
+  getAuthHeaders (username, password) {
     const headers = new Headers()
     headers.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
     return headers
