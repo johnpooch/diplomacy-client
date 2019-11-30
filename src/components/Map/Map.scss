@@ -1,5 +1,9 @@
 @import "~Utilities/variables";
 
+.map svg {
+  display: block;
+}
+
 .territory {
   &[data-type=sea] {
     fill: $sea-color;
@@ -9,5 +13,10 @@
     fill: $land-color;
   }
 
-  stroke: black;
+  stroke-width: 1px;
+  stroke: white;
+
+  &:hover {
+    fill: red;
+  }
 }

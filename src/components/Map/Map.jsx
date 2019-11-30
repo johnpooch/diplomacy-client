@@ -16,7 +16,7 @@ class Map extends React.Component {
     })
 
     return (
-      <svg viewBox="0 0 610 560" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 609 559" xmlns="http://www.w3.org/2000/svg">
         {territories}
       </svg>
     )
