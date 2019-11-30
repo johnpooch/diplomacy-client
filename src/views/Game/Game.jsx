@@ -15,7 +15,6 @@ import GameHeader from 'Components/GameHeader/GameHeader.jsx'
 import Board from 'Components/Board/Board.jsx'
 import Tooltip from 'Components/Tooltip/Tooltip.jsx'
 import Orders from 'Components/Orders/Orders.jsx'
-import { restElement } from '@babel/types'
 
 class Game extends React.Component {
   constructor (props) {
