@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 
 import './Game.scss'
 
+import * as API from '~/api'
+
 import territoriesData from 'JSON/territories.json'
 import nationsData from 'JSON/nations.json'
 import piecesData from 'JSON/pieces.json'
@@ -51,8 +53,7 @@ class Game extends React.Component {
   }
 
   listGames () {
-    const url = 'http://127.0.0.1:8082/api/v1/games'
-    fetch(url, {
+    fetch(API.GAMESURL, {
       method: 'GET',
       headers: this.getHeaders('admin', 'admin')
     })
