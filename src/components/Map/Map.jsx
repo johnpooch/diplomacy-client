@@ -23,7 +23,7 @@ class Map extends React.Component {
   }
 
   renderTerritory (territory) {
-    const polygon = utils.getObjectByKey(territory.pk, mapData).polygon
+    const data = utils.getObjectByKey(territory.pk, mapData)
     return (
       <polygon
         key={territory.pk}
@@ -31,7 +31,8 @@ class Map extends React.Component {
         data-name={territory.name}
         data-type={territory.type}
         data-coastal={territory.coastal}
-        points={polygon}
+        data-controlled-by={territory.controlled_by}
+        points={data.polygon}
       />
     )
   }

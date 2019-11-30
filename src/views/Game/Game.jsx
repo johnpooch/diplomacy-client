@@ -87,7 +87,6 @@ class Game extends React.Component {
         this.setState({
           game: data
         })
-        // console.log(data)
       })
   }
 

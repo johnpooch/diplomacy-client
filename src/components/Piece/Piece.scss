@@ -10,7 +10,7 @@
     text-transform: uppercase;
   }
 
-  @include controlledByColors();
+  @include controlledByColor();
 }
 
 .territory.selected .piece {

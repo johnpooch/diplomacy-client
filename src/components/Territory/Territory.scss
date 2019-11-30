@@ -38,5 +38,5 @@
     outline: thick dashed gold;
   }
 
-  @include controlledByColors();
+  @include controlledByColor();
 }

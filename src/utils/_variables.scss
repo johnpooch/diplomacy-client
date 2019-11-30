@@ -10,7 +10,7 @@ $land-color: papayaWhip;
 $nation-colors:
   red // England
   blue // France
-  black // Germany
+  darkslategray // Germany
   sienna // Austria-Hungary
   green // Italy
   darkviolet // Russia
@@ -21,10 +21,22 @@ $nation-colors:
 $p: 16;
 
 // mixins
-@mixin controlledByColors($from: 1, $to: 8){
+@mixin controlledByColor($from: 1, $to: 8){
   @for $i from $from to $to {
     &[data-controlled-by="#{$i}"] {
       color: nth($nation-colors, $i);
     }
   }
-}  
+}
+
+@mixin controlledByFill($from: 1, $to: 8){
+  @for $i from $from to $to {
+    &[data-controlled-by="#{$i}"] {
+      fill: nth($nation-colors, $i);
+
+      &:hover {
+        fill: darken(nth($nation-colors, $i), 10%);
+      }
+    }
+  }
+}

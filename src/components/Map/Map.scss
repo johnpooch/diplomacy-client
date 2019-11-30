@@ -6,6 +6,8 @@
 
 .territory {
   cursor: pointer;
+  stroke-width: 1px;
+  stroke: white;
 
   &[data-type=sea] {
     fill: $sea-color;
@@ -23,6 +25,5 @@
     }
   }
 
-  stroke-width: 1px;
-  stroke: white;
+  @include controlledByFill();
 }
