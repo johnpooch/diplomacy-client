@@ -16,14 +16,14 @@ class Map extends React.Component {
     })
 
     return (
-      <svg viewBox="0 0 609 559" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox={mapData.viewBox} xmlns="http://www.w3.org/2000/svg">
         {territories}
       </svg>
     )
   }
 
   renderTerritory (territory) {
-    const data = utils.getObjectByKey(territory.pk, mapData)
+    const data = utils.getObjectByKey(territory.pk, mapData.territories)
     return (
       <polygon
         key={territory.pk}
