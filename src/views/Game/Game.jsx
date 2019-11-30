@@ -12,9 +12,10 @@ import piecesData from 'JSON/pieces.json'
 import supplyCentersData from 'JSON/supply_centers.json'
 
 import GameHeader from 'Components/GameHeader/GameHeader.jsx'
-import Board from 'Components/Board/Board.jsx'
+// import Board from 'Components/Board/Board.jsx'
 import Tooltip from 'Components/Tooltip/Tooltip.jsx'
 import Orders from 'Components/Orders/Orders.jsx'
+import Map from 'Components/Map/Map.jsx'
 
 class Game extends React.Component {
   constructor (props) {
@@ -86,7 +87,7 @@ class Game extends React.Component {
         this.setState({
           game: data
         })
-        console.log(data)
+        // console.log(data)
       })
   }
 
@@ -193,11 +194,17 @@ class Game extends React.Component {
     )
   }
 
+  renderMap () {
+    return <Map
+      data={this.state.data}
+    />
+  }
+
   renderGame () {
     return (
       <main className="game">
         <GameHeader player={this.props.player} />
-        {this.renderBoard()}
+        {this.renderMap()}
         {this.renderTooltip()}
         {this.renderOrders()}
       </main>

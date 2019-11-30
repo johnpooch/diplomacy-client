@@ -1,0 +1,13 @@
+@import "~Utilities/variables";
+
+.territory {
+  &[data-type=sea] {
+    fill: $sea-color;
+  }
+  
+  &[data-type=land] {
+    fill: $land-color;
+  }
+
+  stroke: black;
+}
