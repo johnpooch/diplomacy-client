@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 
 import './Game.scss'
 
+import * as API from '~/api'
+
 import territoriesData from 'JSON/territories.json'
 import nationsData from 'JSON/nations.json'
 import piecesData from 'JSON/pieces.json'
@@ -32,16 +34,12 @@ class Game extends React.Component {
   }
 
   componentDidMount () {
-    fetch('http://127.0.0.1:8082/api/v1/games')
-      .then(res => res.json())
-      .then((data) => {
-        console.log(data)
-      })
-
     const nations = this.fetchNations()
     const territories = this.fetchTerritories()
     const pieces = this.fetchPieces()
     const supplyCenters = this.fetchSupplyCenters()
+
+    this.listGames()
 
     this.setState({
       data: {
@@ -52,6 +50,23 @@ class Game extends React.Component {
       },
       isLoaded: true
     })
+  }
+
+  listGames () {
+    fetch(API.GAMESURL, {
+      method: 'GET',
+      headers: this.getHeaders('admin', 'admin')
+    })
+      .then(res => res.json())
+      .then((data) => {
+        console.log(data)
+      })
+  }
+
+  getHeaders (username, password) {
+    const headers = new Headers()
+    headers.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
+    return headers
   }
 
   fetchPieces () {
