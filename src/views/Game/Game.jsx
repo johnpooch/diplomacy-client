@@ -61,6 +61,8 @@ class Game extends React.Component {
     })
       .then(res => res.json())
       .then((data) => {
+        if (!data.length) return
+
         this.setState({
           games: data.slice()
         })
