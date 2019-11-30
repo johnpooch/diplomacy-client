@@ -32,6 +32,12 @@ class Game extends React.Component {
   }
 
   componentDidMount () {
+    fetch('http://127.0.0.1:8082/api/v1/games')
+      .then(res => res.json())
+      .then((data) => {
+        console.log(data)
+      })
+
     const nations = this.fetchNations()
     const territories = this.fetchTerritories()
     const pieces = this.fetchPieces()
