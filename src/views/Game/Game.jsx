@@ -4,8 +4,6 @@ import PropTypes from 'prop-types'
 
 import './Game.scss'
 
-import * as API from '~/api'
-
 import territoriesData from 'JSON/territories.json'
 import nationsData from 'JSON/nations.json'
 import piecesData from 'JSON/pieces.json'
@@ -13,6 +11,9 @@ import supplyCentersData from 'JSON/supply_centers.json'
 
 import GameHeader from 'Components/GameHeader/GameHeader.jsx'
 import GameMap from 'Components/GameMap/GameMap.jsx'
+import Loading from 'Components/Loading/Loading.jsx'
+
+import * as API from '~/api'
 
 class Game extends React.Component {
   constructor (props) {
@@ -38,8 +39,6 @@ class Game extends React.Component {
     const pieces = this.fetchPieces()
     const supplyCenters = this.fetchSupplyCenters()
 
-    this.getAllGames()
-
     this.setState({
       data: {
         nations: nations,
@@ -49,27 +48,6 @@ class Game extends React.Component {
       },
       isLoaded: true
     })
-  }
-
-  getAllGames () {
-    fetch(API.ALLGAMESURL, {
-      method: 'GET',
-      headers: this.props.headers
-    })
-      .then(res => res.json())
-      .then((data) => {
-        if (!data.length) return
-
-        this.setState({
-          games: data.slice()
-        })
-
-        // Grab the state for first game
-        if (!data.length) return
-        const game = data.pop()
-        if (typeof game.id !== 'number') return
-        this.getGame(game.id)
-      })
   }
 
   getGame (id) {
@@ -118,14 +96,6 @@ class Game extends React.Component {
     })
   }
 
-  renderLoading () {
-    return (
-      <div className="loading">
-        Loading...
-      </div>
-    )
-  }
-
   renderHeader () {
     return <GameHeader
       player={this.props.player}
@@ -149,7 +119,7 @@ class Game extends React.Component {
 
   render () {
     if (!this.state.isLoaded) {
-      return this.renderLoading()
+      return <Loading />
     }
 
     return this.renderGame()

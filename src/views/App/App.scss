@@ -14,6 +14,7 @@ html, body {
   width: 100vw;
   overflow: hidden;
   position: relative;
+  padding: $p+px;
 }
 
 .button {
@@ -26,4 +27,8 @@ html, body {
   box-shadow: none;
   text-align: center;
   cursor: pointer;
+}
+
+h1 {
+  margin: 0 auto $p*2+px;
 }

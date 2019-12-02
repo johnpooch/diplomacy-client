@@ -3,25 +3,25 @@ import PropTypes from 'prop-types'
 
 import './Tooltip.scss'
 
-const utils = require('Utilities/utils.js')
+import * as Utils from 'Utilities/utils'
 
 class Tooltip extends React.Component {
   buildTooltip () {
     const tooltip = {}
 
-    const territory = utils.getObjectByKey(this.props.hoverTarget, this.props.data.territories)
+    const territory = Utils.getObjectByKey(this.props.hoverTarget, this.props.data.territories)
     if (territory) {
       tooltip.name = territory.name
       tooltip.coastal = territory.coastal ? 'true' : 'false'
       tooltip.type = territory.type
     }
 
-    const controlledBy = utils.getObjectByKey(territory.controlled_by, this.props.data.nations)
+    const controlledBy = Utils.getObjectByKey(territory.controlled_by, this.props.data.nations)
     if (controlledBy) {
       tooltip.nation = controlledBy.name
     }
 
-    const piece = utils.getObjectByKey(this.props.hoverTarget, this.props.data.pieces, 'territory')
+    const piece = Utils.getObjectByKey(this.props.hoverTarget, this.props.data.pieces, 'territory')
     if (piece) {
       tooltip.piece = piece.type
     }

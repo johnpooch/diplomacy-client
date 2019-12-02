@@ -8,7 +8,7 @@ import './Territory.scss'
 
 import mapData from 'JSON/map.json'
 
-const utils = require('Utilities/utils.js')
+import * as Utils from 'Utilities/utils'
 
 class Territory extends React.Component {
   // _onMouseEnterTerritory (e) {
@@ -48,7 +48,7 @@ class Territory extends React.Component {
   // }
 
   render () {
-    const data = utils.getObjectByKey(this.props.pk, mapData.territories)
+    const data = Utils.getObjectByKey(this.props.pk, mapData.territories)
     if (!data) return
     return (
       <g className="territory">

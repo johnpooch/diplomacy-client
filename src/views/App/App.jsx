@@ -3,6 +3,7 @@ import React from 'react'
 import './App.scss'
 
 import Game from 'Views/Game/Game.jsx'
+import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
 
 class App extends React.Component {
   constructor (props) {
@@ -29,10 +30,19 @@ class App extends React.Component {
     )
   }
 
+  renderBrowseGames () {
+    return (
+      <BrowseGames
+        player={this.state.player}
+        headers={this.state.headers}
+      />
+    )
+  }
+
   render () {
     return (
       <div className="app">
-        {this.renderGame()}
+        {this.renderBrowseGames()}
       </div>
     )
   }

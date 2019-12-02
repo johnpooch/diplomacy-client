@@ -6,7 +6,7 @@ import './Board.scss'
 
 import Territory from 'Components/Territory/Territory.jsx'
 
-const utils = require('Utilities/utils.js')
+import * as Utils from 'Utilities/utils'
 
 class Board extends React.Component {
   renderTerritories () {
@@ -25,8 +25,8 @@ class Board extends React.Component {
         isSelectedNeighbour = true
       }
 
-      const supplyCenter = utils.getObjectByKey(obj.pk, this.props.data.supplyCenters, 'territory')
-      const piece = utils.getObjectByKey(obj.pk, this.props.data.pieces, 'territory')
+      const supplyCenter = Utils.getObjectByKey(obj.pk, this.props.data.supplyCenters, 'territory')
+      const piece = Utils.getObjectByKey(obj.pk, this.props.data.pieces, 'territory')
 
       const key = 'territory_' + obj.pk
 

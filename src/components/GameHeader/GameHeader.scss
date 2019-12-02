@@ -3,7 +3,7 @@
 .game-header {
   position: fixed;
   z-index: 999;
-  background: rgba($primary-color, .5);
+  background: rgba($gray, .5);
   padding: $p + px;
   display: grid;
   grid-template-columns: 1fr auto;

@@ -1,0 +1,30 @@
+@import "~Utilities/variables";
+
+.browse-games {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .game-list > li:not(:last-child) {
+    margin-bottom: $p*2+px;
+  }
+
+  .details > li:not(:last-child) {
+    margin-bottom: $p/2+px;
+  }
+
+  .name {
+    font-weight: 600;
+    width: 100%;
+    margin: 0 auto $p+px;
+  }
+
+  .label {
+    color: $gray;
+    &:after {
+      content: ': ';
+    }
+  }
+}
