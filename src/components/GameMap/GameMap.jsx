@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import './GameMap.scss'
 import Territory from 'Components/Territory/Territory.jsx'
 import mapData from 'JSON/map.json'
+import * as Utils from 'Utilities/utils'
 
 class GameMap extends React.Component {
   renderMap () {
@@ -20,17 +21,39 @@ class GameMap extends React.Component {
     )
   }
 
+  getCurrentTurn () {
+    const turns = this.props.game.turns
+
+    for (let i = 0; i < turns.length; i++) {
+      if (turns[i].current_turn === true) {
+        return turns[i]
+      }
+    }
+
+    return undefined
+  }
+
   renderTerritories () {
+    const turn = this.getCurrentTurn()
+    if (!turn) return
+
+    const states = turn.territory_states
+    const variant = this.props.game.variant
+
     const territories = []
-    this.props.data.territories.forEach(territory => {
+    variant.territories.forEach(territory => {
+      const id = territory.id
+      const state = Utils.getObjectByKey(id, states, 'territory')
+      const controller = state ? state.controlled_by : undefined
+
       territories.push(
         <Territory
-          key={territory.pk}
-          pk={territory.pk}
+          key={id}
+          id={id}
           name={territory.name}
           type={territory.type}
-          coastal={territory.coastal}
-          controlledBy={territory.controlled_by}
+          supply_center={territory.supply_center}
+          controlled_by={controller}
         />
       )
     })
@@ -43,7 +66,7 @@ class GameMap extends React.Component {
 }
 
 GameMap.propTypes = {
-  data: PropTypes.object
+  game: PropTypes.object
 }
 
 export default GameMap

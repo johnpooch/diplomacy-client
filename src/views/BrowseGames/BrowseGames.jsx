@@ -2,9 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import './BrowseGames.scss'
-
+import Alert from 'Components/Alert/Alert.jsx'
 import Loading from 'Components/Loading/Loading.jsx'
-
 import * as API from '~/api'
 
 class BrowseGames extends React.Component {
@@ -38,7 +37,7 @@ class BrowseGames extends React.Component {
     }
 
     if (!this.state.games) {
-      return <span>No games found</span>
+      return <Alert text="No games found" type="error" />
     }
 
     const games = []
@@ -52,7 +51,6 @@ class BrowseGames extends React.Component {
         minute: '2-digit'
       }
       const dateString = date.toLocaleDateString('en-GB', dateOptions)
-
       games.push(
         <li
           key={g.id}
@@ -81,6 +79,7 @@ class BrowseGames extends React.Component {
         </li>
       )
     })
+
     return (
       <ul className="game-list">
         {games}
@@ -90,13 +89,13 @@ class BrowseGames extends React.Component {
 
   _onClick (e) {
     const game = e.target.closest('.game')
-    const id = game.dataset.id
+    const id = parseInt(game.dataset.id)
     this.props._onClick(id)
   }
 
   render () {
     return (
-      <div className="browse-games">
+      <div className="browse-games view">
         <h1>Browse Games</h1>
         {this.renderGamesList()}
       </div>

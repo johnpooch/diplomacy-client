@@ -42,18 +42,18 @@ class App extends React.Component {
     )
   }
 
+  _onClickGame (id) {
+    this.setState({
+      game: id
+    })
+  }
+
   renderView () {
     if (this.state.game) {
       return this.renderGame()
     } else {
       return this.renderBrowseGames()
     }
-  }
-
-  _onClickGame (id) {
-    this.setState({
-      game: id
-    })
   }
 
   render () {
