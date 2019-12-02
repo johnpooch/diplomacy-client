@@ -20,13 +20,19 @@ class App extends React.Component {
     return headers
   }
 
+  renderGame () {
+    return (
+      <Game
+        player={this.state.player}
+        headers={this.state.headers}
+      />
+    )
+  }
+
   render () {
     return (
       <div className="app">
-        <Game
-          player={this.state.player}
-          headers={this.state.headers}
-        />
+        {this.renderGame()}
       </div>
     )
   }
