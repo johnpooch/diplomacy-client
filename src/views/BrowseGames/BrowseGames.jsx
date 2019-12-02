@@ -21,11 +21,24 @@ class BrowseGames extends React.Component {
       method: 'GET',
       headers: this.props.headers
     })
-      .then(res => res.json())
-      .then((data) => {
-        const games = data.length ? data.slice() : []
+      .then(response => {
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          throw new Error('No games found')
+        }
+      })
+      .then((json) => {
+        console.log(json)
+        const games = json.length ? json.slice() : []
         this.setState({
           games: games,
+          isLoaded: true
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+        this.setState({
           isLoaded: true
         })
       })
