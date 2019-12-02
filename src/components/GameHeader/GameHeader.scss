@@ -1,11 +1,15 @@
 @import "~Utilities/variables";
 
 .game-header {
-  background: $primary-color;
+  position: fixed;
+  z-index: 999;
+  background: rgba($primary-color, .5);
   padding: $p + px;
   display: grid;
   grid-template-columns: 1fr auto;
   column-gap: $p + px;
+  top: 0;
+  width: 100vw;
 
   h1 {
     color: white;

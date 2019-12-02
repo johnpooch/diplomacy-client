@@ -9,14 +9,24 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      player: 1
+      player: 1,
+      headers: this.getAuthHeaders('admin', 'admin')
     }
+  }
+
+  getAuthHeaders (username, password) {
+    const headers = new Headers()
+    headers.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
+    return headers
   }
 
   render () {
     return (
       <div className="app">
-        <Game player={this.state.player} />
+        <Game
+          player={this.state.player}
+          headers={this.state.headers}
+        />
       </div>
     )
   }

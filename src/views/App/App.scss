@@ -10,8 +10,10 @@ html, body {
 
 .app {
   font-family: $sans-stack;
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
 }
 
 .button {

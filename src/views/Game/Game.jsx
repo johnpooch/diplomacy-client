@@ -12,10 +12,7 @@ import piecesData from 'JSON/pieces.json'
 import supplyCentersData from 'JSON/supply_centers.json'
 
 import GameHeader from 'Components/GameHeader/GameHeader.jsx'
-// import Board from 'Components/Board/Board.jsx'
-import Tooltip from 'Components/Tooltip/Tooltip.jsx'
-import Orders from 'Components/Orders/Orders.jsx'
-import Map from 'Components/Map/Map.jsx'
+import GameMap from 'Components/GameMap/GameMap.jsx'
 
 class Game extends React.Component {
   constructor (props) {
@@ -31,7 +28,6 @@ class Game extends React.Component {
       isLoaded: false,
       hoverTarget: null,
       selectTarget: null,
-      headers: this.getAuthHeaders('admin', 'admin'),
       games: []
     }
   }
@@ -58,7 +54,7 @@ class Game extends React.Component {
   getAllGames () {
     fetch(API.ALLGAMESURL, {
       method: 'GET',
-      headers: this.state.headers
+      headers: this.props.headers
     })
       .then(res => res.json())
       .then((data) => {
@@ -80,7 +76,7 @@ class Game extends React.Component {
     const url = API.GAMESTATEURL.replace('<int:game>', id)
     fetch(url, {
       method: 'GET',
-      headers: this.state.headers
+      headers: this.props.headers
     })
       .then(res => res.json())
       .then((data) => {
@@ -88,12 +84,6 @@ class Game extends React.Component {
           game: data
         })
       })
-  }
-
-  getAuthHeaders (username, password) {
-    const headers = new Headers()
-    headers.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
-    return headers
   }
 
   fetchPieces () {
@@ -128,63 +118,6 @@ class Game extends React.Component {
     })
   }
 
-  // _onMouseEnterTerritory (target) {
-  //   this.setState({
-  //     isHovering: true,
-  //     hoverTarget: target
-  //   })
-  // }
-
-  // _onMouseLeaveTerritory () {
-  //   this.setState({
-  //     isHovering: false,
-  //     hoverTarget: null
-  //   })
-  // }
-
-  // _onClickTerritory (target) {
-  //   if (this.state.selectTarget !== target) {
-  //     this.setState({
-  //       isSelected: true,
-  //       selectTarget: target
-  //     })
-  //   } else {
-  //     this.setState({
-  //       isSelected: false,
-  //       selectTarget: null
-  //     })
-  //   }
-  // }
-
-  // renderBoard () {
-  //   return <Board
-  //     data={this.state.data}
-  //     selectTarget={this.state.selectTarget}
-  //     _onMouseEnterTerritory={this._onMouseEnterTerritory.bind(this)}
-  //     _onMouseLeaveTerritory={this._onMouseLeaveTerritory.bind(this)}
-  //     _onClickTerritory={this._onClickTerritory.bind(this)}
-  //   />
-  // }
-
-  // renderTooltip () {
-  //   if (this.state.hoverTarget) {
-  //     return <Tooltip
-  //       data={this.state.data}
-  //       hoverTarget={this.state.hoverTarget}
-  //     />
-  //   }
-  // }
-
-  // renderOrders () {
-  //   if (this.state.selectTarget) {
-  //     return <Orders
-  //       player={this.props.player}
-  //       selectTarget={this.state.selectTarget}
-  //       data={this.state.data}
-  //     />
-  //   }
-  // }
-
   renderLoading () {
     return (
       <div className="loading">
@@ -193,8 +126,14 @@ class Game extends React.Component {
     )
   }
 
+  renderHeader () {
+    return <GameHeader
+      player={this.props.player}
+    />
+  }
+
   renderMap () {
-    return <Map
+    return <GameMap
       data={this.state.data}
     />
   }
@@ -202,10 +141,8 @@ class Game extends React.Component {
   renderGame () {
     return (
       <main className="game">
-        <GameHeader player={this.props.player} />
+        {this.renderHeader()}
         {this.renderMap()}
-        {/* {this.renderTooltip()} */}
-        {/* {this.renderOrders()} */}
       </main>
     )
   }
@@ -220,7 +157,8 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  player: PropTypes.number
+  player: PropTypes.number,
+  headers: PropTypes.object
 }
 
 export default Game
