@@ -11,7 +11,8 @@ class App extends React.Component {
 
     this.state = {
       player: 1,
-      headers: this.getAuthHeaders('admin', 'admin')
+      headers: this.getAuthHeaders('admin', 'admin'),
+      game: undefined
     }
   }
 
@@ -26,6 +27,7 @@ class App extends React.Component {
       <Game
         player={this.state.player}
         headers={this.state.headers}
+        game={this.state.game}
       />
     )
   }
@@ -33,16 +35,31 @@ class App extends React.Component {
   renderBrowseGames () {
     return (
       <BrowseGames
+        _onClick={this._onClickGame.bind(this)}
         player={this.state.player}
         headers={this.state.headers}
       />
     )
   }
 
+  renderView () {
+    if (this.state.game) {
+      return this.renderGame()
+    } else {
+      return this.renderBrowseGames()
+    }
+  }
+
+  _onClickGame (id) {
+    this.setState({
+      game: id
+    })
+  }
+
   render () {
     return (
       <div className="app">
-        {this.renderBrowseGames()}
+        {this.renderView()}
       </div>
     )
   }

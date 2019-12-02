@@ -1,28 +1,55 @@
 @import "~Utilities/variables";
 
 .browse-games {
+  padding: $p+px;
+
   ul {
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .game-list > li:not(:last-child) {
-    margin-bottom: $p*2+px;
+  header {
+    margin-bottom: $p+px;
   }
 
-  .details > li:not(:last-child) {
-    margin-bottom: $p/2+px;
+  .game-list > li {
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-bottom: $p*2+px;
+    }
+
+    &:hover {
+      .name {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  p {
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: $p/2+px;
+    }
   }
 
   .name {
     font-weight: 600;
-    width: 100%;
-    margin: 0 auto $p+px;
+  }
+
+  .id {
+    margin-left: $p/2+px;
+
+    &:before {
+      content: '#';
+    }
   }
 
   .label {
     color: $gray;
+
     &:after {
       content: ': ';
     }
