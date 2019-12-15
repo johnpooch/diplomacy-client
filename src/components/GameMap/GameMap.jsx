@@ -13,8 +13,8 @@ class GameMap extends React.Component {
       <svg
         className="game-map"
         viewBox={mapData.viewBox}
-        preserveAspectRatio="xMidYMid slice"
         xmlns="http://www.w3.org/2000/svg"
+        // preserveAspectRatio="xMidYMid slice"
       >
         {this.renderTerritories()}
       </svg>
