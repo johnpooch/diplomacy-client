@@ -60,7 +60,7 @@
       "enzyme-to-json/serializer"
     ],
     "setupFiles": [
-      "./src/setupTests.js"
+      "./src/tests.js"
     ],
     "moduleNameMapper": {
       "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules",
