@@ -2,10 +2,10 @@ import React from 'react'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from 'react-router-dom'
-// import PropTypes from 'prop-types'
+
+import Nav from 'Components/Nav/Nav.jsx'
 
 import Game from 'Views/Game/Game.jsx'
 import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
@@ -27,22 +27,13 @@ class App extends React.Component {
     return headers
   }
 
-  // renderNav () {
-  //   return (
-  //     <nav>
-  //       <ul>
-  //         <li>
-  //           <Link to="/">Browse Games</Link>
-  //         </li>
-  //       </ul>
-  //     </nav>
-  //   )
-  // }
-
   render () {
     return (
       <Router>
         <div className="app">
+          <header>
+            <Nav />
+          </header>
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
