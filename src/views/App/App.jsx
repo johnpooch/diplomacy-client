@@ -1,18 +1,23 @@
 import React from 'react'
-
-import './App.scss'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom'
+// import PropTypes from 'prop-types'
 
 import Game from 'Views/Game/Game.jsx'
 import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
+
+import './App.scss'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      player: 1,
-      headers: this.getAuthHeaders('admin', 'admin'),
-      game: undefined
+      headers: this.getAuthHeaders('admin', 'admin')
     }
   }
 
@@ -22,45 +27,34 @@ class App extends React.Component {
     return headers
   }
 
-  renderGame () {
-    return (
-      <Game
-        player={this.state.player}
-        headers={this.state.headers}
-        game={this.state.game}
-      />
-    )
-  }
-
-  renderBrowseGames () {
-    return (
-      <BrowseGames
-        _onClick={this._onClickGame.bind(this)}
-        player={this.state.player}
-        headers={this.state.headers}
-      />
-    )
-  }
-
-  _onClickGame (id) {
-    this.setState({
-      game: id
-    })
-  }
-
-  renderView () {
-    if (this.state.game) {
-      return this.renderGame()
-    } else {
-      return this.renderBrowseGames()
-    }
-  }
+  // renderNav () {
+  //   return (
+  //     <nav>
+  //       <ul>
+  //         <li>
+  //           <Link to="/">Browse Games</Link>
+  //         </li>
+  //       </ul>
+  //     </nav>
+  //   )
+  // }
 
   render () {
     return (
-      <div className="app">
-        {this.renderView()}
-      </div>
+      <Router>
+        <div className="app">
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/game/:id">
+              <Game />
+            </Route>
+            <Route path="/">
+              <BrowseGames />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     )
   }
 }

@@ -1,11 +1,11 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom'
 
 import './Game.scss'
 
 import Alert from 'Components/Alert/Alert.jsx'
-import GameHeader from 'Components/GameHeader/GameHeader.jsx'
 import GameMap from 'Components/GameMap/GameMap.jsx'
 import Loading from 'Components/Loading/Loading.jsx'
 
@@ -16,13 +16,16 @@ class Game extends React.Component {
     super(props)
 
     this.state = {
-      game: undefined,
       isLoaded: false
     }
   }
 
   componentDidMount () {
-    this.getGame(this.props.game)
+    try {
+      this.getGame(this.props.match.params.id)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   getGame (id) {
@@ -46,17 +49,11 @@ class Game extends React.Component {
         })
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         this.setState({
           isLoaded: true
         })
       })
-  }
-
-  renderHeader () {
-    return <GameHeader
-      player={this.props.player}
-    />
   }
 
   renderMap () {
@@ -76,7 +73,6 @@ class Game extends React.Component {
   render () {
     return (
       <div className="game view">
-        {this.renderHeader()}
         {this.renderMap()}
       </div>
     )
@@ -84,12 +80,11 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  player: PropTypes.number,
   headers: PropTypes.object,
-  game: PropTypes.number
+  match: PropTypes.object
 }
 
-export default Game
+export default withRouter(Game)
 
 // import territoriesData from 'JSON/territories.json'
 // import nationsData from 'JSON/nations.json'
