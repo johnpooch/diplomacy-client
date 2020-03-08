@@ -17,6 +17,10 @@ html, body {
   padding-top: $nav_height + px;
 }
 
+.view {
+  position: relative;
+}
+
 .button {
   display: inline-block;
   min-width: $p*12 + px;
