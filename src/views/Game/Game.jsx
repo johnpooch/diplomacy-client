@@ -25,12 +25,15 @@ class Game extends React.Component {
       this.getGame(this.props.match.params.id)
     } catch (error) {
       console.error(error)
+      this.setState({
+        isLoaded: true
+      })
     }
   }
 
   getGame (id) {
-    const url = API.GAMESTATEURL.replace('<int:game>', id)
-    fetch(url, {
+    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id)
+    fetch(GAMESTATEURL, {
       method: 'GET',
       headers: this.props.headers
     })
@@ -38,19 +41,13 @@ class Game extends React.Component {
         if (response.status === 200) {
           return response.json()
         } else {
-          throw new Error(`Couldn't find game ${id}`)
+          console.error(`Couldn't find game ${id}`)
         }
       })
       .then((json) => {
         console.log(json)
         this.setState({
           game: json,
-          isLoaded: true
-        })
-      })
-      .catch((error) => {
-        console.error(error)
-        this.setState({
           isLoaded: true
         })
       })
@@ -62,7 +59,7 @@ class Game extends React.Component {
     }
 
     if (!this.state.game) {
-      return <Alert text="Game not found" type="error" />
+      return <Alert text="Something went wrong!" type="error" />
     }
 
     return <GameMap
