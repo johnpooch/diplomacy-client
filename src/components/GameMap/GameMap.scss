@@ -4,4 +4,5 @@
   position: absolute;
   width: 100vw;
   height: unquote('calc(100vh - ' + $nav_height + px + ')');
+  background: $sea-color;
 }

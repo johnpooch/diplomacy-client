@@ -3,24 +3,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import './GameMap.scss'
+import ScrollableSVG from 'Components/ScrollableSVG/ScrollableSVG.jsx'
 import Territory from 'Components/Territory/Territory.jsx'
 import mapData from 'JSON/map.json'
 import * as Utils from 'Utilities/utils'
 
 class GameMap extends React.Component {
-  renderMap () {
-    return (
-      <svg
-        className="game-map"
-        viewBox={mapData.viewBox}
-        xmlns="http://www.w3.org/2000/svg"
-        // preserveAspectRatio="xMidYMid slice"
-      >
-        {this.renderTerritories()}
-      </svg>
-    )
-  }
-
   getCurrentTurn () {
     const turns = this.props.game.turns
 
@@ -61,7 +49,14 @@ class GameMap extends React.Component {
   }
 
   render () {
-    return this.renderMap()
+    return (
+      <ScrollableSVG
+        viewBoxWidth={mapData.viewBoxWidth}
+        viewBoxHeight={mapData.viewBoxHeight}
+      >
+        {this.renderTerritories()}
+      </ScrollableSVG>
+    )
   }
 }
 
