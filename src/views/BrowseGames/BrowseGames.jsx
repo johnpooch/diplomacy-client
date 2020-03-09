@@ -60,7 +60,7 @@ class BrowseGames extends React.Component {
       return <Loading />
     }
 
-    if (!this.state.games) {
+    if (!this.state.games.length) {
       return <Alert text="No games found" type="error" />
     }
 
