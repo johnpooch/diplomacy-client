@@ -23,14 +23,12 @@ class BrowseGames extends React.Component {
       headers: this.props.headers
     })
       .then(response => {
-        if (response.status === 200) {
-          return response.json()
-        } else {
-          throw new Error('No games found')
+        if (response.status !== 200) {
+          throw new Error('Failed to connect to service')
         }
+        return response.json()
       })
       .then((json) => {
-        console.log(json)
         const games = json.length ? json.slice() : []
         this.setState({
           games: games,
@@ -38,7 +36,7 @@ class BrowseGames extends React.Component {
         })
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         this.setState({
           isLoaded: true
         })
@@ -60,7 +58,7 @@ class BrowseGames extends React.Component {
       return <Loading />
     }
 
-    if (!this.state.games.length) {
+    if (!this.state.games || !this.state.games.length) {
       return <Alert text="No games found" type="error" />
     }
 
