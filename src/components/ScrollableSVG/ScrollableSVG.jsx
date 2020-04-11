@@ -1,11 +1,18 @@
-
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import useDimensions from 'react-use-dimensions'
 
 const ScrollableSVG = (props) => {
+  // This is a functional component rather than a class component, so that we
+  // can use hooks to get the width and height of the SVG.
+
   const [ref, { width, height }] = useDimensions()
-  const [viewBox, setViewBox] = useState({ x: 0, y: 0, w: props.viewBoxWidth, h: props.viewBoxHeight })
+  const [viewBox, setViewBox] = useState({
+    x: 0,
+    y: 0,
+    w: props.viewBoxWidth,
+    h: props.viewBoxHeight
+  })
   const [origin, setOrigin] = useState({ x: 0, y: 0 })
   const [panning, setPanning] = useState(false)
 

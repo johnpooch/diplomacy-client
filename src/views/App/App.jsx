@@ -8,8 +8,7 @@ import {
 import Nav from 'Components/Nav/Nav.jsx'
 
 import Game from 'Views/Game/Game.jsx'
-// import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
-import Testing from 'Views/Testing/Testing.jsx'
+import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
 
 import './App.scss'
 
@@ -42,8 +41,7 @@ class App extends React.Component {
               <Game />
             </Route>
             <Route path="/">
-              {/* <BrowseGames /> */}
-              <Testing />
+              <BrowseGames />
             </Route>
           </Switch>
         </div>
@@ -53,4 +51,3 @@ class App extends React.Component {
 }
 
 export default App
-0
