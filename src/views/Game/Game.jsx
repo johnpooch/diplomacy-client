@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 import './Game.scss'
 
 import Alert from 'Components/Alert/Alert.jsx'
-import GameMap from 'Components/GameMap/GameMap.jsx'
+import Map from 'Components/Map/Map.jsx'
 import Loading from 'Components/Loading/Loading.jsx'
 
 import * as API from '~/api'
@@ -62,7 +62,7 @@ class Game extends React.Component {
       return <Alert text="Something went wrong!" type="error" />
     }
 
-    return <GameMap
+    return <Map
       game={this.state.game}
     />
   }

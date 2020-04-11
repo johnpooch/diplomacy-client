@@ -2,13 +2,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import './GameMap.scss'
+import './Map.scss'
 import ScrollableSVG from 'Components/ScrollableSVG/ScrollableSVG.jsx'
 import Territory from 'Components/Territory/Territory.jsx'
 import mapData from 'JSON/map.json'
 import * as Utils from 'Utilities/utils'
 
-class GameMap extends React.Component {
+class Map extends React.Component {
   getCurrentTurn () {
     const turns = this.props.game.turns
 
@@ -51,7 +51,7 @@ class GameMap extends React.Component {
   render () {
     return (
       <ScrollableSVG
-        className='game-map'
+        className='map'
         viewBoxWidth={mapData.viewBoxWidth}
         viewBoxHeight={mapData.viewBoxHeight}
       >
@@ -61,8 +61,8 @@ class GameMap extends React.Component {
   }
 }
 
-GameMap.propTypes = {
+Map.propTypes = {
   game: PropTypes.object
 }
 
-export default GameMap
+export default Map
