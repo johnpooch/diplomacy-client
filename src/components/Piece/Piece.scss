@@ -10,10 +10,10 @@
     text-transform: uppercase;
   }
 
-  @include controlledByColors();
+  @include controlledByColor();
 }
 
 .territory.selected .piece {
-  color: black;
+  color: $base;
   background: lawngreen;
 }

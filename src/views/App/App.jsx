@@ -1,23 +1,51 @@
 import React from 'react'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom'
 
-import './App.scss'
+import Nav from 'Components/Nav/Nav.jsx'
 
 import Game from 'Views/Game/Game.jsx'
+import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
+
+import './App.scss'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      player: 1
+      headers: this.getAuthHeaders('admin', 'admin')
     }
+  }
+
+  getAuthHeaders (username, password) {
+    const headers = new Headers()
+    headers.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
+    return headers
   }
 
   render () {
     return (
-      <div className="app">
-        <Game player={this.state.player} />
-      </div>
+      <Router>
+        <div className="app">
+          <header>
+            <Nav />
+          </header>
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/game/:id">
+              <Game />
+            </Route>
+            <Route path="/">
+              <BrowseGames />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     )
   }
 }

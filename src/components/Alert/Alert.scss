@@ -1,6 +1,6 @@
 @import "~Utilities/variables";
 
-.loading {
+.alert {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,4 +8,8 @@
   top: 0;
   width: 100vw;
   height: 100vh;
+
+  &.error {
+    color: $red;
+  }
 }

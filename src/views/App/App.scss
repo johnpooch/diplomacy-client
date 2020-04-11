@@ -10,8 +10,15 @@ html, body {
 
 .app {
   font-family: $sans-stack;
+  color: $base;
   min-height: 100vh;
-  overflow-x: hidden;
+  width: 100vw;
+  position: relative;
+  padding-top: $nav_height + px;
+}
+
+.view {
+  position: relative;
 }
 
 .button {
@@ -19,9 +26,13 @@ html, body {
   min-width: $p*12 + px;
   padding: $p + px;
   background: white;
-  border: 1px solid black;
+  border: 1px solid $base;
   outline: none;
   box-shadow: none;
   text-align: center;
   cursor: pointer;
+}
+
+h1 {
+  margin: 0 auto $p*2+px;
 }

@@ -1,46 +1,27 @@
 @import "~Utilities/variables";
 
-@mixin darker($c) {
-  color: desaturate(darken($c, 10%), 25%);
-}
-
 .territory {
-  margin: $p/2 + px;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $p + px;
-  border: 5px solid currentColor;
-  transition: transform .075s linear;
-  text-transform: capitalize;
-  cursor: pointer;
+  polygon {
+    cursor: pointer;
+    stroke-width: 1px;
+    stroke: white;
 
-  &:hover {
-    transform: scale(1.075);
+    &[data-type=sea] {
+      fill: $sea-color;
+
+      &:hover {
+        fill: darken($sea-color, 10%);
+      }
+    }
+
+    &[data-type=land] {
+      fill: $land-color;
+
+      &:hover {
+        fill: darken($land-color, 10%);
+      }
+    }
+
+    @include controlledByFill();
   }
-
-  &[data-type=sea] {
-    background: $sea-color;
-    @include darker($sea-color);
-  }
-  
-  &[data-type=land] {
-    background: $land-color;
-    @include darker($land-color);
-  }
-
-  // &[data-coastal=true] {
-  //   background: radial-gradient($land-color 50%, $sea-color 100%);
-  // }
-
-  &[data-selected=true] {
-    outline: thick dashed lawngreen;
-  }
-
-  &[data-selected-neighbour=true] {
-    outline: thick dashed gold;
-  }
-
-  @include controlledByColors();
 }
