@@ -1,0 +1,32 @@
+@import "~Utilities/variables";
+
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  background: $gray;
+  z-index: 1;
+  height: $nav_height + px;
+  display: flex;
+  align-items: center;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    padding: $p + px;
+  }
+
+  a {
+    color: $base;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

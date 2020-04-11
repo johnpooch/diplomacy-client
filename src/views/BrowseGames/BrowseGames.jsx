@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import './BrowseGames.scss'
@@ -22,14 +23,12 @@ class BrowseGames extends React.Component {
       headers: this.props.headers
     })
       .then(response => {
-        if (response.status === 200) {
-          return response.json()
-        } else {
-          throw new Error('No games found')
+        if (response.status !== 200) {
+          throw new Error('Failed to connect to service')
         }
+        return response.json()
       })
       .then((json) => {
-        console.log(json)
         const games = json.length ? json.slice() : []
         this.setState({
           games: games,
@@ -37,11 +36,21 @@ class BrowseGames extends React.Component {
         })
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         this.setState({
           isLoaded: true
         })
       })
+  }
+
+  getDateDisplayFormat () {
+    return {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }
   }
 
   renderGamesList () {
@@ -49,46 +58,40 @@ class BrowseGames extends React.Component {
       return <Loading />
     }
 
-    if (!this.state.games) {
+    if (!this.state.games || !this.state.games.length) {
       return <Alert text="No games found" type="error" />
     }
 
     const games = []
     this.state.games.forEach(g => {
       const date = new Date(g.created_at)
-      const dateOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }
-      const dateString = date.toLocaleDateString('en-GB', dateOptions)
+      const dateString = date.toLocaleDateString('en-GB', this.getDateDisplayFormat())
       games.push(
         <li
           key={g.id}
           className="game"
-          onClick={this._onClick.bind(this)}
           data-id={g.id}
         >
-          <header>
-            <span className="name">{g.name}</span>
-            <span className="id">{g.id}</span>
-          </header>
-          <main>
-            <p className="created_at">
-              <span className="label">Created</span>
-              <time dateTime={g.created_at}>{dateString}</time>
-            </p>
-            <p className="created_by">
-              <span className="label">By player</span>
-              {g.created_by}
-            </p>
-            <p className="variant">
-              <span className="label">Variant</span>
-              {g.variant.name}
-            </p>
-          </main>
+          <Link to={`/game/${g.id}`}>
+            <header>
+              <span className="name">{g.name}</span>
+              <span className="id">{g.id}</span>
+            </header>
+            <main>
+              <p className="created_at">
+                <span className="label">Created</span>
+                <time dateTime={g.created_at}>{dateString}</time>
+              </p>
+              <p className="created_by">
+                <span className="label">By player</span>
+                {g.created_by}
+              </p>
+              <p className="variant">
+                <span className="label">Variant</span>
+                {g.variant.name}
+              </p>
+            </main>
+          </Link>
         </li>
       )
     })
@@ -98,12 +101,6 @@ class BrowseGames extends React.Component {
         {games}
       </ul>
     )
-  }
-
-  _onClick (e) {
-    const game = e.target.closest('.game')
-    const id = parseInt(game.dataset.id)
-    this.props._onClick(id)
   }
 
   render () {
@@ -117,7 +114,6 @@ class BrowseGames extends React.Component {
 }
 
 BrowseGames.propTypes = {
-  _onClick: PropTypes.func,
   player: PropTypes.number,
   headers: PropTypes.object
 }

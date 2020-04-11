@@ -2,6 +2,7 @@
 $sans-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
 // colors
+$base: black;
 $gray: lightslategray;
 $red: red;
 $sea-color: powderblue;
@@ -19,6 +20,7 @@ $nation-colors:
 
 // sizes
 $p: 16;
+$nav_height: 50;
 
 // mixins
 @mixin controlledByColor($from: 1, $to: 8){

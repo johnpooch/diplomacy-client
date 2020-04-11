@@ -1,11 +1,11 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom'
 
 import './Game.scss'
 
 import Alert from 'Components/Alert/Alert.jsx'
-import GameHeader from 'Components/GameHeader/GameHeader.jsx'
 import GameMap from 'Components/GameMap/GameMap.jsx'
 import Loading from 'Components/Loading/Loading.jsx'
 
@@ -16,18 +16,24 @@ class Game extends React.Component {
     super(props)
 
     this.state = {
-      game: undefined,
       isLoaded: false
     }
   }
 
   componentDidMount () {
-    this.getGame(this.props.game)
+    try {
+      this.getGame(this.props.match.params.id)
+    } catch (error) {
+      console.error(error)
+      this.setState({
+        isLoaded: true
+      })
+    }
   }
 
   getGame (id) {
-    const url = API.GAMESTATEURL.replace('<int:game>', id)
-    fetch(url, {
+    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id)
+    fetch(GAMESTATEURL, {
       method: 'GET',
       headers: this.props.headers
     })
@@ -35,7 +41,7 @@ class Game extends React.Component {
         if (response.status === 200) {
           return response.json()
         } else {
-          throw new Error(`Couldn't find game ${id}`)
+          console.error(`Couldn't find game ${id}`)
         }
       })
       .then((json) => {
@@ -45,18 +51,6 @@ class Game extends React.Component {
           isLoaded: true
         })
       })
-      .catch((error) => {
-        console.log(error)
-        this.setState({
-          isLoaded: true
-        })
-      })
-  }
-
-  renderHeader () {
-    return <GameHeader
-      player={this.props.player}
-    />
   }
 
   renderMap () {
@@ -65,7 +59,7 @@ class Game extends React.Component {
     }
 
     if (!this.state.game) {
-      return <Alert text="Game not found" type="error" />
+      return <Alert text="Something went wrong!" type="error" />
     }
 
     return <GameMap
@@ -76,7 +70,6 @@ class Game extends React.Component {
   render () {
     return (
       <div className="game view">
-        {this.renderHeader()}
         {this.renderMap()}
       </div>
     )
@@ -84,12 +77,11 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  player: PropTypes.number,
   headers: PropTypes.object,
-  game: PropTypes.number
+  match: PropTypes.object
 }
 
-export default Game
+export default withRouter(Game)
 
 // import territoriesData from 'JSON/territories.json'
 // import nationsData from 'JSON/nations.json'

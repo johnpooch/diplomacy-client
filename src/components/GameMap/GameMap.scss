@@ -3,8 +3,5 @@
 .game-map {
   position: absolute;
   width: 100vw;
-  min-height: 100vh;
-  top: 0;
-  left: 0;
-  // overflow: scroll;
+  height: unquote('calc(100vh - ' + $nav_height + px + ')');
 }
