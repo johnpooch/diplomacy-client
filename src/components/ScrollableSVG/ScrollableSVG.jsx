@@ -1,104 +1,63 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import windowSize from 'react-window-size'
+import useDimensions from 'react-use-dimensions'
 
-class ScrollableSVG extends React.Component {
-  constructor (props) {
-    super(props)
+const ScrollableSVG = (props) => {
+  const [ref, { width, height }] = useDimensions()
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [origin, setOrigin] = useState({ x: 0, y: 0 })
+  const [panning, setPanning] = useState(false)
 
-    this.state = {
-      dragging: false,
-      viewBox: {
-        x: 0,
-        y: 0
-      },
-      origin: {
-        x: 0,
-        y: 0
-      }
-    }
+  return (
+    <svg
+      ref={ref}
+      className={props.className}
+      viewBox={getViewBox(props, pos)}
+      onMouseDown={(e) => { mouseDown(e, width, height, props, pos, setOrigin, setPanning) }}
+      onMouseMove={(e) => { mouseMove(e, width, height, props, panning, origin, setPos) }}
+      onMouseUp={(e) => { mouseUp(e, setPanning) }}
+    >
+      {props.children}
+      <text x="100" y="100" fontSize="30" textAnchor="left" fill="white">width: {width}</text>
+      <text x="100" y="150" fontSize="30" textAnchor="left" fill="white">height: {height}</text>
+    </svg>
+  )
+}
+
+const getViewBox = (props, pos) => {
+  return `${-pos.x} ${-pos.y} ${props.viewBoxWidth} ${props.viewBoxHeight}`
+}
+
+const scale = (n, width, height, props) => {
+  if (width / height > props.viewBoxWidth / props.viewBoxHeight) {
+    // scale using height
+    return n / height * props.viewBoxHeight
+  } else {
+    // scale using width
+    return n / width * props.viewBoxWidth
   }
+}
 
-  getViewBox () {
-    const viewBox = this.state.viewBox
-    return `${-viewBox.x} ${-viewBox.y} ${this.props.viewBoxWidth} ${this.props.viewBoxHeight}`
+const mouseDown = (e, width, height, props, pos, setOrigin, setPanning) => {
+  setOrigin({
+    x: scale(e.clientX, width, height, props) - pos.x,
+    y: scale(e.clientY, width, height, props) - pos.y
+  })
+  setPanning(true)
+}
+
+const mouseMove = (e, width, height, props, panning, origin, setPos) => {
+  if (panning) {
+    setPos({
+      x: scale(e.clientX, width, height, props) - origin.x,
+      y: scale(e.clientY, width, height, props) - origin.y
+    })
   }
+}
 
-  windowToViewBoxX (x) {
-    return x / this.props.windowWidth * this.props.viewBoxWidth
-  }
-
-  windowToViewBoxY (y) {
-    return y / this.props.windowHeight * this.props.viewBoxHeight
-  }
-
-  viewBoxToWindowX (x) {
-    return (x * this.props.windowWidth) / this.props.viewBoxWidth
-  }
-
-  viewBoxToWindowY (y) {
-    return (y * this.props.windowHeight) / this.props.viewBoxHeight
-  }
-
-  clampX (x) {
-    // return x
-    // const windowX = this.viewBoxToWindowX(x)
-    // console.log(this.windowToViewBoxX(this.props.windowWidth))
-    const min = 0
-    const max = this.windowToViewBoxX(this.props.windowWidth) - this.props.viewBoxWidth
-    return Math.min(Math.max(x, min), max)
-  }
-
-  clampY (y) {
-    return y
-    const min = 0
-    const max = 0
-    return Math.min(Math.max(y, min), max)
-  }
-
-  render () {
-    return (
-      <svg
-        className="game-map"
-        viewBox={this.getViewBox()}
-        xmlns="http://www.w3.org/2000/svg"
-        // preserveAspectRatio="xMidYMid slice"
-        onMouseDown={e => {
-          this.setState({
-            dragging: true,
-            origin: {
-              x: this.windowToViewBoxX(e.clientX) - this.state.viewBox.x,
-              y: this.windowToViewBoxY(e.clientY) - this.state.viewBox.y
-            }
-          })
-        }}
-        onMouseMove={e => {
-          if (this.state.dragging) {
-            // console.log(this.clampX(this.windowToViewBoxX(e.clientX) - this.state.origin.x))
-            this.setState({
-              viewBox: {
-                x: this.clampX(this.windowToViewBoxX(e.clientX) - this.state.origin.x),
-                y: this.clampY(this.windowToViewBoxY(e.clientY) - this.state.origin.y)
-              }
-            })
-          }
-        }}
-        onMouseUp={() => {
-          this.setState({ dragging: false })
-        }}
-        onWheel={() => {
-
-        }}
-      >
-        {/* <g
-          transform={`translate(${this.state.viewBox.x}, ${this.state.viewBox.y})`}
-        > */}
-        {this.props.children}
-        {/* </g> */}
-      </svg>
-    )
-  }
+const mouseUp = (e, setPanning) => {
+  setPanning(false)
 }
 
 ScrollableSVG.propTypes = {
@@ -106,10 +65,9 @@ ScrollableSVG.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
+  className: PropTypes.string,
   viewBoxWidth: PropTypes.number,
-  viewBoxHeight: PropTypes.number,
-  windowWidth: PropTypes.number,
-  windowHeight: PropTypes.number
+  viewBoxHeight: PropTypes.number
 }
 
-export default windowSize(ScrollableSVG)
+export default ScrollableSVG

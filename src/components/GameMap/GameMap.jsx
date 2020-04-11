@@ -51,6 +51,7 @@ class GameMap extends React.Component {
   render () {
     return (
       <ScrollableSVG
+        className='game-map'
         viewBoxWidth={mapData.viewBoxWidth}
         viewBoxHeight={mapData.viewBoxHeight}
       >
