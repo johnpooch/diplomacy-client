@@ -5,28 +5,29 @@ import useDimensions from 'react-use-dimensions'
 
 const ScrollableSVG = (props) => {
   const [ref, { width, height }] = useDimensions()
-  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [viewBox, setViewBox] = useState({ x: 0, y: 0, w: props.viewBoxWidth, h: props.viewBoxHeight })
   const [origin, setOrigin] = useState({ x: 0, y: 0 })
   const [panning, setPanning] = useState(false)
+
+  const zoomPower = 0.1
 
   return (
     <svg
       ref={ref}
       className={props.className}
-      viewBox={getViewBox(props, pos)}
-      onMouseDown={(e) => { mouseDown(e, width, height, props, pos, setOrigin, setPanning) }}
-      onMouseMove={(e) => { mouseMove(e, width, height, props, panning, origin, setPos) }}
+      viewBox={getViewBox(viewBox)}
+      onMouseDown={(e) => { mouseDown(e, width, height, props, viewBox, setOrigin, setPanning) }}
+      onMouseMove={(e) => { mouseMove(e, width, height, props, panning, origin, viewBox, setViewBox) }}
       onMouseUp={(e) => { mouseUp(e, setPanning) }}
+      onWheel={(e) => { wheel(e, zoomPower, width, height, viewBox, setViewBox) }}
     >
       {props.children}
-      <text x="100" y="100" fontSize="30" textAnchor="left" fill="white">width: {width}</text>
-      <text x="100" y="150" fontSize="30" textAnchor="left" fill="white">height: {height}</text>
     </svg>
   )
 }
 
-const getViewBox = (props, pos) => {
-  return `${-pos.x} ${-pos.y} ${props.viewBoxWidth} ${props.viewBoxHeight}`
+const getViewBox = (viewBox) => {
+  return `${-viewBox.x} ${-viewBox.y} ${viewBox.w} ${viewBox.h}`
 }
 
 const scale = (n, width, height, props) => {
@@ -39,19 +40,30 @@ const scale = (n, width, height, props) => {
   }
 }
 
-const mouseDown = (e, width, height, props, pos, setOrigin, setPanning) => {
+const getZoom = (props, viewBox) => {
+  return viewBox.h / props.viewBoxHeight
+}
+
+const scaleZoom = (n, width, height, props, viewBox) => {
+  const zoom = getZoom(props, viewBox)
+  return scale(n, width, height, props) * zoom
+}
+
+const mouseDown = (e, width, height, props, viewBox, setOrigin, setPanning) => {
   setOrigin({
-    x: scale(e.clientX, width, height, props) - pos.x,
-    y: scale(e.clientY, width, height, props) - pos.y
+    x: scaleZoom(e.clientX, width, height, props, viewBox) - viewBox.x,
+    y: scaleZoom(e.clientY, width, height, props, viewBox) - viewBox.y
   })
   setPanning(true)
 }
 
-const mouseMove = (e, width, height, props, panning, origin, setPos) => {
+const mouseMove = (e, width, height, props, panning, origin, viewBox, setViewBox) => {
   if (panning) {
-    setPos({
-      x: scale(e.clientX, width, height, props) - origin.x,
-      y: scale(e.clientY, width, height, props) - origin.y
+    setViewBox({
+      x: scaleZoom(e.clientX, width, height, props, viewBox) - origin.x,
+      y: scaleZoom(e.clientY, width, height, props, viewBox) - origin.y,
+      w: viewBox.w,
+      h: viewBox.h
     })
   }
 }
@@ -59,6 +71,28 @@ const mouseMove = (e, width, height, props, panning, origin, setPos) => {
 const mouseUp = (e, setPanning) => {
   setPanning(false)
 }
+
+const wheel = (e, zoomPower, width, height, viewBox, setViewBox) => {
+  const dw = viewBox.w * Math.sign(e.deltaY) * zoomPower
+  const dh = viewBox.h * Math.sign(e.deltaY) * zoomPower
+  const dx = dw * e.clientX / width
+  const dy = dh * e.clientY / height
+  setViewBox({
+    x: viewBox.x + dx,
+    y: viewBox.y + dy,
+    w: viewBox.w + dw,
+    h: viewBox.h + dh
+  })
+}
+
+// const resetZoom = (props, setViewBox) => {
+//   setViewBox({
+//     x: 0,
+//     y: 0,
+//     w: props.viewBoxWidth,
+//     h: props.viewBoxHeight
+//   })
+// }
 
 ScrollableSVG.propTypes = {
   children: PropTypes.oneOfType([
