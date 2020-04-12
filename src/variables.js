@@ -11,15 +11,15 @@ export const colors = {
   red: 'red',
   sea: 'powderblue',
   land: 'papayaWhip',
-  nations: [
-    'red', // England
-    'blue', // France
-    'darkslategray', // Germany
-    'sienna', // Austria-Hungary
-    'green', // Italy
-    'darkviolet', // Russia
-    'darkorange', // Turkey
-  ],
+  nations: {
+    1: 'red', // England
+    2: 'blue', // France
+    3: 'darkslategray', // Germany
+    4: 'sienna', // Austria-Hungary
+    5: 'green', // Italy
+    6: 'darkviolet', // Russia
+    7: 'darkorange', // Turkey
+  },
 };
 
 // sizes

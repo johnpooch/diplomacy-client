@@ -30,7 +30,7 @@ class Map extends React.Component {
       }
     }
 
-    return undefined;
+    return null;
   }
 
   renderTerritories() {
@@ -45,7 +45,7 @@ class Map extends React.Component {
     variant.territories.forEach((territory) => {
       const { id } = territory;
       const state = Utils.getObjectByKey(id, states, 'territory');
-      const controller = state ? state.controlled_by : undefined;
+      const controller = state ? state.controlled_by : null;
 
       territories.push(
         <Territory

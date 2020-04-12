@@ -9,39 +9,25 @@ export const StyledGroup = styled.g`
   polygon {
     stroke-width: 1px;
     stroke: white;
-    fill: ${colors.land};
-
-    &[data-type='sea'] {
-      fill: ${colors.sea};
-
-      &:hover {
-        fill: darken(${colors.sea}, 10%);
-      }
-    }
-
-    &[data-type='land'] {
-      fill: ${colors.land};
-
-      &:hover {
-        fill: darken(${colors.land}, 10%);
-      }
-    }
+    fill: ${(props) => props.color};
   }
 `;
 
+export const getTerritoryColor = (type, controlledBy) => {
+  let color = type !== 'sea' ? colors.land : colors.sea;
+  if (controlledBy !== null && controlledBy in colors.nations) {
+    color = colors.nations[controlledBy];
+  }
+  return color;
+};
+
 const Territory = (props) => {
-  const { id, name, type, controlledBy } = props;
+  const { id, type, controlledBy } = props;
   const data = Utils.getObjectByKey(id, mapData.territories);
   if (!data) return null;
   return (
-    <StyledGroup>
-      <polygon
-        key={id}
-        points={data.polygon}
-        data-name={name}
-        data-type={type}
-        data-controlled-by={controlledBy}
-      />
+    <StyledGroup color={getTerritoryColor(type, controlledBy)}>
+      <polygon key={id} points={data.polygon} />
     </StyledGroup>
   );
 };
