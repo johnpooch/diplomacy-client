@@ -12,6 +12,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "html-webpack-plugin": "^4.2.0",
     "node-sass": "^4.13.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
@@ -26,7 +27,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "lint": "eslint . --fix",
+    "lint": "prettier-eslint --write $PWD/'{,!(node_modules)/**/}*.{js,jsx,json}' && eslint . --fix",
     "test": "jest"
   },
   "browserslist": [
@@ -66,6 +67,7 @@
     "jest": "^25.3.0",
     "jest-css-modules": "^2.1.0",
     "prettier": "^2.0.4",
+    "prettier-eslint-cli": "^5.0.0",
     "webpack-dev-server": "^3.10.3"
   }
 }

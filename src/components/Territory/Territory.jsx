@@ -1,16 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import './Territory.scss'
+import './Territory.scss';
 
-import mapData from 'JSON/map.json'
+import mapData from 'JSON/map.json';
 
-import * as Utils from 'Utilities/utils'
+import * as Utils from 'Utilities/utils';
 
 class Territory extends React.Component {
-  render () {
-    const data = Utils.getObjectByKey(this.props.id, mapData.territories)
-    if (!data) return
+  render() {
+    const data = Utils.getObjectByKey(this.props.id, mapData.territories);
+    if (!data) return;
     return (
       <g className="territory">
         <polygon
@@ -21,7 +21,7 @@ class Territory extends React.Component {
           data-controlled-by={this.props.controlled_by}
         />
       </g>
-    )
+    );
   }
 }
 
@@ -30,10 +30,10 @@ Territory.propTypes = {
   name: PropTypes.string,
   type: PropTypes.string,
   supply_center: PropTypes.bool,
-  controlled_by: PropTypes.number
-}
+  controlled_by: PropTypes.number,
+};
 
-export default Territory
+export default Territory;
 
 // import Piece from 'Components/Piece/Piece.jsx'
 // import SupplyCenter from 'Components/SupplyCenter/SupplyCenter.jsx'
