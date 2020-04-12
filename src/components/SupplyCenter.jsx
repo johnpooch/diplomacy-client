@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import { sizes } from '../../variables';
+import { sizes } from '../variables';
 
 export const StyledDiv = styled.div`
   margin-left: ${sizes.p}px;
@@ -16,19 +15,14 @@ export const StyledDiv = styled.div`
   }
 `;
 
-class SupplyCenter extends React.Component {
-  render() {
-    const type = this.props.coastal ? 'FA' : 'A';
-    return (
-      <StyledDiv>
-        <span>{type}</span>
-      </StyledDiv>
-    );
-  }
-}
-
-SupplyCenter.propTypes = {
-  coastal: PropTypes.bool,
+const SupplyCenter = (props) => {
+  const { coastal } = props;
+  const type = coastal ? 'FA' : 'A';
+  return (
+    <StyledDiv>
+      <span>{type}</span>
+    </StyledDiv>
+  );
 };
 
 export default SupplyCenter;

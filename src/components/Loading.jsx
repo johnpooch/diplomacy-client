@@ -11,10 +11,8 @@ export const StyledDiv = styled.div`
   height: 100vh;
 `;
 
-class Loading extends React.Component {
-  render() {
-    return <StyledDiv>Loading...</StyledDiv>;
-  }
-}
+const Loading = () => {
+  return <StyledDiv>Loading...</StyledDiv>;
+};
 
 export default Loading;

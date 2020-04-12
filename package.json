@@ -45,7 +45,8 @@
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "lint": "prettier-eslint --write $PWD/'**/*.{js,jsx,json}' && eslint . --fix",
+    "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
+    "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
     "test": "jest"
   },
   "browserslist": [
@@ -60,15 +61,6 @@
     ],
     "setupFiles": [
       "./src/setupTests.js"
-    ],
-    "moduleNameMapper": {
-      "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules",
-      "~/(.*)$": "<rootDir>/src/$1",
-      "Views/(.*)$": "<rootDir>/src/views/$1",
-      "Components/(.*)$": "<rootDir>/src/components/$1",
-      "Utilities/(.*)$": "<rootDir>/src/utils/$1",
-      "Assets/(.*)$": "<rootDir>/src/assets/$1",
-      "JSON/(.*)$": "<rootDir>/src/json/$1"
-    }
+    ]
   }
 }

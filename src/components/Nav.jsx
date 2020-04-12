@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { colors, sizes } from '../../variables';
+import { colors, sizes } from '../variables';
 
 export const StyledNav = styled.nav`
   position: fixed;
@@ -35,18 +35,16 @@ export const StyledNav = styled.nav`
   }
 `;
 
-class Nav extends React.Component {
-  render() {
-    return (
-      <StyledNav>
-        <ul>
-          <li>
-            <Link to="/">Browse Games</Link>
-          </li>
-        </ul>
-      </StyledNav>
-    );
-  }
-}
+const Nav = () => {
+  return (
+    <StyledNav>
+      <ul>
+        <li>
+          <Link to="/">Browse Games</Link>
+        </li>
+      </ul>
+    </StyledNav>
+  );
+};
 
 export default Nav;
