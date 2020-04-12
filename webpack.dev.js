@@ -9,4 +9,7 @@ module.exports = merge(common, {
     open: true,
     historyApiFallback: true,
   },
+  output: {
+    publicPath: '/',
+  },
 });
