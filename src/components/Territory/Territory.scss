@@ -2,9 +2,9 @@
 
 .territory {
   polygon {
-    cursor: pointer;
     stroke-width: 1px;
     stroke: white;
+    fill: $land-color;
 
     &[data-type=sea] {
       fill: $sea-color;

@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 import './Game.scss'
 
 import Alert from 'Components/Alert/Alert.jsx'
-import GameMap from 'Components/GameMap/GameMap.jsx'
+import Map from 'Components/Map/Map.jsx'
 import Loading from 'Components/Loading/Loading.jsx'
 
 import * as API from '~/api'
@@ -62,7 +62,7 @@ class Game extends React.Component {
       return <Alert text="Something went wrong!" type="error" />
     }
 
-    return <GameMap
+    return <Map
       game={this.state.game}
     />
   }
@@ -82,40 +82,3 @@ Game.propTypes = {
 }
 
 export default withRouter(Game)
-
-// import territoriesData from 'JSON/territories.json'
-// import nationsData from 'JSON/nations.json'
-// import piecesData from 'JSON/pieces.json'
-// import supplyCentersData from 'JSON/supply_centers.json'
-
-// fetchPieces () {
-//   return piecesData.map(obj => {
-//     const fields = obj.fields
-//     fields.pk = obj.pk
-//     return fields
-//   })
-// }
-
-// fetchTerritories () {
-//   return territoriesData.map(obj => {
-//     const fields = obj.fields
-//     fields.pk = obj.pk
-//     return fields
-//   })
-// }
-
-// fetchNations () {
-//   return nationsData.map(n => {
-//     const fields = n.fields
-//     fields.pk = n.pk
-//     return fields
-//   })
-// }
-
-// fetchSupplyCenters () {
-//   return supplyCentersData.map(n => {
-//     const fields = n.fields
-//     fields.pk = n.pk
-//     return fields
-//   })
-// }
