@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from '@emotion/styled'
+import React from 'react';
+import styled from '@emotion/styled';
 
 export const StyledDiv = styled.div`
   display: flex;
@@ -9,16 +9,12 @@ export const StyledDiv = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-`
+`;
 
 class Loading extends React.Component {
-  render () {
-    return (
-      <StyledDiv>
-        Loading...
-      </StyledDiv>
-    )
+  render() {
+    return <StyledDiv>Loading...</StyledDiv>;
   }
 }
 
-export default Loading
+export default Loading;

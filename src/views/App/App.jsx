@@ -1,15 +1,11 @@
-import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
-import styled from '@emotion/styled'
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import styled from '@emotion/styled';
 
-import Nav from 'Components/Nav/Nav.jsx'
-import Game from 'Views/Game/Game.jsx'
-import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
-import { colors, fonts, sizes } from '../../variables'
+import Nav from 'Components/Nav/Nav.jsx';
+import Game from 'Views/Game/Game.jsx';
+import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx';
+import { colors, fonts, sizes } from '../../variables';
 
 export const StyledDiv = styled.div`
   font-family: ${fonts.sans};
@@ -18,24 +14,47 @@ export const StyledDiv = styled.div`
   width: 100vw;
   position: relative;
   padding-top: ${sizes.navHeight}px;
-`
+
+  .view {
+    position: relative;
+  }
+
+  .button {
+    display: inline-block;
+    min-width: ${sizes.p * 12}px;
+    padding: ${sizes.p}px;
+    background: white;
+    border: 1px solid ${colors.base};
+    outline: none;
+    box-shadow: none;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  h1 {
+    margin: 0 auto ${sizes.p * 2}px;
+  }
+`;
 
 class App extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      headers: this.getAuthHeaders('admin', 'admin')
-    }
+      headers: this.getAuthHeaders('admin', 'admin'),
+    };
   }
 
-  getAuthHeaders (username, password) {
-    const headers = new Headers()
-    headers.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
-    return headers
+  getAuthHeaders(username, password) {
+    const headers = new Headers();
+    headers.set(
+      'Authorization',
+      `Basic ${window.btoa(`${username}:${password}`)}`
+    );
+    return headers;
   }
 
-  render () {
+  render() {
     return (
       <Router>
         <StyledDiv>
@@ -43,7 +62,7 @@ class App extends React.Component {
             <Nav />
           </header>
           {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
+            renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/game/:id">
               <Game />
@@ -54,8 +73,8 @@ class App extends React.Component {
           </Switch>
         </StyledDiv>
       </Router>
-    )
+    );
   }
 }
 
-export default App
+export default App;

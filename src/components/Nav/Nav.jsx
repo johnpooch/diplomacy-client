@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import styled from '@emotion/styled'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
 
-import { colors, sizes } from '../../variables'
+import { colors, sizes } from '../../variables';
 
 export const StyledNav = styled.nav`
   position: fixed;
@@ -33,10 +33,10 @@ export const StyledNav = styled.nav`
       text-decoration: underline;
     }
   }
-`
+`;
 
 class Nav extends React.Component {
-  render () {
+  render() {
     return (
       <StyledNav>
         <ul>
@@ -45,8 +45,8 @@ class Nav extends React.Component {
           </li>
         </ul>
       </StyledNav>
-    )
+    );
   }
 }
 
-export default Nav
+export default Nav;

@@ -1,10 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from '@emotion/styled'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
-import mapData from 'JSON/map.json'
-import * as Utils from 'Utilities/utils'
-import { colors } from '../../variables'
+import mapData from 'JSON/map.json';
+import * as Utils from 'Utilities/utils';
+import { colors } from '../../variables';
 
 export const StyledGroup = styled.g`
   polygon {
@@ -12,7 +12,7 @@ export const StyledGroup = styled.g`
     stroke: white;
     fill: ${colors.land};
 
-    &[data-type=sea] {
+    &[data-type='sea'] {
       fill: ${colors.sea};
 
       &:hover {
@@ -20,7 +20,7 @@ export const StyledGroup = styled.g`
       }
     }
 
-    &[data-type=land] {
+    &[data-type='land'] {
       fill: ${colors.land};
 
       &:hover {
@@ -28,12 +28,12 @@ export const StyledGroup = styled.g`
       }
     }
   }
-`
+`;
 
 class Territory extends React.Component {
-  render () {
-    const data = Utils.getObjectByKey(this.props.id, mapData.territories)
-    if (!data) return
+  render() {
+    const data = Utils.getObjectByKey(this.props.id, mapData.territories);
+    if (!data) return;
     return (
       <StyledGroup>
         <polygon
@@ -44,7 +44,7 @@ class Territory extends React.Component {
           data-controlled-by={this.props.controlled_by}
         />
       </StyledGroup>
-    )
+    );
   }
 }
 
@@ -53,10 +53,10 @@ Territory.propTypes = {
   name: PropTypes.string,
   type: PropTypes.string,
   supply_center: PropTypes.bool,
-  controlled_by: PropTypes.number
-}
+  controlled_by: PropTypes.number,
+};
 
-export default Territory
+export default Territory;
 
 // import Piece from 'Components/Piece/Piece.jsx'
 // import SupplyCenter from 'Components/SupplyCenter/SupplyCenter.jsx'
