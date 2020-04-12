@@ -3,32 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-react": "^7.6.3",
-    "babel-loader": "^8.0.6",
-    "css-loader": "^3.2.0",
-    "eslint-plugin-react-hooks": "^3.0.0",
-    "express": "^4.17.1",
-    "fibers": "^4.0.2",
-    "file-loader": "^4.2.0",
-    "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.13.0",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.5.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "html-webpack-plugin": "^4.2.0",
+    "node-sass": "^4.13.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-use-dimensions": "^1.2.1",
-    "sass": "^1.23.3",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
-    "webpack": "^4.41.2"
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.1.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2"
   },
   "scripts": {
-    "start": "yarn run dev",
-    "dev": "NODE_ENV=development node server",
-    "prod": "yarn run buildProd && NODE_ENV=production node server",
-    "buildDev": "rm -rf dist && webpack --env=dev",
-    "buildProd": "rm -rf dist && webpack --env=prod",
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "lint": "prettier-eslint --write $PWD/'**/*.{js,jsx,json}' && eslint . --fix",
     "test": "jest"
   },
   "browserslist": [
@@ -37,27 +37,6 @@
     "maintained node versions",
     "not dead"
   ],
-  "devDependencies": {
-    "babel-jest": "^24.9.0",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
-    "enzyme-to-json": "^3.4.3",
-    "eslint": "^6.6.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "http-proxy": "^1.18.0",
-    "jest": "^24.9.0",
-    "jest-css-modules": "^2.1.0",
-    "react-hot-loader": "^4.12.15",
-    "standard": "^14.3.1",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "webpack-hot-middleware": "^2.25.0"
-  },
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
@@ -74,5 +53,22 @@
       "Assets/(.*)$": "<rootDir>/src/assets/$1",
       "JSON/(.*)$": "<rootDir>/src/json/$1"
     }
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.3.0",
+    "enzyme-to-json": "^3.4.4",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "jest": "^25.3.0",
+    "jest-css-modules": "^2.1.0",
+    "prettier": "^2.0.4",
+    "prettier-eslint-cli": "^5.0.0",
+    "webpack-dev-server": "^3.10.3"
   }
 }

@@ -1,33 +1,32 @@
-import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Nav from 'Components/Nav/Nav.jsx'
+import Nav from 'Components/Nav/Nav.jsx';
 
-import Game from 'Views/Game/Game.jsx'
-import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
+import Game from 'Views/Game/Game.jsx';
+import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx';
 
-import './App.scss'
+import './App.scss';
 
 class App extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      headers: this.getAuthHeaders('admin', 'admin')
-    }
+      headers: this.getAuthHeaders('admin', 'admin'),
+    };
   }
 
-  getAuthHeaders (username, password) {
-    const headers = new Headers()
-    headers.set('Authorization', 'Basic ' + window.btoa(username + ':' + password))
-    return headers
+  getAuthHeaders(username, password) {
+    const headers = new Headers();
+    headers.set(
+      'Authorization',
+      `Basic ${window.btoa(`${username}:${password}`)}`
+    );
+    return headers;
   }
 
-  render () {
+  render() {
     return (
       <Router>
         <div className="app">
@@ -35,7 +34,7 @@ class App extends React.Component {
             <Nav />
           </header>
           {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
+            renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/game/:id">
               <Game />
@@ -46,8 +45,8 @@ class App extends React.Component {
           </Switch>
         </div>
       </Router>
-    )
+    );
   }
 }
 
-export default App
+export default App;

@@ -1,23 +1,20 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import './Piece.scss'
+import './Piece.scss';
 
 class Piece extends React.Component {
-  render () {
+  render() {
     return (
-      <div
-        className='piece'
-        data-type={this.props.type}
-      >
+      <div className="piece" data-type={this.props.type}>
         <span className="type">{this.props.type}</span>
       </div>
-    )
+    );
   }
 }
 
 Piece.propTypes = {
-  type: PropTypes.string
-}
+  type: PropTypes.string,
+};
 
-export default Piece
+export default Piece;

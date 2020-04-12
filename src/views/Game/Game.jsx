@@ -1,84 +1,76 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
-import React from 'react'
-import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
+import './Game.scss';
 
-import './Game.scss'
+import Alert from 'Components/Alert/Alert.jsx';
+import Map from 'Components/Map/Map.jsx';
+import Loading from 'Components/Loading/Loading.jsx';
 
-import Alert from 'Components/Alert/Alert.jsx'
-import Map from 'Components/Map/Map.jsx'
-import Loading from 'Components/Loading/Loading.jsx'
-
-import * as API from '~/api'
+import * as API from '~/api';
 
 class Game extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      isLoaded: false
-    }
+      isLoaded: false,
+    };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     try {
-      this.getGame(this.props.match.params.id)
+      this.getGame(this.props.match.params.id);
     } catch (error) {
-      console.error(error)
+      console.error(error);
       this.setState({
-        isLoaded: true
-      })
+        isLoaded: true,
+      });
     }
   }
 
-  getGame (id) {
-    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id)
+  getGame(id) {
+    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);
     fetch(GAMESTATEURL, {
       method: 'GET',
-      headers: this.props.headers
+      headers: this.props.headers,
     })
-      .then(response => {
+      .then((response) => {
         if (response.status === 200) {
-          return response.json()
-        } else {
-          console.error(`Couldn't find game ${id}`)
+          return response.json();
         }
+        console.error(`Couldn't find game ${id}`);
       })
       .then((json) => {
-        console.log(json)
+        console.log(json);
         this.setState({
           game: json,
-          isLoaded: true
-        })
-      })
+          isLoaded: true,
+        });
+      });
   }
 
-  renderMap () {
+  renderMap() {
     if (!this.state.isLoaded) {
-      return <Loading />
+      return <Loading />;
     }
 
     if (!this.state.game) {
-      return <Alert text="Something went wrong!" type="error" />
+      return <Alert text="Something went wrong!" type="error" />;
     }
 
-    return <Map
-      game={this.state.game}
-    />
+    return <Map game={this.state.game} />;
   }
 
-  render () {
-    return (
-      <div className="game view">
-        {this.renderMap()}
-      </div>
-    )
+  render() {
+    return <div className="game view">{this.renderMap()}</div>;
   }
 }
 
 Game.propTypes = {
   headers: PropTypes.object,
-  match: PropTypes.object
-}
+  match: PropTypes.object,
+};
 
-export default withRouter(Game)
+export default withRouter(Game);
