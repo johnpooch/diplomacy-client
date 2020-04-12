@@ -4,13 +4,21 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
+import styled from '@emotion/styled'
 
 import Nav from 'Components/Nav/Nav.jsx'
-
 import Game from 'Views/Game/Game.jsx'
 import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx'
+import { colors, fonts, sizes } from '../../variables'
 
-import './App.scss'
+export const StyledDiv = styled.div`
+  font-family: ${fonts.sans};
+  color: ${colors.base};
+  min-height: 100vh;
+  width: 100vw;
+  position: relative;
+  padding-top: ${sizes.navHeight}px;
+`
 
 class App extends React.Component {
   constructor (props) {
@@ -30,7 +38,7 @@ class App extends React.Component {
   render () {
     return (
       <Router>
-        <div className="app">
+        <StyledDiv>
           <header>
             <Nav />
           </header>
@@ -44,7 +52,7 @@ class App extends React.Component {
               <BrowseGames />
             </Route>
           </Switch>
-        </div>
+        </StyledDiv>
       </Router>
     )
   }

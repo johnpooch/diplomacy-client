@@ -1,9 +1,36 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-import './Tooltip.scss'
+import styled from '@emotion/styled'
 
 import * as Utils from 'Utilities/utils'
+import { sizes } from '../../variables'
+
+export const StyledDiv = styled.div`
+  position: fixed;
+  padding: ${sizes.p}px;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, .8);
+  pointer-events: none;
+  text-transform: capitalize;
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: flex;
+    &:not(:last-child) {
+      margin-bottom: ${sizes.p}px;
+    }
+  }
+
+  .key {
+    font-weight: bold;
+    margin-right: ${sizes.p / 2}px;
+  }
+`
 
 class Tooltip extends React.Component {
   buildTooltip () {
@@ -45,9 +72,9 @@ class Tooltip extends React.Component {
     }
 
     return (
-      <div className="tooltip">
+      <StyledDiv>
         <ul>{elements}</ul>
-      </div>
+      </StyledDiv>
     )
   }
 }
