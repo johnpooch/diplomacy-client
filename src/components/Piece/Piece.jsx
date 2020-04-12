@@ -1,14 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
-import './Piece.scss';
+import { sizes } from '../../variables';
+
+export const StyledDiv = styled.div`
+  margin-left: ${sizes.p}px;
+  padding: ${sizes.p}px;
+  border: 1px solid currentColor;
+  transition: all 0.1s linear;
+
+  span {
+    text-transform: uppercase;
+  }
+`;
 
 class Piece extends React.Component {
   render() {
     return (
-      <div className="piece" data-type={this.props.type}>
-        <span className="type">{this.props.type}</span>
-      </div>
+      <StyledDiv data-type={this.props.type}>
+        <span>{this.props.type}</span>
+      </StyledDiv>
     );
   }
 }

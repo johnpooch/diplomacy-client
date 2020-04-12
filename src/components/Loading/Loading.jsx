@@ -1,10 +1,19 @@
 import React from 'react';
+import styled from '@emotion/styled';
 
-import './Loading.scss';
+export const StyledDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+`;
 
 class Loading extends React.Component {
   render() {
-    return <div className="loading">Loading...</div>;
+    return <StyledDiv>Loading...</StyledDiv>;
   }
 }
 

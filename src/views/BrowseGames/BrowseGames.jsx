@@ -1,11 +1,69 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
-import './BrowseGames.scss';
 import Alert from 'Components/Alert/Alert.jsx';
 import Loading from 'Components/Loading/Loading.jsx';
 import * as API from '~/api';
+import { colors, sizes } from '../../variables';
+
+export const StyledDiv = styled.div`
+  padding: ${sizes.p}px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: ${colors.base};
+
+    &:hover .name {
+      text-decoration: underline;
+    }
+  }
+
+  header {
+    margin-bottom: ${sizes.p}px;
+  }
+
+  .game-list > li {
+    &:not(:last-child) {
+      margin-bottom: ${sizes.p * 2}px;
+    }
+  }
+
+  p {
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: ${sizes.p / 2}px;
+    }
+  }
+
+  .name {
+    font-weight: 600;
+  }
+
+  .id {
+    margin-left: ${sizes.p / 2}px;
+
+    &:before {
+      content: '#';
+    }
+  }
+
+  .label {
+    color: ${colors.gray};
+
+    &:after {
+      content: ': ';
+    }
+  }
+`;
 
 class BrowseGames extends React.Component {
   constructor(props) {
@@ -100,10 +158,10 @@ class BrowseGames extends React.Component {
 
   render() {
     return (
-      <div className="browse-games view">
+      <StyledDiv>
         <h1>Browse Games</h1>
         {this.renderGamesList()}
-      </div>
+      </StyledDiv>
     );
   }
 }

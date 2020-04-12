@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import './Game.scss';
-
 import Alert from 'Components/Alert/Alert.jsx';
 import Map from 'Components/Map/Map.jsx';
 import Loading from 'Components/Loading/Loading.jsx';

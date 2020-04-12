@@ -1,11 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { css } from '@emotion/core';
 
-import './Map.scss';
 import ScrollableSVG from 'Components/ScrollableSVG/ScrollableSVG.jsx';
 import Territory from 'Components/Territory/Territory.jsx';
 import mapData from 'JSON/map.json';
 import * as Utils from 'Utilities/utils';
+import { colors, sizes } from '../../variables';
+
+export const MapStyle = css`
+  position: absolute;
+  width: 100vw;
+  height: calc(100vh - ${sizes.navHeight} + ${sizes.p});
+  background: ${colors.sea};
+`;
 
 class Map extends React.Component {
   getCurrentTurn() {
@@ -50,9 +58,9 @@ class Map extends React.Component {
   render() {
     return (
       <ScrollableSVG
-        className="map"
         viewBoxWidth={mapData.viewBoxWidth}
         viewBoxHeight={mapData.viewBoxHeight}
+        css={MapStyle}
       >
         {this.renderTerritories()}
       </ScrollableSVG>

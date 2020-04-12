@@ -1,12 +1,39 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 import Nav from 'Components/Nav/Nav.jsx';
-
 import Game from 'Views/Game/Game.jsx';
 import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx';
+import { colors, fonts, sizes } from '../../variables';
 
-import './App.scss';
+export const StyledDiv = styled.div`
+  font-family: ${fonts.sans};
+  color: ${colors.base};
+  min-height: 100vh;
+  position: relative;
+  padding-top: ${sizes.navHeight}px;
+
+  .view {
+    position: relative;
+  }
+
+  .button {
+    display: inline-block;
+    min-width: ${sizes.p * 12}px;
+    padding: ${sizes.p}px;
+    background: white;
+    border: 1px solid ${colors.base};
+    outline: none;
+    box-shadow: none;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  h1 {
+    margin: 0 auto ${sizes.p * 2}px;
+  }
+`;
 
 class App extends React.Component {
   constructor(props) {
@@ -29,7 +56,7 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <div className="app">
+        <StyledDiv>
           <header>
             <Nav />
           </header>
@@ -43,7 +70,7 @@ class App extends React.Component {
               <BrowseGames />
             </Route>
           </Switch>
-        </div>
+        </StyledDiv>
       </Router>
     );
   }

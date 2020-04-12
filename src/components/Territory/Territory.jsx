@@ -1,18 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import './Territory.scss';
+import styled from '@emotion/styled';
 
 import mapData from 'JSON/map.json';
-
 import * as Utils from 'Utilities/utils';
+import { colors } from '../../variables';
+
+export const StyledGroup = styled.g`
+  polygon {
+    stroke-width: 1px;
+    stroke: white;
+    fill: ${colors.land};
+
+    &[data-type='sea'] {
+      fill: ${colors.sea};
+
+      &:hover {
+        fill: darken(${colors.sea}, 10%);
+      }
+    }
+
+    &[data-type='land'] {
+      fill: ${colors.land};
+
+      &:hover {
+        fill: darken(${colors.land}, 10%);
+      }
+    }
+  }
+`;
 
 class Territory extends React.Component {
   render() {
     const data = Utils.getObjectByKey(this.props.id, mapData.territories);
     if (!data) return;
     return (
-      <g className="territory">
+      <StyledGroup>
         <polygon
           key={this.props.id}
           points={data.polygon}
@@ -20,7 +43,7 @@ class Territory extends React.Component {
           data-type={this.props.type}
           data-controlled-by={this.props.controlled_by}
         />
-      </g>
+      </StyledGroup>
     );
   }
 }
