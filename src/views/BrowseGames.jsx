@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import Alert from 'Components/Alert/Alert.jsx';
-import Loading from 'Components/Loading/Loading.jsx';
-import * as API from '~/api';
-import { colors, sizes } from '../../variables';
+import Alert from '../components/Alert';
+import Loading from '../components/Loading';
+import * as API from '../api';
+import { colors, sizes } from '../variables';
 
 export const StyledDiv = styled.div`
   padding: ${sizes.p}px;

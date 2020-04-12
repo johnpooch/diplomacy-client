@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { colors, sizes } from '../../variables';
+import { colors, sizes } from '../variables';
 
 export const StyledNav = styled.nav`
   position: fixed;

@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import Alert from 'Components/Alert/Alert.jsx';
-import Map from 'Components/Map/Map.jsx';
-import Loading from 'Components/Loading/Loading.jsx';
+import Alert from '../components/Alert';
+import Map from '../components/Map';
+import Loading from '../components/Loading';
 
-import * as API from '~/api';
+import * as API from '../api';
 
 class Game extends React.Component {
   constructor(props) {

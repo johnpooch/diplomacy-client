@@ -3,17 +3,9 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.jsx',
+  entry: './src/index',
   resolve: {
     extensions: ['.js', '.jsx'],
-    alias: {
-      '~': path.resolve(__dirname, 'src/'),
-      Views: path.resolve(__dirname, 'src/views/'),
-      Components: path.resolve(__dirname, 'src/components/'),
-      Utilities: path.resolve(__dirname, 'src/utils/'),
-      Assets: path.resolve(__dirname, 'src/assets/'),
-      JSON: path.resolve(__dirname, 'src/json/'),
-    },
   },
   module: {
     rules: [

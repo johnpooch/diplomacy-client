@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import * as Utils from 'Utilities/utils';
-import { sizes } from '../../variables';
+import * as Utils from '../utils';
+import { sizes } from '../variables';
 
 export const StyledDiv = styled.div`
   position: fixed;

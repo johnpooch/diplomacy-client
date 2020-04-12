@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import { colors } from '../../variables';
+import { colors } from '../variables';
 
 export const StyledDiv = styled.div`
   display: flex;

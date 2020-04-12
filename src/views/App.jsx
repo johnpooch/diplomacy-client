@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import Nav from 'Components/Nav/Nav.jsx';
-import Game from 'Views/Game/Game.jsx';
-import BrowseGames from 'Views/BrowseGames/BrowseGames.jsx';
-import { colors, fonts, sizes } from '../../variables';
+import Game from './Game';
+import BrowseGames from './BrowseGames';
+import Nav from '../components/Nav';
+import { colors, fonts, sizes } from '../variables';
 
 export const StyledDiv = styled.div`
   font-family: ${fonts.sans};

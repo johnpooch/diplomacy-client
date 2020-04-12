@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 
-import ScrollableSVG from 'Components/ScrollableSVG/ScrollableSVG.jsx';
-import Territory from 'Components/Territory/Territory.jsx';
-import mapData from 'JSON/map.json';
-import * as Utils from 'Utilities/utils';
-import { colors, sizes } from '../../variables';
+import ScrollableSVG from './ScrollableSVG';
+import Territory from './Territory';
+import mapData from '../map.json';
+import * as Utils from '../utils';
+import { colors, sizes } from '../variables';
 
 export const MapStyle = css`
   position: absolute;

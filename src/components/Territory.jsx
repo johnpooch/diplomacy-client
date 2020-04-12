@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-import mapData from 'JSON/map.json';
-import * as Utils from 'Utilities/utils';
-import { colors } from '../../variables';
+import * as Utils from '../utils';
+import mapData from '../map.json';
+import { colors } from '../variables';
 
 export const StyledGroup = styled.g`
   polygon {
@@ -58,8 +58,8 @@ Territory.propTypes = {
 
 export default Territory;
 
-// import Piece from 'Components/Piece/Piece.jsx'
-// import SupplyCenter from 'Components/SupplyCenter/SupplyCenter.jsx'
+// import Piece from 'Components/Piece/Piece'
+// import SupplyCenter from 'Components/SupplyCenter/SupplyCenter'
 
 // _onMouseEnterTerritory (e) {
 //   const id = this.getTerritoryFromEvent(e)
