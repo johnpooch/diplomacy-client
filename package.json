@@ -45,7 +45,8 @@
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "lint": "prettier-eslint --write $PWD/'**/*.{js,jsx,json}' && eslint . --fix",
+    "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
+    "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
     "test": "jest"
   },
   "browserslist": [

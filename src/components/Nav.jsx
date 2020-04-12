@@ -35,18 +35,16 @@ export const StyledNav = styled.nav`
   }
 `;
 
-class Nav extends React.Component {
-  render() {
-    return (
-      <StyledNav>
-        <ul>
-          <li>
-            <Link to="/">Browse Games</Link>
-          </li>
-        </ul>
-      </StyledNav>
-    );
-  }
-}
+const Nav = () => {
+  return (
+    <StyledNav>
+      <ul>
+        <li>
+          <Link to="/">Browse Games</Link>
+        </li>
+      </ul>
+    </StyledNav>
+  );
+};
 
 export default Nav;

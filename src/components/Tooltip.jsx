@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import * as Utils from '../utils';
@@ -34,12 +33,11 @@ export const StyledDiv = styled.div`
 
 class Tooltip extends React.Component {
   buildTooltip() {
+    const { hoverTarget, data } = this.props;
+
     const tooltip = {};
 
-    const territory = Utils.getObjectByKey(
-      this.props.hoverTarget,
-      this.props.data.territories
-    );
+    const territory = Utils.getObjectByKey(hoverTarget, data.territories);
     if (territory) {
       tooltip.name = territory.name;
       tooltip.coastal = territory.coastal ? 'true' : 'false';
@@ -48,17 +46,13 @@ class Tooltip extends React.Component {
 
     const controlledBy = Utils.getObjectByKey(
       territory.controlled_by,
-      this.props.data.nations
+      data.nations
     );
     if (controlledBy) {
       tooltip.nation = controlledBy.name;
     }
 
-    const piece = Utils.getObjectByKey(
-      this.props.hoverTarget,
-      this.props.data.pieces,
-      'territory'
-    );
+    const piece = Utils.getObjectByKey(hoverTarget, data.pieces, 'territory');
     if (piece) {
       tooltip.piece = piece.type;
     }
@@ -70,16 +64,15 @@ class Tooltip extends React.Component {
     const elements = [];
     const tooltip = this.buildTooltip();
 
-    for (const key in tooltip) {
+    Object.keys(tooltip).forEach((key) => {
       const value = tooltip[key];
-
       elements.push(
         <li key={key}>
           <span className="key">{key}</span>
           <span className="value">{value}</span>
         </li>
       );
-    }
+    });
 
     return (
       <StyledDiv>
@@ -88,10 +81,5 @@ class Tooltip extends React.Component {
     );
   }
 }
-
-Tooltip.propTypes = {
-  hoverTarget: PropTypes.number,
-  data: PropTypes.object,
-};
 
 export default Tooltip;

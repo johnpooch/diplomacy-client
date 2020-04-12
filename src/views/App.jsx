@@ -10,7 +10,6 @@ import { colors, fonts, sizes } from '../variables';
 export const StyledDiv = styled.div`
   font-family: ${fonts.sans};
   color: ${colors.base};
-  min-height: 100vh;
   position: relative;
   padding-top: ${sizes.navHeight}px;
 
@@ -38,13 +37,12 @@ export const StyledDiv = styled.div`
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      headers: this.getAuthHeaders('admin', 'admin'),
+      headers: App.getAuthHeaders('admin', 'admin'),
     };
   }
 
-  getAuthHeaders(username, password) {
+  static getAuthHeaders(username, password) {
     const headers = new Headers();
     headers.set(
       'Authorization',
@@ -54,6 +52,7 @@ class App extends React.Component {
   }
 
   render() {
+    const { headers } = this.state;
     return (
       <Router>
         <StyledDiv>
@@ -64,10 +63,10 @@ class App extends React.Component {
             renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/game/:id">
-              <Game />
+              <Game headers={headers} />
             </Route>
             <Route path="/">
-              <BrowseGames />
+              <BrowseGames headers={headers} />
             </Route>
           </Switch>
         </StyledDiv>

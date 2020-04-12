@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import Alert from '../components/Alert';
@@ -18,8 +17,9 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    const { match } = this.props;
     try {
-      this.getGame(this.props.match.params.id);
+      this.getGame(match.params.id);
     } catch (error) {
       console.error(error);
       this.setState({
@@ -29,16 +29,18 @@ class Game extends React.Component {
   }
 
   getGame(id) {
+    const { headers } = this.props;
     const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);
     fetch(GAMESTATEURL, {
       method: 'GET',
-      headers: this.props.headers,
+      headers,
     })
       .then((response) => {
         if (response.status === 200) {
           return response.json();
         }
         console.error(`Couldn't find game ${id}`);
+        return null;
       })
       .then((json) => {
         console.log(json);
@@ -49,26 +51,12 @@ class Game extends React.Component {
       });
   }
 
-  renderMap() {
-    if (!this.state.isLoaded) {
-      return <Loading />;
-    }
-
-    if (!this.state.game) {
-      return <Alert text="Something went wrong!" type="error" />;
-    }
-
-    return <Map game={this.state.game} />;
-  }
-
   render() {
-    return <div className="game view">{this.renderMap()}</div>;
+    const { isLoaded, game } = this.state;
+    if (!isLoaded) return <Loading />;
+    if (!game) return <Alert text="Something went wrong!" type="error" />;
+    return <Map game={game} />;
   }
 }
-
-Game.propTypes = {
-  headers: PropTypes.object,
-  match: PropTypes.object,
-};
 
 export default withRouter(Game);

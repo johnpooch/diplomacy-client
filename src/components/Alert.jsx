@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import { colors } from '../variables';
@@ -12,18 +11,12 @@ export const StyledDiv = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-  color: ${(props) => (props.type === 'error' ? colors.red : null)};
+  color: ${(props) => (props.type === 'error' ? colors.red : colors.base)};
 `;
 
-class Alert extends React.Component {
-  render() {
-    return <StyledDiv>{this.props.text}</StyledDiv>;
-  }
-}
-
-Alert.propTypes = {
-  text: PropTypes.string,
-  type: PropTypes.string,
+const Alert = (props) => {
+  const { text, type } = props;
+  return <StyledDiv type={type}>{text}</StyledDiv>;
 };
 
 export default Alert;

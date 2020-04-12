@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import { sizes } from '../variables';
@@ -15,18 +14,13 @@ export const StyledDiv = styled.div`
   }
 `;
 
-class Piece extends React.Component {
-  render() {
-    return (
-      <StyledDiv data-type={this.props.type}>
-        <span>{this.props.type}</span>
-      </StyledDiv>
-    );
-  }
-}
-
-Piece.propTypes = {
-  type: PropTypes.string,
+const Piece = (props) => {
+  const { type } = props;
+  return (
+    <StyledDiv data-type={type}>
+      <span>{type}</span>
+    </StyledDiv>
+  );
 };
 
 export default Piece;

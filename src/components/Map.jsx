@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
@@ -8,18 +7,24 @@ import mapData from '../map.json';
 import * as Utils from '../utils';
 import { colors, sizes } from '../variables';
 
-export const MapStyle = css`
+export const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - ${sizes.navHeight} + ${sizes.p});
+  height: calc(100vh - ${sizes.navHeight}px);
   background: ${colors.sea};
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 class Map extends React.Component {
   getCurrentTurn() {
-    const { turns } = this.props.game;
+    const { game } = this.props;
+    const { turns } = game;
 
-    for (let i = 0; i < turns.length; i++) {
+    for (let i = 0; i < turns.length; i += 1) {
       if (turns[i].current_turn === true) {
         return turns[i];
       }
@@ -30,10 +35,11 @@ class Map extends React.Component {
 
   renderTerritories() {
     const turn = this.getCurrentTurn();
-    if (!turn) return;
+    if (!turn) return null;
 
     const states = turn.territory_states;
-    const { variant } = this.props.game;
+    const { game } = this.props;
+    const { variant } = game;
 
     const territories = [];
     variant.territories.forEach((territory) => {
@@ -47,29 +53,27 @@ class Map extends React.Component {
           id={id}
           name={territory.name}
           type={territory.type}
-          supply_center={territory.supply_center}
-          controlled_by={controller}
+          supplyCenter={territory.supply_center}
+          controlledBy={controller}
         />
       );
     });
+
     return territories;
   }
 
   render() {
     return (
-      <ScrollableSVG
-        viewBoxWidth={mapData.viewBoxWidth}
-        viewBoxHeight={mapData.viewBoxHeight}
-        css={MapStyle}
-      >
-        {this.renderTerritories()}
-      </ScrollableSVG>
+      <StyledDiv>
+        <ScrollableSVG
+          viewBoxWidth={mapData.viewBoxWidth}
+          viewBoxHeight={mapData.viewBoxHeight}
+        >
+          {this.renderTerritories()}
+        </ScrollableSVG>
+      </StyledDiv>
     );
   }
 }
-
-Map.propTypes = {
-  game: PropTypes.object,
-};
 
 export default Map;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 import Alert from '../components/Alert';
@@ -68,17 +67,30 @@ export const StyledDiv = styled.div`
 class BrowseGames extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isLoaded: false,
+    };
   }
 
   componentDidMount() {
     this.getAllGames();
   }
 
+  static getDateDisplayFormat() {
+    return {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+  }
+
   getAllGames() {
+    const { headers } = this.props;
     fetch(API.ALLGAMESURL, {
       method: 'GET',
-      headers: this.props.headers,
+      headers,
     })
       .then((response) => {
         if (response.status !== 200) {
@@ -101,33 +113,25 @@ class BrowseGames extends React.Component {
       });
   }
 
-  getDateDisplayFormat() {
-    return {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    };
-  }
-
   renderGamesList() {
-    if (!this.state.isLoaded) {
+    const { isLoaded, games } = this.state;
+
+    if (!isLoaded) {
       return <Loading />;
     }
 
-    if (!this.state.games || !this.state.games.length) {
+    if (!games || !games.length) {
       return <Alert text="No games found" type="error" />;
     }
 
-    const games = [];
-    this.state.games.forEach((g) => {
+    const gamesList = [];
+    games.forEach((g) => {
       const date = new Date(g.created_at);
       const dateString = date.toLocaleDateString(
         'en-GB',
-        this.getDateDisplayFormat()
+        BrowseGames.getDateDisplayFormat()
       );
-      games.push(
+      gamesList.push(
         <li key={g.id} className="game" data-id={g.id}>
           <Link to={`/game/${g.id}`}>
             <header>
@@ -153,7 +157,7 @@ class BrowseGames extends React.Component {
       );
     });
 
-    return <ul className="game-list">{games}</ul>;
+    return <ul className="game-list">{gamesList}</ul>;
   }
 
   render() {
@@ -165,10 +169,5 @@ class BrowseGames extends React.Component {
     );
   }
 }
-
-BrowseGames.propTypes = {
-  player: PropTypes.number,
-  headers: PropTypes.object,
-};
 
 export default BrowseGames;
