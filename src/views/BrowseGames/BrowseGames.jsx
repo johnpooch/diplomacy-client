@@ -19,7 +19,7 @@ export const StyledDiv = styled.div`
 
   a {
     text-decoration: none;
-    color: $base;
+    color: ${colors.base};
 
     &:hover .name {
       text-decoration: underline;

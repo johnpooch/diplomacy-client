@@ -11,7 +11,6 @@ export const StyledDiv = styled.div`
   font-family: ${fonts.sans};
   color: ${colors.base};
   min-height: 100vh;
-  width: 100vw;
   position: relative;
   padding-top: ${sizes.navHeight}px;
 
