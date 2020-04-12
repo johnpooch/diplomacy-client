@@ -35,7 +35,7 @@ class App extends React.Component {
             <Nav />
           </header>
           {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
+            renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/game/:id">
               <Game />
