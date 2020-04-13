@@ -34,7 +34,6 @@ class Map extends React.Component {
     this.setState({
       turn,
     });
-    console.log(turn);
   }
 
   getCurrentTurn() {
