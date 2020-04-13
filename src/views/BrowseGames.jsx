@@ -9,11 +9,17 @@ import { colors, sizes } from '../variables';
 
 export const StyledDiv = styled.div`
   padding: ${sizes.p}px;
+`;
 
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+const StyledList = styled.ol`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+`;
+
+const StyledListItem = styled.li`
+  &:not(:last-child) {
+    margin-bottom: ${sizes.p * 2}px;
   }
 
   a {
@@ -27,12 +33,6 @@ export const StyledDiv = styled.div`
 
   header {
     margin-bottom: ${sizes.p}px;
-  }
-
-  .game-list > li {
-    &:not(:last-child) {
-      margin-bottom: ${sizes.p * 2}px;
-    }
   }
 
   p {
@@ -73,20 +73,10 @@ class BrowseGames extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllGames();
+    this.getGames();
   }
 
-  static getDateDisplayFormat() {
-    return {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    };
-  }
-
-  getAllGames() {
+  getGames() {
     const { headers } = this.props;
     fetch(API.ALLGAMESURL, {
       method: 'GET',
@@ -100,17 +90,60 @@ class BrowseGames extends React.Component {
       })
       .then((json) => {
         const games = json.length ? json.slice() : [];
-        this.setState({
-          games,
-          isLoaded: true,
-        });
+        return games;
       })
       .catch((error) => {
         console.error(error);
         this.setState({
           isLoaded: true,
         });
+        return [];
       });
+  }
+
+  static getDateDisplayFormat() {
+    return {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+  }
+
+  static renderGamesListItem(game) {
+    const date = new Date(game.created_at);
+    const dateString = date.toLocaleDateString(
+      'en-GB',
+      BrowseGames.getDateDisplayFormat()
+    );
+
+    return (
+      <StyledListItem key={game.id}>
+        <Link to={`/game/${game.id}`}>
+          <header>
+            <span className="name">{game.name}</span>
+            <span className="id">{game.id}</span>
+          </header>
+          <main>
+            <p className="created-at">
+              <span className="label">Created</span>
+              <time className="value" dateTime={game.created_at}>
+                {dateString}
+              </time>
+            </p>
+            <p className="created-by">
+              <span className="label">By player</span>
+              <span className="value">{game.created_by}</span>
+            </p>
+            <p className="variant">
+              <span className="label">Variant</span>
+              <span className="value">{game.variant.name}</span>
+            </p>
+          </main>
+        </Link>
+      </StyledListItem>
+    );
   }
 
   renderGamesList() {
@@ -125,39 +158,10 @@ class BrowseGames extends React.Component {
     }
 
     const gamesList = [];
-    games.forEach((g) => {
-      const date = new Date(g.created_at);
-      const dateString = date.toLocaleDateString(
-        'en-GB',
-        BrowseGames.getDateDisplayFormat()
-      );
-      gamesList.push(
-        <li key={g.id} className="game" data-id={g.id}>
-          <Link to={`/game/${g.id}`}>
-            <header>
-              <span className="name">{g.name}</span>
-              <span className="id">{g.id}</span>
-            </header>
-            <main>
-              <p className="created_at">
-                <span className="label">Created</span>
-                <time dateTime={g.created_at}>{dateString}</time>
-              </p>
-              <p className="created_by">
-                <span className="label">By player</span>
-                {g.created_by}
-              </p>
-              <p className="variant">
-                <span className="label">Variant</span>
-                {g.variant.name}
-              </p>
-            </main>
-          </Link>
-        </li>
-      );
+    games.forEach((game) => {
+      gamesList.push(BrowseGames.renderGamesListItem(game));
     });
-
-    return <ul className="game-list">{gamesList}</ul>;
+    return <StyledList>{gamesList}</StyledList>;
   }
 
   render() {
