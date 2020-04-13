@@ -58,9 +58,7 @@ const StyledSpinner = styled.span`
 `;
 
 const StyledText = styled.span`
-  &:not(:first-child) {
-    margin-top: ${spacing[4]}px;
-  }
+  margin-top: ${spacing[4]}px;
 `;
 
 const Loading = () => {

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { colors, sizes } from '../variables';
 
-export const StyledNav = styled.nav`
+const StyledNav = styled.nav`
   position: fixed;
   top: 0;
   width: 100vw;
@@ -40,7 +40,7 @@ const Nav = () => {
     <StyledNav>
       <ul>
         <li>
-          <Link to="/">Browse Games</Link>
+          <Link to="/">Home</Link>
         </li>
       </ul>
     </StyledNav>

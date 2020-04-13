@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { colors } from '../variables';
 
-export const StyledDiv = styled.div`
+const StyledDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

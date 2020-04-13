@@ -7,7 +7,7 @@ import BrowseGames from './BrowseGames';
 import Nav from '../components/Nav';
 import { colors, fonts, sizes } from '../variables';
 
-export const StyledDiv = styled.div`
+const StyledDiv = styled.div`
   font-family: ${fonts.sans};
   color: ${colors.base};
   position: relative;

@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 import * as API from '../api';
 import { colors, sizes } from '../variables';
 
-export const StyledDiv = styled.div`
+const StyledDiv = styled.div`
   padding: ${sizes.p}px;
 `;
 
@@ -56,7 +56,7 @@ const StyledListItem = styled.li`
   }
 
   .label {
-    color: ${colors.gray};
+    font-style: italic;
 
     &:after {
       content: ': ';
@@ -90,14 +90,16 @@ class BrowseGames extends React.Component {
       })
       .then((json) => {
         const games = json.length ? json.slice() : [];
-        return games;
+        this.setState({
+          games,
+          isLoaded: true,
+        });
       })
       .catch((error) => {
         console.error(error);
         this.setState({
           isLoaded: true,
         });
-        return [];
       });
   }
 
