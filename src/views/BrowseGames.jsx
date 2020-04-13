@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 import * as API from '../api';
 import { colors, sizes } from '../variables';
 
-export const StyledDiv = styled.div`
+const StyledDiv = styled.div`
   padding: ${sizes.p}px;
 `;
 

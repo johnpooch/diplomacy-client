@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { sizes } from '../variables';
 
-export const StyledDiv = styled.div`
+const StyledDiv = styled.div`
   margin-left: ${sizes.p}px;
   padding: ${sizes.p}px;
   border: 1px solid currentColor;

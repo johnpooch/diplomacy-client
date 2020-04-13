@@ -84,6 +84,7 @@ const ScrollableSVG = (props) => {
     <svg
       ref={ref}
       className={className}
+      preserveAspectRatio="xMidYMid meet"
       viewBox={getViewBox(viewBox)}
       onMouseDown={(e) => {
         mouseDown(e, width, height, viewBox, setOrigin, setPanning);

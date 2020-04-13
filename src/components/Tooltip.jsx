@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import * as Utils from '../utils';
 import { sizes } from '../variables';
 
-export const StyledDiv = styled.div`
+const StyledDiv = styled.div`
   position: fixed;
   padding: ${sizes.p}px;
   bottom: 0;
