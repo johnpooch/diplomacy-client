@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { lighten } from 'polished';
 
 import mapData from '../map.json';
 import * as Utils from '../utils';
@@ -26,7 +27,7 @@ const StyledText = styled.text`
 
 const getMarker = (props, x, y, size = 8) => {
   const { nation, type } = props;
-  const color = colors.nations[nation].piece;
+  const color = lighten(0.25, colors.nations[nation]);
   if (type === 'army') {
     // Army marker style
     return <StyledPiece cx={x} cy={y} r={size / 2} color={color} />;
