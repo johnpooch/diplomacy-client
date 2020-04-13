@@ -28,7 +28,7 @@ const Territory = (props) => {
 
   return (
     <StyledGroup color={getTerritoryColor(type, controlledBy)}>
-      <polygon key={id} points={data.polygon} />
+      <polygon points={data.polygon} />
     </StyledGroup>
   );
 };

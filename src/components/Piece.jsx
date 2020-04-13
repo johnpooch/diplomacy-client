@@ -5,14 +5,6 @@ import mapData from '../map.json';
 import * as Utils from '../utils';
 import { colors } from '../variables';
 
-const StyledText = styled.text`
-  fill: white;
-  font-size: 10px;
-  text-anchor: middle;
-  dominant-baseline: central;
-  pointer-events: none;
-`;
-
 const StyledRect = styled.rect`
   fill: transparent;
   stroke: white;
@@ -20,45 +12,58 @@ const StyledRect = styled.rect`
   stroke-dasharray: 1;
 `;
 
+const StyledPiece = styled.circle`
+  fill: ${(props) => props.color};
+  stroke: ${colors.base};
+`;
+
+const StyledText = styled.text`
+  fill: white;
+  font-size: 8px;
+  text-anchor: middle;
+  pointer-events: none;
+`;
+
+const getMarker = (props, x, y, size = 8) => {
+  const { nation, type } = props;
+  const color = colors.nations[nation].piece;
+  if (type === 'army') {
+    // Army marker style
+    return <StyledPiece cx={x} cy={y} r={size / 2} color={color} />;
+  }
+  // Fleet marker style
+  return (
+    <StyledPiece
+      as="rect"
+      x={x - size / 2}
+      y={y - size / 2}
+      width={size}
+      height={size}
+      color={color}
+    />
+  );
+};
+
 const Piece = (props) => {
-  const { id, territory, type, nation } = props;
+  const { territory, type } = props;
   const data = Utils.getObjectByKey(territory, mapData.territories);
   if (!data) return null;
-  console.log(data);
   const { bounds } = data;
-  const color = colors.nations[nation].piece;
-  // const viewBox = `0 0 ${bounds.width} ${bounds.height}`;
   const x = bounds.x + bounds.width / 2;
   const y = bounds.y + bounds.height / 2;
   return (
     <g>
       <StyledRect
-        key={id}
         x={bounds.x}
         y={bounds.y}
         width={bounds.width}
         height={bounds.height}
       />
-      <StyledText x={x} y={y} color={color}>
+      {getMarker(props, x, y)}
+      <StyledText x={x} y={y - 8} dominantBaseline="baseline">
         {type}
       </StyledText>
     </g>
-    // <svg
-    //   viewBox={viewBox}
-    //   x={bounds.x}
-    //   y={bounds.y}
-    //   width={bounds.width}
-    //   height={bounds.height}
-    // >
-    //   <StyledText
-    //     x="50%"
-    //     y="50%"
-    //     // x={x} y={y}
-    //     color={color}
-    //   >
-    //     {type}
-    //   </StyledText>
-    // </svg>
   );
 };
 

@@ -62,7 +62,6 @@ class Map extends React.Component {
       const { id } = territory;
       const state = Utils.getObjectByKey(id, states, 'territory');
       const controller = state ? state.controlled_by : null;
-
       territoriesList.push(
         <Territory
           key={id}
@@ -81,13 +80,14 @@ class Map extends React.Component {
   renderPieces() {
     const { turn } = this.state;
     if (!turn) return null;
+
     const { pieces } = turn;
-    console.log(pieces);
+
     const piecesList = [];
     pieces.forEach((piece) => {
       piecesList.push(
         <Piece
-          id={piece.id}
+          key={piece.id}
           type={piece.type}
           nation={piece.nation}
           territory={piece.territory}
