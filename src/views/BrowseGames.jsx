@@ -90,14 +90,16 @@ class BrowseGames extends React.Component {
       })
       .then((json) => {
         const games = json.length ? json.slice() : [];
-        return games;
+        this.setState({
+          games,
+          isLoaded: true,
+        });
       })
       .catch((error) => {
         console.error(error);
         this.setState({
           isLoaded: true,
         });
-        return [];
       });
   }
 
