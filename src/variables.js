@@ -1,10 +1,8 @@
-// fonts
 export const fonts = {
   sans:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
 };
 
-// colors
 export const colors = {
   base: 'black',
   gray: 'lightslategray',
@@ -22,8 +20,10 @@ export const colors = {
   },
 };
 
-// sizes
+export const spacing = [4, 8, 12, 16, 24, 32, 48, 64];
+
 export const sizes = {
-  p: 16,
+  p: spacing[3],
+  border: 3,
   navHeight: 50,
 };
