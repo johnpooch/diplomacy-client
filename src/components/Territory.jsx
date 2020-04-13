@@ -14,11 +14,11 @@ const StyledGroup = styled.g`
 `;
 
 const getTerritoryColor = (type, controlledBy) => {
-  let color = type !== 'sea' ? colors.land : colors.sea;
+  if (type === 'sea') return colors.sea;
   if (controlledBy !== null && controlledBy in colors.nations) {
-    color = colors.nations[controlledBy];
+    return colors.nations[controlledBy];
   }
-  return color;
+  return colors.land;
 };
 
 const Territory = (props) => {

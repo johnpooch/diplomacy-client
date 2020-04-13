@@ -40,7 +40,7 @@ const Nav = () => {
     <StyledNav>
       <ul>
         <li>
-          <Link to="/">Browse Games</Link>
+          <Link to="/">Home</Link>
         </li>
       </ul>
     </StyledNav>

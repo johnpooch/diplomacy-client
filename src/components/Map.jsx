@@ -34,6 +34,7 @@ class Map extends React.Component {
     this.setState({
       turn,
     });
+    console.log(turn);
   }
 
   getCurrentTurn() {
@@ -53,9 +54,9 @@ class Map extends React.Component {
     const { turn } = this.state;
     if (!turn) return null;
 
-    const states = turn.territory_states;
     const { game } = this.props;
     const { territories } = game.variant;
+    const states = turn.territory_states;
 
     const territoriesList = [];
     territories.forEach((territory) => {
@@ -81,20 +82,22 @@ class Map extends React.Component {
     const { turn } = this.state;
     if (!turn) return null;
 
-    const { pieces } = turn;
+    const { game } = this.props;
+    const { pieces } = game;
+    const states = turn.piece_states;
 
     const piecesList = [];
-    pieces.forEach((piece) => {
+    states.forEach((state) => {
+      const piece = Utils.getObjectByKey(state.piece, pieces, 'id');
       piecesList.push(
         <Piece
           key={piece.id}
           type={piece.type}
           nation={piece.nation}
-          territory={piece.territory}
+          territory={state.territory}
         />
       );
     });
-    // const piece = Utils.getObjectByKey(id, pieces, 'territory');
     return piecesList;
   }
 
