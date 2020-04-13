@@ -56,7 +56,7 @@ const StyledListItem = styled.li`
   }
 
   .label {
-    color: ${colors.gray};
+    font-style: italic;
 
     &:after {
       content: ': ';

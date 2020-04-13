@@ -4,26 +4,26 @@ export const fonts = {
 };
 
 export const colors = {
-  base: '#000000',
-  gray: '#ECECEC',
-  red: '#FF4136',
-  sea: '#79BDE1',
-  land: '#E3D8C4',
+  base: '#222222',
+  gray: '#ebeef1',
+  red: '#ff4136',
+  sea: '#79bde1',
+  land: '#e3d8c4',
   nations: {
-    // England
-    1: '#FF4136',
-    // France
-    2: '#0074D9',
-    // Germany
+    // england
+    1: '#ff4136',
+    // france
+    2: '#0074d9',
+    // germany
     3: '#555555',
-    // Austria-Hungary
-    4: '#FF851B',
-    // Italy
-    5: '#2ECC40',
-    // Russia
-    6: '#B10DC9',
-    // Turkey
-    7: '#FFDC00',
+    // austria-hungary
+    4: '#ff851b',
+    // italy
+    5: '#2ecc40',
+    // russia
+    6: '#b10dc9',
+    // turkey
+    7: '#ffdc00',
   },
 };
 
