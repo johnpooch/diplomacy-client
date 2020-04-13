@@ -35,16 +35,22 @@ const StyledNav = styled.nav`
   }
 `;
 
-const Nav = () => {
-  return (
-    <StyledNav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-      </ul>
-    </StyledNav>
-  );
-};
-
-export default Nav;
+export default class Nav extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <StyledNav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+        </ul>
+        <div>
+          {this.props.loggedInStatus}
+        </div>
+      </StyledNav>
+    );
+  };
+}

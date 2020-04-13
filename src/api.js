@@ -7,3 +7,6 @@ export const CREATEGAMEURL = `${BASEURL}games/create`;
 
 // Game
 export const GAMESTATEURL = `${BASEURL}game/<int:game>`;
+
+// Auth
+export const LOGINURL = `${BASEURL}auth/login`;

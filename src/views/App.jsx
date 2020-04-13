@@ -4,8 +4,11 @@ import styled from '@emotion/styled';
 
 import Game from './Game';
 import BrowseGames from './BrowseGames';
+import Login from '../components/Login';
 import Nav from '../components/Nav';
+import * as API from '../api';
 import { colors, fonts, sizes } from '../variables';
+import Register from "../components/Register";
 
 const StyledDiv = styled.div`
   font-family: ${fonts.sans};
@@ -39,7 +42,23 @@ class App extends React.Component {
     super(props);
     this.state = {
       headers: App.getAuthHeaders('admin', 'admin'),
+      loggedInStatus: 'NOT_LOGGED_IN',
+      user: {},
     };
+    this.handleSuccessfulAuth = this.handleSuccessfulAuth.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+  }
+
+  handleLogin(data) {
+    this.setState({
+      loggedInStatus: 'LOGGED IN',
+      user: data.user,
+      token: data.token,
+    })
+  }
+  handleSuccessfulAuth(data) {
+    this.handleLogin(data);
+    // TODO redirect
   }
 
   static getAuthHeaders(username, password) {
@@ -57,13 +76,23 @@ class App extends React.Component {
       <Router>
         <StyledDiv>
           <header>
-            <Nav />
+            <Nav loggedInStatus={this.state.loggedInStatus}/>
           </header>
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/game/:id">
               <Game headers={headers} />
+            </Route>
+            <Route path="/login">
+              <Login headers={headers} />
+            </Route>
+            <Route
+            path="/register"
+            render={props => (
+              <Register {...props} headers={headers} handleSuccessfulAuth={this.handleSuccessfulAuth} handleLogin={this.handleLogin}/>
+            )}
+            >
             </Route>
             <Route path="/">
               <BrowseGames headers={headers} />
