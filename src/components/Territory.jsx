@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import SupplyCenter from './SupplyCenter';
 import mapData from '../map.json';
 import * as Utils from '../utils';
 import { colors } from '../variables';
@@ -21,6 +22,17 @@ const getTerritoryColor = (type, controlledBy) => {
   return colors.land;
 };
 
+const getSupplyCenter = (props) => {
+  const { supplyCenter, type, id, controlledBy } = props;
+  if (supplyCenter) {
+    const coastal = type === 'coastal';
+    return (
+      <SupplyCenter coastal={coastal} territory={id} nation={controlledBy} />
+    );
+  }
+  return null;
+};
+
 const Territory = (props) => {
   const { id, type, controlledBy } = props;
   const data = Utils.getObjectByKey(id, mapData.territories);
@@ -29,6 +41,7 @@ const Territory = (props) => {
   return (
     <StyledGroup color={getTerritoryColor(type, controlledBy)}>
       <polygon points={data.polygon} />
+      {getSupplyCenter(props)}
     </StyledGroup>
   );
 };
