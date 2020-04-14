@@ -8,7 +8,7 @@ import { colors } from '../variables';
 
 const StyledGroup = styled.g`
   polygon {
-    stroke-width: 1px;
+    stroke-width: 0.5;
     stroke: white;
     fill: ${(props) => props.color};
   }
@@ -37,8 +37,7 @@ const getPolygon = (data) => {
   return null;
 };
 
-const getText = (props, data) => {
-  console.log(data);
+const getText = (data) => {
   if ('text' in data && 'abbreviation' in data) {
     const { x } = data.text;
     const { y } = data.text;
@@ -70,7 +69,7 @@ const Territory = (props) => {
   return (
     <StyledGroup color={getTerritoryColor(type, controlledBy)}>
       {getPolygon(data)}
-      {getText(props, data)}
+      {getText(data)}
       {getSupplyCenter(props)}
     </StyledGroup>
   );
