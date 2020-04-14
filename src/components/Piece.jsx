@@ -6,13 +6,6 @@ import mapData from '../map.json';
 import * as Utils from '../utils';
 import { colors } from '../variables';
 
-const StyledRect = styled.rect`
-  fill: transparent;
-  stroke: white;
-  stroke-width: 0.5;
-  stroke-dasharray: 1;
-`;
-
 const StyledPiece = styled.circle`
   fill: ${(props) => props.color};
   stroke: ${colors.base};
@@ -49,19 +42,16 @@ const Piece = (props) => {
   const { territory, type } = props;
   const data = Utils.getObjectByKey(territory, mapData.territories);
   if (!data) return null;
-  const { bounds } = data;
-  const x = bounds.x + bounds.width / 2;
-  const y = bounds.y + bounds.height / 2;
+  const { piece } = data;
+  const textOffset = 8;
   return (
     <g>
-      <StyledRect
-        x={bounds.x}
-        y={bounds.y}
-        width={bounds.width}
-        height={bounds.height}
-      />
-      {getMarker(props, x, y)}
-      <StyledText x={x} y={y - 8} dominantBaseline="baseline">
+      {getMarker(props, piece.x, piece.y)}
+      <StyledText
+        x={piece.x}
+        y={piece.y - textOffset}
+        dominantBaseline="baseline"
+      >
         {type}
       </StyledText>
     </g>
