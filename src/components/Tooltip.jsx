@@ -9,7 +9,6 @@ const StyledDiv = styled.div`
   padding: ${sizes.p}px;
   bottom: 0;
   left: 0;
-  background: rgba(255, 255, 255, 0.8);
   pointer-events: none;
   text-transform: capitalize;
 
