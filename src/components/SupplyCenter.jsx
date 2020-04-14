@@ -10,7 +10,7 @@ const StyledSupplyCenter = styled.circle`
   fill: ${(props) => props.color};
 `;
 
-const getMarker = (props, x, y, size = 2.5) => {
+const getMarker = (props, x, y, size = 4) => {
   const { nation, coastal } = props;
 
   // Work out what color the marker should be
@@ -18,12 +18,13 @@ const getMarker = (props, x, y, size = 2.5) => {
   if (nation in colors.nations) {
     color = colors.nations[nation];
   }
-  color = darken(0.15, color);
+  color = darken(0.2, color);
 
+  // Army supply center marker style
   if (!coastal) {
-    // Army supply center marker style
     return <StyledSupplyCenter cx={x} cy={y} r={size / 2} color={color} />;
   }
+
   // Fleet supply center marker style
   return (
     <StyledSupplyCenter
@@ -40,7 +41,6 @@ const getMarker = (props, x, y, size = 2.5) => {
 const SupplyCenter = (props) => {
   const { territory } = props;
   const data = Utils.getObjectByKey(territory, mapData.territories);
-  // console.log(data);
   if (!data || !('supply' in data)) return null;
   const { supply } = data;
   return <g>{getMarker(props, supply.x, supply.y)}</g>;

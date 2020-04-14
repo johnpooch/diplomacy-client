@@ -11,21 +11,17 @@ const StyledPiece = styled.circle`
   stroke: ${colors.base};
 `;
 
-const StyledText = styled.text`
-  fill: white;
-  font-size: 8px;
-  text-anchor: middle;
-  pointer-events: none;
-`;
-
 const getMarker = (props, x, y, size = 8) => {
   const { nation, type } = props;
-  const color = lighten(0.25, colors.nations[nation]);
+
+  const color = lighten(0.2, colors.nations[nation]);
+
+  // Army piece marker style
   if (type === 'army') {
-    // Army marker style
     return <StyledPiece cx={x} cy={y} r={size / 2} color={color} />;
   }
-  // Fleet marker style
+
+  // Fleet piece marker style
   return (
     <StyledPiece
       as="rect"
@@ -39,23 +35,11 @@ const getMarker = (props, x, y, size = 8) => {
 };
 
 const Piece = (props) => {
-  const { territory, type } = props;
+  const { territory } = props;
   const data = Utils.getObjectByKey(territory, mapData.territories);
   if (!data) return null;
   const { piece } = data;
-  const textOffset = 8;
-  return (
-    <g>
-      {getMarker(props, piece.x, piece.y)}
-      <StyledText
-        x={piece.x}
-        y={piece.y - textOffset}
-        dominantBaseline="baseline"
-      >
-        {type}
-      </StyledText>
-    </g>
-  );
+  return <g>{getMarker(props, piece.x, piece.y)}</g>;
 };
 
 export default Piece;
