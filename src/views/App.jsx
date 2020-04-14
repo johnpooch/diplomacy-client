@@ -54,11 +54,10 @@ class App extends React.Component {
       loggedInStatus: 'LOGGED IN',
       user: data.user,
       token: data.token,
-    })
+    });
   }
   handleSuccessfulAuth(data) {
     this.handleLogin(data);
-    // TODO redirect
   }
 
   static getAuthHeaders(username, password) {

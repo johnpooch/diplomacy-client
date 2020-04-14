@@ -8,6 +8,7 @@ export default class Register extends Component {
       usernamed: "",
       email: "",
       password: "",
+      passwordConfirmation: "",
       loginErrors: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,8 +32,6 @@ export default class Register extends Component {
       },
       { withCredentials: true }
     ).then(response => {
-      console.log("response ", response);
-      console.log(response.status);
       if (response.status === 200) {
         this.props.handleSuccessfulAuth(response.data);
       }
@@ -66,6 +65,14 @@ export default class Register extends Component {
             name="password"
             placeholder="Password"
             value={this.state.password}
+            onChange={this.handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="passwordConfirmation"
+            placeholder="Confirm password"
+            value={this.state.passwordConfirmation}
             onChange={this.handleChange}
             required
           />

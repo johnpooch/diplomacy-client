@@ -22,6 +22,7 @@ const StyledNav = styled.nav`
 
   li {
     padding: ${sizes.p}px;
+    float: left;
   }
 
   a {
@@ -42,14 +43,19 @@ export default class Nav extends React.Component {
   render() {
     return (
       <StyledNav>
-        <ul>
+        <ul className='nav-list-left'>
           <li>
             <Link to="/">Home</Link>
           </li>
         </ul>
-        <div>
+        <span>
           {this.props.loggedInStatus}
-        </div>
+        </span>
+        <ul className='nav-list-right'>
+          <li>
+            <Link to="/login">Sign In/Create Account</Link>
+          </li>
+        </ul>
       </StyledNav>
     );
   };
