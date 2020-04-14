@@ -14,12 +14,41 @@ const StyledGroup = styled.g`
   }
 `;
 
+const StyledText = styled.text`
+  fill: white;
+  font-size: 5px;
+  text-anchor: left;
+  pointer-events: none;
+  text-transform: uppercase;
+`;
+
 const getTerritoryColor = (type, controlledBy) => {
   if (type === 'sea') return colors.sea;
   if (controlledBy !== null && controlledBy in colors.nations) {
     return colors.nations[controlledBy];
   }
   return colors.land;
+};
+
+const getPolygon = (data) => {
+  if ('polygon' in data) {
+    return <polygon points={data.polygon} />;
+  }
+  return null;
+};
+
+const getText = (props, data) => {
+  console.log(data);
+  if ('text' in data && 'abbreviation' in data) {
+    const { x } = data.text;
+    const { y } = data.text;
+    return (
+      <StyledText x={x} y={y}>
+        {data.abbreviation}
+      </StyledText>
+    );
+  }
+  return null;
 };
 
 const getSupplyCenter = (props) => {
@@ -40,7 +69,8 @@ const Territory = (props) => {
 
   return (
     <StyledGroup color={getTerritoryColor(type, controlledBy)}>
-      <polygon points={data.polygon} />
+      {getPolygon(data)}
+      {getText(props, data)}
       {getSupplyCenter(props)}
     </StyledGroup>
   );
