@@ -1,28 +1,49 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { darken } from 'polished';
 
-import { sizes } from '../variables';
+import mapData from '../map.json';
+import * as Utils from '../utils';
+import { colors } from '../variables';
 
-const StyledDiv = styled.div`
-  margin-left: ${sizes.p}px;
-  padding: ${sizes.p}px;
-  border: 1px solid currentColor;
-  transition: all 0.1s linear;
-  border-radius: ${sizes.p}px;
-
-  span {
-    text-transform: uppercase;
-  }
+const StyledSupplyCenter = styled.circle`
+  fill: ${(props) => props.color};
 `;
 
-const SupplyCenter = (props) => {
-  const { coastal } = props;
-  const type = coastal ? 'FA' : 'A';
+const getMarker = (props, x, y, size = 4) => {
+  const { nation, coastal } = props;
+
+  // Work out what color the marker should be
+  let color = colors.land;
+  if (nation in colors.nations) {
+    color = colors.nations[nation];
+  }
+  color = darken(0.2, color);
+
+  // Army supply center marker style
+  if (!coastal) {
+    return <StyledSupplyCenter cx={x} cy={y} r={size / 2} color={color} />;
+  }
+
+  // Fleet supply center marker style
   return (
-    <StyledDiv>
-      <span>{type}</span>
-    </StyledDiv>
+    <StyledSupplyCenter
+      as="rect"
+      x={x - size / 2}
+      y={y - size / 2}
+      width={size}
+      height={size}
+      color={color}
+    />
   );
+};
+
+const SupplyCenter = (props) => {
+  const { territory } = props;
+  const data = Utils.getObjectByKey(territory, mapData.territories);
+  if (!data || !('supply' in data)) return null;
+  const { supply } = data;
+  return <g>{getMarker(props, supply.x, supply.y)}</g>;
 };
 
 export default SupplyCenter;
