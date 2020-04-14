@@ -1,12 +1,23 @@
-export const fonts = {
+export const fontFamilies = {
   sans:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
 };
 
+export const fontSizes = {
+  sans: {
+    xlarge: 36,
+    large: 19,
+    medium: 15,
+    small: 10,
+    xsmall: 5,
+  },
+};
+
 export const colors = {
-  base: '#222222',
+  base: '#444444',
   gray: '#ebeef1',
   red: '#ff4136',
+  yellow: '#ffdc00',
   sea: '#79bde1',
   land: '#e3d8c4',
   nations: {
@@ -15,7 +26,7 @@ export const colors = {
     // france
     2: '#0074d9',
     // germany
-    3: '#555555',
+    3: '#777777',
     // austria-hungary
     4: '#ff851b',
     // italy
@@ -27,10 +38,9 @@ export const colors = {
   },
 };
 
-export const spacing = [4, 8, 12, 16, 24, 32, 48, 64];
+export const spacing = [4, 8, 12, 16, 24, 32, 44, 60];
 
 export const sizes = {
   p: spacing[3],
   border: 3,
-  navHeight: 50,
 };

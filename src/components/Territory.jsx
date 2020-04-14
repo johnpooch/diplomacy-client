@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import SupplyCenter from './SupplyCenter';
 import mapData from '../map.json';
 import * as Utils from '../utils';
-import { colors } from '../variables';
+import { colors, fontSizes } from '../variables';
 
 const StyledGroup = styled.g`
   polygon {
@@ -16,7 +16,7 @@ const StyledGroup = styled.g`
 
 const StyledText = styled.text`
   fill: white;
-  font-size: 5px;
+  font-size: ${fontSizes.sans.xsmall}px;
   text-anchor: left;
   pointer-events: none;
   text-transform: uppercase;
