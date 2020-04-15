@@ -3,13 +3,11 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import Alert from '../components/Alert';
+import Heading from '../components/Heading';
 import Loading from '../components/Loading';
+import { StyledWrapper } from '../globals';
 import * as API from '../api';
-import { colors, sizes } from '../variables';
-
-const StyledDiv = styled.div`
-  padding: ${sizes.p}px;
-`;
+import { colors, spacing } from '../variables';
 
 const StyledList = styled.ol`
   margin: 0;
@@ -19,7 +17,7 @@ const StyledList = styled.ol`
 
 const StyledListItem = styled.li`
   &:not(:last-child) {
-    margin-bottom: ${sizes.p * 2}px;
+    margin-bottom: ${spacing[5]}px;
   }
 
   a {
@@ -32,14 +30,14 @@ const StyledListItem = styled.li`
   }
 
   header {
-    margin-bottom: ${sizes.p}px;
+    margin-bottom: ${spacing[2]}px;
   }
 
   p {
     margin: 0;
 
     &:not(:last-child) {
-      margin-bottom: ${sizes.p / 2}px;
+      margin-bottom: ${spacing[2]}px;
     }
   }
 
@@ -48,7 +46,7 @@ const StyledListItem = styled.li`
   }
 
   .id {
-    margin-left: ${sizes.p / 2}px;
+    margin-left: ${spacing[1]}px;
 
     &:before {
       content: '#';
@@ -148,7 +146,7 @@ class BrowseGames extends React.Component {
     );
   }
 
-  renderGamesList() {
+  renderView() {
     const { isLoaded, games } = this.state;
 
     if (!isLoaded) {
@@ -168,10 +166,10 @@ class BrowseGames extends React.Component {
 
   render() {
     return (
-      <StyledDiv>
-        <h1>Browse Games</h1>
-        {this.renderGamesList()}
-      </StyledDiv>
+      <StyledWrapper>
+        <Heading text="Browse Games" />
+        {this.renderView()}
+      </StyledWrapper>
     );
   }
 }

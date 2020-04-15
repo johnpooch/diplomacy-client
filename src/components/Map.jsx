@@ -4,14 +4,15 @@ import styled from '@emotion/styled';
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Piece from './Piece';
+import { headerHeight } from './Header';
 import mapData from '../map.json';
 import * as Utils from '../utils';
-import { colors, sizes } from '../variables';
+import { colors } from '../variables';
 
 const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - ${sizes.navHeight}px);
+  height: calc(100vh - ${headerHeight}px);
   background: ${colors.sea};
 
   > svg {
@@ -107,6 +108,13 @@ class Map extends React.Component {
           viewBoxWidth={mapData.viewBoxWidth}
           viewBoxHeight={mapData.viewBoxHeight}
         >
+          <rect
+            x={0}
+            y={0}
+            width={mapData.viewBoxWidth}
+            height={mapData.viewBoxHeight}
+            fill="white"
+          />
           <g className="territories">{this.renderTerritories()}</g>
           <g className="pieces">{this.renderPieces()}</g>
         </ScrollableSVG>
