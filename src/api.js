@@ -10,3 +10,4 @@ export const GAMESTATEURL = `${BASEURL}game/<int:game>`;
 
 // Auth
 export const LOGINURL = `${BASEURL}auth/login`;
+export const REGISTERURL = `${BASEURL}auth/register`;

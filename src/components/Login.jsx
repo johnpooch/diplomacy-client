@@ -1,8 +1,12 @@
 import React, {Component} from "react";
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
-export default class Login extends Component {
+import Loading from './Loading'
+import * as actions from '../store/actions/auth'
+
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,24 +24,23 @@ export default class Login extends Component {
   }
   handleSubmit(event) {
     const { username, password } = this.state;
-
-    axios.post(
-      "http://127.0.0.1:8082/api/auth/login",
-      {
-        "username": username,
-        "password": password
-      },
-      { withCredentials: true }
-      ).then(response => {
-        console.log("response ", response);
-      }).catch(error => {
-        console.log("error ", error)
-    });
-    event.preventDefault();
+    this.props.onAuth(username, password);
+    this.props.history.push('/');
   }
   render() {
+
+    if (this.props.loading) {
+      return <Loading />;
+    }
+    let errorMessage = null;
+    if (this.props.error) {
+      errorMessage = (
+        <p>{this.props.error.message}</p>
+      )
+    }
     return (
       <div>
+        { errorMessage }
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -64,3 +67,18 @@ export default class Login extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    error: state.error,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (username, password) => dispatch(actions.authLogin(username, password))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

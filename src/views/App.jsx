@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import Game from './Game';
@@ -8,6 +9,7 @@ import Home from './Home';
 import Header, { headerHeight } from '../components/Header';
 import Login from '../components/Login';
 import Register from "../components/Register";
+import * as actions from '../store/actions/auth'
 
 const StyledDiv = styled.div`
   position: relative;
@@ -24,6 +26,10 @@ class App extends React.Component {
     };
     this.handleSuccessfulAuth = this.handleSuccessfulAuth.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.onTryAutoSignup();
   }
 
   static getAuthHeaders(username, password) {
@@ -52,12 +58,12 @@ class App extends React.Component {
     return (
       <Router>
         <StyledDiv>
-          <Header />
+          <Header {...this.props} />
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/login">
-              <Login headers={headers} />
+              <Login {...this.props} headers={headers} />
             </Route>
             <Route path="/register">
               <Register headers={headers} />
@@ -82,4 +88,16 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.token !== null,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -52,11 +52,11 @@ const StyledHeader = styled.header`
 const nav = {
   '/': 'Home',
   '/browse-games': 'Browse Games',
-  '/login': 'Sign in/Create account',
 };
 
-const renderNavList = () => {
+const renderNavList = props => {
   const navList = [];
+
   Object.keys(nav).forEach((key) => {
     const val = nav[key];
     navList.push(
@@ -67,6 +67,24 @@ const renderNavList = () => {
       </li>
     );
   });
+  {
+    props.isAuthenticated ?
+      navList.push(
+        <li key='/logout'>
+          <NavLink to='/logout' activeClassName="active" exact>
+            Logout
+          </NavLink>
+        </li>
+      )
+      :
+      navList.push(
+        <li key='/login'>
+          <NavLink to='/login' activeClassName="active" exact>
+            Login
+          </NavLink>
+        </li>
+      )
+  }
   return navList;
 };
 
