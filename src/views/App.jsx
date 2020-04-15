@@ -7,7 +7,6 @@ import BrowseGames from './BrowseGames';
 import Home from './Home';
 import Header, { headerHeight } from '../components/Header';
 import Login from '../components/Login';
-import Nav from '../components/Nav';
 import Register from "../components/Register";
 
 const StyledDiv = styled.div`
@@ -57,14 +56,24 @@ class App extends React.Component {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
+            <Route path="/login">
+              <Login headers={headers} />
+            </Route>
+            <Route path="/register">
+              <Register headers={headers} />
+            </Route>
             <Route path="/game/:id">
               <Game headers={headers} />
             </Route>
             <Route path="/browse-games">
               <BrowseGames headers={headers} />
             </Route>
-            <Route path="/">
-              <Home headers={headers} />
+            <Route
+             path="/"
+             render={props => (
+               <Home {...props} headers={headers} />
+             )}
+            >
             </Route>
           </Switch>
         </StyledDiv>

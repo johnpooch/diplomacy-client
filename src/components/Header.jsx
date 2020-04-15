@@ -52,6 +52,7 @@ const StyledHeader = styled.header`
 const nav = {
   '/': 'Home',
   '/browse-games': 'Browse Games',
+  '/login': 'Sign in/Create account',
 };
 
 const renderNavList = () => {

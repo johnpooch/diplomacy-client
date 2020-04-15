@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 export default class Register extends Component {
@@ -78,6 +79,9 @@ export default class Register extends Component {
           />
           <button type="submit">Register</button>
         </form>
+        <div>
+          Already have an account? <Link to="/login">Sign in</Link>
+        </div>
       </div>
     )
   }
