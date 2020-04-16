@@ -11,8 +11,8 @@ class Register extends Component {
     this.state = {
       username: "",
       email: "",
-      password1: "",
-      password2: "",
+      password: "",
+      passwordConfirmation: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -24,8 +24,8 @@ class Register extends Component {
     })
   }
   handleSubmit(event) {
-    const { username, email, password1, password2 } = this.state;
-    this.props.onAuth(username, email, password1, password2);
+    const { username, email, password, passwordConfirmation } = this.state;
+    this.props.onAuth(username, email, password);
     this.props.history.push('/');
 
   }
@@ -51,17 +51,17 @@ class Register extends Component {
           />
           <input
             type="password"
-            name="password1"
+            name="password"
             placeholder="Password"
-            value={this.state.password1}
+            value={this.state.password}
             onChange={this.handleChange}
             required
           />
           <input
             type="password"
-            name="password2"
+            name="passwordConfirmation"
             placeholder="Confirm password"
-            value={this.state.password2}
+            value={this.state.passwordConfirmation}
             onChange={this.handleChange}
             required
           />
@@ -85,8 +85,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (username, email, password1, password2) => dispatch(
-      actions.authSignup(username, email, password1, password2)
+    onAuth: (username, email, password) => dispatch(
+      actions.authSignup(username, email, password)
     )
   }
 };

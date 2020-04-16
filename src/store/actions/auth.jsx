@@ -61,7 +61,7 @@ export const authLogin = (username, password) => {
   }
 };
 
-export const authSignup = (username, email, password1, password2) => {
+export const authSignup = (username, email, password) => {
   return dispatch => {
     dispatch(authStart());
     axios.post(
@@ -69,8 +69,7 @@ export const authSignup = (username, email, password1, password2) => {
       {
         username: username,
         email: email,
-        password1: password1,
-        password2: password2,
+        password: password,
       },
     ).then(response => {
       // TODO dedupe by moving to convenience method

@@ -21,11 +21,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       headers: App.getAuthHeaders('admin', 'admin'),
-      loggedInStatus: 'NOT_LOGGED_IN',
-      user: {},
     };
-    this.handleSuccessfulAuth = this.handleSuccessfulAuth.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
   }
 
   componentDidMount() {
@@ -39,18 +35,6 @@ class App extends React.Component {
       `Basic ${window.btoa(`${username}:${password}`)}`
     );
     return headers;
-  }
-
-  handleLogin(data) {
-    this.setState({
-      loggedInStatus: 'LOGGED IN',
-      user: data.user,
-      token: data.token,
-    });
-  }
-
-  handleSuccessfulAuth(data) {
-    this.handleLogin(data);
   }
 
   render() {
