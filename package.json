@@ -45,7 +45,7 @@
     "webpack-merge": "^4.2.2"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "set SERVICE_URI=http://127.0.0.1:8082/api/v1/ && webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js && gulp",
     "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
     "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",

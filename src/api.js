@@ -1,4 +1,4 @@
-const serviceURI = process.env.SERVICE_URI || 'http://127.0.0.1:8082/api/v1/';
+const serviceURI = process.env.SERVICE_URI;
 
 // Games
 export const ALLGAMESURL = `${serviceURI}games`;
