@@ -8,8 +8,8 @@ import BrowseGames from './BrowseGames';
 import Home from './Home';
 import Header, { headerHeight } from '../components/Header';
 import Login from '../components/Login';
-import Register from "../components/Register";
-import * as actions from '../store/actions/auth'
+import Register from '../components/Register';
+import * as actions from '../store/actions/auth';
 
 const StyledDiv = styled.div`
   position: relative;
@@ -47,19 +47,13 @@ class App extends React.Component {
             renders the first one that matches the current URL. */}
           <Switch>
             <Route
-             path="/login"
-             render={props => (
-               <Login {...props} headers={headers} />
-             )}
-            >
-            </Route>
+              path="/login"
+              render={(props) => <Login {...props} headers={headers} />}
+            />
             <Route
               path="/register"
-              render={props => (
-                <Register {...props} headers={headers} />
-              )}
-            >
-            </Route>
+              render={(props) => <Register {...props} headers={headers} />}
+            />
             <Route path="/game/:id">
               <Game headers={headers} />
             </Route>
@@ -67,12 +61,9 @@ class App extends React.Component {
               <BrowseGames headers={headers} />
             </Route>
             <Route
-             path="/"
-             render={props => (
-               <Home {...props} headers={headers} />
-             )}
-            >
-            </Route>
+              path="/"
+              render={(props) => <Home {...props} headers={headers} />}
+            />
           </Switch>
         </StyledDiv>
       </Router>
@@ -80,16 +71,16 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.token !== null,
-  }
+  };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState())
-  }
+    onTryAutoSignup: () => dispatch(actions.authCheckState()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

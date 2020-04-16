@@ -1,45 +1,44 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Loading from './Loading'
-import * as actions from '../store/actions/auth'
+import Loading from './Loading';
+import * as actions from '../store/actions/auth';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
-      loginErrors: "",
+      username: '',
+      password: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
-    })
+    });
   }
-  handleSubmit(event) {
+
+  handleSubmit() {
     const { username, password } = this.state;
     this.props.onAuth(username, password);
     this.props.history.push('/');
   }
-  render() {
 
+  render() {
     if (this.props.loading) {
       return <Loading />;
     }
     let errorMessage = null;
     if (this.props.error) {
-      errorMessage = (
-        <p>{this.props.error.message}</p>
-      )
+      errorMessage = <p>{this.props.error.message}</p>;
     }
     return (
       <div>
-        { errorMessage }
+        {errorMessage}
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -63,21 +62,22 @@ class Login extends Component {
           Not a member? <Link to="/register">Create Account</Link>
         </div>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loading: state.loading,
     error: state.error,
-  }
+  };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (username, password) => dispatch(actions.authLogin(username, password))
-  }
+    onAuth: (username, password) =>
+      dispatch(actions.authLogin(username, password)),
+  };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
