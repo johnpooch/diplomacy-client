@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Alert from '../components/Alert';
 import Map from '../components/Map';
 import Loading from '../components/Loading';
+import { PageWrapper } from '../globals';
 
 import * as API from '../api';
 
@@ -53,7 +54,12 @@ class Game extends React.Component {
   render() {
     const { isLoaded, game } = this.state;
     if (!isLoaded) return <Loading />;
-    if (!game) return <Alert text="Game not found" type="error" />;
+    if (!game)
+      return (
+        <PageWrapper>
+          <Alert text="Game not found" type="error" />
+        </PageWrapper>
+      );
     return <Map game={game} />;
   }
 }
