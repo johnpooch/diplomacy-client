@@ -18,14 +18,7 @@ class Game extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    try {
-      this.getGame(match.params.id);
-    } catch (error) {
-      console.error(error);
-      this.setState({
-        isLoaded: true,
-      });
-    }
+    this.getGame(match.params.id);
   }
 
   getGame(id) {
@@ -48,13 +41,19 @@ class Game extends React.Component {
           game: json,
           isLoaded: true,
         });
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({
+          isLoaded: true,
+        });
       });
   }
 
   render() {
     const { isLoaded, game } = this.state;
     if (!isLoaded) return <Loading />;
-    if (!game) return <Alert text="Something went wrong!" type="error" />;
+    if (!game) return <Alert text="Game not found" type="error" />;
     return <Map game={game} />;
   }
 }
