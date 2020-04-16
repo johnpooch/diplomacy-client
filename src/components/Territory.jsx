@@ -30,9 +30,29 @@ const getTerritoryColor = (type, controlledBy) => {
   return colors.land;
 };
 
-const getPolygon = (data) => {
+const getPolygon = (data, props) => {
+  const { _mouseOver, _mouseMove, _mouseOut, id } = props;
   if ('polygon' in data) {
-    return <polygon points={data.polygon} />;
+    return (
+      <polygon
+        onMouseOver={(e) => {
+          _mouseOver(e, id);
+        }}
+        onFocus={(e) => {
+          _mouseOver(e, id);
+        }}
+        onMouseMove={(e) => {
+          _mouseMove(e);
+        }}
+        onMouseOut={(e) => {
+          _mouseOut(e);
+        }}
+        onBlur={(e) => {
+          _mouseOut(e);
+        }}
+        points={data.polygon}
+      />
+    );
   }
   return null;
 };
@@ -68,8 +88,8 @@ const Territory = (props) => {
 
   return (
     <StyledGroup color={getTerritoryColor(type, controlledBy)}>
-      {getPolygon(data)}
-      {getText(data)}
+      {getPolygon(data, props)}
+      {/* {getText(data)} */}
       {getSupplyCenter(props)}
     </StyledGroup>
   );

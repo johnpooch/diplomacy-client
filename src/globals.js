@@ -26,6 +26,6 @@ export default css`
   }
 `;
 
-export const StyledWrapper = styled.div`
+export const PageWrapper = styled.div`
   padding: ${spacing[4]}px;
 `;

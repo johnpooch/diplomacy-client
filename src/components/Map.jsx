@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Piece from './Piece';
+import Tooltip from './Tooltip';
 import { headerHeight } from './Header';
 import mapData from '../map.json';
 import * as Utils from '../utils';
@@ -27,6 +28,11 @@ class Map extends React.Component {
 
     this.state = {
       turn: null,
+      hovering: null,
+      mousePos: {
+        x: 0,
+        y: 0,
+      },
     };
   }
 
@@ -58,6 +64,15 @@ class Map extends React.Component {
     const { territories } = game.variant;
     const states = turn.territory_states;
 
+    const updateMousePos = (e) => {
+      this.setState({
+        mousePos: {
+          x: e.nativeEvent.clientX,
+          y: e.nativeEvent.clientY,
+        },
+      });
+    };
+
     const territoriesList = [];
     territories.forEach((territory) => {
       const { id } = territory;
@@ -71,6 +86,20 @@ class Map extends React.Component {
           type={territory.type}
           controlledBy={controller}
           supplyCenter={territory.supply_center}
+          _mouseMove={(e) => {
+            updateMousePos(e);
+          }}
+          _mouseOver={(e, hovering) => {
+            updateMousePos(e);
+            this.setState({
+              hovering,
+            });
+          }}
+          _mouseOut={() => {
+            this.setState({
+              hovering: null,
+            });
+          }}
         />
       );
     });
@@ -101,6 +130,14 @@ class Map extends React.Component {
     return piecesList;
   }
 
+  renderTooltip() {
+    const { hovering, mousePos } = this.state;
+    if (hovering) {
+      return <Tooltip territory={hovering} mousePos={mousePos} />;
+    }
+    return null;
+  }
+
   render() {
     return (
       <StyledDiv>
@@ -118,6 +155,7 @@ class Map extends React.Component {
           <g className="territories">{this.renderTerritories()}</g>
           <g className="pieces">{this.renderPieces()}</g>
         </ScrollableSVG>
+        {this.renderTooltip()}
       </StyledDiv>
     );
   }

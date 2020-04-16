@@ -26,8 +26,8 @@ const ScrollableSVG = (props) => {
 
   const mouseDown = (e, width, height, viewBox, setOrigin, setPanning) => {
     setOrigin({
-      x: scaleZoom(e.clientX, width, height, viewBox) - viewBox.x,
-      y: scaleZoom(e.clientY, width, height, viewBox) - viewBox.y,
+      x: scaleZoom(e.nativeEvent.clientX, width, height, viewBox) - viewBox.x,
+      y: scaleZoom(e.nativeEvent.clientY, width, height, viewBox) - viewBox.y,
     });
     setPanning(true);
   };
@@ -43,8 +43,8 @@ const ScrollableSVG = (props) => {
   ) => {
     if (panning) {
       setViewBox({
-        x: scaleZoom(e.clientX, width, height, viewBox) - origin.x,
-        y: scaleZoom(e.clientY, width, height, viewBox) - origin.y,
+        x: scaleZoom(e.nativeEvent.clientX, width, height, viewBox) - origin.x,
+        y: scaleZoom(e.nativeEvent.clientY, width, height, viewBox) - origin.y,
         w: viewBox.w,
         h: viewBox.h,
       });
