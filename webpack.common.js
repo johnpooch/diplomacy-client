@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -27,6 +28,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
+    publicPath: '',
   },
   optimization: {
     splitChunks: {
@@ -36,6 +38,11 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: './src/index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.SERVICE_URI': JSON.stringify(
+        process.env.SERVICE_URI || 'http://127.0.0.1:8082/api/v1/'
+      ),
     }),
   ],
 };

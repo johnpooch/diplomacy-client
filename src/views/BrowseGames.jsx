@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import { StyledWrapper } from '../globals';
+import { PageWrapper } from '../globals';
 import * as API from '../api';
 import { colors, spacing } from '../variables';
 
@@ -166,10 +166,10 @@ class BrowseGames extends React.Component {
 
   render() {
     return (
-      <StyledWrapper>
+      <PageWrapper>
         <Heading text="Browse Games" />
         {this.renderView()}
-      </StyledWrapper>
+      </PageWrapper>
     );
   }
 }
