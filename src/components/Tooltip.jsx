@@ -6,7 +6,7 @@ import { sizes } from '../variables';
 
 const StyledDiv = styled.div`
   position: fixed;
-  padding: ${sizes.p}px;
+  padding: ${sizes.padding}px;
   bottom: 0;
   left: 0;
   pointer-events: none;
@@ -20,13 +20,13 @@ const StyledDiv = styled.div`
   li {
     display: flex;
     &:not(:last-child) {
-      margin-bottom: ${sizes.p}px;
+      margin-bottom: ${sizes.padding}px;
     }
   }
 
   .key {
     font-weight: bold;
-    margin-right: ${sizes.p / 2}px;
+    margin-right: ${sizes.padding / 2}px;
   }
 `;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { colors, sizes } from '../variables';
+import { colors, sizes, fontSizes } from '../variables';
 
 const StyledDiv = styled.div`
   display: flex;
@@ -9,10 +9,11 @@ const StyledDiv = styled.div`
   align-items: center;
   width: max-content;
   height: max-content;
-  padding: ${sizes.p}px;
+  padding: ${sizes.padding}px;
   border: ${sizes.border}px solid currentColor;
   border-radius: ${sizes.borderRadius}px;
   color: ${(props) => (props.type === 'error' ? colors.red : colors.base)};
+  font-size: ${fontSizes.sans.medium}px;
   font-weight: bold;
 `;
 
