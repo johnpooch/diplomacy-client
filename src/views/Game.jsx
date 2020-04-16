@@ -18,14 +18,7 @@ class Game extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    try {
-      this.getGame(match.params.id);
-    } catch (error) {
-      console.error(error);
-      this.setState({
-        isLoaded: true,
-      });
-    }
+    this.getGame(match.params.id);
   }
 
   getGame(id) {
@@ -46,6 +39,12 @@ class Game extends React.Component {
         console.log(json);
         this.setState({
           game: json,
+          isLoaded: true,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({
           isLoaded: true,
         });
       });
