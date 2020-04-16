@@ -53,7 +53,7 @@ class Game extends React.Component {
   render() {
     const { isLoaded, game } = this.state;
     if (!isLoaded) return <Loading />;
-    if (!game) return <Alert text="Something went wrong!" type="error" />;
+    if (!game) return <Alert text="Game not found" type="error" />;
     return <Map game={game} />;
   }
 }
