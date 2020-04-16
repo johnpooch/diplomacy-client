@@ -62,11 +62,19 @@ class App extends React.Component {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/login">
-              <Login {...this.props} headers={headers} />
+            <Route
+             path="/login"
+             render={props => (
+               <Login {...props} headers={headers} />
+             )}
+            >
             </Route>
-            <Route path="/register">
-              <Register headers={headers} />
+            <Route
+              path="/register"
+              render={props => (
+                <Register {...props} headers={headers} />
+              )}
+            >
             </Route>
             <Route path="/game/:id">
               <Game headers={headers} />

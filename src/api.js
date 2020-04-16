@@ -9,5 +9,6 @@ export const CREATEGAMEURL = `${BASEURL}games/create`;
 export const GAMESTATEURL = `${BASEURL}game/<int:game>`;
 
 // Auth
-export const LOGINURL = `${BASEURL}auth/login`;
-export const REGISTERURL = `${BASEURL}auth/register`;
+export const AUTHURL = 'http://127.0.0.1:8082/api/auth/';
+export const LOGINURL = `${AUTHURL}login`;
+export const REGISTERURL = `${AUTHURL}register`;

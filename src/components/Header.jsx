@@ -1,8 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { colors, spacing, fontSizes } from '../variables';
+import NavList from './NavList';
 
 export const headerHeight = spacing[6];
 
@@ -49,50 +49,12 @@ const StyledHeader = styled.header`
   }
 `;
 
-const nav = {
-  '/': 'Home',
-  '/browse-games': 'Browse Games',
-};
-
-const renderNavList = props => {
-  const navList = [];
-
-  Object.keys(nav).forEach((key) => {
-    const val = nav[key];
-    navList.push(
-      <li key={key}>
-        <NavLink to={key} activeClassName="active" exact>
-          {val}
-        </NavLink>
-      </li>
-    );
-  });
-  {
-    props.isAuthenticated ?
-      navList.push(
-        <li key='/logout'>
-          <NavLink to='/logout' activeClassName="active" exact>
-            Logout
-          </NavLink>
-        </li>
-      )
-      :
-      navList.push(
-        <li key='/login'>
-          <NavLink to='/login' activeClassName="active" exact>
-            Login
-          </NavLink>
-        </li>
-      )
-  }
-  return navList;
-};
 
 const Header = (props) => {
   return (
     <StyledHeader>
       <nav>
-        <ul>{renderNavList(props)}</ul>
+        <ul><NavList {...props}/></ul>
       </nav>
     </StyledHeader>
   );

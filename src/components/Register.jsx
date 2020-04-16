@@ -1,16 +1,18 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import { connect } from 'react-redux';
 
-export default class Register extends Component {
+import * as actions from '../store/actions/auth'
+
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      usernamed: "",
+      username: "",
       email: "",
-      password: "",
-      passwordConfirmation: "",
-      loginErrors: "",
+      password1: "",
+      password2: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -22,24 +24,10 @@ export default class Register extends Component {
     })
   }
   handleSubmit(event) {
-    const { username, email, password } = this.state;
+    const { username, email, password1, password2 } = this.state;
+    this.props.onAuth(username, email, password1, password2);
+    this.props.history.push('/');
 
-    axios.post(
-      "http://127.0.0.1:8082/api/auth/register",
-      {
-        "username": username,
-        "email": email,
-        "password": password,
-      },
-      { withCredentials: true }
-    ).then(response => {
-      if (response.status === 200) {
-        this.props.handleSuccessfulAuth(response.data);
-      }
-    }).catch(error => {
-      console.log("error ", error)
-    });
-    event.preventDefault();
   }
   render() {
     return (
@@ -63,17 +51,17 @@ export default class Register extends Component {
           />
           <input
             type="password"
-            name="password"
+            name="password1"
             placeholder="Password"
-            value={this.state.password}
+            value={this.state.password1}
             onChange={this.handleChange}
             required
           />
           <input
             type="password"
-            name="passwordConfirmation"
+            name="password2"
             placeholder="Confirm password"
-            value={this.state.passwordConfirmation}
+            value={this.state.password2}
             onChange={this.handleChange}
             required
           />
@@ -86,3 +74,21 @@ export default class Register extends Component {
     )
   }
 }
+
+
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    error: state.error,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (username, email, password1, password2) => dispatch(
+      actions.authSignup(username, email, password1, password2)
+    )
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)
