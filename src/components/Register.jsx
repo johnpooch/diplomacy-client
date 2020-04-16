@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom';
-import axios from "axios";
 import { connect } from 'react-redux';
 
 import * as actions from '../store/actions/auth'
@@ -24,7 +23,7 @@ class Register extends Component {
     })
   }
   handleSubmit(event) {
-    const { username, email, password, passwordConfirmation } = this.state;
+    const { username, email, password } = this.state;
     this.props.onAuth(username, email, password);
     this.props.history.push('/');
 

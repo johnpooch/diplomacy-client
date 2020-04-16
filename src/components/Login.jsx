@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from "axios";
 
 import Loading from './Loading'
 import * as actions from '../store/actions/auth'
