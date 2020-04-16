@@ -31,6 +31,7 @@
     "emotion": "^10.0.27",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
+    "gulp": "^4.0.2",
     "html-webpack-plugin": "^4.2.0",
     "node-sass": "^4.13.1",
     "polished": "^3.5.1",
@@ -45,7 +46,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "build": "webpack --config webpack.prod.js && gulp",
     "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
     "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
     "test": "jest"
