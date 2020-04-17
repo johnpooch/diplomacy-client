@@ -25,7 +25,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.props.onTryAutoSignup();
+    const { onTryAutoSignup } = this.props;
+    onTryAutoSignup();
   }
 
   static getAuthHeaders(username, password) {
@@ -42,17 +43,21 @@ class App extends React.Component {
     return (
       <Router>
         <StyledDiv>
-          <Header {...this.props} />
+          <Header />
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
             <Route
               path="/login"
-              render={(props) => <Login {...props} headers={headers} />}
+              render={(props) => (
+                <Login history={props.history} headers={headers} />
+              )}
             />
             <Route
               path="/register"
-              render={(props) => <Register {...props} headers={headers} />}
+              render={(props) => (
+                <Register history={props.history} headers={headers} />
+              )}
             />
             <Route path="/game/:id">
               <Game headers={headers} />
@@ -62,7 +67,9 @@ class App extends React.Component {
             </Route>
             <Route
               path="/"
-              render={(props) => <Home {...props} headers={headers} />}
+              render={(props) => (
+                <Home history={props.history} headers={headers} />
+              )}
             />
           </Switch>
         </StyledDiv>

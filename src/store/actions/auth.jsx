@@ -1,26 +1,25 @@
+import axios from 'axios';
 import * as actionTypes from './actionTypes';
 import * as API from '../../api';
-import axios from 'axios';
-
 
 export const authStart = () => {
   return {
     type: actionTypes.AUTH_START,
-  }
+  };
 };
 
-export const authSuccess = token => {
+export const authSuccess = (token) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    token: token,
-  }
+    token,
+  };
 };
 
-export const authFail = error => {
+export const authFail = (error) => {
   return {
     type: actionTypes.AUTH_FAIL,
-    error: error,
-  }
+    error,
+  };
 };
 
 export const logout = () => {
@@ -28,65 +27,65 @@ export const logout = () => {
   localStorage.removeItem('expirationDate');
   return {
     type: actionTypes.AUTH_LOGOUT,
-  }
+  };
 };
 
-export const checkAuthTimeout = expirationTime => {
-  return dispatch => {
+export const checkAuthTimeout = (expirationTime) => {
+  return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
-    }, expirationTime * 1000)
-  }
+    }, expirationTime * 1000);
+  };
 };
 
 export const authLogin = (username, password) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(authStart());
-    axios.post(
-      API.LOGINURL,
-      {
-        username: username,
-        password: password,
-      },
-    ).then(response => {
-      const token = response.data.token;
-      const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-      localStorage.setItem('token', token);
-      localStorage.setItem('expirationDate', expirationDate);
-      dispatch(authSuccess(token));
-      dispatch(checkAuthTimeout(3600));
-    }).catch(error => {
-      dispatch(authFail(error));
-    })
-  }
+    axios
+      .post(API.LOGINURL, {
+        username,
+        password,
+      })
+      .then((response) => {
+        const { token } = response.data;
+        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        localStorage.setItem('token', token);
+        localStorage.setItem('expirationDate', expirationDate);
+        dispatch(authSuccess(token));
+        dispatch(checkAuthTimeout(3600));
+      })
+      .catch((error) => {
+        dispatch(authFail(error));
+      });
+  };
 };
 
 export const authSignup = (username, email, password) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(authStart());
-    axios.post(
-      API.REGISTERURL,
-      {
-        username: username,
-        email: email,
-        password: password,
-      },
-    ).then(response => {
-      // TODO dedupe by moving to convenience method
-      const token = response.data.token;
-      const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-      localStorage.setItem('token', token);
-      localStorage.setItem('expirationDate', expirationDate);
-      dispatch(authSuccess(token));
-      dispatch(checkAuthTimeout(3600));
-    }).catch(error => {
-      dispatch(authFail(error));
-    })
-  }
+    axios
+      .post(API.REGISTERURL, {
+        username,
+        email,
+        password,
+      })
+      .then((response) => {
+        // TODO dedupe by moving to convenience method
+        const { token } = response.data;
+        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+        localStorage.setItem('token', token);
+        localStorage.setItem('expirationDate', expirationDate);
+        dispatch(authSuccess(token));
+        dispatch(checkAuthTimeout(3600));
+      })
+      .catch((error) => {
+        dispatch(authFail(error));
+      });
+  };
 };
 
 export const authCheckState = () => {
-  return dispatch => {
+  return (dispatch) => {
     const token = localStorage.getItem('token');
     if (token === undefined) {
       dispatch(logout());
@@ -96,8 +95,12 @@ export const authCheckState = () => {
         dispatch(logout());
       } else {
         dispatch(authSuccess(token));
-        dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
+        dispatch(
+          checkAuthTimeout(
+            (expirationDate.getTime() - new Date().getTime()) / 1000
+          )
+        );
       }
     }
-  }
+  };
 };

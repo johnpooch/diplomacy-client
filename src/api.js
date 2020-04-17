@@ -1,5 +1,5 @@
 const serviceURI = process.env.SERVICE_URI;
-const authURL = serviceURI + 'auth/';
+const authURL = `${serviceURI}auth/`;
 
 // Games
 export const ALLGAMESURL = `${serviceURI}games`;

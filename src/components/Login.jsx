@@ -24,17 +24,20 @@ class Login extends Component {
 
   handleSubmit() {
     const { username, password } = this.state;
-    this.props.onAuth(username, password);
-    this.props.history.push('/');
+    const { onAuth, history } = this.props;
+    onAuth(username, password);
+    history.push('/');
   }
 
   render() {
-    if (this.props.loading) {
+    const { username, password } = this.state;
+    const { error, loading } = this.props;
+    if (loading) {
       return <Loading />;
     }
     let errorMessage = null;
-    if (this.props.error) {
-      errorMessage = <p>{this.props.error.message}</p>;
+    if (error) {
+      errorMessage = <p>{error.message}</p>;
     }
     return (
       <div>
@@ -44,7 +47,7 @@ class Login extends Component {
             type="text"
             name="username"
             placeholder="Username"
-            value={this.state.username}
+            value={username}
             onChange={this.handleChange}
             required
           />
@@ -52,7 +55,7 @@ class Login extends Component {
             type="password"
             name="password"
             placeholder="Password"
-            value={this.state.password}
+            value={password}
             onChange={this.handleChange}
             required
           />

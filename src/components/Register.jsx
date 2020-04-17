@@ -1,17 +1,17 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import * as actions from '../store/actions/auth'
+import * as actions from '../store/actions/auth';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      email: "",
-      password: "",
-      passwordConfirmation: "",
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -20,14 +20,15 @@ class Register extends Component {
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
-    })
+    });
   }
+
   handleSubmit(event) {
     const { username, email, password } = this.state;
     this.props.onAuth(username, email, password);
     this.props.history.push('/');
-
   }
+
   render() {
     return (
       <div>
@@ -70,24 +71,22 @@ class Register extends Component {
           Already have an account? <Link to="/login">Sign in</Link>
         </div>
       </div>
-    )
+    );
   }
 }
 
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     loading: state.loading,
     error: state.error,
-  }
+  };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (username, email, password) => dispatch(
-      actions.authSignup(username, email, password)
-    )
-  }
+    onAuth: (username, email, password) =>
+      dispatch(actions.authSignup(username, email, password)),
+  };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

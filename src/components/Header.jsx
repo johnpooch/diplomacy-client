@@ -49,12 +49,13 @@ const StyledHeader = styled.header`
   }
 `;
 
-
 const Header = (props) => {
   return (
     <StyledHeader>
       <nav>
-        <ul><NavList {...props}/></ul>
+        <ul>
+          <NavList {...props} />
+        </ul>
       </nav>
     </StyledHeader>
   );

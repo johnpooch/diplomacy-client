@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import * as actions from '../store/actions/auth'
+import * as actions from '../store/actions/auth';
 
 const nav = {
   '/': 'Home',
@@ -24,31 +24,28 @@ class NavList extends React.Component {
       );
     });
     {
-      this.props.isAuthenticated ?
-        navList.push(
-          <li key='/logout'>
-            <a onClick={this.props.logout}>
-              Logout
-            </a>
-          </li>
-        )
-        :
-        navList.push(
-          <li key='/login'>
-            <NavLink to='/login' activeClassName="active" exact>
-              Login
-            </NavLink>
-          </li>
-        )
+      this.props.isAuthenticated
+        ? navList.push(
+            <li key="/logout">
+              <a onClick={this.props.logout}>Logout</a>
+            </li>
+          )
+        : navList.push(
+            <li key="/login">
+              <NavLink to="/login" activeClassName="active" exact>
+                Login
+              </NavLink>
+            </li>
+          );
     }
     return navList;
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(actions.logout())
-  }
+    logout: () => dispatch(actions.logout()),
+  };
 };
 
 export default connect(null, mapDispatchToProps)(NavList);
