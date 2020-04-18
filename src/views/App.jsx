@@ -47,17 +47,10 @@ class App extends React.Component {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
-            <Route
-              path="/login"
-              render={(props) => (
-                <Login history={props.history} headers={headers} />
-              )}
-            />
+            <Route path="/login" render={() => <Login headers={headers} />} />
             <Route
               path="/register"
-              render={(props) => (
-                <Register history={props.history} headers={headers} />
-              )}
+              render={() => <Register headers={headers} />}
             />
             <Route path="/game/:id">
               <Game headers={headers} />
@@ -65,12 +58,7 @@ class App extends React.Component {
             <Route path="/browse-games">
               <BrowseGames headers={headers} />
             </Route>
-            <Route
-              path="/"
-              render={(props) => (
-                <Home history={props.history} headers={headers} />
-              )}
-            />
+            <Route path="/" render={() => <Home headers={headers} />} />
           </Switch>
         </StyledDiv>
       </Router>

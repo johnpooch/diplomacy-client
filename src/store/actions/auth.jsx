@@ -38,6 +38,13 @@ export const checkAuthTimeout = (expirationTime) => {
   };
 };
 
+const setLoggedIn = (token) => {
+  // an hour from now
+  const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
+  localStorage.setItem('token', token);
+  localStorage.setItem('expirationDate', expirationDate);
+};
+
 export const authLogin = (username, password) => {
   return (dispatch) => {
     dispatch(authStart());
@@ -48,9 +55,7 @@ export const authLogin = (username, password) => {
       })
       .then((response) => {
         const { token } = response.data;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem('token', token);
-        localStorage.setItem('expirationDate', expirationDate);
+        setLoggedIn(token);
         dispatch(authSuccess(token));
         dispatch(checkAuthTimeout(3600));
       })
@@ -70,11 +75,8 @@ export const authSignup = (username, email, password) => {
         password,
       })
       .then((response) => {
-        // TODO dedupe by moving to convenience method
         const { token } = response.data;
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-        localStorage.setItem('token', token);
-        localStorage.setItem('expirationDate', expirationDate);
+        setLoggedIn(token);
         dispatch(authSuccess(token));
         dispatch(checkAuthTimeout(3600));
       })

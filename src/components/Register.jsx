@@ -23,13 +23,15 @@ class Register extends Component {
     });
   }
 
-  handleSubmit(event) {
+  handleSubmit() {
     const { username, email, password } = this.state;
-    this.props.onAuth(username, email, password);
-    this.props.history.push('/');
+    const { onAuth } = this.props;
+    onAuth(username, email, password);
+    // NOTE this should redirect if successful
   }
 
   render() {
+    const { username, email, password, passwordConfirmation } = this.state;
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -37,7 +39,7 @@ class Register extends Component {
             type="username"
             name="username"
             placeholder="Username"
-            value={this.state.username}
+            value={username}
             onChange={this.handleChange}
             required
           />
@@ -45,7 +47,7 @@ class Register extends Component {
             type="email"
             name="email"
             placeholder="Email"
-            value={this.state.email}
+            value={email}
             onChange={this.handleChange}
             required
           />
@@ -53,7 +55,7 @@ class Register extends Component {
             type="password"
             name="password"
             placeholder="Password"
-            value={this.state.password}
+            value={password}
             onChange={this.handleChange}
             required
           />
@@ -61,7 +63,7 @@ class Register extends Component {
             type="password"
             name="passwordConfirmation"
             placeholder="Confirm password"
-            value={this.state.passwordConfirmation}
+            value={passwordConfirmation}
             onChange={this.handleChange}
             required
           />

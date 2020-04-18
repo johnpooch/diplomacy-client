@@ -50,12 +50,12 @@ const StyledHeader = styled.header`
   }
 `;
 
-const Header = (props) => {
+const Header = () => {
   return (
     <StyledHeader>
       <nav>
         <ul>
-          <NavList {...props} />
+          <NavList />
         </ul>
       </nav>
     </StyledHeader>
