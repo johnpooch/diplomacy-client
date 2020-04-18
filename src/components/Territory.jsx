@@ -89,7 +89,7 @@ const Territory = (props) => {
   return (
     <StyledGroup color={getTerritoryColor(type, controlledBy)}>
       {getPolygon(data, props)}
-      {/* {getText(data)} */}
+      {getText(data)}
       {getSupplyCenter(props)}
     </StyledGroup>
   );

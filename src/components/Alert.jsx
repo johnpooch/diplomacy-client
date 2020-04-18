@@ -14,7 +14,7 @@ const StyledDiv = styled.div`
   border-radius: ${sizes.borderRadius}px;
   color: ${(props) => (props.type === 'error' ? colors.red : colors.base)};
   font-size: ${fontSizes.sans.medium}px;
-  font-weight: bold;
+  /* font-weight: bold; */
 `;
 
 const Alert = (props) => {
