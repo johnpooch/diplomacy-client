@@ -54,7 +54,6 @@ const getTooltip = (data) => {
 const Tooltip = (props) => {
   const { territory, mousePos } = props;
   const data = Utils.getObjectByKey(territory, mapData.territories);
-  console.log(mousePos);
   if (!data) return null;
   return <StyledDiv mousePos={mousePos}>{getTooltip(data, props)}</StyledDiv>;
 };
