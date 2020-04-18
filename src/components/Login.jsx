@@ -24,9 +24,9 @@ class Login extends Component {
 
   handleSubmit() {
     const { username, password } = this.state;
-    const { onAuth, history } = this.props;
+    const { onAuth } = this.props;
     onAuth(username, password);
-    history.push('/');
+    // NOTE this should redirect if successful
   }
 
   render() {
@@ -71,6 +71,7 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    isAuthenticated: state.isAuthenticated,
     loading: state.loading,
     error: state.error,
   };

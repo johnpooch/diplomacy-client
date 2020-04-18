@@ -11,11 +11,12 @@ const nav = {
 
 class NavList extends React.Component {
   render() {
-    const navList = [];
+    const { logout, isAuthenticated } = this.props;
+    const navItems = [];
 
     Object.keys(nav).forEach((key) => {
       const val = nav[key];
-      navList.push(
+      navItems.push(
         <li key={key}>
           <NavLink to={key} activeClassName="active" exact>
             {val}
@@ -23,24 +24,38 @@ class NavList extends React.Component {
         </li>
       );
     });
-    {
-      this.props.isAuthenticated
-        ? navList.push(
-            <li key="/logout">
-              <a onClick={this.props.logout}>Logout</a>
-            </li>
-          )
-        : navList.push(
-            <li key="/login">
-              <NavLink to="/login" activeClassName="active" exact>
-                Login
-              </NavLink>
-            </li>
-          );
+    if (isAuthenticated) {
+      navItems.push(
+        <li key="/logout">
+          <button
+            type="button"
+            onClick={logout}
+            onKeyPress={logout}
+            role="link"
+            tabIndex={0}
+          >
+            Logout
+          </button>
+        </li>
+      );
+    } else {
+      navItems.push(
+        <li key="/login">
+          <NavLink to="/login" activeClassName="active" exact>
+            Login
+          </NavLink>
+        </li>
+      );
     }
-    return navList;
+    return navItems;
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.token !== null,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -48,4 +63,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(NavList);
+export default connect(mapStateToProps, mapDispatchToProps)(NavList);
