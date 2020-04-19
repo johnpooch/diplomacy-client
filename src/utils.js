@@ -16,7 +16,13 @@ function jsonToFormFields(json) {
       fields.push(
         <div key={key} className="form-section">
           <label htmlFor={key}>{val.label}</label>
-          <input id={key} type="text" name={key} placeholder={val.label} />
+          <input
+            id={key}
+            type="text"
+            name={key}
+            placeholder={val.label}
+            required={val.required}
+          />
         </div>
       );
     }
