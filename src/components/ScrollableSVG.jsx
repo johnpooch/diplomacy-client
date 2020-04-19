@@ -79,19 +79,19 @@ const ScrollableSVG = (props) => {
       preserveAspectRatio="xMidYMid meet"
       viewBox={getViewBox(viewBox)}
       onMouseDown={(e) => {
-        mouseDown(e, width, height, viewBox, setOrigin, setPanning);
+        mouseDown(e);
       }}
       onMouseMove={(e) => {
-        mouseMove(e, width, height, panning, origin, viewBox, setViewBox);
+        mouseMove(e);
       }}
       onMouseLeave={(e) => {
-        mouseUp(e, setPanning);
+        mouseUp(e);
       }}
       onMouseUp={(e) => {
-        mouseUp(e, setPanning);
+        mouseUp(e);
       }}
       onWheel={(e) => {
-        wheel(e, ZOOM_POWER, width, height, viewBox, setViewBox);
+        wheel(e);
       }}
     >
       {children}
