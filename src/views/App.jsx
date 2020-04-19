@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import Game from './Game';
 import BrowseGames from './BrowseGames';
 import Home from './Home';
+import Error from './Error';
 import Header, { headerHeight } from '../components/Header';
 import Login from '../components/Login';
 import Register from '../components/Register';
@@ -55,10 +56,15 @@ class App extends React.Component {
             <Route path="/game/:id">
               <Game headers={headers} />
             </Route>
-            <Route path="/browse-games">
+            <Route exact path="/browse-games">
               <BrowseGames headers={headers} />
             </Route>
-            <Route path="/" render={() => <Home headers={headers} />} />
+            <Route exact path="/">
+              <Home headers={headers} />
+            </Route>
+            <Route>
+              <Error text="Page not found" />
+            </Route>
           </Switch>
         </StyledDiv>
       </Router>

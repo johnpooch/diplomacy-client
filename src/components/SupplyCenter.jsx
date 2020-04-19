@@ -8,6 +8,7 @@ import { colors } from '../variables';
 
 const StyledSupplyCenter = styled.circle`
   fill: ${(props) => props.color};
+  pointer-events: none;
 `;
 
 const getMarker = (props, x, y, size = 4) => {

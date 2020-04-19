@@ -1,84 +1,93 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { lighten } from 'polished';
 
+import mapData from '../map.json';
 import * as Utils from '../utils';
-import { sizes } from '../variables';
+import { colors, fontSizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`
   position: fixed;
-  padding: ${sizes.padding}px;
-  bottom: 0;
-  left: 0;
+  padding: ${spacing[1]}px;
   pointer-events: none;
-  text-transform: capitalize;
+  color: white;
+  font-size: ${fontSizes.sans.small}px;
+  background-color: ${colors.base};
+  left: ${(props) => props.mousePos.x}px;
+  top: ${(props) => props.mousePos.y}px;
 
-  ul {
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    display: flex;
-    &:not(:last-child) {
-      margin-bottom: ${sizes.padding}px;
-    }
-  }
-
-  .key {
-    font-weight: bold;
-    margin-right: ${sizes.padding / 2}px;
+  div:not(:first-of-type) {
+    margin-top: ${spacing[0]}px;
   }
 `;
 
-class Tooltip extends React.Component {
-  buildTooltip() {
-    const { hoverTarget, data } = this.props;
+const StyledSpan = styled.span`
+  text-transform: capitalize;
+  color: ${(props) => (props.color ? props.color : 'white')};
 
-    const tooltip = {};
-
-    const territory = Utils.getObjectByKey(hoverTarget, data.territories);
-    if (territory) {
-      tooltip.name = territory.name;
-      tooltip.coastal = territory.coastal ? 'true' : 'false';
-      tooltip.type = territory.type;
-    }
-
-    const controlledBy = Utils.getObjectByKey(
-      territory.controlled_by,
-      data.nations
-    );
-    if (controlledBy) {
-      tooltip.nation = controlledBy.name;
-    }
-
-    const piece = Utils.getObjectByKey(hoverTarget, data.pieces, 'territory');
-    if (piece) {
-      tooltip.piece = piece.type;
-    }
-
-    return tooltip;
+  &:not(:last-of-type):after {
+    content: ' ';
   }
 
-  render() {
-    const elements = [];
-    const tooltip = this.buildTooltip();
+  &.name {
+    font-weight: bold;
+  }
+`;
 
-    Object.keys(tooltip).forEach((key) => {
-      const value = tooltip[key];
-      elements.push(
-        <li key={key}>
-          <span className="key">{key}</span>
-          <span className="value">{value}</span>
-        </li>
-      );
-    });
+const getSupplyCenter = (data) => {
+  if (data.supply) {
+    return <StyledSpan className="supply">*</StyledSpan>;
+  }
+  return null;
+};
 
+const getControlledBy = (controlledBy) => {
+  if (controlledBy) {
+    const color = lighten(0.25, colors.nations[controlledBy.id]);
     return (
-      <StyledDiv>
-        <ul>{elements}</ul>
-      </StyledDiv>
+      <StyledSpan className="nation" color={color}>
+        ({controlledBy.name})
+      </StyledSpan>
     );
   }
-}
+  return null;
+};
+
+const getTooltip = (data, props) => {
+  const { territoryControlledBy, piece, pieceControlledBy } = props;
+
+  const tooltip = [];
+
+  if (data.name) {
+    tooltip.push(
+      <div key="territory">
+        <StyledSpan className="name">{data.name}</StyledSpan>
+        {getSupplyCenter(data)}
+        {getControlledBy(territoryControlledBy)}
+      </div>
+    );
+  }
+
+  if (piece) {
+    tooltip.push(
+      <div key="piece">
+        <StyledSpan className="type">{piece.type}</StyledSpan>
+        {getControlledBy(pieceControlledBy)}
+      </div>
+    );
+  }
+
+  return tooltip;
+};
+
+const Tooltip = (props) => {
+  const { mousePos, territoryState } = props;
+  const data = Utils.getObjectByKey(
+    territoryState.territory,
+    mapData.territories
+  );
+  if (!data) return null;
+  return <StyledDiv mousePos={mousePos}>{getTooltip(data, props)}</StyledDiv>;
+};
 
 export default Tooltip;

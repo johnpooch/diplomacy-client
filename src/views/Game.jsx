@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import Alert from '../components/Alert';
+import Error from './Error';
 import Map from '../components/Map';
 import Loading from '../components/Loading';
 import { PageWrapper } from '../globals';
@@ -33,7 +33,6 @@ class Game extends React.Component {
         if (response.status === 200) {
           return response.json();
         }
-        console.error(`Couldn't find game ${id}`);
         return null;
       })
       .then((json) => {
@@ -43,8 +42,7 @@ class Game extends React.Component {
           isLoaded: true,
         });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         this.setState({
           isLoaded: true,
         });
@@ -54,12 +52,7 @@ class Game extends React.Component {
   render() {
     const { isLoaded, game } = this.state;
     if (!isLoaded) return <Loading />;
-    if (!game)
-      return (
-        <PageWrapper>
-          <Alert text="Game not found" type="error" />
-        </PageWrapper>
-      );
+    if (!game) return <Error text="Game not found" />;
     return <Map game={game} />;
   }
 }

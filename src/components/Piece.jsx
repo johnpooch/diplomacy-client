@@ -9,6 +9,7 @@ import { colors } from '../variables';
 const StyledPiece = styled.circle`
   fill: ${(props) => props.color};
   stroke: ${colors.base};
+  pointer-events: none;
 `;
 
 const getMarker = (props, x, y, size = 8) => {
