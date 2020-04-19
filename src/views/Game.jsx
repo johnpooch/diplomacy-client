@@ -18,10 +18,11 @@ const StyledNav = styled.nav`
   color: ${colors.base};
   padding: ${spacing[2]}px;
 
-  ul {
+  ol {
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
+    overflow-x: auto;
   }
 
   li {
@@ -37,13 +38,16 @@ const StyledNav = styled.nav`
   button {
     padding: ${spacing[1]}px;
     font-size: ${fontSizes.sans.small}px;
+    min-width: 80px;
+    cursor: pointer;
   }
 
   span {
+    display: block;
     text-transform: capitalize;
 
-    &:not(:last-of-type):after {
-      content: ' ';
+    &:not(:first-of-type) {
+      margin-top: ${spacing[0]}px;
     }
   }
 
@@ -147,7 +151,7 @@ class Game extends React.Component {
       });
       return (
         <StyledNav>
-          <ul>{turnElements}</ul>
+          <ol>{turnElements}</ol>
         </StyledNav>
       );
     }
