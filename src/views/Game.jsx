@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Error from './Error';
 import Map from '../components/Map';
 import Loading from '../components/Loading';
+import { PageWrapper } from '../globals';
 
 import * as API from '../api';
 
