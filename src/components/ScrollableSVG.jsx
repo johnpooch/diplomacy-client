@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import useDimensions from 'react-use-dimensions';
 
 const ScrollableSVG = (props) => {
+  const ZOOM_POWER = 0.1;
+
   const getViewBox = (viewBox) => {
     return `${-viewBox.x} ${-viewBox.y} ${viewBox.w} ${viewBox.h}`;
   };
@@ -78,8 +80,6 @@ const ScrollableSVG = (props) => {
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const [panning, setPanning] = useState(false);
 
-  const zoomPower = 0.1;
-
   return (
     <svg
       ref={ref}
@@ -92,11 +92,14 @@ const ScrollableSVG = (props) => {
       onMouseMove={(e) => {
         mouseMove(e, width, height, panning, origin, viewBox, setViewBox);
       }}
+      onMouseLeave={(e) => {
+        mouseUp(e, setPanning);
+      }}
       onMouseUp={(e) => {
         mouseUp(e, setPanning);
       }}
       onWheel={(e) => {
-        wheel(e, zoomPower, width, height, viewBox, setViewBox);
+        wheel(e, ZOOM_POWER, width, height, viewBox, setViewBox);
       }}
     >
       {children}
