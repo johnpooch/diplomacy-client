@@ -15,6 +15,7 @@ const ScrollableSVG = (props) => {
   });
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const [panning, setPanning] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
   const getViewBox = () => {
     return `${-viewBox.x} ${-viewBox.y} ${viewBox.w} ${viewBox.h}`;
@@ -22,26 +23,27 @@ const ScrollableSVG = (props) => {
 
   const scale = (n) => {
     if (width / height > props.viewBoxWidth / props.viewBoxHeight) {
-      // scale using height
-      return (n / height) * props.viewBoxHeight;
+      // scale using width
+      // console.log('width');
+      return (n / width) * props.viewBoxWidth;
     }
-    // scale using width
-    return (n / width) * props.viewBoxWidth;
+    // scale using height
+    // console.log('height');
+    return (n / height) * props.viewBoxHeight;
   };
 
-  const getZoom = () => {
-    return viewBox.h / props.viewBoxHeight;
-  };
+  // const getZoom = () => {
+  //   return viewBox.h / props.viewBoxHeight;
+  // };
 
   const scaleZoom = (n) => {
-    const zoom = getZoom(viewBox);
-    return scale(n, width, height) * zoom;
+    return scale(n) * zoom;
   };
 
   const mouseDown = (e) => {
     setOrigin({
-      x: scaleZoom(e.nativeEvent.clientX, width, height, viewBox) - viewBox.x,
-      y: scaleZoom(e.nativeEvent.clientY, width, height, viewBox) - viewBox.y,
+      x: scaleZoom(e.nativeEvent.clientX) - viewBox.x,
+      y: scaleZoom(e.nativeEvent.clientY) - viewBox.y,
     });
     setPanning(true);
   };
@@ -49,8 +51,8 @@ const ScrollableSVG = (props) => {
   const mouseMove = (e) => {
     if (panning) {
       setViewBox({
-        x: scaleZoom(e.nativeEvent.clientX, width, height, viewBox) - origin.x,
-        y: scaleZoom(e.nativeEvent.clientY, width, height, viewBox) - origin.y,
+        x: scaleZoom(e.nativeEvent.clientX) - origin.x,
+        y: scaleZoom(e.nativeEvent.clientY) - origin.y,
         w: viewBox.w,
         h: viewBox.h,
       });
@@ -62,13 +64,23 @@ const ScrollableSVG = (props) => {
   };
 
   const wheel = (e) => {
-    const dw = viewBox.w * Math.sign(e.deltaY) * ZOOM_POWER;
-    const dh = viewBox.h * Math.sign(e.deltaY) * ZOOM_POWER;
+    const dz = Math.sign(e.deltaY) * ZOOM_POWER;
+    let z = zoom + dz;
+    if (z > 1) {
+      z = 1;
+    } else if (z < 0.25) {
+      z = 0.25;
+    }
+    setZoom(z);
+    const w = viewBoxWidth * zoom;
+    const h = viewBoxWidth * zoom;
+    const dw = w - viewBox.w;
+    const dh = h - viewBox.h;
     setViewBox({
       x: viewBox.x + dw / 2,
       y: viewBox.y + dh / 2,
-      w: viewBox.w + dw,
-      h: viewBox.h + dh,
+      w,
+      h,
     });
   };
 
@@ -76,7 +88,7 @@ const ScrollableSVG = (props) => {
     <svg
       ref={ref}
       className={className}
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio="xMidYMid slice"
       viewBox={getViewBox(viewBox)}
       onMouseDown={(e) => {
         mouseDown(e);
