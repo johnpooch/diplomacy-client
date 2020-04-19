@@ -27,7 +27,6 @@ class Map extends React.Component {
     super(props);
 
     this.state = {
-      turn: null,
       hovering: null,
       tooltip: null,
       mousePos: {
@@ -40,28 +39,8 @@ class Map extends React.Component {
     this.tooltipTimeout = null;
   }
 
-  componentDidMount() {
-    const turn = this.getCurrentTurn();
-    this.setState({
-      turn,
-    });
-  }
-
   componentWillUnmount() {
     this.clearTooltipTimeout();
-  }
-
-  getCurrentTurn() {
-    const { game } = this.props;
-    const { turns } = game;
-
-    for (let i = 0; i < turns.length; i += 1) {
-      if (turns[i].current_turn === true) {
-        return turns[i];
-      }
-    }
-
-    return null;
   }
 
   getNation(id) {
@@ -83,13 +62,13 @@ class Map extends React.Component {
   }
 
   getTerritoryState(id) {
-    const { turn } = this.state;
+    const { turn } = this.props;
     const territoryStates = turn.territory_states;
     return Utils.getObjectByKey(id, territoryStates, 'territory');
   }
 
   getPieceInTerritory(id) {
-    const { turn } = this.state;
+    const { turn } = this.props;
     const pieceStates = turn.piece_states;
     const pieceState = Utils.getObjectByKey(id, pieceStates, 'territory');
     if (pieceState) {
@@ -155,7 +134,7 @@ class Map extends React.Component {
   }
 
   renderTerritories() {
-    const { turn } = this.state;
+    const { turn } = this.props;
     if (!turn) return null;
 
     const { game } = this.props;
@@ -195,7 +174,7 @@ class Map extends React.Component {
   }
 
   renderPieces() {
-    const { turn } = this.state;
+    const { turn } = this.props;
     const pieceStates = turn.piece_states;
 
     const piecesList = [];
@@ -222,7 +201,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const { turn } = this.state;
+    const { turn } = this.props;
     if (!turn) return null;
 
     return (
