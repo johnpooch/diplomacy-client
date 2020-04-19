@@ -25,6 +25,14 @@ class NavList extends React.Component {
       );
     });
     if (isAuthenticated) {
+      // TODO make dynamic
+      navItems.push(
+        <li key="/create-game">
+          <NavLink to="/create-game" activeClassName="active" exact>
+            Create Game
+          </NavLink>
+        </li>
+      );
       navItems.push(
         <li key="/logout">
           <button

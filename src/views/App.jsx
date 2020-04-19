@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 
 import Game from './Game';
 import BrowseGames from './BrowseGames';
+import CreateGame from './CreateGame';
 import Home from './Home';
 import Error from './Error';
 import Header, { headerHeight } from '../components/Header';
@@ -58,6 +59,9 @@ class App extends React.Component {
             </Route>
             <Route exact path="/browse-games">
               <BrowseGames headers={headers} />
+            </Route>
+            <Route exact path="/create-game">
+              <CreateGame headers={headers} />
             </Route>
             <Route exact path="/">
               <Home headers={headers} />

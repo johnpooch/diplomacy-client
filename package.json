@@ -34,6 +34,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "gulp": "^4.0.2",
     "html-webpack-plugin": "^4.2.0",
+    "interweave": "12.5.0",
     "node-sass": "^4.13.1",
     "polished": "^3.5.1",
     "prop-types": "^15.7.2",
