@@ -22,28 +22,28 @@ const ScrollableSVG = (props) => {
   };
 
   const scale = (n) => {
-    if (width / height > props.viewBoxWidth / props.viewBoxHeight) {
+    if (width / height > viewBoxWidth / viewBoxHeight) {
       // scale using width
-      // console.log('width');
-      return (n / width) * props.viewBoxWidth;
+      const zoomFactor = viewBox.w / viewBoxWidth;
+      return (n / width) * viewBoxWidth * zoomFactor;
     }
     // scale using height
-    // console.log('height');
-    return (n / height) * props.viewBoxHeight;
+    const zoomFactor = viewBox.h / viewBoxHeight;
+    return (n / height) * viewBoxHeight * zoomFactor;
   };
 
   // const getZoom = () => {
   //   return viewBox.h / props.viewBoxHeight;
   // };
 
-  const scaleZoom = (n) => {
-    return scale(n) * zoom;
-  };
+  // const scaleZoom = (n) => {
+  //   return scale(n) * zoom;
+  // };
 
   const mouseDown = (e) => {
     setOrigin({
-      x: scaleZoom(e.nativeEvent.clientX) - viewBox.x,
-      y: scaleZoom(e.nativeEvent.clientY) - viewBox.y,
+      x: scale(e.nativeEvent.clientX) - viewBox.x,
+      y: scale(e.nativeEvent.clientY) - viewBox.y,
     });
     setPanning(true);
   };
@@ -51,8 +51,8 @@ const ScrollableSVG = (props) => {
   const mouseMove = (e) => {
     if (panning) {
       setViewBox({
-        x: scaleZoom(e.nativeEvent.clientX) - origin.x,
-        y: scaleZoom(e.nativeEvent.clientY) - origin.y,
+        x: scale(e.nativeEvent.clientX) - origin.x,
+        y: scale(e.nativeEvent.clientY) - origin.y,
         w: viewBox.w,
         h: viewBox.h,
       });
@@ -72,10 +72,12 @@ const ScrollableSVG = (props) => {
       z = 0.25;
     }
     setZoom(z);
-    const w = viewBoxWidth * zoom;
-    const h = viewBoxWidth * zoom;
+
+    const w = viewBoxWidth * z;
+    const h = viewBoxHeight * z;
     const dw = w - viewBox.w;
     const dh = h - viewBox.h;
+
     setViewBox({
       x: viewBox.x + dw / 2,
       y: viewBox.y + dh / 2,
