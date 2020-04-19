@@ -3,6 +3,8 @@ import useDimensions from 'react-use-dimensions';
 
 const ScrollableSVG = (props) => {
   const ZOOM_POWER = 0.1;
+  const ZOOM_MIN = 0.25;
+  const ZOOM_MAX = 2.0;
 
   const { viewBoxWidth, viewBoxHeight, className, children } = props;
 
@@ -66,10 +68,10 @@ const ScrollableSVG = (props) => {
   const wheel = (e) => {
     const dz = Math.sign(e.deltaY) * ZOOM_POWER;
     let z = zoom + dz;
-    if (z > 1) {
-      z = 1;
-    } else if (z < 0.25) {
-      z = 0.25;
+    if (z > ZOOM_MAX) {
+      z = ZOOM_MAX;
+    } else if (z < ZOOM_MIN) {
+      z = ZOOM_MIN;
     }
     setZoom(z);
 
