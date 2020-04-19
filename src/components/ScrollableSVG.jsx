@@ -34,14 +34,6 @@ const ScrollableSVG = (props) => {
     return (n / height) * viewBoxHeight * zoomFactor;
   };
 
-  // const getZoom = () => {
-  //   return viewBox.h / props.viewBoxHeight;
-  // };
-
-  // const scaleZoom = (n) => {
-  //   return scale(n) * zoom;
-  // };
-
   const mouseDown = (e) => {
     setOrigin({
       x: scale(e.nativeEvent.clientX) - viewBox.x,
