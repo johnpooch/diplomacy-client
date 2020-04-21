@@ -27,6 +27,7 @@ const PositionedDiv = styled(StyledDiv)`
 const StyledSpan = styled.span`
   text-transform: capitalize;
   color: ${(props) => (props.color ? props.color : 'white')};
+  user-select: none;
 
   &:not(:last-of-type):after {
     content: ' ';

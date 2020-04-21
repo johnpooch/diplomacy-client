@@ -13,6 +13,7 @@ const StyledText = styled.text`
   text-anchor: left;
   pointer-events: none;
   text-transform: uppercase;
+  user-select: none;
 `;
 
 const StyledGroup = styled.g`

@@ -2,69 +2,9 @@ import React, { useState } from 'react';
 import useDimensions from 'react-use-dimensions';
 
 const ScrollableSVG = (props) => {
-  const getViewBox = (viewBox) => {
-    return `${-viewBox.x} ${-viewBox.y} ${viewBox.w} ${viewBox.h}`;
-  };
-
-  const scale = (n, width, height) => {
-    if (width / height > props.viewBoxWidth / props.viewBoxHeight) {
-      // scale using height
-      return (n / height) * props.viewBoxHeight;
-    }
-    // scale using width
-    return (n / width) * props.viewBoxWidth;
-  };
-
-  const getZoom = (viewBox) => {
-    return viewBox.h / props.viewBoxHeight;
-  };
-
-  const scaleZoom = (n, width, height, viewBox) => {
-    const zoom = getZoom(viewBox);
-    return scale(n, width, height) * zoom;
-  };
-
-  const mouseDown = (e, width, height, viewBox, setOrigin, setPanning) => {
-    setOrigin({
-      x: scaleZoom(e.nativeEvent.clientX, width, height, viewBox) - viewBox.x,
-      y: scaleZoom(e.nativeEvent.clientY, width, height, viewBox) - viewBox.y,
-    });
-    setPanning(true);
-  };
-
-  const mouseMove = (
-    e,
-    width,
-    height,
-    panning,
-    origin,
-    viewBox,
-    setViewBox
-  ) => {
-    if (panning) {
-      setViewBox({
-        x: scaleZoom(e.nativeEvent.clientX, width, height, viewBox) - origin.x,
-        y: scaleZoom(e.nativeEvent.clientY, width, height, viewBox) - origin.y,
-        w: viewBox.w,
-        h: viewBox.h,
-      });
-    }
-  };
-
-  const mouseUp = (e, setPanning) => {
-    setPanning(false);
-  };
-
-  const wheel = (e, zoomPower, width, height, viewBox, setViewBox) => {
-    const dw = viewBox.w * Math.sign(e.deltaY) * zoomPower;
-    const dh = viewBox.h * Math.sign(e.deltaY) * zoomPower;
-    setViewBox({
-      x: viewBox.x + dw / 2,
-      y: viewBox.y + dh / 2,
-      w: viewBox.w + dw,
-      h: viewBox.h + dh,
-    });
-  };
+  const ZOOM_POWER = 0.1;
+  const ZOOM_MIN = 0.25;
+  const ZOOM_MAX = 2.0;
 
   const { viewBoxWidth, viewBoxHeight, className, children } = props;
 
@@ -77,26 +17,89 @@ const ScrollableSVG = (props) => {
   });
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const [panning, setPanning] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
-  const zoomPower = 0.1;
+  const getViewBox = () => {
+    return `${-viewBox.x} ${-viewBox.y} ${viewBox.w} ${viewBox.h}`;
+  };
+
+  const scale = (n) => {
+    if (width / height > viewBoxWidth / viewBoxHeight) {
+      // scale using width
+      const zoomFactor = viewBox.w / viewBoxWidth;
+      return (n / width) * viewBoxWidth * zoomFactor;
+    }
+    // scale using height
+    const zoomFactor = viewBox.h / viewBoxHeight;
+    return (n / height) * viewBoxHeight * zoomFactor;
+  };
+
+  const mouseDown = (e) => {
+    setOrigin({
+      x: scale(e.nativeEvent.clientX) - viewBox.x,
+      y: scale(e.nativeEvent.clientY) - viewBox.y,
+    });
+    setPanning(true);
+  };
+
+  const mouseMove = (e) => {
+    if (panning) {
+      setViewBox({
+        x: scale(e.nativeEvent.clientX) - origin.x,
+        y: scale(e.nativeEvent.clientY) - origin.y,
+        w: viewBox.w,
+        h: viewBox.h,
+      });
+    }
+  };
+
+  const mouseUp = () => {
+    setPanning(false);
+  };
+
+  const wheel = (e) => {
+    const dz = Math.sign(e.deltaY) * ZOOM_POWER;
+    let z = zoom + dz;
+    if (z > ZOOM_MAX) {
+      z = ZOOM_MAX;
+    } else if (z < ZOOM_MIN) {
+      z = ZOOM_MIN;
+    }
+    setZoom(z);
+
+    const w = viewBoxWidth * z;
+    const h = viewBoxHeight * z;
+    const dw = w - viewBox.w;
+    const dh = h - viewBox.h;
+
+    setViewBox({
+      x: viewBox.x + dw / 2,
+      y: viewBox.y + dh / 2,
+      w,
+      h,
+    });
+  };
 
   return (
     <svg
       ref={ref}
       className={className}
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio="xMidYMid slice"
       viewBox={getViewBox(viewBox)}
       onMouseDown={(e) => {
-        mouseDown(e, width, height, viewBox, setOrigin, setPanning);
+        mouseDown(e);
       }}
       onMouseMove={(e) => {
-        mouseMove(e, width, height, panning, origin, viewBox, setViewBox);
+        mouseMove(e);
+      }}
+      onMouseLeave={(e) => {
+        mouseUp(e);
       }}
       onMouseUp={(e) => {
-        mouseUp(e, setPanning);
+        mouseUp(e);
       }}
       onWheel={(e) => {
-        wheel(e, zoomPower, width, height, viewBox, setViewBox);
+        wheel(e);
       }}
     >
       {children}
