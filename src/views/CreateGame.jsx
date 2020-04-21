@@ -15,7 +15,6 @@ class CreateGame extends Component {
       isLoaded: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -47,17 +46,23 @@ class CreateGame extends Component {
       });
   }
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
+  handleSubmit(event) {
+    event.preventDefault();
+    const { headers } = this.props;
+    if (!event.target.checkValidity()) {
+      return;
+    }
+    const data = new FormData(event.target);
+    fetch(API.CREATEGAMEURL, {
+      method: 'POST',
+      body: data,
+      headers,
+    }).then((response) => {
+      if (response.status === 200) {
+        console.log('GAME CREATED');
+        // TODO redirect to my games? or maybe just browse games.
+      }
     });
-  }
-
-  handleSubmit() {
-    const { username, password } = this.state;
-    const { onAuth } = this.props;
-    onAuth(username, password);
-    // NOTE this should redirect if successful
   }
 
   render() {

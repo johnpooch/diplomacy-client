@@ -22,7 +22,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      headers: App.getAuthHeaders('admin', 'admin'),
+      headers: App.getAuthHeaders(),
     };
   }
 
@@ -31,12 +31,9 @@ class App extends React.Component {
     onTryAutoSignup();
   }
 
-  static getAuthHeaders(username, password) {
+  static getAuthHeaders() {
     const headers = new Headers();
-    headers.set(
-      'Authorization',
-      `Basic ${window.btoa(`${username}:${password}`)}`
-    );
+    headers.set('Authorization', `Token ${localStorage.getItem('token')}`);
     return headers;
   }
 
@@ -78,6 +75,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    token: state.token,
     isAuthenticated: state.token !== null,
   };
 };

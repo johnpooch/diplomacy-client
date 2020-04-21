@@ -35,7 +35,6 @@ class Game extends React.Component {
         return null;
       })
       .then((json) => {
-        console.log(json);
         this.setState({
           game: json,
           isLoaded: true,
