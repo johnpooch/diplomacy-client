@@ -2,8 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 
-import { colors, spacing, fontSizes } from '../variables';
-import NavList from './NavList';
+import { colors, spacing } from '../variables';
+import Nav from './Nav';
+import UserAccount from './UserAccount';
 
 export const headerHeight = spacing[6];
 
@@ -14,50 +15,17 @@ const StyledHeader = styled.header`
   background: ${colors.base};
   z-index: 1;
   height: ${headerHeight}px;
-
-  nav {
-    height: 100%;
-  }
-
-  ul {
-    display: flex;
-    align-items: center;
-    overflow-x: auto;
-    height: 100%;
-  }
-
-  li {
-    margin-left: ${spacing[4]}px;
-    &:last-of-type {
-      margin-right: ${spacing[4]}px;
-    }
-  }
-
-  a {
-    color: white;
-    font-size: ${fontSizes.sans.medium}px;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    &.active {
-      color: ${colors.yellow};
-    }
-  }
+  padding: 0 ${spacing[4]}px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Header = () => {
   return (
     <StyledHeader>
-      <nav>
-        <ul>
-          <NavList />
-        </ul>
-      </nav>
+      <Nav />
+      <UserAccount />
     </StyledHeader>
   );
 };
