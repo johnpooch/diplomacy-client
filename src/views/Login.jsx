@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Loading from './Loading';
+import Loading from '../components/Loading';
 import * as actions from '../store/actions/auth';
 
 class Login extends Component {

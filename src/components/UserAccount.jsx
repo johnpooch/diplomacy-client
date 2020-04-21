@@ -3,38 +3,47 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-// import { colors, spacing, fontSizes } from '../variables';
+import { StyledBaseNav } from './Nav';
 import * as actions from '../store/actions/auth';
 
-const StyledDiv = styled.div`
-  a {
-    color: white;
-  }
+const StyledSpan = styled.span`
+  display: block;
 `;
 
-const UserAccount = (props) => {
-  const { logout, isAuthenticated } = props;
-  if (isAuthenticated) {
-    return (
-      <StyledDiv>
-        <button
-          type="button"
-          onClick={logout}
-          onKeyPress={logout}
-          role="link"
-          tabIndex={0}
-        >
-          Logout
-        </button>
-      </StyledDiv>
-    );
-  }
+const renderLoggedOut = () => {
   return (
-    <StyledDiv>
+    <StyledSpan>
       <NavLink to="/login" activeClassName="active" exact>
-        Login
+        Log in
       </NavLink>
-    </StyledDiv>
+    </StyledSpan>
+  );
+};
+
+const renderLoggedIn = (props) => {
+  const { logout } = props;
+  return (
+    <StyledSpan>
+      <button
+        type="button"
+        onClick={logout}
+        onKeyPress={logout}
+        role="link"
+        tabIndex={0}
+      >
+        Logout
+      </button>
+    </StyledSpan>
+  );
+};
+
+const UserAccount = (props) => {
+  const { isAuthenticated } = props;
+
+  return (
+    <StyledBaseNav>
+      {isAuthenticated ? renderLoggedIn(props) : renderLoggedOut()}
+    </StyledBaseNav>
   );
 };
 

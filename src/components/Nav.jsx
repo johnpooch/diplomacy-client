@@ -4,18 +4,12 @@ import styled from '@emotion/styled';
 
 import { colors, spacing, fontSizes } from '../variables';
 
-const StyledNav = styled.nav`
+export const StyledBaseNav = styled.nav`
   ul {
     display: flex;
     align-items: center;
     overflow-x: auto;
     height: 100%;
-  }
-
-  li {
-    &:not(:last-of-type) {
-      margin-right: ${spacing[4]}px;
-    }
   }
 
   a {
@@ -35,9 +29,17 @@ const StyledNav = styled.nav`
   }
 `;
 
+const StyledNav = styled(StyledBaseNav)`
+  li {
+    &:not(:last-of-type) {
+      margin-right: ${spacing[4]}px;
+    }
+  }
+`;
+
 const navItems = {
   '/': 'Home',
-  '/browse-games': 'Browse Games',
+  '/browse-games': 'Browse games',
 };
 
 const Nav = () => {

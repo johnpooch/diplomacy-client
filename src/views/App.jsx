@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import Game from './Game';
+import Login from './Login';
+import Register from './Register';
 import BrowseGames from './BrowseGames';
 import Home from './Home';
 import Error from './Error';
 import Header, { headerHeight } from '../components/Header';
-import Login from '../components/Login';
-import Register from '../components/Register';
 import * as actions from '../store/actions/auth';
 
 const StyledDiv = styled.div`
@@ -48,13 +48,14 @@ class App extends React.Component {
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/login" render={() => <Login headers={headers} />} />
-            <Route
-              path="/register"
-              render={() => <Register headers={headers} />}
-            />
             <Route path="/game/:id">
               <Game headers={headers} />
+            </Route>
+            <Route path="/login">
+              <Login headers={headers} />
+            </Route>
+            <Route path="/register">
+              <Register headers={headers} />
             </Route>
             <Route exact path="/browse-games">
               <BrowseGames headers={headers} />
