@@ -13,17 +13,21 @@ const StyledDiv = styled.div`
   color: white;
   font-size: ${fontSizes.sans.small}px;
   background-color: ${colors.base};
-  left: ${(props) => props.mousePos.x}px;
-  top: ${(props) => props.mousePos.y}px;
 
   div:not(:first-of-type) {
     margin-top: ${spacing[0]}px;
   }
 `;
 
+const PositionedDiv = styled(StyledDiv)`
+  left: ${(props) => props.x}px;
+  top: ${(props) => props.y}px;
+`;
+
 const StyledSpan = styled.span`
   text-transform: capitalize;
   color: ${(props) => (props.color ? props.color : 'white')};
+  user-select: none;
 
   &:not(:last-of-type):after {
     content: ' ';
@@ -34,8 +38,8 @@ const StyledSpan = styled.span`
   }
 `;
 
-const getSupplyCenter = (data) => {
-  if (data.supply) {
+const getSupplyCenter = (territory) => {
+  if (territory.supply_center) {
     return <StyledSpan className="supply">*</StyledSpan>;
   }
   return null;
@@ -53,23 +57,28 @@ const getControlledBy = (controlledBy) => {
   return null;
 };
 
-const getTooltip = (data, props) => {
-  const { territoryControlledBy, piece, pieceControlledBy } = props;
+const getTooltip = (data, tooltip) => {
+  const {
+    territory,
+    territoryControlledBy,
+    piece,
+    pieceControlledBy,
+  } = tooltip;
 
-  const tooltip = [];
+  const tooltipElements = [];
 
   if (data.name) {
-    tooltip.push(
+    tooltipElements.push(
       <div key="territory">
         <StyledSpan className="name">{data.name}</StyledSpan>
-        {getSupplyCenter(data)}
+        {getSupplyCenter(territory)}
         {getControlledBy(territoryControlledBy)}
       </div>
     );
   }
 
   if (piece) {
-    tooltip.push(
+    tooltipElements.push(
       <div key="piece">
         <StyledSpan className="type">{piece.type}</StyledSpan>
         {getControlledBy(pieceControlledBy)}
@@ -77,17 +86,24 @@ const getTooltip = (data, props) => {
     );
   }
 
-  return tooltip;
+  return tooltipElements;
 };
 
 const Tooltip = (props) => {
-  const { mousePos, territoryState } = props;
-  const data = Utils.getObjectByKey(
-    territoryState.territory,
-    mapData.territories
-  );
+  const { tooltip } = props;
+  const { territory } = tooltip;
+
+  const data = Utils.getObjectByKey(territory.id, mapData.territories);
   if (!data) return null;
-  return <StyledDiv mousePos={mousePos}>{getTooltip(data, props)}</StyledDiv>;
+
+  const { pos } = tooltip;
+  const { x, y } = pos;
+
+  return (
+    <PositionedDiv x={x} y={y}>
+      {getTooltip(data, tooltip)}
+    </PositionedDiv>
+  );
 };
 
 export default Tooltip;

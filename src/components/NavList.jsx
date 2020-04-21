@@ -14,12 +14,12 @@ class NavList extends React.Component {
     const { logout, isAuthenticated } = this.props;
     const navItems = [];
 
-    Object.keys(nav).forEach((key) => {
-      const val = nav[key];
+    Object.keys(nav).forEach((path) => {
+      const label = nav[path];
       navItems.push(
-        <li key={key}>
-          <NavLink to={key} activeClassName="active" exact>
-            {val}
+        <li key={path}>
+          <NavLink to={path} activeClassName="active" exact>
+            {label}
           </NavLink>
         </li>
       );
