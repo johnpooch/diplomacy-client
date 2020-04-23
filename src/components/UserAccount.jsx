@@ -59,7 +59,7 @@ const renderLoggedIn = (props) => {
   return (
     <StyledLoggedIn>
       <span className="avatar">
-        <Identicon string="randomness" size={AVATAR_SIZE} />
+        <Identicon string={username} size={AVATAR_SIZE} />
       </span>
       <span className="username">{username}</span>
       <Button
