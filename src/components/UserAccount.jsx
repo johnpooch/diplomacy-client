@@ -3,24 +3,35 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { StyledBaseNav } from './Nav';
+import Button from './Button';
+import { spacing } from '../variables';
 import * as actions from '../store/actions/auth';
 
-const StyledUserAccount = styled.span`
-  display: block;
+const StyledLoggedOut = styled.nav`
+  a + a {
+    margin-left: ${spacing[1]}px;
+  }
+`;
 
+const StyledLoggedIn = styled.div`
   .username {
     color: white;
+    display: inline-block;
+    margin-right: ${spacing[2]}px;
   }
 `;
 
 const renderLoggedOut = () => {
+  const StyledNavLink = Button.withComponent(NavLink);
   return (
-    <StyledBaseNav>
-      <NavLink to="/login" activeClassName="active" exact>
+    <StyledLoggedOut>
+      <StyledNavLink to="/login" activeClassName="active" exact>
         Log in
-      </NavLink>
-    </StyledBaseNav>
+      </StyledNavLink>
+      <StyledNavLink to="/register" activeClassName="active" exact>
+        Register
+      </StyledNavLink>
+    </StyledLoggedOut>
   );
 };
 
@@ -29,13 +40,12 @@ const renderAvatar = () => {
 };
 
 const renderLoggedIn = (props) => {
-  const { logout } = props;
-
+  const { logout, username } = props;
   return (
-    <StyledUserAccount>
-      <span className="username">username</span>
+    <StyledLoggedIn>
+      <span className="username">{username}</span>
       {renderAvatar()}
-      <button
+      <Button
         type="button"
         onClick={logout}
         onKeyPress={logout}
@@ -43,8 +53,8 @@ const renderLoggedIn = (props) => {
         tabIndex={0}
       >
         Logout
-      </button>
-    </StyledUserAccount>
+      </Button>
+    </StyledLoggedIn>
   );
 };
 
@@ -56,6 +66,7 @@ const UserAccount = (props) => {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.token !== null,
+    username: state.username,
   };
 };
 

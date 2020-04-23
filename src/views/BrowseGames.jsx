@@ -6,8 +6,8 @@ import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import { PageWrapper } from '../globals';
-import * as API from '../api';
 import { colors, spacing } from '../variables';
+import * as API from '../api';
 
 const StyledList = styled.ol`
   margin: 0;
@@ -93,8 +93,7 @@ class BrowseGames extends React.Component {
           isLoaded: true,
         });
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         this.setState({
           isLoaded: true,
         });

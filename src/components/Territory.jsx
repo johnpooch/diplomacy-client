@@ -9,7 +9,7 @@ import { colors, fontSizes } from '../variables';
 
 const StyledText = styled.text`
   fill: white;
-  font-size: ${fontSizes.sans.xsmall}px;
+  font-size: ${fontSizes.sans[0]}px;
   text-anchor: left;
   pointer-events: none;
   text-transform: uppercase;

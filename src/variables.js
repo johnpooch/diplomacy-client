@@ -4,13 +4,7 @@ export const fontFamilies = {
 };
 
 export const fontSizes = {
-  sans: {
-    xlarge: 36,
-    large: 19,
-    medium: 15,
-    small: 13,
-    xsmall: 4,
-  },
+  sans: [4, 13, 15, 19, 36],
 };
 
 export const colors = {
@@ -43,5 +37,5 @@ export const spacing = [4, 8, 12, 16, 24, 32, 44, 60];
 export const sizes = {
   padding: spacing[3],
   border: 2,
-  borderRadius: 16,
+  borderRadius: [8, 16],
 };

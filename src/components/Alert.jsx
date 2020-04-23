@@ -11,9 +11,9 @@ const StyledDiv = styled.div`
   height: max-content;
   padding: ${sizes.padding}px;
   border: ${sizes.border}px solid currentColor;
-  border-radius: ${sizes.borderRadius}px;
+  border-radius: ${sizes.borderRadius[1]}px;
   color: ${(props) => (props.type === 'error' ? colors.red : colors.base)};
-  font-size: ${fontSizes.sans.medium}px;
+  font-size: ${fontSizes.sans[2]}px;
 `;
 
 const Alert = (props) => {

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { colors, spacing, fontSizes } from '../variables';
 
-export const StyledBaseNav = styled.nav`
+const StyledNav = styled.nav`
   ul {
     display: flex;
     align-items: center;
@@ -12,9 +12,15 @@ export const StyledBaseNav = styled.nav`
     height: 100%;
   }
 
+  li {
+    &:not(:last-of-type) {
+      margin-right: ${spacing[4]}px;
+    }
+  }
+
   a {
     color: white;
-    font-size: ${fontSizes.sans.medium}px;
+    font-size: ${fontSizes.sans[2]}px;
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
@@ -25,14 +31,6 @@ export const StyledBaseNav = styled.nav`
 
     &.active {
       color: ${colors.yellow};
-    }
-  }
-`;
-
-const StyledNav = styled(StyledBaseNav)`
-  li {
-    &:not(:last-of-type) {
-      margin-right: ${spacing[4]}px;
     }
   }
 `;
