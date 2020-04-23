@@ -15,7 +15,7 @@ const Button = styled.button`
   border-radius: ${sizes.borderRadius[0]}px;
 
   &.active {
-    background-color: ${colors.yellow};
+    text-decoration: underline;
   }
 
   &:hover {

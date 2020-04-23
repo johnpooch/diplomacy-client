@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { colors, spacing, fontSizes } from '../variables';
+import { spacing, fontSizes } from '../variables';
 
 const StyledNav = styled.nav`
   ul {
@@ -30,7 +30,7 @@ const StyledNav = styled.nav`
     }
 
     &.active {
-      color: ${colors.yellow};
+      text-decoration: underline;
     }
   }
 `;
