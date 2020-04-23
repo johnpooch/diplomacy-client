@@ -9,12 +9,12 @@ import Register from './Register';
 import BrowseGames from './BrowseGames';
 import Home from './Home';
 import Error from './Error';
-import Header, { headerHeight } from '../components/Header';
+import Header, { HEADER_HEIGHT } from '../components/Header';
 import * as actions from '../store/actions/auth';
 
 const StyledDiv = styled.div`
   position: relative;
-  padding-top: ${headerHeight}px;
+  padding-top: ${HEADER_HEIGHT}px;
 `;
 
 class App extends React.Component {

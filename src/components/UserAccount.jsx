@@ -2,10 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
+import Identicon from 'react-identicons';
 
 import Button from './Button';
 import { spacing } from '../variables';
 import * as actions from '../store/actions/auth';
+
+export const AVATAR_SIZE = 20;
 
 const StyledLoggedOut = styled.nav`
   a + a {
@@ -14,10 +17,26 @@ const StyledLoggedOut = styled.nav`
 `;
 
 const StyledLoggedIn = styled.div`
+  display: flex;
+  align-items: center;
+
   .username {
-    color: white;
     display: inline-block;
-    margin-right: ${spacing[2]}px;
+    margin-right: ${spacing[3]}px;
+    color: white;
+  }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: ${spacing[1]}px;
+    width: calc(${AVATAR_SIZE}px + 10px);
+    height: calc(${AVATAR_SIZE}px + 10px);
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: white;
   }
 `;
 
@@ -35,16 +54,14 @@ const renderLoggedOut = () => {
   );
 };
 
-const renderAvatar = () => {
-  return null;
-};
-
 const renderLoggedIn = (props) => {
   const { logout, username } = props;
   return (
     <StyledLoggedIn>
+      <span className="avatar">
+        <Identicon string="randomness" size={AVATAR_SIZE} />
+      </span>
       <span className="username">{username}</span>
-      {renderAvatar()}
       <Button
         type="button"
         onClick={logout}
