@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { colors, spacing } from '../variables';
+import ActionButton from './ActionButton';
 
 const StyledListItem = styled.li`
   &:not(:last-child) {
@@ -68,8 +69,7 @@ class BrowseGame extends Component {
   }
 
   render() {
-    const { data } = this.props;
-    const { createdAt, createdBy, variant, id, name } = data;
+    const { createdAt, createdBy, variant, id, name } = this.props;
     const date = new Date(createdAt);
     const dateString = date.toLocaleDateString('en-GB', getDateDisplayFormat());
 
@@ -88,7 +88,7 @@ class BrowseGame extends Component {
               </time>
             </p>
             <p className="created-by">
-              <span className="label">By player</span>
+              <span className="label">Created by</span>
               <span className="value">{createdBy}</span>
             </p>
             <p className="variant">

@@ -1,28 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import Alert from '../components/Alert';
 import BrowseGame from '../components/BrowseGame';
-import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import { PageWrapper } from '../globals';
 import * as API from '../api';
-import { colors, spacing } from '../variables';
 
 const StyledList = styled.ol`
   margin: 0;
   padding: 0;
   list-style: none;
 `;
-
-function gameToData(game) {
-  return {
-    createdBy: game.created_by,
-    createdAt: game.created_at,
-    ...game,
-  };
-}
 
 class BrowseGames extends React.Component {
   constructor(props) {
@@ -76,20 +65,23 @@ class BrowseGames extends React.Component {
 
     const gamesList = [];
     games.forEach((game) => {
-      const data = gameToData(game);
-      console.log(data);
-      gamesList.push(<BrowseGame key={data.id} data={data} />);
+      gamesList.push(
+        <BrowseGame
+          key={game.id}
+          id={game.id}
+          status={game.status}
+          createdAt={game.created_at}
+          createdBy={game.created_by}
+          variant={game.variant}
+          name={game.name}
+        />
+      );
     });
     return <StyledList>{gamesList}</StyledList>;
   }
 
   render() {
-    return (
-      <PageWrapper>
-        <Heading text="Browse Games" />
-        {this.renderView()}
-      </PageWrapper>
-    );
+    return <PageWrapper>{this.renderView()}</PageWrapper>;
   }
 }
 

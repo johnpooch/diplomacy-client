@@ -4,7 +4,7 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   mode: 'development',
   devServer: {
-    port: 8020,
+    port: 8000,
     hot: true,
     open: true,
     historyApiFallback: true,

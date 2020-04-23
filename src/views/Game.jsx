@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Error from './Error';
 import Map from '../components/Map';
 import Loading from '../components/Loading';
+import JoinGame from '../components/JoinGame';
 
 import * as API from '../api';
 
@@ -51,6 +52,12 @@ class Game extends React.Component {
     const { isLoaded, game } = this.state;
     if (!isLoaded) return <Loading />;
     if (!game) return <Error text="Game not found" />;
+
+    const { status } = game;
+    if (status === 'pending') {
+      // handle already joined!
+      return <JoinGame game={game} />;
+    }
     return <Map game={game} />;
   }
 }
