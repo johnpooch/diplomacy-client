@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import Loading from '../components/Loading';
 import * as actions from '../store/actions/auth';
@@ -24,9 +24,9 @@ class Login extends Component {
 
   handleSubmit() {
     const { username, password } = this.state;
-    const { onAuth } = this.props;
+    const { onAuth, history } = this.props;
     onAuth(username, password);
-    // NOTE this should redirect if successful
+    history.push('/');
   }
 
   render() {
@@ -84,4 +84,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

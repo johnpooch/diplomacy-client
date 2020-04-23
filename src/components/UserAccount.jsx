@@ -6,24 +6,35 @@ import styled from '@emotion/styled';
 import { StyledBaseNav } from './Nav';
 import * as actions from '../store/actions/auth';
 
-const StyledSpan = styled.span`
+const StyledUserAccount = styled.span`
   display: block;
+
+  .username {
+    color: white;
+  }
 `;
 
 const renderLoggedOut = () => {
   return (
-    <StyledSpan>
+    <StyledBaseNav>
       <NavLink to="/login" activeClassName="active" exact>
         Log in
       </NavLink>
-    </StyledSpan>
+    </StyledBaseNav>
   );
+};
+
+const renderAvatar = () => {
+  return null;
 };
 
 const renderLoggedIn = (props) => {
   const { logout } = props;
+
   return (
-    <StyledSpan>
+    <StyledUserAccount>
+      <span className="username">username</span>
+      {renderAvatar()}
       <button
         type="button"
         onClick={logout}
@@ -33,18 +44,13 @@ const renderLoggedIn = (props) => {
       >
         Logout
       </button>
-    </StyledSpan>
+    </StyledUserAccount>
   );
 };
 
 const UserAccount = (props) => {
   const { isAuthenticated } = props;
-
-  return (
-    <StyledBaseNav>
-      {isAuthenticated ? renderLoggedIn(props) : renderLoggedOut()}
-    </StyledBaseNav>
-  );
+  return isAuthenticated ? renderLoggedIn(props) : renderLoggedOut();
 };
 
 const mapStateToProps = (state) => {
