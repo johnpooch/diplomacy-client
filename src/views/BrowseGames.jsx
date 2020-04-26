@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
+import FilterForm from '../components/FilterForm';
 import { PageWrapper } from '../globals';
 import * as API from '../api';
 import { colors, spacing } from '../variables';
@@ -71,7 +72,7 @@ class BrowseGames extends React.Component {
   }
 
   componentDidMount() {
-    this.getGames();
+    this.fetchAPI();
   }
 
   getGames() {
@@ -94,7 +95,33 @@ class BrowseGames extends React.Component {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
+        this.setState({
+          isLoaded: true,
+        });
+      });
+  }
+
+  getFilterChoices() {
+    const { headers } = this.props;
+    fetch(API.GAMEFILTERCHOICESURL, {
+      method: 'GET',
+      headers,
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error('Failed to connect to service');
+        }
+        return response.json();
+      })
+      .then((json) => {
+        const choices = json;
+        this.setState({
+          choices,
+          isLoaded: true,
+        });
+      })
+      .catch((error) => {
         this.setState({
           isLoaded: true,
         });
@@ -109,6 +136,26 @@ class BrowseGames extends React.Component {
       hour: '2-digit',
       minute: '2-digit',
     };
+  }
+
+  fetchAPI() {
+    console.log(this);
+    const { headers } = this.props;
+    const options = { method: 'GET', headers };
+    const fetchGames = fetch(API.ALLGAMESURL, options);
+    const fetchChoices = fetch(API.GAMEFILTERCHOICESURL, options);
+
+    Promise.all([fetchGames, fetchChoices])
+      .then((responses) => {
+        return Promise.all(responses.map((r) => r.json()));
+      })
+      .then(([games, choices]) => {
+        this.setState({
+          games,
+          choices,
+          isLoaded: true,
+        });
+      });
   }
 
   static renderGamesListItem(game) {
@@ -147,7 +194,7 @@ class BrowseGames extends React.Component {
   }
 
   renderView() {
-    const { isLoaded, games } = this.state;
+    const { isLoaded, games, choices } = this.state;
 
     if (!isLoaded) {
       return <Loading />;
@@ -161,16 +208,17 @@ class BrowseGames extends React.Component {
     games.forEach((game) => {
       gamesList.push(BrowseGames.renderGamesListItem(game));
     });
-    return <StyledList>{gamesList}</StyledList>;
+    console.log(this.state);
+    return (
+      <div>
+        <FilterForm choices={choices} />
+        <StyledList>{gamesList}</StyledList>
+      </div>
+    );
   }
 
   render() {
-    return (
-      <PageWrapper>
-        <Heading text="Browse Games" />
-        {this.renderView()}
-      </PageWrapper>
-    );
+    return <PageWrapper className="grid">{this.renderView()}</PageWrapper>;
   }
 }
 
