@@ -139,7 +139,6 @@ class BrowseGames extends React.Component {
   }
 
   fetchAPI() {
-    console.log(this);
     const { headers } = this.props;
     const options = { method: 'GET', headers };
     const fetchGames = fetch(API.ALLGAMESURL, options);
@@ -208,7 +207,6 @@ class BrowseGames extends React.Component {
     games.forEach((game) => {
       gamesList.push(BrowseGames.renderGamesListItem(game));
     });
-    console.log(this.state);
     return (
       <div>
         <FilterForm choices={choices} />
