@@ -157,55 +157,59 @@ class FilterForm extends React.Component {
     const frequencyOptions = getOptions(deadlines);
     const nationChoiceModeOptions = getOptions(nationChoiceModes);
     return (
-      <div className="advanced-filter-options-row">
-        <label htmlFor="nation_choice_mode">
-          Nation Choice Mode
-          <select
-            id="nation_choice_mode"
-            name="nation_choice_mode"
-            value={nationChoiceMode}
-            onChange={this.handleChange}
-          >
-            <option value="">Select...</option>
-            {nationChoiceModeOptions}
-          </select>
-        </label>
-        <label htmlFor="order_deadline">
-          Order Deadline
-          <select
-            id="order_deadline"
-            name="order_deadline"
-            value={orderDeadline}
-            onChange={this.handleChange}
-          >
-            <option value="">Select...</option>
-            {frequencyOptions}
-          </select>
-        </label>
-        <label htmlFor="retreat_deadline">
-          Retreat Deadline
-          <select
-            id="retreat_deadline"
-            name="retreat_deadline"
-            value={retreatDeadline}
-            onChange={this.handleChange}
-          >
-            <option value="">Select...</option>
-            {frequencyOptions}
-          </select>
-        </label>
-        <label htmlFor="build_deadline">
-          Build Deadline
-          <select
-            id="build_deadline"
-            name="build_deadline"
-            value={buildDeadline}
-            onChange={this.handleChange}
-          >
-            <option value="">Select...</option>
-            {frequencyOptions}
-          </select>
-        </label>
+      <div>
+        <h4>Advanced filters</h4>
+        <div className="advanced-filter-options-row">
+          <label htmlFor="nation_choice_mode">
+            Nation Choice Mode
+            <select
+              id="nation_choice_mode"
+              name="nation_choice_mode"
+              value={nationChoiceMode}
+              onChange={this.handleChange}
+            >
+              <option value="">Select...</option>
+              {nationChoiceModeOptions}
+            </select>
+          </label>
+          <label htmlFor="order_deadline">
+            Order Deadline
+            <select
+              id="order_deadline"
+              name="order_deadline"
+              value={orderDeadline}
+              onChange={this.handleChange}
+            >
+              <option value="">Select...</option>
+              {frequencyOptions}
+            </select>
+          </label>
+          <label htmlFor="retreat_deadline">
+            Retreat Deadline
+            <select
+              id="retreat_deadline"
+              name="retreat_deadline"
+              value={retreatDeadline}
+              onChange={this.handleChange}
+            >
+              <option value="">Select...</option>
+              {frequencyOptions}
+            </select>
+          </label>
+          <label htmlFor="build_deadline">
+            Build Deadline
+            <select
+              id="build_deadline"
+              name="build_deadline"
+              value={buildDeadline}
+              onChange={this.handleChange}
+            >
+              <option value="">Select...</option>
+              {frequencyOptions}
+            </select>
+          </label>
+        </div>
+        <hr />
       </div>
     );
   }
