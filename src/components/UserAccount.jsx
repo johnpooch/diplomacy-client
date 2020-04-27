@@ -8,30 +8,32 @@ import { spacing } from '../variables';
 import { TertiaryButton } from '../styles';
 import * as actions from '../store/actions/auth';
 
-export const AVATAR_SIZE = 20;
+export const AVATAR_SIZE = 30;
+
+const Avatar = styled.span`
+  position: relative;
+  background: white;
+  width: ${AVATAR_SIZE}px;
+  height: 0;
+  padding-top: 100%;
+  border-radius: 50%;
+
+  canvas {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+`;
 
 const StyledLoggedIn = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
   align-items: center;
-
-  .username {
-    display: inline-block;
-    margin-right: ${spacing[3]}px;
-    color: white;
-  }
-
-  .avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: ${spacing[1]}px;
-    width: calc(${AVATAR_SIZE}px + 10px);
-    height: calc(${AVATAR_SIZE}px + 10px);
-    flex-grow: 0;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: white;
-  }
+  grid-column-gap: ${spacing[1]}px;
+  color: white;
 `;
 
 const renderLoggedOut = () => {
@@ -55,9 +57,9 @@ const renderLoggedIn = (props) => {
   const { logout, username } = props;
   return (
     <StyledLoggedIn>
-      <span className="avatar">
-        <Identicon string={username} size={AVATAR_SIZE} />
-      </span>
+      <Avatar>
+        <Identicon string={username} size={AVATAR_SIZE * 0.6} />
+      </Avatar>
       <span className="username">{username}</span>
       <TertiaryButton
         type="button"

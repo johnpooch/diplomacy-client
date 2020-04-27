@@ -8,12 +8,13 @@ import Login from './Login';
 import Register from './Register';
 import BrowseGames from './BrowseGames';
 import Error from './Error';
-import Header, { HEADER_HEIGHT } from '../components/Header';
+import Header from '../components/Header';
+import { sizes } from '../variables';
 import * as actions from '../store/actions/auth';
 
 const StyledDiv = styled.div`
   position: relative;
-  padding-top: ${HEADER_HEIGHT}px;
+  padding-top: ${sizes.headerHeight}px;
 `;
 
 class App extends React.Component {

@@ -2,12 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 
-import { colors, fontSizes, spacing } from '../variables';
+import { colors, fontSizes, sizes, spacing } from '../variables';
 import { PageWrapper } from '../styles';
 import Nav from './Nav';
 import UserAccount from './UserAccount';
-
-export const HEADER_HEIGHT = spacing[6];
 
 const StyledWrapper = styled(PageWrapper)`
   display: flex;
@@ -24,7 +22,7 @@ const StyledHeader = styled.header`
   width: 100vw;
   background: ${colors.base};
   z-index: 1;
-  height: ${HEADER_HEIGHT}px;
+  height: ${sizes.headerHeight}px;
   overflow-x: auto;
 
   > *:not(:last-child) {

@@ -40,4 +40,5 @@ export const sizes = {
   border: 2,
   borderRadius: [8, 16],
   maxWidth: 1260,
+  headerHeight: 48,
 };
