@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Error from './Error';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -40,6 +41,7 @@ class Register extends Component {
   }
 
   render() {
+    const { error } = this.props;
     const {
       username,
       email,
@@ -49,6 +51,9 @@ class Register extends Component {
     } = this.state;
     if (loading) {
       return <Loading />;
+    }
+    if (error) {
+      return <Error text={error.message} />;
     }
     return (
       <PageWrapper>

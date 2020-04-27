@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
+import Error from './Error';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -17,8 +18,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      username: undefined,
+      password: undefined,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -43,14 +44,12 @@ class Login extends Component {
     if (loading) {
       return <Loading />;
     }
-    let errorMessage = null;
     if (error) {
-      errorMessage = <p>{error.message}</p>;
+      return <Error text={error.message} />;
     }
     return (
       <PageWrapper>
         <Heading text="Login" />
-        {errorMessage}
         <GenericForm onSubmit={this.handleSubmit}>
           <TwoColumns>
             <label htmlFor="username">
@@ -60,6 +59,7 @@ class Login extends Component {
                 id="username"
                 name="username"
                 placeholder="Username"
+                autoComplete="username"
                 value={username}
                 onChange={this.handleChange}
                 required
@@ -71,6 +71,7 @@ class Login extends Component {
                 type="password"
                 name="password"
                 placeholder="Password"
+                autoComplete="current-password"
                 value={password}
                 onChange={this.handleChange}
                 required
