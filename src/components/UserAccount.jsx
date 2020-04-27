@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Identicon from 'react-identicons';
 
-// import Button from './Button';
 import { spacing } from '../variables';
+import { TertiaryButton } from '../styles';
 import * as actions from '../store/actions/auth';
 
 export const AVATAR_SIZE = 20;
@@ -59,7 +59,7 @@ const renderLoggedIn = (props) => {
         <Identicon string={username} size={AVATAR_SIZE} />
       </span>
       <span className="username">{username}</span>
-      <button
+      <TertiaryButton
         type="button"
         onClick={logout}
         onKeyPress={logout}
@@ -67,7 +67,7 @@ const renderLoggedIn = (props) => {
         tabIndex={0}
       >
         Logout
-      </button>
+      </TertiaryButton>
     </StyledLoggedIn>
   );
 };

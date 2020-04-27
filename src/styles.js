@@ -4,7 +4,7 @@ import { colors, fontSizes, sizes, spacing } from './variables';
 
 export const PageWrapper = styled.div`
   padding: ${spacing[4]}px;
-  max-width: 1260px;
+  max-width: ${sizes.maxWidth}px;
   margin: 0 auto;
 `;
 
@@ -38,6 +38,12 @@ export const SecondaryButton = styled(Button)`
 export const TertiaryButton = styled(Button)`
   background: transparent;
   color: ${colors.darkgray};
+  padding: 0;
+
+  &:hover {
+    background-color: transparent;
+    color: ${colors.gray};
+  }
 `;
 
 export const FormLabel = styled.span`

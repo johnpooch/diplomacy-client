@@ -166,7 +166,7 @@ class BrowseGames extends React.Component {
   render() {
     return (
       <PageWrapper>
-        <Heading text="Browse Games" />
+        <Heading text="Browse games" />
         {this.renderView()}
       </PageWrapper>
     );

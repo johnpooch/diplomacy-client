@@ -39,4 +39,5 @@ export const sizes = {
   padding: spacing[3],
   border: 2,
   borderRadius: [8, 16],
+  maxWidth: 1260,
 };

@@ -7,7 +7,6 @@ import Game from './Game';
 import Login from './Login';
 import Register from './Register';
 import BrowseGames from './BrowseGames';
-import Home from './Home';
 import Error from './Error';
 import Header, { HEADER_HEIGHT } from '../components/Header';
 import * as actions from '../store/actions/auth';
@@ -55,11 +54,8 @@ class App extends React.Component {
             <Route path="/register">
               <Register headers={headers} />
             </Route>
-            <Route exact path="/browse-games">
-              <BrowseGames headers={headers} />
-            </Route>
             <Route exact path="/">
-              <Home headers={headers} />
+              <BrowseGames headers={headers} />
             </Route>
             <Route>
               <Error text="Page not found" />
