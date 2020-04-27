@@ -7,30 +7,20 @@ import mapData from '../map.json';
 import * as Utils from '../utils';
 import { colors, fontSizes } from '../variables';
 
-const StyledText = styled.text`
-  fill: white;
-  font-size: ${fontSizes.sans[0]}px;
-  text-anchor: left;
-  pointer-events: none;
-  text-transform: uppercase;
-  user-select: none;
-`;
-
-const StyledGroup = styled.g`
+const StyledTerritory = styled.g`
   polygon {
     stroke-width: 0.5;
     stroke: white;
     fill: ${(props) => props.color};
 
-    &:hover,
-    &:focus {
-      fill: ${(props) => props.hoverColor};
-
-      & + ${StyledText} {
-        fill: ${colors.base};
-        stroke-width: 100px;
-        font-weight: bold;
-      }
+    + text {
+      font-size: ${fontSizes.sans[0]}px;
+      text-anchor: left;
+      pointer-events: none;
+      text-transform: uppercase;
+      user-select: none;
+      fill: ${(props) => (props.hovering ? colors.base : 'white')};
+      font-weight: ${(props) => (props.hovering ? 'bold' : 'normal')};
     }
   }
 `;
@@ -72,9 +62,9 @@ const getText = (data) => {
     const { x } = data.text;
     const { y } = data.text;
     return (
-      <StyledText x={x} y={y}>
+      <text x={x} y={y}>
         {data.abbreviation}
-      </StyledText>
+      </text>
     );
   }
   return null;
@@ -92,17 +82,19 @@ const getSupplyCenter = (props) => {
 };
 
 const Territory = (props) => {
-  const { id, type, controlledBy } = props;
+  const { id, type, controlledBy, hovering } = props;
   const data = Utils.getObjectByKey(id, mapData.territories);
   if (!data) return null;
-  const color = getTerritoryColor(type, controlledBy);
-  const hoverColor = lighten(0.08, color);
+  let color = getTerritoryColor(type, controlledBy);
+  if (hovering) {
+    color = lighten(0.08, color);
+  }
   return (
-    <StyledGroup color={color} hoverColor={hoverColor}>
+    <StyledTerritory color={color} hovering={hovering}>
       {getPolygon(data, props)}
       {getText(data)}
       {getSupplyCenter(props)}
-    </StyledGroup>
+    </StyledTerritory>
   );
 };
 

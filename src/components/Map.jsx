@@ -27,6 +27,7 @@ class Map extends React.Component {
 
     this.state = {
       hovering: null,
+      interacting: null,
       tooltip: null,
       mousePos: {
         x: 0,
@@ -141,6 +142,7 @@ class Map extends React.Component {
 
     const territoriesList = [];
     territories.forEach((territory) => {
+      const { hovering } = this.state;
       const { id } = territory;
       const territoryState = this.getTerritoryState(id);
       const controlledBy = territoryState ? territoryState.controlled_by : null;
@@ -152,6 +154,7 @@ class Map extends React.Component {
           type={territory.type}
           controlledBy={controlledBy}
           supplyCenter={territory.supply_center}
+          hovering={hovering === id}
           _mouseOver={(hoverTerritory) => {
             this.setState({
               hovering: hoverTerritory,
@@ -202,7 +205,7 @@ class Map extends React.Component {
   render() {
     const { turn } = this.props;
     if (!turn) return null;
-
+    const { interacting } = this.state;
     return (
       <StyledDiv
         onMouseEnter={(e) => {
@@ -210,15 +213,33 @@ class Map extends React.Component {
         }}
         onMouseMove={(e) => {
           this.updateMousePos(e);
-          this.startTooltipTimeout();
+          if (!interacting) {
+            this.startTooltipTimeout();
+          }
           this.setState({
             tooltip: null,
+          });
+        }}
+        onMouseDown={() => {
+          this.setState({
+            interacting: true,
+          });
+        }}
+        onMouseUp={() => {
+          this.setState({
+            interacting: false,
+          });
+        }}
+        onMouseLeave={() => {
+          this.setState({
+            interacting: false,
           });
         }}
       >
         <ScrollableSVG
           viewBoxWidth={mapData.viewBoxWidth}
           viewBoxHeight={mapData.viewBoxHeight}
+          interacting={interacting}
         >
           <rect
             x={0}
