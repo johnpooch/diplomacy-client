@@ -2,16 +2,25 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Heading from '../components/Heading';
+import Loading from '../components/Loading';
+import {
+  PageWrapper,
+  GenericForm,
+  FormLabel,
+  Button,
+  TwoColumns,
+} from '../styles';
 import * as actions from '../store/actions/auth';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      email: '',
-      password: '',
-      passwordConfirmation: '',
+      username: null,
+      email: null,
+      password: null,
+      passwordConfirmation: null,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -25,54 +34,84 @@ class Register extends Component {
 
   handleSubmit() {
     const { username, email, password } = this.state;
-    const { onAuth } = this.props;
+    const { onAuth, history } = this.props;
     onAuth(username, email, password);
-    // NOTE this should redirect if successful
+    history.push('/');
   }
 
   render() {
-    const { username, email, password, passwordConfirmation } = this.state;
+    const {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      loading,
+    } = this.state;
+    if (loading) {
+      return <Loading />;
+    }
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="username"
-            name="username"
-            placeholder="Username"
-            value={username}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={email}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="passwordConfirmation"
-            placeholder="Confirm password"
-            value={passwordConfirmation}
-            onChange={this.handleChange}
-            required
-          />
-          <button type="submit">Register</button>
-        </form>
-        <div>
-          Already have an account? <Link to="/login">Sign in</Link>
-        </div>
-      </div>
+      <PageWrapper>
+        <Heading text="Register" />
+        <GenericForm onSubmit={this.handleSubmit}>
+          <TwoColumns>
+            <label htmlFor="username">
+              <FormLabel>Username</FormLabel>
+              <input
+                type="username"
+                id="username"
+                name="username"
+                placeholder="Username"
+                value={username}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="email">
+              <FormLabel>Email address</FormLabel>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email address"
+                value={email}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="password">
+              <FormLabel>Password</FormLabel>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="passwordConfirmation">
+              <FormLabel>Confirm password</FormLabel>
+              <input
+                type="password"
+                id="passwordConfirmation"
+                name="passwordConfirmation"
+                placeholder="Confirm password"
+                value={passwordConfirmation}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+          </TwoColumns>
+          <p>
+            <Button type="submit">Register</Button>
+          </p>
+          <p>
+            Already have an account? <Link to="/login">Sign in</Link>
+          </p>
+        </GenericForm>
+      </PageWrapper>
     );
   }
 }

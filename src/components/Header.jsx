@@ -13,23 +13,29 @@ const StyledHeader = styled.header`
   top: 0;
   width: 100vw;
   background: ${colors.base};
+  padding: 0 ${spacing[4]}px;
   z-index: 1;
   height: ${HEADER_HEIGHT}px;
-  padding: 0 ${spacing[4]}px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow-x: auto;
 
   ul {
     display: flex;
     align-items: center;
-    overflow-x: auto;
     height: 100%;
   }
 
   li {
-    &:not(:last-of-type) {
-      margin-right: ${spacing[4]}px;
+    margin: 0 ${spacing[2]}px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
     }
   }
 

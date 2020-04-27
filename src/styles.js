@@ -2,13 +2,18 @@ import styled from '@emotion/styled';
 
 import { colors, fontSizes, sizes, spacing } from './variables';
 
+export const PageWrapper = styled.div`
+  padding: ${spacing[4]}px;
+  max-width: 1260px;
+  margin: 0 auto;
+`;
+
 export const Button = styled.button`
   cursor: pointer;
   color: white;
   background-color: ${colors.darkgray};
   border-radius: ${sizes.borderRadius[0]}px;
   border: none;
-  outline: 0;
   margin: 0;
   padding: ${spacing[2]}px ${spacing[5]}px;
   font-size: inherit;
@@ -35,16 +40,13 @@ export const TertiaryButton = styled(Button)`
   color: ${colors.darkgray};
 `;
 
-export const PageWrapper = styled.div`
-  padding: ${spacing[4]}px;
-`;
-
 export const FormLabel = styled.span`
   display: block;
   font-size: ${fontSizes.sans[1]}px;
   line-height: 1;
   font-weight: bold;
-  margin-bottom: ${spacing[1]}px;
+  margin-bottom: ${spacing[2]}px;
+  color: ${colors.base};
 `;
 
 export const GenericForm = styled.form`
@@ -58,7 +60,7 @@ export const GenericForm = styled.form`
     padding: 0;
     display: block;
     line-height: 1;
-    border: ${sizes.border}px solid ${colors.darkgray};
+    border: ${sizes.border}px solid ${colors.base};
     border-radius: ${sizes.borderRadius[0]}px;
     padding: ${spacing[1]}px ${spacing[2]}px;
     width: 100%;
@@ -72,13 +74,27 @@ export const GenericForm = styled.form`
   label,
   p {
     display: block;
+    margin: ${spacing[4]}px 0;
 
-    &:not(:first-child) {
-      margin-top: ${spacing[4]}px;
+    &:first-child {
+      margin-top: 0;
     }
 
-    &:not(:last-child) {
-      margin-bottom: ${spacing[4]}px;
+    &:last-child {
+      margin-bottom: 0;
     }
+  }
+`;
+
+export const TwoColumns = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: ${spacing[2]}px;
+  grid-row-gap: ${spacing[4]}px;
+
+  label,
+  input {
+    margin-top: 0;
+    margin-bottom: 0;
   }
 `;

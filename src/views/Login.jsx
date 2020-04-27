@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-// import { css } from '@emotion/core';
 
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import { PageWrapper, GenericForm, FormLabel, Button } from '../styles';
+import {
+  PageWrapper,
+  GenericForm,
+  FormLabel,
+  Button,
+  TwoColumns,
+} from '../styles';
 import * as actions from '../store/actions/auth';
 
 class Login extends Component {
@@ -47,29 +52,31 @@ class Login extends Component {
         <Heading text="Login" />
         {errorMessage}
         <GenericForm onSubmit={this.handleSubmit}>
-          <label htmlFor="username">
-            <FormLabel>Username</FormLabel>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              value={username}
-              onChange={this.handleChange}
-              required
-            />
-          </label>
-          <label htmlFor="password">
-            <FormLabel>Password</FormLabel>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={this.handleChange}
-              required
-            />
-          </label>
+          <TwoColumns>
+            <label htmlFor="username">
+              <FormLabel>Username</FormLabel>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Username"
+                value={username}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="password">
+              <FormLabel>Password</FormLabel>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+          </TwoColumns>
           <p>
             <Button type="submit">Log in</Button>
           </p>
