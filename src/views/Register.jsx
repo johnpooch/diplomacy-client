@@ -18,10 +18,10 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: undefined,
-      email: undefined,
-      password: undefined,
-      passwordConfirmation: undefined,
+      username: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -67,6 +67,7 @@ class Register extends Component {
                 id="username"
                 name="username"
                 placeholder="Username"
+                autoComplete="username"
                 value={username}
                 onChange={this.handleChange}
                 required
@@ -79,6 +80,7 @@ class Register extends Component {
                 id="email"
                 name="email"
                 placeholder="Email address"
+                autoComplete="email"
                 value={email}
                 onChange={this.handleChange}
                 required
@@ -91,6 +93,7 @@ class Register extends Component {
                 id="password"
                 name="password"
                 placeholder="Password"
+                autoComplete="new-password"
                 value={password}
                 onChange={this.handleChange}
                 required
@@ -103,6 +106,7 @@ class Register extends Component {
                 id="passwordConfirmation"
                 name="passwordConfirmation"
                 placeholder="Confirm password"
+                autoComplete="new-password"
                 value={passwordConfirmation}
                 onChange={this.handleChange}
                 required

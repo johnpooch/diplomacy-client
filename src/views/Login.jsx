@@ -18,8 +18,8 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: undefined,
-      password: undefined,
+      username: '',
+      password: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
