@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import Alert from '../components/Alert';
-import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import FilterForm from '../components/FilterForm';
 import { PageWrapper } from '../globals';
@@ -69,63 +68,12 @@ class BrowseGames extends React.Component {
     this.state = {
       isLoaded: false,
     };
+    // should have separate 'gamesLoaded' state.
+    this.fetchFilteredGames = this.fetchFilteredGames.bind(this);
   }
 
   componentDidMount() {
     this.fetchAPI();
-  }
-
-  getGames() {
-    const { headers } = this.props;
-    fetch(API.ALLGAMESURL, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.status !== 200) {
-          throw new Error('Failed to connect to service');
-        }
-        return response.json();
-      })
-      .then((json) => {
-        const games = json.length ? json.slice() : [];
-        this.setState({
-          games,
-          isLoaded: true,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        this.setState({
-          isLoaded: true,
-        });
-      });
-  }
-
-  getFilterChoices() {
-    const { headers } = this.props;
-    fetch(API.GAMEFILTERCHOICESURL, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.status !== 200) {
-          throw new Error('Failed to connect to service');
-        }
-        return response.json();
-      })
-      .then((json) => {
-        const choices = json;
-        this.setState({
-          choices,
-          isLoaded: true,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          isLoaded: true,
-        });
-      });
   }
 
   static getDateDisplayFormat() {
@@ -152,6 +100,27 @@ class BrowseGames extends React.Component {
         this.setState({
           games,
           choices,
+          isLoaded: true,
+        });
+      });
+  }
+
+  fetchFilteredGames(data) {
+    this.setState({ isLoaded: false });
+    const queryParams = new URLSearchParams(data).toString();
+    const { headers } = this.props;
+    const options = { method: 'GET', headers };
+    fetch(`${API.ALLGAMESURL}?${queryParams}`, options)
+      .then((response) => {
+        if (response.status !== 200) {
+          throw new Error('Failed to connect to service');
+        }
+        return response.json();
+      })
+      .then((json) => {
+        const games = json.length ? json.slice() : [];
+        this.setState({
+          games,
           isLoaded: true,
         });
       });
@@ -209,7 +178,7 @@ class BrowseGames extends React.Component {
     });
     return (
       <div>
-        <FilterForm choices={choices} />
+        <FilterForm choices={choices} callback={this.fetchFilteredGames} />
         <StyledList>{gamesList}</StyledList>
       </div>
     );

@@ -37,7 +37,6 @@ class FilterForm extends React.Component {
       retreatDeadline: '',
       buildDeadline: '',
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleAdvanced = this.toggleAdvanced.bind(this);
@@ -67,12 +66,32 @@ class FilterForm extends React.Component {
     this.setState({
       [name]: event.target.value,
     });
+    this.filter();
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const { search, variant, status } = this.state;
-    event.preventDefault();
+  filter() {
+    const { callback } = this.props;
+    // there must be a nicer way to do this
+    const {
+      search,
+      variant,
+      status,
+      numPlayers,
+      nationChoiceMode,
+      orderDeadline,
+      retreatDeadline,
+      buildDeadline,
+    } = this.state;
+    callback({
+      search,
+      variant,
+      status,
+      numPlayers,
+      nationChoiceMode,
+      orderDeadline,
+      retreatDeadline,
+      buildDeadline,
+    });
   }
 
   renderSearchField() {
@@ -220,6 +239,7 @@ class FilterForm extends React.Component {
         <button type="button" onClick={this.toggleAdvanced}>
           Advanced filtering options
         </button>
+        <hr />
       </div>
     );
   }
@@ -240,6 +260,7 @@ class FilterForm extends React.Component {
       <div>
         <form className="game-filter-form" onSubmit={this.handleSubmit}>
           {formContents}
+          <button type="submit">Submit</button>
         </form>
       </div>
     );
