@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Error from './Error';
+import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -35,9 +35,10 @@ class Register extends Component {
 
   handleSubmit() {
     const { username, email, password } = this.state;
-    const { onAuth, history } = this.props;
+    const { onAuth } = this.props;
     onAuth(username, email, password);
-    history.push('/');
+    // const { history } = this.props;
+    // history.push('/');
   }
 
   render() {
@@ -52,12 +53,14 @@ class Register extends Component {
     if (loading) {
       return <Loading />;
     }
+    let alert = null;
     if (error) {
-      return <Error text={error.message} />;
+      alert = <Alert type="error" text={error.message} />;
     }
     return (
       <PageWrapper>
         <Heading text="Register" />
+        {alert}
         <GenericForm onSubmit={this.handleSubmit}>
           <TwoColumns>
             <label htmlFor="username">

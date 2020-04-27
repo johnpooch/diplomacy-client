@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import Error from './Error';
+import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -33,9 +33,10 @@ class Login extends Component {
 
   handleSubmit() {
     const { username, password } = this.state;
-    const { onAuth, history } = this.props;
+    const { onAuth } = this.props;
     onAuth(username, password);
-    history.push('/');
+    // const { history } = this.props;
+    // history.push('/');
   }
 
   render() {
@@ -44,12 +45,14 @@ class Login extends Component {
     if (loading) {
       return <Loading />;
     }
+    let alert = null;
     if (error) {
-      return <Error text={error.message} />;
+      alert = <Alert type="error" text={error.message} />;
     }
     return (
       <PageWrapper>
         <Heading text="Login" />
+        {alert}
         <GenericForm onSubmit={this.handleSubmit}>
           <TwoColumns>
             <label htmlFor="username">
