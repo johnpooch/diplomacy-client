@@ -142,7 +142,7 @@ class Map extends React.Component {
 
     const territoriesList = [];
     territories.forEach((territory) => {
-      const { hovering } = this.state;
+      const { hovering, interacting } = this.state;
       const { id } = territory;
       const territoryState = this.getTerritoryState(id);
       const controlledBy = territoryState ? territoryState.controlled_by : null;
@@ -155,6 +155,7 @@ class Map extends React.Component {
           controlledBy={controlledBy}
           supplyCenter={territory.supply_center}
           hovering={hovering === id}
+          interacting={interacting}
           _mouseOver={(hoverTerritory) => {
             this.setState({
               hovering: hoverTerritory,
@@ -195,9 +196,9 @@ class Map extends React.Component {
   }
 
   renderTooltip() {
-    const { tooltip } = this.state;
+    const { tooltip, interacting } = this.state;
     if (tooltip) {
-      return <Tooltip tooltip={tooltip} />;
+      return <Tooltip tooltip={tooltip} interacting={interacting} />;
     }
     return null;
   }
@@ -223,9 +224,11 @@ class Map extends React.Component {
         onMouseDown={() => {
           this.setState({
             interacting: true,
+            tooltip: null,
           });
         }}
         onMouseUp={() => {
+          this.startTooltipTimeout();
           this.setState({
             interacting: false,
           });

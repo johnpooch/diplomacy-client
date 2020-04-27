@@ -11,7 +11,8 @@ const StyledTerritory = styled.g`
   polygon {
     stroke-width: 0.5;
     stroke: white;
-    fill: ${(props) => props.color};
+    fill: ${(props) =>
+      props.hover ? lighten(0.07, props.color) : props.color};
 
     + text {
       font-size: ${fontSizes.sans[0]}px;
@@ -19,8 +20,8 @@ const StyledTerritory = styled.g`
       pointer-events: none;
       text-transform: uppercase;
       user-select: none;
-      fill: ${(props) => (props.hovering ? colors.base : 'white')};
-      font-weight: ${(props) => (props.hovering ? 'bold' : 'normal')};
+      fill: ${(props) => (props.hover ? colors.base : 'white')};
+      font-weight: ${(props) => (props.hover ? 'bold' : 'normal')};
     }
   }
 `;
@@ -82,15 +83,13 @@ const getSupplyCenter = (props) => {
 };
 
 const Territory = (props) => {
-  const { id, type, controlledBy, hovering } = props;
+  const { id, type, controlledBy, hovering, interacting } = props;
   const data = Utils.getObjectByKey(id, mapData.territories);
   if (!data) return null;
-  let color = getTerritoryColor(type, controlledBy);
-  if (hovering) {
-    color = lighten(0.08, color);
-  }
+  const hover = !interacting && hovering;
+  const color = getTerritoryColor(type, controlledBy);
   return (
-    <StyledTerritory color={color} hovering={hovering}>
+    <StyledTerritory color={color} hover={hover}>
       {getPolygon(data, props)}
       {getText(data)}
       {getSupplyCenter(props)}
