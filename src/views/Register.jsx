@@ -108,7 +108,7 @@ class Register extends Component {
             <Button type="submit">Register</Button>
           </p>
           <p>
-            Already have an account? <Link to="/login">Sign in</Link>
+            Already have an account? <Link to="/login">Log in</Link>
           </p>
         </GenericForm>
       </PageWrapper>

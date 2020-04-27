@@ -66,7 +66,7 @@ const renderLoggedIn = (props) => {
         role="link"
         tabIndex={0}
       >
-        Logout
+        Log out
       </TertiaryButton>
     </StyledLoggedIn>
   );
