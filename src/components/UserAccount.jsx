@@ -39,7 +39,7 @@ const renderLoggedOut = () => {
     <ul>
       <li>
         <NavLink to="/login" activeClassName="active" exact>
-          Log in
+          Login
         </NavLink>
       </li>
       <li>

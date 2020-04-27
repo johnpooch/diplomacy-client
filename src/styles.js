@@ -1,24 +1,38 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
 
 import { colors, fontSizes, sizes, spacing } from './variables';
 
-export const ButtonStyle = css`
+export const Button = styled.button`
   cursor: pointer;
-  color: ${colors.base};
-  background-color: ${colors.gray};
+  color: white;
+  background-color: ${colors.darkgray};
+  border-radius: ${sizes.borderRadius[0]}px;
   border: none;
   outline: 0;
   margin: 0;
-  padding: ${spacing[2]}px ${spacing[4]}px;
+  padding: ${spacing[2]}px ${spacing[5]}px;
   font-size: inherit;
   text-decoration: none;
-  border-radius: ${sizes.borderRadius[0]}px;
 
   &:hover {
-    background-color: ${colors.darkgray};
+    background-color: ${colors.base};
     color: white;
   }
+`;
+
+export const SecondaryButton = styled(Button)`
+  background: white;
+  color: ${colors.darkgray};
+  border: ${sizes.border}px solid ${colors.darkgray};
+
+  &:hover {
+    border-color: ${colors.base};
+  }
+`;
+
+export const TertiaryButton = styled(Button)`
+  background: transparent;
+  color: ${colors.darkgray};
 `;
 
 export const PageWrapper = styled.div`
@@ -66,9 +80,5 @@ export const GenericForm = styled.form`
     &:not(:last-child) {
       margin-bottom: ${spacing[4]}px;
     }
-  }
-
-  button {
-    ${ButtonStyle};
   }
 `;

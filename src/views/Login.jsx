@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import { PageWrapper, GenericForm, FormLabel } from '../styles';
+import { PageWrapper, GenericForm, FormLabel, Button } from '../styles';
 import * as actions from '../store/actions/auth';
 
 class Login extends Component {
@@ -44,7 +44,7 @@ class Login extends Component {
     }
     return (
       <PageWrapper>
-        <Heading text="Log in" />
+        <Heading text="Login" />
         {errorMessage}
         <GenericForm onSubmit={this.handleSubmit}>
           <label htmlFor="username">
@@ -71,7 +71,7 @@ class Login extends Component {
             />
           </label>
           <p>
-            <button type="submit">Log in</button>
+            <Button type="submit">Log in</Button>
           </p>
           <p>
             Not a member? <Link to="/register">Create an account</Link>

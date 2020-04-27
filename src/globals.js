@@ -30,10 +30,10 @@ export default css`
   }
 
   a {
-    color: ${colors.base};
+    color: ${colors.darkgray};
 
     &:hover {
-      color: ${colors.darkgray};
+      color: ${colors.base};
     }
   }
 `;
