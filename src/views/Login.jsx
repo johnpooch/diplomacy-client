@@ -47,7 +47,7 @@ class Login extends Component {
     }
     let alert = null;
     if (error) {
-      alert = <Alert type="error" text={error.message} />;
+      alert = <Alert type="error" text="Invalid username or password" />;
     }
     return (
       <PageWrapper>
