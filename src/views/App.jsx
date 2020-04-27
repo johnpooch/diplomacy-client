@@ -17,45 +17,28 @@ const StyledDiv = styled.div`
 `;
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      headers: App.getAuthHeaders('admin', 'admin'),
-    };
-  }
-
   componentDidMount() {
     const { onTryAutoSignup } = this.props;
     onTryAutoSignup();
   }
 
-  static getAuthHeaders(username, password) {
-    const headers = new Headers();
-    headers.set(
-      'Authorization',
-      `Basic ${window.btoa(`${username}:${password}`)}`
-    );
-    return headers;
-  }
-
   render() {
-    const { headers } = this.state;
     return (
       <Router>
         <StyledDiv>
           <Header />
           <Switch>
             <Route path="/game/:id">
-              <Game headers={headers} />
+              <Game />
             </Route>
             <Route path="/login">
-              <Login headers={headers} />
+              <Login />
             </Route>
             <Route path="/register">
-              <Register headers={headers} />
+              <Register />
             </Route>
             <Route exact path="/">
-              <BrowseGames headers={headers} />
+              <BrowseGames />
             </Route>
             <Route>
               <Error text="Page not found" />

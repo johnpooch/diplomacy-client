@@ -17,10 +17,10 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
-      email: null,
-      password: null,
-      passwordConfirmation: null,
+      username: undefined,
+      email: undefined,
+      password: undefined,
+      passwordConfirmation: undefined,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);

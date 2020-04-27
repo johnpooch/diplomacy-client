@@ -16,12 +16,6 @@ const StyledWrapper = styled(PageWrapper)`
   height: 100%;
   padding-top: 0;
   padding-bottom: 0;
-
-  > * {
-    &:not(:first-child) {
-      margin-left: ${spacing[4]}px;
-    }
-  }
 `;
 
 const StyledHeader = styled.header`
@@ -33,6 +27,10 @@ const StyledHeader = styled.header`
   height: ${HEADER_HEIGHT}px;
   overflow-x: auto;
 
+  > *:not(:last-child) {
+    margin-right: ${spacing[4]}px;
+  }
+
   ul {
     display: flex;
     align-items: center;
@@ -41,11 +39,11 @@ const StyledHeader = styled.header`
   li {
     margin: 0 ${spacing[2]}px;
 
-    &:first-child {
+    &:first-of-type {
       margin-left: 0;
     }
 
-    &:last-child {
+    &:last-of-type {
       margin-right: 0;
     }
   }
