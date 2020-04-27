@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import { PageWrapper } from '../globals';
+import { PageWrapper } from '../styles';
 import { colors, spacing } from '../variables';
 import * as API from '../api';
 

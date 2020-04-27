@@ -9,6 +9,7 @@ export const fontSizes = {
 
 export const colors = {
   base: '#444444',
+  darkgray: '#999999',
   gray: '#ebeef1',
   red: '#ff4136',
   yellow: '#ffdc00',

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import { PageWrapper } from '../globals';
+import { PageWrapper } from '../styles';
 import { fontSizes } from '../variables';
 
 const StyledDiv = styled(PageWrapper)`

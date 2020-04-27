@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 
-import { colors, spacing } from '../variables';
+import { colors, fontSizes, spacing } from '../variables';
 import Nav from './Nav';
 import UserAccount from './UserAccount';
 
@@ -19,6 +19,35 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ul {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    height: 100%;
+  }
+
+  li {
+    &:not(:last-of-type) {
+      margin-right: ${spacing[4]}px;
+    }
+  }
+
+  a {
+    color: white;
+    font-size: ${fontSizes.sans[2]}px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.active {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const Header = () => {

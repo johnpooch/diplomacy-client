@@ -4,17 +4,11 @@ import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Identicon from 'react-identicons';
 
-import Button from './Button';
+// import Button from './Button';
 import { spacing } from '../variables';
 import * as actions from '../store/actions/auth';
 
 export const AVATAR_SIZE = 20;
-
-const StyledLoggedOut = styled.nav`
-  a + a {
-    margin-left: ${spacing[1]}px;
-  }
-`;
 
 const StyledLoggedIn = styled.div`
   display: flex;
@@ -41,16 +35,19 @@ const StyledLoggedIn = styled.div`
 `;
 
 const renderLoggedOut = () => {
-  const StyledNavLink = Button.withComponent(NavLink);
   return (
-    <StyledLoggedOut>
-      <StyledNavLink to="/login" activeClassName="active" exact>
-        Log in
-      </StyledNavLink>
-      <StyledNavLink to="/register" activeClassName="active" exact>
-        Register
-      </StyledNavLink>
-    </StyledLoggedOut>
+    <ul>
+      <li>
+        <NavLink to="/login" activeClassName="active" exact>
+          Log in
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/register" activeClassName="active" exact>
+          Register
+        </NavLink>
+      </li>
+    </ul>
   );
 };
 
@@ -62,7 +59,7 @@ const renderLoggedIn = (props) => {
         <Identicon string={username} size={AVATAR_SIZE} />
       </span>
       <span className="username">{username}</span>
-      <Button
+      <button
         type="button"
         onClick={logout}
         onKeyPress={logout}
@@ -70,7 +67,7 @@ const renderLoggedIn = (props) => {
         tabIndex={0}
       >
         Logout
-      </Button>
+      </button>
     </StyledLoggedIn>
   );
 };

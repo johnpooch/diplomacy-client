@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+// import { css } from '@emotion/core';
 
+import Heading from '../components/Heading';
 import Loading from '../components/Loading';
+import { PageWrapper, GenericForm, FormLabel } from '../styles';
 import * as actions from '../store/actions/auth';
 
 class Login extends Component {
@@ -40,31 +43,41 @@ class Login extends Component {
       errorMessage = <p>{error.message}</p>;
     }
     return (
-      <div>
+      <PageWrapper>
+        <Heading text="Log in" />
         {errorMessage}
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={username}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={this.handleChange}
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
-        <div>
-          Not a member? <Link to="/register">Create Account</Link>
-        </div>
-      </div>
+        <GenericForm onSubmit={this.handleSubmit}>
+          <label htmlFor="username">
+            <FormLabel>Username</FormLabel>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              value={username}
+              onChange={this.handleChange}
+              required
+            />
+          </label>
+          <label htmlFor="password">
+            <FormLabel>Password</FormLabel>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={this.handleChange}
+              required
+            />
+          </label>
+          <p>
+            <button type="submit">Log in</button>
+          </p>
+          <p>
+            Not a member? <Link to="/register">Create an account</Link>
+          </p>
+        </GenericForm>
+      </PageWrapper>
     );
   }
 }
