@@ -6,6 +6,7 @@ import Error from './Error';
 import Map from '../components/Map';
 import Loading from '../components/Loading';
 import JoinGame from '../components/JoinGame';
+
 import * as API from '../api';
 import * as Utils from '../utils';
 import { colors, spacing, fontSizes } from '../variables';
@@ -38,7 +39,7 @@ const StyledNav = styled.nav`
 
   button {
     padding: ${spacing[1]}px;
-    font-size: ${fontSizes.sans.small}px;
+    font-size: ${fontSizes.sans[1]}px;
     min-width: 80px;
     cursor: pointer;
   }

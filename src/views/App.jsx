@@ -4,64 +4,46 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import Game from './Game';
+import Login from './Login';
+import Register from './Register';
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
 import Home from './Home';
 import Error from './Error';
-import Header, { headerHeight } from '../components/Header';
-import Login from '../components/Login';
-import Register from '../components/Register';
+import Header from '../components/Header';
+import { sizes } from '../variables';
 import * as actions from '../store/actions/auth';
 
 const StyledDiv = styled.div`
   position: relative;
-  padding-top: ${headerHeight}px;
+  padding-top: ${sizes.headerHeight}px;
 `;
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      headers: App.getAuthHeaders(),
-    };
-  }
-
   componentDidMount() {
     const { onTryAutoSignup } = this.props;
     onTryAutoSignup();
   }
-
-  static getAuthHeaders() {
-    const headers = new Headers();
-    headers.set('Authorization', `Token ${localStorage.getItem('token')}`);
-    return headers;
-  }
-
   render() {
-    const { headers } = this.state;
     return (
       <Router>
         <StyledDiv>
           <Header />
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/login" render={() => <Login headers={headers} />} />
-            <Route
-              path="/register"
-              render={() => <Register headers={headers} />}
-            />
             <Route path="/game/:id">
-              <Game headers={headers} />
+              <Game />
             </Route>
-            <Route exact path="/browse-games">
-              <BrowseGames headers={headers} />
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
             </Route>
             <Route exact path="/create-game">
               <CreateGame headers={headers} />
             </Route>
             <Route exact path="/">
-              <Home headers={headers} />
+              <BrowseGames />
             </Route>
             <Route>
               <Error text="Page not found" />

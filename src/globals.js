@@ -1,7 +1,6 @@
 import { css } from '@emotion/core';
-import styled from '@emotion/styled';
 
-import { colors, fontFamilies, spacing } from './variables';
+import { colors, fontFamilies } from './variables';
 
 export default css`
   * {
@@ -164,4 +163,16 @@ export const PageWrapper = styled.div`
   margin-right: auto;
   padding-right: 15px;
   max-width: 1140px;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: ${colors.darkgray};
+
+    &:hover {
+      color: ${colors.base};
+    }
+  }
 `;

@@ -7,6 +7,7 @@ import GamesList from '../components/GamesList';
 import Loading from '../components/Loading';
 import FilterForm from '../components/FilterForm';
 import { PageWrapper } from '../globals';
+import { PageWrapper } from '../styles';
 import * as API from '../api';
 
 const StyledList = styled.ol`
@@ -73,6 +74,11 @@ class BrowseGames extends React.Component {
         const games = json.length ? json.slice() : [];
         this.setState({
           games,
+          isLoaded: true,
+        });
+      })
+      .catch(() => {
+        this.setState({
           isLoaded: true,
         });
       });

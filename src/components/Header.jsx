@@ -2,10 +2,19 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 
-import { colors, spacing, fontSizes } from '../variables';
-import NavList from './NavList';
+import { colors, fontSizes, sizes, spacing } from '../variables';
+import { PageWrapper } from '../styles';
+import Nav from './Nav';
+import UserAccount from './UserAccount';
 
-export const headerHeight = spacing[6];
+const StyledWrapper = styled(PageWrapper)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+`;
 
 const StyledHeader = styled.header`
   position: fixed;
@@ -13,29 +22,33 @@ const StyledHeader = styled.header`
   width: 100vw;
   background: ${colors.base};
   z-index: 1;
-  height: ${headerHeight}px;
+  height: ${sizes.headerHeight}px;
+  overflow-x: auto;
 
-  nav {
-    height: 100%;
+  > *:not(:last-child) {
+    margin-right: ${spacing[4]}px;
   }
 
   ul {
     display: flex;
     align-items: center;
-    overflow-x: auto;
-    height: 100%;
   }
 
   li {
-    margin-left: ${spacing[4]}px;
+    margin: 0 ${spacing[2]}px;
+
+    &:first-of-type {
+      margin-left: 0;
+    }
+
     &:last-of-type {
-      margin-right: ${spacing[4]}px;
+      margin-right: 0;
     }
   }
 
   a {
     color: white;
-    font-size: ${fontSizes.sans.medium}px;
+    font-size: ${fontSizes.sans[2]}px;
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
@@ -45,7 +58,7 @@ const StyledHeader = styled.header`
     }
 
     &.active {
-      color: ${colors.yellow};
+      text-decoration: underline;
     }
   }
 `;
@@ -53,11 +66,10 @@ const StyledHeader = styled.header`
 const Header = () => {
   return (
     <StyledHeader>
-      <nav>
-        <ul>
-          <NavList />
-        </ul>
-      </nav>
+      <StyledWrapper>
+        <Nav />
+        <UserAccount />
+      </StyledWrapper>
     </StyledHeader>
   );
 };

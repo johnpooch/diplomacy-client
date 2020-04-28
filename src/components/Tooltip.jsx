@@ -11,7 +11,7 @@ const StyledDiv = styled.div`
   padding: ${spacing[1]}px;
   pointer-events: none;
   color: white;
-  font-size: ${fontSizes.sans.small}px;
+  font-size: ${fontSizes.sans[1]}px;
   background-color: ${colors.base};
 
   div:not(:first-of-type) {

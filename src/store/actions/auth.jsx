@@ -8,10 +8,11 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token) => {
+export const authSuccess = (token, username) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     token,
+    username,
   };
 };
 
@@ -25,6 +26,7 @@ export const authFail = (error) => {
 export const logout = () => {
   localStorage.removeItem('user');
   localStorage.removeItem('expirationDate');
+  localStorage.removeItem('username');
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -38,11 +40,12 @@ export const checkAuthTimeout = (expirationTime) => {
   };
 };
 
-const setLoggedIn = (token) => {
+const setLoggedIn = (token, username) => {
   // an hour from now
   const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
   localStorage.setItem('token', token);
   localStorage.setItem('expirationDate', expirationDate);
+  localStorage.setItem('username', username);
 };
 
 export const authLogin = (username, password) => {
@@ -55,8 +58,8 @@ export const authLogin = (username, password) => {
       })
       .then((response) => {
         const { token } = response.data;
-        setLoggedIn(token);
-        dispatch(authSuccess(token));
+        setLoggedIn(token, username);
+        dispatch(authSuccess(token, username));
         dispatch(checkAuthTimeout(3600));
       })
       .catch((error) => {
@@ -76,8 +79,8 @@ export const authSignup = (username, email, password) => {
       })
       .then((response) => {
         const { token } = response.data;
-        setLoggedIn(token);
-        dispatch(authSuccess(token));
+        setLoggedIn(token, username);
+        dispatch(authSuccess(token, username));
         dispatch(checkAuthTimeout(3600));
       })
       .catch((error) => {
@@ -89,14 +92,15 @@ export const authSignup = (username, email, password) => {
 export const authCheckState = () => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
-    if (token === undefined) {
+    const username = localStorage.getItem('username');
+    if (token === undefined || username === undefined) {
       dispatch(logout());
     } else {
       const expirationDate = new Date(localStorage.getItem('expirationDate'));
       if (expirationDate < new Date()) {
         dispatch(logout());
       } else {
-        dispatch(authSuccess(token));
+        dispatch(authSuccess(token, username));
         dispatch(
           checkAuthTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000
