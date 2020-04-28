@@ -5,6 +5,10 @@ import ExpandFormButton from './ExpandFormButton';
 function getJSName(name) {
   const nameMappings = {
     num_players: 'numPlayers',
+    order_deadline: 'orderDeadline',
+    retreat_deadline: 'retreatDeadline',
+    build_deadline: 'retreatDeadline',
+    nation_choice_mode: 'nationChoiceMode',
   };
   if (name in nameMappings) {
     return nameMappings[name];
@@ -23,6 +27,11 @@ function getOptions(choices) {
 }
 
 class FilterForm extends React.Component {
+  static handleSubmit(event) {
+    event.preventDefault();
+    return false;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -40,6 +49,9 @@ class FilterForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.toggle = this.toggle.bind(this);
     this.toggleAdvanced = this.toggleAdvanced.bind(this);
+
+    this.emptyOptionString = '-------';
+    this.emptyOption = <option value="">{this.emptyOptionString}</option>;
   }
 
   toggle() {
@@ -63,10 +75,10 @@ class FilterForm extends React.Component {
 
   handleChange(event) {
     const name = getJSName(event.target.name);
-    this.setState({
-      [name]: event.target.value,
+    const { value } = event.target;
+    this.setState({ [name]: value }, () => {
+      this.filter();
     });
-    this.filter();
   }
 
   filter() {
@@ -86,11 +98,11 @@ class FilterForm extends React.Component {
       search,
       variant,
       status,
-      numPlayers,
-      nationChoiceMode,
-      orderDeadline,
-      retreatDeadline,
-      buildDeadline,
+      num_players: numPlayers,
+      nation_choice_mode: nationChoiceMode,
+      order_deadline: orderDeadline,
+      retreat_deadline: retreatDeadline,
+      build_deadline: buildDeadline,
     });
   }
 
@@ -131,6 +143,7 @@ class FilterForm extends React.Component {
             onChange={this.handleChange}
             placeholder="Choose..."
           >
+            {this.emptyOption}
             {variantOptions}
           </select>
         </label>
@@ -142,8 +155,8 @@ class FilterForm extends React.Component {
             name="status"
             value={status}
             onChange={this.handleChange}
-            placeholder="Choose..."
           >
+            {this.emptyOption}
             {statusOptions}
           </select>
         </label>
@@ -187,7 +200,7 @@ class FilterForm extends React.Component {
               value={nationChoiceMode}
               onChange={this.handleChange}
             >
-              <option value="">Select...</option>
+              {this.emptyOption}
               {nationChoiceModeOptions}
             </select>
           </label>
@@ -199,7 +212,7 @@ class FilterForm extends React.Component {
               value={orderDeadline}
               onChange={this.handleChange}
             >
-              <option value="">Select...</option>
+              {this.emptyOption}
               {frequencyOptions}
             </select>
           </label>
@@ -211,7 +224,6 @@ class FilterForm extends React.Component {
               value={retreatDeadline}
               onChange={this.handleChange}
             >
-              <option value="">Select...</option>
               {frequencyOptions}
             </select>
           </label>
@@ -223,7 +235,6 @@ class FilterForm extends React.Component {
               value={buildDeadline}
               onChange={this.handleChange}
             >
-              <option value="">Select...</option>
               {frequencyOptions}
             </select>
           </label>
@@ -260,7 +271,6 @@ class FilterForm extends React.Component {
       <div>
         <form className="game-filter-form" onSubmit={this.handleSubmit}>
           {formContents}
-          <button type="submit">Submit</button>
         </form>
       </div>
     );
