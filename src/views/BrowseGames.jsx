@@ -6,7 +6,6 @@ import BrowseGame from '../components/BrowseGame';
 import GamesList from '../components/GamesList';
 import Loading from '../components/Loading';
 import FilterForm from '../components/FilterForm';
-import { PageWrapper } from '../globals';
 import { PageWrapper } from '../styles';
 import * as API from '../api';
 

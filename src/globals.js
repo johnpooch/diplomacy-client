@@ -154,16 +154,6 @@ export default css`
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
-`;
-
-export const PageWrapper = styled.div`
-  padding: ${spacing[4]}px;
-  margin-left: auto;
-  padding-left: 15px;
-  margin-right: auto;
-  padding-right: 15px;
-  max-width: 1140px;
-
   p {
     margin: 0;
   }

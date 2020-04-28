@@ -8,7 +8,6 @@ import Login from './Login';
 import Register from './Register';
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
-import Home from './Home';
 import Error from './Error';
 import Header from '../components/Header';
 import { sizes } from '../variables';
@@ -24,6 +23,7 @@ class App extends React.Component {
     const { onTryAutoSignup } = this.props;
     onTryAutoSignup();
   }
+
   render() {
     return (
       <Router>
@@ -40,7 +40,7 @@ class App extends React.Component {
               <Register />
             </Route>
             <Route exact path="/create-game">
-              <CreateGame headers={headers} />
+              <CreateGame />
             </Route>
             <Route exact path="/">
               <BrowseGames />
