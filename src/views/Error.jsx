@@ -2,7 +2,7 @@ import React from 'react';
 
 import Alert from '../components/Alert';
 import Heading from '../components/Heading';
-import { PageWrapper } from '../globals';
+import { PageWrapper } from '../styles';
 
 const Error = (props) => {
   const { text } = props;

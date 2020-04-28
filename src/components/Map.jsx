@@ -5,15 +5,14 @@ import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
-import { headerHeight } from './Header';
 import mapData from '../map.json';
 import * as Utils from '../utils';
-import { colors } from '../variables';
+import { colors, sizes } from '../variables';
 
 const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - ${headerHeight}px);
+  height: calc(100vh - ${sizes.headerHeight}px);
   background: ${colors.sea};
 
   > svg {

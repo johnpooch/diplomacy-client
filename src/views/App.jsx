@@ -1,52 +1,45 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import Game from './Game';
+import Login from './Login';
+import Register from './Register';
 import BrowseGames from './BrowseGames';
-import Home from './Home';
 import Error from './Error';
-import Header, { headerHeight } from '../components/Header';
+import Header from '../components/Header';
+import { sizes } from '../variables';
+import * as actions from '../store/actions/auth';
 
 const StyledDiv = styled.div`
   position: relative;
-  padding-top: ${headerHeight}px;
+  padding-top: ${sizes.headerHeight}px;
 `;
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      headers: App.getAuthHeaders('admin', 'admin'),
-    };
-  }
-
-  static getAuthHeaders(username, password) {
-    const headers = new Headers();
-    headers.set(
-      'Authorization',
-      `Basic ${window.btoa(`${username}:${password}`)}`
-    );
-    return headers;
+  componentDidMount() {
+    const { onTryAutoSignup } = this.props;
+    onTryAutoSignup();
   }
 
   render() {
-    const { headers } = this.state;
     return (
       <Router>
         <StyledDiv>
           <Header />
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/game/:id">
-              <Game headers={headers} />
+              <Game />
             </Route>
-            <Route exact path="/browse-games">
-              <BrowseGames headers={headers} />
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
             </Route>
             <Route exact path="/">
-              <Home headers={headers} />
+              <BrowseGames />
             </Route>
             <Route>
               <Error text="Page not found" />
@@ -58,4 +51,16 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.token !== null,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTryAutoSignup: () => dispatch(actions.authCheckState()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

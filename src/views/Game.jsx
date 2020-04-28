@@ -37,7 +37,7 @@ const StyledNav = styled.nav`
 
   button {
     padding: ${spacing[1]}px;
-    font-size: ${fontSizes.sans.small}px;
+    font-size: ${fontSizes.sans[1]}px;
     min-width: 80px;
     cursor: pointer;
   }
