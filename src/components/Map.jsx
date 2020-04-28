@@ -26,8 +26,8 @@ class Map extends React.Component {
     super(props);
 
     this.state = {
+      interacting: false,
       hovering: null,
-      interacting: null,
       tooltip: null,
       mousePos: {
         x: 0,
