@@ -9,10 +9,11 @@ import { colors, fontSizes } from '../variables';
 
 const StyledText = styled.text`
   fill: white;
-  font-size: ${fontSizes.sans.xsmall}px;
+  font-size: ${fontSizes.sans[0]}px;
   text-anchor: left;
   pointer-events: none;
   text-transform: uppercase;
+  user-select: none;
 `;
 
 const StyledGroup = styled.g`
@@ -43,24 +44,21 @@ const getTerritoryColor = (type, controlledBy) => {
 };
 
 const getPolygon = (data, props) => {
-  const { _mouseOver, _mouseMove, _mouseOut, id } = props;
+  const { _mouseOver, _mouseOut, id } = props;
   if ('polygon' in data) {
     return (
       <polygon
-        onMouseOver={(e) => {
-          _mouseOver(e, id);
+        onMouseOver={() => {
+          _mouseOver(id);
         }}
-        onFocus={(e) => {
-          _mouseOver(e, id);
+        onFocus={() => {
+          _mouseOver(id);
         }}
-        onMouseMove={(e) => {
-          _mouseMove(e);
+        onMouseOut={() => {
+          _mouseOut();
         }}
-        onMouseOut={(e) => {
-          _mouseOut(e);
-        }}
-        onBlur={(e) => {
-          _mouseOut(e);
+        onBlur={() => {
+          _mouseOut();
         }}
         points={data.polygon}
       />
