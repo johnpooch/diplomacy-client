@@ -14,7 +14,7 @@ const StyledDiv = styled.div`
   font-size: ${fontSizes.sans[1]}px;
   background-color: ${colors.base};
 
-  div:not(:first-of-type) {
+  p:not(:first-of-type) {
     margin-top: ${spacing[0]}px;
   }
 `;
@@ -69,20 +69,20 @@ const getTooltip = (data, tooltip) => {
 
   if (data.name) {
     tooltipElements.push(
-      <div key="territory">
+      <p key="territory">
         <StyledSpan className="name">{data.name}</StyledSpan>
         {getSupplyCenter(territory)}
         {getControlledBy(territoryControlledBy)}
-      </div>
+      </p>
     );
   }
 
   if (piece) {
     tooltipElements.push(
-      <div key="piece">
+      <p key="piece">
         <StyledSpan className="type">{piece.type}</StyledSpan>
         {getControlledBy(pieceControlledBy)}
-      </div>
+      </p>
     );
   }
 
