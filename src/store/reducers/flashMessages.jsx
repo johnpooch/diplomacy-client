@@ -3,7 +3,7 @@ import shortid from 'shortid';
 import updateObject from '../utility';
 import * as actionTypes from '../actions/actionTypes';
 
-export default (state = [], action = {}) => {
+const flashMessage = (state = [], action = {}) => {
   switch (action.type) {
     case actionTypes.ADD_FLASH_MESSAGE:
       return updateObject(state, {
@@ -15,3 +15,5 @@ export default (state = [], action = {}) => {
       return state;
   }
 };
+
+export default flashMessage;

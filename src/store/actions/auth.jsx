@@ -25,8 +25,8 @@ export const authFail = (error) => {
 
 export const logout = () => {
   localStorage.removeItem('user');
-  localStorage.removeItem('expirationDate');
   localStorage.removeItem('username');
+  localStorage.removeItem('token');
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -71,9 +71,7 @@ export const authLogin = (username, password) => {
 
 export const authSignup = (username, email, password) => {
   return (dispatch) => {
-    console.log('hfahlfghalkfghalkfhglka  A');
     dispatch(authStart());
-    console.log('kjsdhfgklsfhgklshfdlgshlkjdgfh ');
     axios
       .post(API.REGISTERURL, {
         username,
@@ -81,13 +79,10 @@ export const authSignup = (username, email, password) => {
         password,
       })
       .then((response) => {
-        console.log('YEAHGHGHGHGHG');
         const { token } = response.data;
         setLoggedIn(token, username);
-        console.log('AGGGHHH');
         dispatch(authSuccess(token, username));
         dispatch(checkAuthTimeout(3600));
-        console.log('FINISHED');
       })
       .catch((error) => {
         dispatch(authFail(error));
