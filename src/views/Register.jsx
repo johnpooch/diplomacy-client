@@ -12,7 +12,8 @@ import {
   Button,
   TwoColumns,
 } from '../styles';
-import * as actions from '../store/actions/auth';
+import * as authActions from '../store/actions/auth';
+import * as flashMessageActions from '../store/actions/flashMessages';
 
 class Register extends Component {
   constructor(props) {
@@ -35,8 +36,12 @@ class Register extends Component {
 
   handleSubmit() {
     const { username, email, password } = this.state;
-    const { onAuth } = this.props;
+    const { addFlashMessage, onAuth } = this.props;
     onAuth(username, email, password);
+    // addFlashMessage({
+    //   type: 'success',
+    //   text: 'You signed up successfully! Welcome!',
+    // });
     // const { history } = this.props;
     // history.push('/');
   }
@@ -130,15 +135,17 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.loading,
-    error: state.error,
+    loading: state.auth.loading,
+    error: state.auth.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (username, email, password) =>
-      dispatch(actions.authSignup(username, email, password)),
+      dispatch(authActions.authSignup(username, email, password)),
+    addFlashMessage: (type, text) =>
+      dispatch(flashMessageActions.addFlashMessage(type, text)),
   };
 };
 

@@ -81,8 +81,8 @@ const UserAccount = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.token !== null,
-    username: state.username,
+    isAuthenticated: state.auth.token !== null,
+    username: state.auth.username,
   };
 };
 

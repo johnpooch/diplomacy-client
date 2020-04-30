@@ -63,6 +63,7 @@ export const authLogin = (username, password) => {
         dispatch(checkAuthTimeout(3600));
       })
       .catch((error) => {
+        console.log(error);
         dispatch(authFail(error));
       });
   };
@@ -70,7 +71,9 @@ export const authLogin = (username, password) => {
 
 export const authSignup = (username, email, password) => {
   return (dispatch) => {
+    console.log('hfahlfghalkfghalkfhglka  A');
     dispatch(authStart());
+    console.log('kjsdhfgklsfhgklshfdlgshlkjdgfh ');
     axios
       .post(API.REGISTERURL, {
         username,
@@ -78,10 +81,13 @@ export const authSignup = (username, email, password) => {
         password,
       })
       .then((response) => {
+        console.log('YEAHGHGHGHGHG');
         const { token } = response.data;
         setLoggedIn(token, username);
+        console.log('AGGGHHH');
         dispatch(authSuccess(token, username));
         dispatch(checkAuthTimeout(3600));
+        console.log('FINISHED');
       })
       .catch((error) => {
         dispatch(authFail(error));
@@ -96,17 +102,7 @@ export const authCheckState = () => {
     if (token === undefined || username === undefined) {
       dispatch(logout());
     } else {
-      const expirationDate = new Date(localStorage.getItem('expirationDate'));
-      if (expirationDate < new Date()) {
-        dispatch(logout());
-      } else {
-        dispatch(authSuccess(token, username));
-        dispatch(
-          checkAuthTimeout(
-            (expirationDate.getTime() - new Date().getTime()) / 1000
-          )
-        );
-      }
+      dispatch(authSuccess(token, username));
     }
   };
 };

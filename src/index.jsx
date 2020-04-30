@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 
 import App from './views/App';
 import globals from './globals';
-import reducer from './store/reducers/auth';
+import reducer from './store/reducers/rootReducer';
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancer(applyMiddleware(thunk)));

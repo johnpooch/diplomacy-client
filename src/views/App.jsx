@@ -9,8 +9,10 @@ import Register from './Register';
 import BrowseGames from './BrowseGames';
 import Error from './Error';
 import Header from '../components/Header';
+import Flash from '../components/Flash';
 import { sizes } from '../variables';
 import * as actions from '../store/actions/auth';
+import { Alert } from '../styles';
 
 const StyledDiv = styled.div`
   position: relative;
@@ -28,6 +30,9 @@ class App extends React.Component {
       <Router>
         <StyledDiv>
           <Header />
+          <Alert>
+            <Flash />
+          </Alert>
           <Switch>
             <Route path="/game/:id">
               <Game />
@@ -53,7 +58,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.token !== null,
+    isAuthenticated: state.auth.token !== null,
   };
 };
 

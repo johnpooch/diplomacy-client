@@ -96,3 +96,30 @@ export const TwoColumns = styled.div`
     margin-bottom: 0;
   }
 `;
+
+export const Alert = styled.div`
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1111;
+
+  p {
+    margin: 0;
+  }
+  .alert-error {
+    background: lightcoral;
+  }
+  .alert-success {
+    background: lightgreen;
+  }
+  .close {
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+`;
