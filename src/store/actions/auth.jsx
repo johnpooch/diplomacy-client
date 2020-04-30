@@ -1,103 +1,71 @@
-import axios from 'axios';
-import * as actionTypes from './actionTypes';
-import * as API from '../../api';
+import { authConstants } from './actionTypes';
+import authService from '../../services/auth';
+import alertActions from './alert';
+import { history } from '../../utils';
 
-export const authStart = () => {
-  return {
-    type: actionTypes.AUTH_START,
-  };
-};
-
-export const authSuccess = (token, username) => {
-  return {
-    type: actionTypes.AUTH_SUCCESS,
-    token,
-    username,
-  };
-};
-
-export const authFail = (error) => {
-  return {
-    type: actionTypes.AUTH_FAIL,
-    error,
-  };
-};
-
-export const logout = () => {
-  localStorage.removeItem('user');
-  localStorage.removeItem('username');
-  localStorage.removeItem('token');
-  return {
-    type: actionTypes.AUTH_LOGOUT,
-  };
-};
-
-export const checkAuthTimeout = (expirationTime) => {
+function login(username, password) {
+  function request(user) {
+    return { type: authConstants.LOGIN_REQUEST, user };
+  }
+  function success(user, token) {
+    return { type: authConstants.LOGIN_SUCCESS, user, token };
+  }
+  function failure(error) {
+    return { type: authConstants.LOGIN_FAILURE, error };
+  }
   return (dispatch) => {
-    setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime * 1000);
+    dispatch(request({ username }));
+
+    authService.login(username, password).then(
+      (response) => {
+        const { user, token } = response;
+        dispatch(success(user, token));
+        history.push('/');
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
   };
-};
+}
 
-const setLoggedIn = (token, username) => {
-  // an hour from now
-  const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-  localStorage.setItem('token', token);
-  localStorage.setItem('expirationDate', expirationDate);
-  localStorage.setItem('username', username);
-};
-
-export const authLogin = (username, password) => {
+function register(username, email, password) {
+  function request(user) {
+    return { type: authConstants.REGISTER_REQUEST, user };
+  }
+  function success(user) {
+    return { type: authConstants.REGISTER_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: authConstants.REGISTER_FAILURE, error };
+  }
   return (dispatch) => {
-    dispatch(authStart());
-    axios
-      .post(API.LOGINURL, {
-        username,
-        password,
-      })
-      .then((response) => {
-        const { token } = response.data;
-        setLoggedIn(token, username);
-        dispatch(authSuccess(token, username));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch((error) => {
-        console.log(error);
-        dispatch(authFail(error));
-      });
+    dispatch(request({ username }));
+
+    authService.register(username, email, password).then(
+      () => {
+        dispatch(success());
+        dispatch(alertActions.success('Registration successful'));
+        history.push('/login');
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
   };
+}
+
+function logout() {
+  authService.logout();
+  return { type: authConstants.LOGOUT };
+}
+
+const authActions = {
+  login,
+  logout,
+  register,
 };
 
-export const authSignup = (username, email, password) => {
-  return (dispatch) => {
-    dispatch(authStart());
-    axios
-      .post(API.REGISTERURL, {
-        username,
-        email,
-        password,
-      })
-      .then((response) => {
-        const { token } = response.data;
-        setLoggedIn(token, username);
-        dispatch(authSuccess(token, username));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch((error) => {
-        dispatch(authFail(error));
-      });
-  };
-};
-
-export const authCheckState = () => {
-  return (dispatch) => {
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('username');
-    if (token === undefined || username === undefined) {
-      dispatch(logout());
-    } else {
-      dispatch(authSuccess(token, username));
-    }
-  };
-};
+export default authActions;

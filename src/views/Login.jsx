@@ -12,7 +12,7 @@ import {
   Button,
   TwoColumns,
 } from '../styles';
-import * as actions from '../store/actions/auth';
+import authActions from '../store/actions/auth';
 
 class Login extends Component {
   constructor(props) {
@@ -31,12 +31,11 @@ class Login extends Component {
     });
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     const { username, password } = this.state;
     const { onAuth } = this.props;
     onAuth(username, password);
-    // const { history } = this.props;
-    // history.push('/');
   }
 
   render() {
@@ -95,16 +94,14 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.isAuthenticated,
-    loading: state.auth.loading,
-    error: state.auth.error,
+    loggedIn: state.login.loggedIn,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (username, password) =>
-      dispatch(actions.authLogin(username, password)),
+      dispatch(authActions.login(username, password)),
   };
 };
 

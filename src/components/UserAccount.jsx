@@ -6,7 +6,7 @@ import Identicon from 'react-identicons';
 
 import { spacing } from '../variables';
 import { TertiaryButton } from '../styles';
-import * as actions from '../store/actions/auth';
+import authActions from '../store/actions/auth';
 
 export const AVATAR_SIZE = 30;
 
@@ -54,7 +54,8 @@ const renderLoggedOut = () => {
 };
 
 const renderLoggedIn = (props) => {
-  const { logout, username } = props;
+  const { logout, user } = props;
+  const { username } = user;
   return (
     <StyledLoggedIn>
       <Avatar>
@@ -75,20 +76,20 @@ const renderLoggedIn = (props) => {
 };
 
 const UserAccount = (props) => {
-  const { isAuthenticated } = props;
-  return isAuthenticated ? renderLoggedIn(props) : renderLoggedOut();
+  const { loggedIn } = props;
+  return loggedIn ? renderLoggedIn(props) : renderLoggedOut();
 };
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.auth.token !== null,
-    username: state.auth.username,
+    loggedIn: state.login.loggedIn === true,
+    user: state.login.user,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(actions.logout()),
+    logout: () => dispatch(authActions.logout()),
   };
 };
 

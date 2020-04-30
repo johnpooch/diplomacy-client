@@ -1,39 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector, connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+
 import styled from '@emotion/styled';
 
+import BrowseGames from './BrowseGames';
+import Error from './Error';
 import Game from './Game';
 import Login from './Login';
 import Register from './Register';
-import BrowseGames from './BrowseGames';
-import Error from './Error';
 import Header from '../components/Header';
-import Flash from '../components/Flash';
+import alertActions from '../store/actions/alert';
+import { history } from '../utils';
 import { sizes } from '../variables';
-import * as actions from '../store/actions/auth';
-import { Alert } from '../styles';
 
 const StyledDiv = styled.div`
   position: relative;
   padding-top: ${sizes.headerHeight}px;
 `;
 
-class App extends React.Component {
-  componentDidMount() {
-    const { onTryAutoSignup } = this.props;
-    onTryAutoSignup();
-  }
+function App() {
+  const alert = useSelector((state) => state.alert);
+  const dispatch = useDispatch();
 
-  render() {
-    return (
+  useEffect(() => {
+    history.listen((location, action) => {
+      // clear alert on location change
+      dispatch(alertActions.clear());
+    });
+  }, []);
+
+  return (
+    <div>
+      {alert.message && (
+        <div className={`alert ${alert.type}`}>{alert.message}</div>
+      )}
       <Router>
         <StyledDiv>
           <Header />
-          <Alert>
+          {/* <Alert> // TODO this is nicer than above
             <Flash />
-          </Alert>
+          </Alert> */}
           <Switch>
+            // TODO implement private routes
             <Route path="/game/:id">
               <Game />
             </Route>
@@ -52,20 +61,14 @@ class App extends React.Component {
           </Switch>
         </StyledDiv>
       </Router>
-    );
-  }
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => {
-  return {
-    isAuthenticated: state.auth.token !== null,
-  };
+  // return {
+  //   isAuthenticated: state.token !== null,
+  // };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, null)(App);

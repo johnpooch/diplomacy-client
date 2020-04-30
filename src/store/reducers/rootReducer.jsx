@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
 
-import auth from './auth';
-import flashMessages from './flashMessages';
+import login from './login';
+import register from './register';
+import alert from './alert';
 
-export default combineReducers({
-  auth,
-  flashMessages,
+const rootReducer = combineReducers({
+  login,
+  register,
+  alert,
 });
+
+export default rootReducer;

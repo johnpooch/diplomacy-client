@@ -6,7 +6,7 @@ import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
 import mapData from '../map.json';
-import * as Utils from '../utils';
+import { getObjectByKey } from '../utils';
 import { colors, sizes } from '../variables';
 
 const StyledDiv = styled.div`
@@ -45,31 +45,31 @@ class Map extends React.Component {
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
-    return Utils.getObjectByKey(id, nations, 'id');
+    return getObjectByKey(id, nations, 'id');
   }
 
   getPiece(id) {
     const { game } = this.props;
     const { pieces } = game;
-    return Utils.getObjectByKey(id, pieces, 'id');
+    return getObjectByKey(id, pieces, 'id');
   }
 
   getTerritory(id) {
     const { game } = this.props;
     const { territories } = game.variant;
-    return Utils.getObjectByKey(id, territories, 'id');
+    return getObjectByKey(id, territories, 'id');
   }
 
   getTerritoryState(id) {
     const { turn } = this.props;
     const territoryStates = turn.territory_states;
-    return Utils.getObjectByKey(id, territoryStates, 'territory');
+    return getObjectByKey(id, territoryStates, 'territory');
   }
 
   getPieceInTerritory(id) {
     const { turn } = this.props;
     const pieceStates = turn.piece_states;
-    const pieceState = Utils.getObjectByKey(id, pieceStates, 'territory');
+    const pieceState = getObjectByKey(id, pieceStates, 'territory');
     if (pieceState) {
       return this.getPiece(pieceState.piece);
     }
