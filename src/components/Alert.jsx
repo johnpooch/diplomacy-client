@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { colors, sizes, spacing, fontSizes } from '../variables';
+import { PageWrapper } from '../styles';
+import { colorMap, sizes, spacing, fontSizes } from '../variables';
 
 const StyledDiv = styled.div`
   display: flex;
@@ -12,7 +13,7 @@ const StyledDiv = styled.div`
   padding: ${spacing[3]}px;
   border: ${sizes.border}px solid currentColor;
   border-radius: ${sizes.borderRadius[1]}px;
-  color: ${(props) => (props.type === 'error' ? colors.red : colors.base)};
+  color: ${(props) => colorMap[props.type].text};
   font-size: ${fontSizes.sans[2]}px;
 
   &:not(:last-child) {
@@ -22,7 +23,15 @@ const StyledDiv = styled.div`
 
 const Alert = (props) => {
   const { text, type } = props;
-  return <StyledDiv type={type}>{text}</StyledDiv>;
+  if (!text) {
+    return null;
+  }
+
+  return (
+    <PageWrapper>
+      <StyledDiv type={type}>{text}</StyledDiv>
+    </PageWrapper>
+  );
 };
 
 export default Alert;

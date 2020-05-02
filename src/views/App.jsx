@@ -9,6 +9,7 @@ import Error from './Error';
 import Game from './Game';
 import Login from './Login';
 import Register from './Register';
+import FlashMessage from '../components/FlashMessage';
 import Header from '../components/Header';
 import alertActions from '../store/actions/alert';
 import { history } from '../utils';
@@ -19,28 +20,20 @@ const StyledDiv = styled.div`
   padding-top: ${sizes.headerHeight}px;
 `;
 
-function App() {
-  const alert = useSelector((state) => state.alert);
+function routeChange() {
   const dispatch = useDispatch();
+  dispatch(alertActions.clear());
+}
 
-  useEffect(() => {
-    history.listen((location, action) => {
-      // clear alert on location change
-      dispatch(alertActions.clear());
-    });
-  }, []);
+function App(props) {
+  const { alert } = props;
 
   return (
     <div>
-      {alert.message && (
-        <div className={`alert ${alert.type}`}>{alert.message}</div>
-      )}
-      <Router>
+      <Router onChange={routeChange}>
         <StyledDiv>
           <Header />
-          {/* <Alert> // TODO this is nicer than above
-            <Flash />
-          </Alert> */}
+          <FlashMessage text={alert.message} type={alert.type} />
           <Switch>
             // TODO implement private routes
             <Route path="/game/:id">
@@ -66,9 +59,9 @@ function App() {
 }
 
 const mapStateToProps = (state) => {
-  // return {
-  //   isAuthenticated: state.token !== null,
-  // };
+  return {
+    alert: state.alert,
+  };
 };
 
 export default connect(mapStateToProps, null)(App);

@@ -1,13 +1,15 @@
 import { alertConstants } from './actionTypes';
 
-function success(message) {
+function success(alert) {
+  const { message } = alert;
   return {
     type: alertConstants.SUCCESS,
     message,
   };
 }
 
-function error(message) {
+function error(alert) {
+  const { message } = alert;
   return {
     type: alertConstants.ERROR,
     message,

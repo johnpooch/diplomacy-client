@@ -8,14 +8,17 @@ function logout() {
 }
 
 function handleResponse(response) {
-  return response.text().then((text) => {
-    const data = text && JSON.parse(text);
+  return response.json().then((json) => {
+    const data = json;
     if (!response.ok) {
-      if (response.status === 401) {
+      const { status, statusText } = response;
+      if (status === 401) {
         // auto logout if 401 response returned from api
         logout();
+        location.reload(true);
       }
-      const error = (data && data.message) || response.statusText;
+      const message = json[Object.keys(json)[0]];
+      const error = { status, statusText, message };
       return Promise.reject(error);
     }
     return data;

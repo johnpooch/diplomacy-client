@@ -1,119 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import ReactHtmlParser from 'react-html-parser';
+import styled from '@emotion/styled';
 
-import { alertService, AlertType } from '@/_services';
-import { history } from '@/_helpers';
+import { PageWrapper } from '../styles';
+import { colorMap, sizes, spacing, fontSizes } from '../variables';
 
-const propTypes = {
-  id: PropTypes.string,
-  fade: PropTypes.bool,
-};
+const StyledDiv = styled.div`
+  display: flex;
+  width: 100%;
+  height: max-content;
+  padding: ${spacing[3]}px;
+  color: ${(props) => colorMap[props.type].text};
+  background: ${(props) => colorMap[props.type].background};
+  font-size: ${fontSizes.sans[2]}px;
 
-const defaultProps = {
-  id: 'default-alert',
-  fade: true,
-};
-
-function Alert({ id, fade }) {
-  const [alerts, setAlerts] = useState([]);
-
-  useEffect(() => {
-    // subscribe to new alert notifications
-    const subscription = alertService.onAlert(id).subscribe((alert) => {
-      // clear alerts when an empty alert is received
-      if (!alert.message) {
-        setAlerts((alerts) => {
-          // filter out alerts without 'keepAfterRouteChange' flag
-          const filteredAlerts = alerts.filter((x) => x.keepAfterRouteChange);
-
-          // remove 'keepAfterRouteChange' flag on the rest
-          filteredAlerts.forEach((x) => delete x.keepAfterRouteChange);
-          return filteredAlerts;
-        });
-      } else {
-        // add alert to array
-        setAlerts((alerts) => [...alerts, alert]);
-
-        // auto close alert if required
-        if (alert.autoClose) {
-          setTimeout(() => removeAlert(alert), 3000);
-        }
-      }
-    });
-
-    // clear alerts on location change
-    const historyUnlisten = history.listen(({ pathname }) => {
-      // don't clear if pathname has trailing slash because this will be auto redirected again
-      if (pathname.endsWith('/')) return;
-
-      alertService.clear(id);
-    });
-
-    // clean up function that runs when the component unmounts
-    return () => {
-      // unsubscribe & unlisten to avoid memory leaks
-      subscription.unsubscribe();
-      historyUnlisten();
-    };
-  }, []);
-
-  function removeAlert(alert) {
-    if (fade) {
-      // fade out alert
-      const alertWithFade = { ...alert, fade: true };
-      setAlerts((alerts) =>
-        alerts.map((x) => (x === alert ? alertWithFade : x))
-      );
-
-      // remove alert after faded out
-      setTimeout(() => {
-        setAlerts((alerts) => alerts.filter((x) => x !== alertWithFade));
-      }, 250);
-    } else {
-      // remove alert
-      setAlerts((alerts) => alerts.filter((x) => x !== alert));
-    }
+  &:not(:last-child) {
+    margin-bottom: ${spacing[4]}px;
   }
+`;
 
-  function cssClasses(alert) {
-    if (!alert) return;
-
-    const classes = ['alert', 'alert-dismissable'];
-
-    const alertTypeClass = {
-      [AlertType.Success]: 'alert alert-success',
-      [AlertType.Error]: 'alert alert-danger',
-      [AlertType.Info]: 'alert alert-info',
-      [AlertType.Warning]: 'alert alert-warning',
-    };
-
-    classes.push(alertTypeClass[alert.type]);
-
-    if (alert.fade) {
-      classes.push('fade');
-    }
-
-    return classes.join(' ');
+const FlashMessage = (props) => {
+  const { text, type } = props;
+  if (!text) {
+    return null;
   }
-
-  if (!alerts.length) return null;
 
   return (
-    <div className="container">
-      <div className="m-3">
-        {alerts.map((alert, index) => (
-          <div key={index} className={cssClasses(alert)}>
-            <a className="close" onClick={() => removeAlert(alert)}>
-              &times;
-            </a>
-            <span dangerouslySetInnerHTML={{ __html: alert.message }} />
-          </div>
-        ))}
-      </div>
-    </div>
+    <PageWrapper>
+      <StyledDiv type={type}>{text}</StyledDiv>
+    </PageWrapper>
   );
-}
+};
 
-Alert.propTypes = propTypes;
-Alert.defaultProps = defaultProps;
-export { Alert };
+export default FlashMessage;

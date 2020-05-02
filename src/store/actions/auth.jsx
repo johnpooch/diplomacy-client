@@ -4,62 +4,50 @@ import alertActions from './alert';
 import { history } from '../../utils';
 
 function login(username, password) {
-  function request(user) {
-    return { type: authConstants.LOGIN_REQUEST, user };
-  }
-  function success(user, token) {
-    return { type: authConstants.LOGIN_SUCCESS, user, token };
-  }
-  function failure(error) {
-    return { type: authConstants.LOGIN_FAILURE, error };
-  }
   return (dispatch) => {
-    dispatch(request({ username }));
+    dispatch({ type: authConstants.LOGIN_REQUEST, username });
 
     authService.login(username, password).then(
       (response) => {
         const { user, token } = response;
-        dispatch(success(user, token));
+        dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
         history.push('/');
+        dispatch(
+          alertActions.success({ message: 'Logged in successfully. Welcome!' })
+        );
       },
       (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
+        dispatch({ type: authConstants.LOGIN_FAILURE });
+        dispatch(alertActions.error(error));
       }
     );
   };
 }
 
 function register(username, email, password) {
-  function request(user) {
-    return { type: authConstants.REGISTER_REQUEST, user };
-  }
-  function success(user) {
-    return { type: authConstants.REGISTER_SUCCESS, user };
-  }
-  function failure(error) {
-    return { type: authConstants.REGISTER_FAILURE, error };
-  }
   return (dispatch) => {
-    dispatch(request({ username }));
+    dispatch({ type: authConstants.REGISTER_REQUEST });
 
     authService.register(username, email, password).then(
       () => {
-        dispatch(success());
-        dispatch(alertActions.success('Registration successful'));
+        dispatch({ type: authConstants.REGISTER_SUCCESS });
         history.push('/login');
+        dispatch(alertActions.success({ message: 'Registration successful!' }));
       },
       (error) => {
-        dispatch(failure(error.toString()));
-        dispatch(alertActions.error(error.toString()));
+        dispatch({ type: authConstants.REGISTER_FAILURE });
+        dispatch(alertActions.error(error));
       }
     );
   };
 }
 
 function logout() {
-  authService.logout();
-  return { type: authConstants.LOGOUT };
+  return (dispatch) => {
+    authService.logout();
+    dispatch({ type: authConstants.LOGOUT });
+    // message
+  };
 }
 
 const authActions = {
