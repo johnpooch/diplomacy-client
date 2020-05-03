@@ -23,15 +23,14 @@ const StyledDiv = styled.div`
 
 const Alert = (props) => {
   const { text, type } = props;
-  if (!text) {
-    return null;
+  if (text) {
+    return (
+      <PageWrapper>
+        <StyledDiv type={type}>{text}</StyledDiv>
+      </PageWrapper>
+    );
   }
-
-  return (
-    <PageWrapper>
-      <StyledDiv type={type}>{text}</StyledDiv>
-    </PageWrapper>
-  );
+  return null;
 };
 
 export default Alert;

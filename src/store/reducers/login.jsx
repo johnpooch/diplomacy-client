@@ -7,7 +7,6 @@ const initialState = user
   ? { loggedIn: true, user, token }
   : { loggedIn: false, user: {}, token: null };
 
-// TODO use update
 function login(state = initialState, action) {
   switch (action.type) {
     case authConstants.LOGIN_REQUEST:

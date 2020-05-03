@@ -1,9 +1,8 @@
 import React from 'react';
-import ReactHtmlParser from 'react-html-parser';
 import styled from '@emotion/styled';
 
 import { PageWrapper } from '../styles';
-import { colorMap, sizes, spacing, fontSizes } from '../variables';
+import { colorMap, spacing, fontSizes } from '../variables';
 
 const StyledDiv = styled.div`
   display: flex;
@@ -21,15 +20,14 @@ const StyledDiv = styled.div`
 
 const FlashMessage = (props) => {
   const { text, type } = props;
-  if (!text) {
-    return null;
+  if (text) {
+    return (
+      <PageWrapper>
+        <StyledDiv type={type}>{text}</StyledDiv>
+      </PageWrapper>
+    );
   }
-
-  return (
-    <PageWrapper>
-      <StyledDiv type={type}>{text}</StyledDiv>
-    </PageWrapper>
-  );
+  return null;
 };
 
 export default FlashMessage;

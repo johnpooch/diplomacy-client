@@ -1,6 +1,5 @@
 import * as API from '../api';
 
-// TODO make into class?
 function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem('user');
@@ -13,9 +12,7 @@ function handleResponse(response) {
     if (!response.ok) {
       const { status, statusText } = response;
       if (status === 401) {
-        // auto logout if 401 response returned from api
         logout();
-        location.reload(true);
       }
       const message = json[Object.keys(json)[0]];
       const error = { status, statusText, message };
