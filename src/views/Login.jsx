@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter, useHistory } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -25,6 +24,13 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate() {
+    const { history, loggedIn } = this.props;
+    if (loggedIn === true) {
+      history.push('/');
+    }
+  }
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
@@ -34,19 +40,15 @@ class Login extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { username, password } = this.state;
-    const { history, onAuth } = this.props;
-    onAuth(username, password, history);
+    const { onAuth } = this.props;
+    onAuth(username, password);
   }
 
   render() {
     const { username, password } = this.state;
-    const { error, loading } = this.props;
-    if (loading) {
+    const { loggedIn } = this.props;
+    if (loggedIn === undefined) {
       return <Loading />;
-    }
-    let alert = null;
-    if (error) {
-      alert = <Alert type="error" text="Invalid username or password" />;
     }
     return (
       <PageWrapper>

@@ -1,10 +1,11 @@
 import React from 'react';
-import { useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   browserHistory,
+  Redirect,
 } from 'react-router-dom';
 import styled from '@emotion/styled';
 
@@ -15,7 +16,6 @@ import Login from './Login';
 import Register from './Register';
 import FlashMessage from '../components/FlashMessage';
 import Header from '../components/Header';
-import alertActions from '../store/actions/alert';
 import { sizes } from '../variables';
 
 const StyledDiv = styled.div`
@@ -23,14 +23,31 @@ const StyledDiv = styled.div`
   padding-top: ${sizes.headerHeight}px;
 `;
 
-function routeChange() {
-  const dispatch = useDispatch();
-  dispatch(alertActions.clear());
-}
-
 function App(props) {
-  const { alert } = props;
+  const { alert, loggedIn } = props;
 
+  if (!loggedIn) {
+    return (
+      <div>
+        <Router history={browserHistory}>
+          <StyledDiv>
+            <FlashMessage text={alert.message} type={alert.type} />
+            <Switch>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/register">
+                <Register />
+              </Route>
+              <Route>
+                <Redirect to="/login" />
+              </Route>
+            </Switch>
+          </StyledDiv>
+        </Router>
+      </div>
+    );
+  }
   return (
     <div>
       <Router history={browserHistory}>
@@ -38,18 +55,14 @@ function App(props) {
           <Header />
           <FlashMessage text={alert.message} type={alert.type} />
           <Switch>
-            // TODO implement private routes
             <Route path="/game/:id">
               <Game />
             </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
             <Route exact path="/">
               <BrowseGames />
+            </Route>
+            <Route path="/login" exact>
+              <Redirect to="" />
             </Route>
             <Route>
               <Error text="Page not found" />
@@ -64,6 +77,7 @@ function App(props) {
 const mapStateToProps = (state) => {
   return {
     alert: state.alert,
+    loggedIn: state.login.loggedIn,
   };
 };
 

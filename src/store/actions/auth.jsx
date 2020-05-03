@@ -13,7 +13,6 @@ function login(username, password, history) {
         dispatch(
           alertActions.success({ message: 'Logged in successfully. Welcome!' })
         );
-        history.push('/');
       },
       (error) => {
         dispatch({ type: authConstants.LOGIN_FAILURE });

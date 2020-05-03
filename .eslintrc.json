@@ -7,13 +7,10 @@
     "jest": true,
     "node": true
   },
-  "plugins": ["react-hooks"],
   "rules": {
     "jsx-a11y/href-no-hash": ["off"],
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "react/prop-types": 0,
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "no-console": "off"
   }
 }
