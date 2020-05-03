@@ -5,7 +5,7 @@ function register(state = {}, action) {
     case authConstants.REGISTER_REQUEST:
       return { registering: true };
     case authConstants.REGISTER_SUCCESS:
-      return {};
+      return { registered: true };
     case authConstants.REGISTER_FAILURE:
       return {};
     default:

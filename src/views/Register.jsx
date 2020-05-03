@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Alert from '../components/Alert';
@@ -25,6 +25,14 @@ class Register extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidUpdate() {
+    // Note this is a bit hacky. Waits for redux state to update and then redirects.
+    const { history, registered } = this.props;
+    if (registered === true) {
+      history.push('/');
+    }
   }
 
   handleChange(event) {
@@ -129,8 +137,7 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    // loading: state.loading,
-    // error: state.error,
+    registered: state.register.registered,
   };
 };
 
@@ -141,4 +148,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Register));
