@@ -38,12 +38,6 @@ class Register extends Component {
     const { username, email, password } = this.state;
     const { onAuth } = this.props;
     onAuth(username, email, password);
-    // addFlashMessage({
-    //   type: 'success',
-    //   text: 'You signed up successfully! Welcome!',
-    // });
-    // const { history } = this.props;
-    // history.push('/');
   }
 
   render() {
