@@ -1,7 +1,11 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector, connect } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
+import React from 'react';
+import { useDispatch, connect } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  browserHistory,
+} from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import BrowseGames from './BrowseGames';
@@ -12,7 +16,6 @@ import Register from './Register';
 import FlashMessage from '../components/FlashMessage';
 import Header from '../components/Header';
 import alertActions from '../store/actions/alert';
-import { history } from '../utils';
 import { sizes } from '../variables';
 
 const StyledDiv = styled.div`
@@ -30,7 +33,7 @@ function App(props) {
 
   return (
     <div>
-      <Router onChange={routeChange}>
+      <Router history={browserHistory}>
         <StyledDiv>
           <Header />
           <FlashMessage text={alert.message} type={alert.type} />

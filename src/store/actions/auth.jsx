@@ -1,9 +1,8 @@
 import { authConstants } from './actionTypes';
 import authService from '../../services/auth';
 import alertActions from './alert';
-import { history } from '../../utils';
 
-function login(username, password) {
+function login(username, password, history) {
   return (dispatch) => {
     dispatch({ type: authConstants.LOGIN_REQUEST, username });
 
@@ -11,10 +10,10 @@ function login(username, password) {
       (response) => {
         const { user, token } = response;
         dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
-        history.push('/');
         dispatch(
           alertActions.success({ message: 'Logged in successfully. Welcome!' })
         );
+        history.push('/');
       },
       (error) => {
         dispatch({ type: authConstants.LOGIN_FAILURE });
@@ -31,7 +30,6 @@ function register(username, email, password) {
     authService.register(username, email, password).then(
       () => {
         dispatch({ type: authConstants.REGISTER_SUCCESS });
-        history.push('/login');
         dispatch(alertActions.success({ message: 'Registration successful!' }));
       },
       (error) => {

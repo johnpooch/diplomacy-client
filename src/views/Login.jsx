@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, useHistory } from 'react-router-dom';
 
 import Alert from '../components/Alert';
 import Heading from '../components/Heading';
@@ -14,7 +14,7 @@ import {
 } from '../styles';
 import authActions from '../store/actions/auth';
 
-class Login extends Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,8 +34,8 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const { username, password } = this.state;
-    const { onAuth } = this.props;
-    onAuth(username, password);
+    const { history, onAuth } = this.props;
+    onAuth(username, password, history);
   }
 
   render() {
