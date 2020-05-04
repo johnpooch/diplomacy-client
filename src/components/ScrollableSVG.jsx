@@ -86,9 +86,6 @@ const ScrollableSVG = (props) => {
       className={className}
       preserveAspectRatio="xMidYMid slice"
       viewBox={getViewBox(viewBox)}
-      // style={{
-      //   transform: `translate3d(${viewBox.x}px, ${viewBox.y}px, 0px)`,
-      // }}
       onMouseDown={(e) => {
         mouseDown(e);
       }}
