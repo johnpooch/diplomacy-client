@@ -23,6 +23,7 @@ const StyledDiv = styled.div`
 
 const Alert = (props) => {
   const { text, type } = props;
+  console.log(type);
   if (text) {
     return (
       <PageWrapper>

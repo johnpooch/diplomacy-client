@@ -16,18 +16,46 @@ const StyledDiv = styled.div`
   &:not(:last-child) {
     margin-bottom: ${spacing[4]}px;
   }
+  .close {
+    color: black;
+    font-weight: bolder;
+    cursor: pointer;
+    border: solid 1px black;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
 `;
 
-const FlashMessage = (props) => {
-  const { text, type } = props;
-  if (text) {
-    return (
-      <PageWrapper>
-        <StyledDiv type={type}>{text}</StyledDiv>
-      </PageWrapper>
-    );
+class FlashMessage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: true,
+    };
+    this.close = this.close.bind(this);
   }
-  return null;
-};
+
+  close() {
+    this.setState({ open: false });
+  }
+
+  render() {
+    const { text, type } = this.props;
+    const { open } = this.state;
+    if (text && open) {
+      return (
+        <PageWrapper>
+          <StyledDiv type={type}>
+            <button type="button" className="close" onClick={this.close}>
+              x
+            </button>
+            <p>{text}</p>
+          </StyledDiv>
+        </PageWrapper>
+      );
+    }
+    return null;
+  }
+}
 
 export default FlashMessage;

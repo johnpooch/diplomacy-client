@@ -5,6 +5,8 @@ import styled from '@emotion/styled';
 import Error from './Error';
 import Map from '../components/Map';
 import Loading from '../components/Loading';
+import JoinGame from '../components/JoinGame';
+
 import * as API from '../api';
 import * as Utils from '../utils';
 import { colors, spacing, fontSizes } from '../variables';
@@ -87,6 +89,7 @@ class Game extends React.Component {
       .then((json) => {
         const game = json;
         const currentTurn = Game.getCurrentTurn(game);
+
         this.setState({
           game,
           selectedTurn: currentTurn,
@@ -162,6 +165,12 @@ class Game extends React.Component {
     const { isLoaded, game } = this.state;
     if (!isLoaded) return <Loading />;
     if (!game) return <Error text="Game not found" />;
+
+    const { status } = game;
+    if (status === 'pending') {
+      // handle already joined!
+      return <JoinGame game={game} />;
+    }
     return (
       <div>
         {this.renderGame()}

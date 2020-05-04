@@ -3,6 +3,7 @@ const authURL = `${serviceURI}auth/`;
 
 // Games
 export const ALLGAMESURL = `${serviceURI}games`;
+export const GAMEFILTERCHOICESURL = `${serviceURI}game-filter-choices`;
 export const USERGAMESURL = `${serviceURI}games/mygames`;
 export const CREATEGAMEURL = `${serviceURI}games/create`;
 

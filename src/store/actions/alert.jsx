@@ -2,6 +2,7 @@ import { alertConstants } from './actionTypes';
 
 function success(alert) {
   const { message } = alert;
+  console.log(message);
   return {
     type: alertConstants.SUCCESS,
     message,

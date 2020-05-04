@@ -4,12 +4,14 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  browserHistory,
   Redirect,
+  browserHistory,
 } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 
 import BrowseGames from './BrowseGames';
+import CreateGame from './CreateGame';
 import Error from './Error';
 import Game from './Game';
 import Login from './Login';
@@ -58,10 +60,16 @@ function App(props) {
             <Route path="/game/:id">
               <Game />
             </Route>
+            <Route exact path="/create-game">
+              <CreateGame />
+            </Route>
             <Route exact path="/">
               <BrowseGames />
             </Route>
             <Route path="/login" exact>
+              <Redirect to="" />
+            </Route>
+            <Route path="/register" exact>
               <Redirect to="" />
             </Route>
             <Route>
