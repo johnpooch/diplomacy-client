@@ -9,28 +9,25 @@ import JoinGame from '../components/JoinGame';
 
 import * as API from '../api';
 import * as Utils from '../utils';
-import { colors, spacing, fontSizes } from '../variables';
+import { colors, sizes, spacing, fontSizes } from '../variables';
 
 const StyledNav = styled.nav`
   position: fixed;
-  bottom: 0;
+  top: ${sizes.headerHeight}px;
   left: 0;
   right: 0;
-  background: ${colors.gray};
   color: ${colors.base};
   padding: ${spacing[2]}px;
+  overflow-x: auto;
 
   ol {
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
-    overflow-x: auto;
   }
 
   li {
-    &:not(:first-of-type) {
-      margin-right: ${spacing[2]}px;
-    }
+    margin: 0 ${spacing[1]}px;
 
     &[data-selected='true'] span {
       font-weight: bold;
@@ -38,19 +35,17 @@ const StyledNav = styled.nav`
   }
 
   button {
-    padding: ${spacing[1]}px;
-    font-size: ${fontSizes.sans[1]}px;
-    min-width: 80px;
+    padding: ${spacing[2]}px;
+    font-size: ${fontSizes.sans[2]}px;
     cursor: pointer;
+    background: white;
+    border: none;
   }
 
   span {
-    display: block;
     text-transform: capitalize;
-
-    &:not(:first-of-type) {
-      margin-top: ${spacing[0]}px;
-    }
+    display: inline-block;
+    margin: 0 2px;
   }
 
   .phase {
