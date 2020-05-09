@@ -137,7 +137,7 @@ class BrowseGames extends React.Component {
             </p>
             <p className="variant">
               <span className="label">Variant</span>
-              <span className="value">{game.variant.name}</span>
+              <span className="value">{game.variant}</span>
             </p>
           </main>
         </Link>

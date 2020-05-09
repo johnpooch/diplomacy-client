@@ -4,7 +4,6 @@ import { lighten } from 'polished';
 
 import SupplyCenter from './SupplyCenter';
 import mapRef from '../map.json';
-import mapData from '../egdipmap.json';
 import * as Utils from '../utils';
 import { colors, fontSizes } from '../variables';
 

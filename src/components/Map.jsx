@@ -5,7 +5,6 @@ import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
-import mapData from '../egdipmap.json';
 import * as Utils from '../utils';
 import { colors, sizes } from '../variables';
 
