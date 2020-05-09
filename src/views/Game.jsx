@@ -24,6 +24,7 @@ class Game extends React.Component {
     this.getGame(match.params.id);
   }
 
+  // TODO move to service
   getGame(id) {
     const { headers } = this.props;
     const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);

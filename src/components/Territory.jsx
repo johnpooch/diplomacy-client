@@ -34,82 +34,71 @@ const getTerritoryColor = (type, controlledBy) => {
   return colors.land;
 };
 
-const getPath = (data, props) => {
-  const { _mouseOver, _mouseOut, id } = props;
-  if ('path' in data) {
-    return (
-      <path
-        onMouseOver={() => {
-          _mouseOver(id);
-        }}
-        onFocus={() => {
-          _mouseOver(id);
-        }}
-        onMouseOut={() => {
-          _mouseOut();
-        }}
-        onBlur={() => {
-          _mouseOut();
-        }}
-        d={data.path}
-      />
-    );
-  }
-  return null;
+const getPath = (props) => {
+  const { path, _mouseOver, _mouseOut, id } = props;
+  return (
+    <path
+      onMouseOver={() => {
+        _mouseOver(id);
+      }}
+      onFocus={() => {
+        _mouseOver(id);
+      }}
+      onMouseOut={() => {
+        _mouseOut();
+      }}
+      onBlur={() => {
+        _mouseOut();
+      }}
+      d={path}
+    />
+  );
 };
 
-const getText = (data) => {
-  return null;
-  if ('text' in data && 'abbreviation' in data) {
-    const { x } = data.text;
-    const { y } = data.text;
+const getText = (props) => {
+  const { textX, textY, abbreviation } = props;
+  if (abbreviation) {
     return (
-      <text x={x} y={y}>
-        {data.abbreviation}
+      <text x={textX} y={textY}>
+        {abbreviation}
       </text>
     );
   }
   return null;
 };
 
-const getSupplyCenter = (data, props) => {
-  return null;
-  const { supplyCenter, type, id, controlledBy } = props;
+const getSupplyCenter = (props) => {
+  const {
+    supplyCenter,
+    type,
+    id,
+    controlledBy,
+    supplyCenterX,
+    supplyCenterY,
+  } = props;
   if (supplyCenter) {
     const coastal = type === 'coastal';
-    console.log(data.supplyCenter);
-    if (
-      'supplyCenter' in data &&
-      'x' in data.supplyCenter &&
-      'y' in data.supplyCenter
-    ) {
-      const { x } = data.supplyCenter;
-      const { y } = data.supplyCenter;
-      return (
-        <SupplyCenter
-          x={x}
-          y={y}
-          coastal={coastal}
-          territory={id}
-          nation={controlledBy}
-        />
-      );
-    }
+    return (
+      <SupplyCenter
+        x={supplyCenterX}
+        y={supplyCenterY}
+        coastal={coastal}
+        territory={id}
+        nation={controlledBy}
+      />
+    );
   }
-  return null;
 };
 
 const Territory = (props) => {
   const { id, type, controlledBy, hovering, interacting } = props;
-  const data = Utils.matchIdToAbbreviation(id, mapData, mapRef);
-  if (!data) return null;
   const hover = !interacting && hovering;
   const color = getTerritoryColor(type, controlledBy);
   return (
     <StyledTerritory color={color} hover={hover}>
-      {getPath(data, props)}
-      {getText(data)}
-      {getSupplyCenter(data, props)}
+      {getPath(props)}
+      {getText(props)}
+      {getSupplyCenter(props)}
     </StyledTerritory>
   );
 };

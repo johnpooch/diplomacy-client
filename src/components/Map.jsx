@@ -5,7 +5,6 @@ import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
-import mapData from '../map.json';
 import { getObjectByKey } from '../utils';
 import { colors, sizes } from '../variables';
 
@@ -134,27 +133,49 @@ class Map extends React.Component {
   }
 
   renderTerritories() {
-    const { turn } = this.props;
+    const { game, turn } = this.props;
     if (!turn) return null;
 
-    const { game } = this.props;
-    const { territories } = game.variant;
+    const mapData = game.variant.map_data[0];
+    const territories = mapData.territory_data;
 
     const territoriesList = [];
-    territories.forEach((territory) => {
+    territories.forEach((territoryMapData) => {
       const { hovering, interacting } = this.state;
-      const { id } = territory;
-      const territoryState = this.getTerritoryState(id);
+      const {
+        pk,
+        territory: territoryId,
+        abbreviation,
+        name,
+        text_x: textX,
+        text_y: textY,
+        path,
+        supply_center_x: supplyCenterX,
+        supply_center_y: supplyCenterY,
+      } = territoryMapData;
+      const territoryState = this.getTerritoryState(territoryId);
+      const territory = this.getTerritory(territoryId);
       const controlledBy = territoryState ? territoryState.controlled_by : null;
+      const type = 'impassable';
+      const supplyCenter = false;
+      if (territory) {
+        const { supply_center: supplyCenter, type } = territory;
+      }
       territoriesList.push(
         <Territory
-          key={id}
-          id={id}
-          name={territory.name}
-          type={territory.type}
+          abbreviation={abbreviation}
+          name={name}
+          type={type}
+          key={pk}
+          id={pk}
+          textX={textX}
+          textY={textY}
+          path={path}
           controlledBy={controlledBy}
-          supplyCenter={territory.supply_center}
-          hovering={hovering === id}
+          supplyCenter={supplyCenter}
+          supplyCenterX={supplyCenterX}
+          supplyCenterY={supplyCenterY}
+          hovering={hovering === pk}
           interacting={interacting}
           _mouseOver={(hoverTerritory) => {
             this.setState({
@@ -177,18 +198,25 @@ class Map extends React.Component {
   }
 
   renderPieces() {
-    const { turn } = this.props;
+    const { game, turn } = this.props;
     const pieceStates = turn.piece_states;
+
+    const mapData = game.variant.map_data[0];
+    const { territory_data: territoryData } = mapData;
 
     const piecesList = [];
     pieceStates.forEach((state) => {
       const piece = this.getPiece(state.piece);
+      const data = getObjectByKey(state.territory, territoryData, 'territory');
+      const { piece_x: x, piece_y: y } = data;
       piecesList.push(
         <Piece
           key={piece.id}
           type={piece.type}
           nation={piece.nation}
           territory={state.territory}
+          x={x}
+          y={y}
         />
       );
     });
@@ -204,9 +232,10 @@ class Map extends React.Component {
   }
 
   render() {
-    const { turn } = this.props;
+    const { game, turn } = this.props;
     if (!turn) return null;
     const { interacting } = this.state;
+    const mapData = game.variant.map_data;
     return (
       <StyledDiv
         onMouseEnter={(e) => {

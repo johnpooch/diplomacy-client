@@ -2,8 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { lighten } from 'polished';
 
-import mapRef from '../map.json';
-import * as Utils from '../utils';
 import { colors } from '../variables';
 
 const StyledPiece = styled.circle`
@@ -36,11 +34,8 @@ const getMarker = (props, x, y, size = 8) => {
 };
 
 const Piece = (props) => {
-  const { territory } = props;
-  const data = Utils.matchIdToAbbreviation(territory, mapData, mapRef);
-  if (!data) return null;
-  const { piece } = data;
-  return <g>{getMarker(props, piece.x, piece.y)}</g>;
+  const { x, y } = props;
+  return <g>{getMarker(props, x, y)}</g>;
 };
 
 export default Piece;
