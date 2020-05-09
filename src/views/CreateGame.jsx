@@ -78,7 +78,7 @@ class CreateGame extends Component {
             />
           </label>
           <p>
-            <Button type="submit">Log in</Button>
+            <Button type="submit">Create game</Button>
           </p>
         </GenericForm>
       </PageWrapper>
