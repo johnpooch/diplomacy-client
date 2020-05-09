@@ -26,6 +26,7 @@ class Map extends React.Component {
     super(props);
 
     this.state = {
+      interacting: false,
       hovering: null,
       tooltip: null,
       mousePos: {
@@ -141,6 +142,7 @@ class Map extends React.Component {
 
     const territoriesList = [];
     territories.forEach((territory) => {
+      const { hovering, interacting } = this.state;
       const { id } = territory;
       const territoryState = this.getTerritoryState(id);
       const controlledBy = territoryState ? territoryState.controlled_by : null;
@@ -152,6 +154,8 @@ class Map extends React.Component {
           type={territory.type}
           controlledBy={controlledBy}
           supplyCenter={territory.supply_center}
+          hovering={hovering === id}
+          interacting={interacting}
           _mouseOver={(hoverTerritory) => {
             this.setState({
               hovering: hoverTerritory,
@@ -192,9 +196,9 @@ class Map extends React.Component {
   }
 
   renderTooltip() {
-    const { tooltip } = this.state;
+    const { tooltip, interacting } = this.state;
     if (tooltip) {
-      return <Tooltip tooltip={tooltip} />;
+      return <Tooltip tooltip={tooltip} interacting={interacting} />;
     }
     return null;
   }
@@ -202,7 +206,7 @@ class Map extends React.Component {
   render() {
     const { turn } = this.props;
     if (!turn) return null;
-
+    const { interacting } = this.state;
     return (
       <StyledDiv
         onMouseEnter={(e) => {
@@ -210,15 +214,35 @@ class Map extends React.Component {
         }}
         onMouseMove={(e) => {
           this.updateMousePos(e);
-          this.startTooltipTimeout();
+          if (!interacting) {
+            this.startTooltipTimeout();
+          }
           this.setState({
             tooltip: null,
+          });
+        }}
+        onMouseDown={() => {
+          this.setState({
+            interacting: true,
+            tooltip: null,
+          });
+        }}
+        onMouseUp={() => {
+          this.startTooltipTimeout();
+          this.setState({
+            interacting: false,
+          });
+        }}
+        onMouseLeave={() => {
+          this.setState({
+            interacting: false,
           });
         }}
       >
         <ScrollableSVG
           viewBoxWidth={mapData.viewBoxWidth}
           viewBoxHeight={mapData.viewBoxHeight}
+          interacting={interacting}
         >
           <rect
             x={0}
