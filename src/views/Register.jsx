@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Alert from '../components/Alert';
@@ -12,7 +12,7 @@ import {
   Button,
   TwoColumns,
 } from '../styles';
-import * as actions from '../store/actions/auth';
+import authActions from '../store/actions/auth';
 
 class Register extends Component {
   constructor(props) {
@@ -27,18 +27,25 @@ class Register extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidUpdate() {
+    // Note this is a bit hacky. Waits for redux state to update and then redirects.
+    const { history, registered } = this.props;
+    if (registered === true) {
+      history.push('/');
+    }
+  }
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
     });
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     const { username, email, password } = this.state;
     const { onAuth } = this.props;
     onAuth(username, email, password);
-    // const { history } = this.props;
-    // history.push('/');
   }
 
   render() {
@@ -130,16 +137,18 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.loading,
-    error: state.error,
+    registered: state.register.registered,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (username, email, password) =>
-      dispatch(actions.authSignup(username, email, password)),
+      dispatch(authActions.register(username, email, password)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Register));

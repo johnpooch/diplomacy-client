@@ -1,9 +1,11 @@
-const getObjectByKey = (pk, objs, key = 'pk') => {
+import React from 'react';
+
+function getObjectByKey(pk, objs, key = 'pk') {
   const id = parseInt(pk, 10);
   return objs.find((obj) => {
     return obj[key] === id;
   });
-};
+}
 
 const matchIdToAbbreviation = (id, mapData, mapRef) => {
   const ref = getObjectByKey(id, mapRef.territories);

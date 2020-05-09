@@ -1,65 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import Alert from '../components/Alert';
-import Heading from '../components/Heading';
+import BrowseGame from '../components/BrowseGame';
+import GamesList from '../components/GamesList';
 import Loading from '../components/Loading';
+import FilterForm from '../components/FilterForm';
 import { PageWrapper } from '../styles';
-import { colors, spacing } from '../variables';
-import * as API from '../api';
+import gameService from '../services/game';
 
 const StyledList = styled.ol`
   margin: 0;
   padding: 0;
   list-style: none;
-`;
-
-const StyledListItem = styled.li`
-  &:not(:last-child) {
-    margin-bottom: ${spacing[5]}px;
-  }
-
-  a {
-    text-decoration: none;
-    color: ${colors.base};
-
-    &:hover .name {
-      text-decoration: underline;
-    }
-  }
-
-  header {
-    margin-bottom: ${spacing[2]}px;
-  }
-
-  p {
-    margin: 0;
-
-    &:not(:last-child) {
-      margin-bottom: ${spacing[2]}px;
-    }
-  }
-
-  .name {
-    font-weight: 600;
-  }
-
-  .id {
-    margin-left: ${spacing[1]}px;
-
-    &:before {
-      content: '#';
-    }
-  }
-
-  .label {
-    font-style: italic;
-
-    &:after {
-      content: ': ';
-    }
-  }
 `;
 
 class BrowseGames extends React.Component {
@@ -68,36 +20,11 @@ class BrowseGames extends React.Component {
     this.state = {
       isLoaded: false,
     };
+    this.fetchGames = this.fetchGames.bind(this);
   }
 
   componentDidMount() {
-    this.getGames();
-  }
-
-  getGames() {
-    const { headers } = this.props;
-    fetch(API.ALLGAMESURL, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.status !== 200) {
-          throw new Error('Failed to connect to service');
-        }
-        return response.json();
-      })
-      .then((json) => {
-        const games = json.length ? json.slice() : [];
-        this.setState({
-          games,
-          isLoaded: true,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          isLoaded: true,
-        });
-      });
+    this.fetchGamesAndChoices();
   }
 
   static getDateDisplayFormat() {
@@ -110,64 +37,63 @@ class BrowseGames extends React.Component {
     };
   }
 
-  static renderGamesListItem(game) {
-    const date = new Date(game.created_at);
-    const dateString = date.toLocaleDateString(
-      'en-GB',
-      BrowseGames.getDateDisplayFormat()
-    );
+  fetchGamesAndChoices() {
+    const fetchGames = gameService.get();
+    const fetchChoices = gameService.getChoices();
+    Promise.all([fetchGames, fetchChoices]).then(([games, choices]) => {
+      this.setState({
+        games,
+        choices,
+        isLoaded: true,
+      });
+    });
+  }
 
-    return (
-      <StyledListItem key={game.id}>
-        <Link to={`/game/${game.id}`}>
-          <header>
-            <span className="name">{game.name}</span>
-            <span className="id">{game.id}</span>
-          </header>
-          <main>
-            <p className="created-at">
-              <span className="label">Created</span>
-              <time className="value" dateTime={game.created_at}>
-                {dateString}
-              </time>
-            </p>
-            <p className="created-by">
-              <span className="label">By player</span>
-              <span className="value">{game.created_by}</span>
-            </p>
-            <p className="variant">
-              <span className="label">Variant</span>
-              <span className="value">{game.variant}</span>
-            </p>
-          </main>
-        </Link>
-      </StyledListItem>
-    );
+  fetchGames(filters) {
+    gameService.get(filters).then((json) => {
+      const games = json.length ? json.slice() : [];
+      this.setState({ games, isLoaded: true });
+    });
   }
 
   renderView() {
-    const { isLoaded, games } = this.state;
+    const { isLoaded, games, choices } = this.state;
 
     if (!isLoaded) {
       return <Loading />;
     }
 
-    if (!games || !games.length) {
-      return <Alert text="No games found" type="error" />;
-    }
-
     const gamesList = [];
     games.forEach((game) => {
-      gamesList.push(BrowseGames.renderGamesListItem(game));
+      gamesList.push(
+        <BrowseGame
+          key={game.id}
+          id={game.id}
+          status={game.status}
+          createdAt={game.created_at}
+          createdBy={game.created_by}
+          variant={game.variant}
+          name={game.name}
+        />
+      );
     });
-    return <StyledList>{gamesList}</StyledList>;
+    return (
+      <div>
+        <FilterForm choices={choices} callback={this.fetchGames} />
+        <StyledList>{gamesList}</StyledList>
+      </div>
+    );
   }
 
   render() {
+    const { isLoaded, games, choices } = this.state;
+    if (!isLoaded) {
+      return <Loading />;
+    }
     return (
-      <PageWrapper>
-        <Heading text="Browse games" />
-        {this.renderView()}
+      <PageWrapper className="grid">
+        <FilterForm choices={choices} callback={this.fetchGames} />
+        <GamesList games={games} />
       </PageWrapper>
     );
   }

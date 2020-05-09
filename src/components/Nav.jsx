@@ -1,9 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const navItems = {
-  '/': 'Browse games',
-};
+const navItems = {};
 
 const Nav = () => {
   const navElements = [];

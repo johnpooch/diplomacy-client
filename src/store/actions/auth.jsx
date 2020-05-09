@@ -1,112 +1,56 @@
-import axios from 'axios';
-import * as actionTypes from './actionTypes';
-import * as API from '../../api';
+import { authConstants } from './actionTypes';
+import authService from '../../services/auth';
+import alertActions from './alert';
 
-export const authStart = () => {
-  return {
-    type: actionTypes.AUTH_START,
-  };
-};
-
-export const authSuccess = (token, username) => {
-  return {
-    type: actionTypes.AUTH_SUCCESS,
-    token,
-    username,
-  };
-};
-
-export const authFail = (error) => {
-  return {
-    type: actionTypes.AUTH_FAIL,
-    error,
-  };
-};
-
-export const logout = () => {
-  localStorage.removeItem('user');
-  localStorage.removeItem('expirationDate');
-  localStorage.removeItem('username');
-  return {
-    type: actionTypes.AUTH_LOGOUT,
-  };
-};
-
-export const checkAuthTimeout = (expirationTime) => {
+function login(username, password, history) {
   return (dispatch) => {
-    setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime * 1000);
-  };
-};
+    dispatch({ type: authConstants.LOGIN_REQUEST, username });
 
-const setLoggedIn = (token, username) => {
-  // an hour from now
-  const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
-  localStorage.setItem('token', token);
-  localStorage.setItem('expirationDate', expirationDate);
-  localStorage.setItem('username', username);
-};
-
-export const authLogin = (username, password) => {
-  return (dispatch) => {
-    dispatch(authStart());
-    axios
-      .post(API.LOGINURL, {
-        username,
-        password,
-      })
-      .then((response) => {
-        const { token } = response.data;
-        setLoggedIn(token, username);
-        dispatch(authSuccess(token, username));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch((error) => {
-        dispatch(authFail(error));
-      });
-  };
-};
-
-export const authSignup = (username, email, password) => {
-  return (dispatch) => {
-    dispatch(authStart());
-    axios
-      .post(API.REGISTERURL, {
-        username,
-        email,
-        password,
-      })
-      .then((response) => {
-        const { token } = response.data;
-        setLoggedIn(token, username);
-        dispatch(authSuccess(token, username));
-        dispatch(checkAuthTimeout(3600));
-      })
-      .catch((error) => {
-        dispatch(authFail(error));
-      });
-  };
-};
-
-export const authCheckState = () => {
-  return (dispatch) => {
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('username');
-    if (token === undefined || username === undefined) {
-      dispatch(logout());
-    } else {
-      const expirationDate = new Date(localStorage.getItem('expirationDate'));
-      if (expirationDate < new Date()) {
-        dispatch(logout());
-      } else {
-        dispatch(authSuccess(token, username));
+    authService.login(username, password).then(
+      (response) => {
+        const { user, token } = response;
+        dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
         dispatch(
-          checkAuthTimeout(
-            (expirationDate.getTime() - new Date().getTime()) / 1000
-          )
+          alertActions.success({ message: 'Logged in successfully. Welcome!' })
         );
+      },
+      (error) => {
+        dispatch({ type: authConstants.LOGIN_FAILURE });
+        dispatch(alertActions.error(error));
       }
-    }
+    );
   };
+}
+
+function register(username, email, password) {
+  return (dispatch) => {
+    dispatch({ type: authConstants.REGISTER_REQUEST });
+
+    authService.register(username, email, password).then(
+      () => {
+        dispatch({ type: authConstants.REGISTER_SUCCESS });
+        dispatch(alertActions.success({ message: 'Registration successful!' }));
+      },
+      (error) => {
+        dispatch({ type: authConstants.REGISTER_FAILURE });
+        dispatch(alertActions.error(error));
+      }
+    );
+  };
+}
+
+function logout() {
+  return (dispatch) => {
+    authService.logout();
+    dispatch({ type: authConstants.LOGOUT });
+    // message
+  };
+}
+
+const authActions = {
+  login,
+  logout,
+  register,
 };
+
+export default authActions;

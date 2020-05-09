@@ -9,7 +9,7 @@ const Error = (props) => {
   return (
     <PageWrapper>
       <Heading text="Error" />
-      <Alert text={text} type="error" />
+      <Alert text={text} type="alert-danger" />
     </PageWrapper>
   );
 };
