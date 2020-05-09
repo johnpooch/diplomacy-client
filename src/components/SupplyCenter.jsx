@@ -2,8 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { darken } from 'polished';
 
-import mapData from '../map.json';
-import * as Utils from '../utils';
 import { colors } from '../variables';
 
 const StyledSupplyCenter = styled.circle`
@@ -11,8 +9,9 @@ const StyledSupplyCenter = styled.circle`
   pointer-events: none;
 `;
 
-const getMarker = (props, x, y, size = 4) => {
-  const { nation, coastal } = props;
+const SupplyCenter = (props) => {
+  const { nation, coastal, x, y } = props;
+  const size = 4;
 
   // Work out what color the marker should be
   let color = colors.land;
@@ -28,23 +27,17 @@ const getMarker = (props, x, y, size = 4) => {
 
   // Fleet supply center marker style
   return (
-    <StyledSupplyCenter
-      as="rect"
-      x={x - size / 2}
-      y={y - size / 2}
-      width={size}
-      height={size}
-      color={color}
-    />
+    <g>
+      <StyledSupplyCenter
+        as="rect"
+        x={x - size / 2}
+        y={y - size / 2}
+        width={size}
+        height={size}
+        color={color}
+      />
+    </g>
   );
-};
-
-const SupplyCenter = (props) => {
-  const { territory } = props;
-  const data = Utils.getObjectByKey(territory, mapData.territories);
-  if (!data || !('supply' in data)) return null;
-  const { supply } = data;
-  return <g>{getMarker(props, supply.x, supply.y)}</g>;
 };
 
 export default SupplyCenter;

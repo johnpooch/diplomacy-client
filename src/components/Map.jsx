@@ -5,7 +5,7 @@ import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
-import mapData from '../map.json';
+import mapData from '../egdipmap.json';
 import * as Utils from '../utils';
 import { colors, sizes } from '../variables';
 
@@ -249,9 +249,11 @@ class Map extends React.Component {
             y={0}
             width={mapData.width}
             height={mapData.height}
-            fill="white"
+            fill={colors.sea}
           />
-          <g className="territories">{this.renderTerritories()}</g>
+          <g className="territories" transform="translate(-195, -170)">
+            {this.renderTerritories()}
+          </g>
           <g className="pieces">{this.renderPieces()}</g>
         </ScrollableSVG>
         {this.renderTooltip()}

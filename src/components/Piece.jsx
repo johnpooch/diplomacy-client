@@ -2,7 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { lighten } from 'polished';
 
-import mapData from '../map.json';
+import mapRef from '../map.json';
+import mapData from '../egdipmap.json';
 import * as Utils from '../utils';
 import { colors } from '../variables';
 
@@ -37,7 +38,7 @@ const getMarker = (props, x, y, size = 8) => {
 
 const Piece = (props) => {
   const { territory } = props;
-  const data = Utils.getObjectByKey(territory, mapData.territories);
+  const data = Utils.matchIdToAbbreviation(territory, mapData, mapRef);
   if (!data) return null;
   const { piece } = data;
   return <g>{getMarker(props, piece.x, piece.y)}</g>;

@@ -3,14 +3,15 @@ import styled from '@emotion/styled';
 import { lighten } from 'polished';
 
 import SupplyCenter from './SupplyCenter';
-import mapData from '../map.json';
+import mapRef from '../map.json';
+import mapData from '../egdipmap.json';
 import * as Utils from '../utils';
 import { colors, fontSizes } from '../variables';
 
 const StyledTerritory = styled.g`
-  polygon {
-    stroke-width: 0.5;
-    stroke: white;
+  path {
+    stroke-width: 1;
+    stroke: ${colors.base};
     fill: ${(props) =>
       props.hover ? lighten(0.07, props.color) : props.color};
 
@@ -38,7 +39,7 @@ const getPath = (data, props) => {
   const { _mouseOver, _mouseOut, id } = props;
   if ('path' in data) {
     return (
-      <polygon
+      <path
         onMouseOver={() => {
           _mouseOver(id);
         }}
@@ -51,7 +52,7 @@ const getPath = (data, props) => {
         onBlur={() => {
           _mouseOut();
         }}
-        points={data.path}
+        d={data.path}
       />
     );
   }
@@ -59,6 +60,7 @@ const getPath = (data, props) => {
 };
 
 const getText = (data) => {
+  return null;
   if ('text' in data && 'abbreviation' in data) {
     const { x } = data.text;
     const { y } = data.text;
@@ -71,20 +73,36 @@ const getText = (data) => {
   return null;
 };
 
-const getSupplyCenter = (props) => {
+const getSupplyCenter = (data, props) => {
+  return null;
   const { supplyCenter, type, id, controlledBy } = props;
   if (supplyCenter) {
     const coastal = type === 'coastal';
-    return (
-      <SupplyCenter coastal={coastal} territory={id} nation={controlledBy} />
-    );
+    console.log(data.supplyCenter);
+    if (
+      'supplyCenter' in data &&
+      'x' in data.supplyCenter &&
+      'y' in data.supplyCenter
+    ) {
+      const { x } = data.supplyCenter;
+      const { y } = data.supplyCenter;
+      return (
+        <SupplyCenter
+          x={x}
+          y={y}
+          coastal={coastal}
+          territory={id}
+          nation={controlledBy}
+        />
+      );
+    }
   }
   return null;
 };
 
 const Territory = (props) => {
   const { id, type, controlledBy, hovering, interacting } = props;
-  const data = Utils.getObjectByKey(id, mapData.territories);
+  const data = Utils.matchIdToAbbreviation(id, mapData, mapRef);
   if (!data) return null;
   const hover = !interacting && hovering;
   const color = getTerritoryColor(type, controlledBy);
@@ -92,7 +110,7 @@ const Territory = (props) => {
     <StyledTerritory color={color} hover={hover}>
       {getPath(data, props)}
       {getText(data)}
-      {getSupplyCenter(props)}
+      {getSupplyCenter(data, props)}
     </StyledTerritory>
   );
 };

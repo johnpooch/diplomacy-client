@@ -2,7 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { lighten } from 'polished';
 
-import mapData from '../map.json';
+import mapRef from '../map.json';
+import mapData from '../egdipmap.json';
 import * as Utils from '../utils';
 import { colors, fontSizes, spacing } from '../variables';
 
@@ -93,7 +94,7 @@ const Tooltip = (props) => {
   const { tooltip } = props;
   const { territory } = tooltip;
 
-  const data = Utils.getObjectByKey(territory.id, mapData.territories);
+  const data = Utils.matchIdToAbbreviation(territory.id, mapData, mapRef);
   if (!data) return null;
 
   const { pos } = tooltip;
