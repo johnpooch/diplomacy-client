@@ -240,15 +240,15 @@ class Map extends React.Component {
         }}
       >
         <ScrollableSVG
-          viewBoxWidth={mapData.viewBoxWidth}
-          viewBoxHeight={mapData.viewBoxHeight}
+          viewBoxWidth={mapData.width}
+          viewBoxHeight={mapData.height}
           interacting={interacting}
         >
           <rect
             x={0}
             y={0}
-            width={mapData.viewBoxWidth}
-            height={mapData.viewBoxHeight}
+            width={mapData.width}
+            height={mapData.height}
             fill="white"
           />
           <g className="territories">{this.renderTerritories()}</g>

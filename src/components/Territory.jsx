@@ -34,9 +34,9 @@ const getTerritoryColor = (type, controlledBy) => {
   return colors.land;
 };
 
-const getPolygon = (data, props) => {
+const getPath = (data, props) => {
   const { _mouseOver, _mouseOut, id } = props;
-  if ('polygon' in data) {
+  if ('path' in data) {
     return (
       <polygon
         onMouseOver={() => {
@@ -51,7 +51,7 @@ const getPolygon = (data, props) => {
         onBlur={() => {
           _mouseOut();
         }}
-        points={data.polygon}
+        points={data.path}
       />
     );
   }
@@ -90,7 +90,7 @@ const Territory = (props) => {
   const color = getTerritoryColor(type, controlledBy);
   return (
     <StyledTerritory color={color} hover={hover}>
-      {getPolygon(data, props)}
+      {getPath(data, props)}
       {getText(data)}
       {getSupplyCenter(props)}
     </StyledTerritory>
