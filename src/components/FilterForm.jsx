@@ -1,6 +1,6 @@
 import React from 'react';
 
-import getOptions from '../utils';
+import { getOptions } from '../utils';
 import ExpandFormButton from './ExpandFormButton';
 
 function getJSName(name) {
@@ -237,7 +237,7 @@ class FilterForm extends React.Component {
 
   renderAdvancedButton() {
     return (
-      <div>
+      <div key="advanced-button">
         <button type="button" onClick={this.toggleAdvanced}>
           Advanced filtering options
         </button>
