@@ -10,6 +10,9 @@ export const CREATEGAMEURL = `${serviceURI}games/create`;
 // Game
 export const GAMESTATEURL = `${serviceURI}game/<int:game>`;
 
+// Order
+export const CREATEORDERURL = `${serviceURI}game/<int:game>/order`;
+
 // Auth
 export const LOGINURL = `${authURL}login`;
 export const REGISTERURL = `${authURL}register`;
