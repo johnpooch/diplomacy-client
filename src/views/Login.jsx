@@ -55,31 +55,33 @@ class Login extends React.Component {
         <Heading text="Login" />
         {alert}
         <GenericForm onSubmit={this.handleSubmit}>
-          <label htmlFor="username">
-            <FormLabel>Username</FormLabel>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              autoComplete="username"
-              value={username}
-              onChange={this.handleChange}
-              required
-            />
-          </label>
-          <label htmlFor="password">
-            <FormLabel>Password</FormLabel>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              autoComplete="current-password"
-              value={password}
-              onChange={this.handleChange}
-              required
-            />
-          </label>
+          <TwoColumns>
+            <label htmlFor="username">
+              <FormLabel>Username</FormLabel>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Username"
+                autoComplete="username"
+                value={username}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="password">
+              <FormLabel>Password</FormLabel>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                autoComplete="current-password"
+                value={password}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+          </TwoColumns>
           <p>
             <Button type="submit">Log in</Button>
           </p>
