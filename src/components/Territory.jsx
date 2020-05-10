@@ -26,7 +26,8 @@ const StyledTerritory = styled.g`
   }
 `;
 
-const getTerritoryColor = (type, controlledBy) => {
+const getTerritoryColor = (territory) => {
+  const { controlledBy, type } = territory;
   if (type === 'sea') return colors.sea;
   if (controlledBy !== null && controlledBy in colors.nations) {
     return colors.nations[controlledBy];
@@ -35,7 +36,8 @@ const getTerritoryColor = (type, controlledBy) => {
 };
 
 const getPath = (props) => {
-  const { path, _mouseOver, _mouseOut, id } = props;
+  const { territory, _mouseOver, _mouseOut, id } = props;
+  const { path } = territory;
   return (
     <path
       onMouseOver={() => {
@@ -55,8 +57,8 @@ const getPath = (props) => {
   );
 };
 
-const getText = (props) => {
-  const { textX, textY, abbreviation } = props;
+const getText = (territory) => {
+  const { textX, textY, abbreviation } = territory;
   if (abbreviation) {
     return (
       <text x={textX} y={textY}>
@@ -67,7 +69,7 @@ const getText = (props) => {
   return null;
 };
 
-const getSupplyCenter = (props) => {
+const getSupplyCenter = (territory) => {
   const {
     supplyCenter,
     type,
@@ -75,7 +77,7 @@ const getSupplyCenter = (props) => {
     controlledBy,
     supplyCenterX,
     supplyCenterY,
-  } = props;
+  } = territory;
   if (supplyCenter) {
     const coastal = type === 'coastal';
     return (
@@ -91,14 +93,14 @@ const getSupplyCenter = (props) => {
 };
 
 const Territory = (props) => {
-  const { id, type, controlledBy, hovering, interacting } = props;
+  const { territory, hovering, interacting } = props;
   const hover = !interacting && hovering;
-  const color = getTerritoryColor(type, controlledBy);
+  const color = getTerritoryColor(territory);
   return (
     <StyledTerritory color={color} hover={hover}>
       {getPath(props)}
-      {getText(props)}
-      {getSupplyCenter(props)}
+      {getText(territory)}
+      {getSupplyCenter(territory)}
     </StyledTerritory>
   );
 };
