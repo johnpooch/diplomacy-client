@@ -60,7 +60,7 @@ class Map extends React.Component {
     return null;
   }
 
-  getTerrtitories() {
+  getTerritories() {
     const { game, turn } = this.props;
     const outData = [];
     const allTerritoryMapData = game.variant.map_data[0].territory_data;
@@ -136,7 +136,7 @@ class Map extends React.Component {
   renderTerritories() {
     const { turn } = this.props;
     if (!turn) return null;
-    const territories = this.getTerrtitories();
+    const territories = this.getTerritories();
     const territoriesList = [];
     territories.forEach((territory) => {
       const { hovering, interacting } = this.state;
