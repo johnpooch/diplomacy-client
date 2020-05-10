@@ -1,12 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-  browserHistory,
-} from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import styled from '@emotion/styled';
 
@@ -25,14 +19,13 @@ const StyledDiv = styled.div`
   padding-top: ${sizes.headerHeight}px;
 `;
 
-
 function App(props) {
   const { alert, loggedIn } = props;
 
   if (!loggedIn) {
     return (
       <div>
-        <Router history={browserHistory}>
+        <BrowserRouter>
           <StyledDiv>
             <FlashMessage text={alert.message} type={alert.type} />
             <Switch>
@@ -47,13 +40,13 @@ function App(props) {
               </Route>
             </Switch>
           </StyledDiv>
-        </Router>
+        </BrowserRouter>
       </div>
     );
   }
   return (
     <div>
-      <Router history={browserHistory}>
+      <BrowserRouter>
         <StyledDiv>
           <Header />
           <FlashMessage text={alert.message} type={alert.type} />
@@ -78,7 +71,7 @@ function App(props) {
             </Route>
           </Switch>
         </StyledDiv>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
