@@ -97,7 +97,6 @@ class Game extends React.Component {
   }
 
   render() {
-    console.log('Game render');
     const { isLoaded, game } = this.state;
     if (!isLoaded) return <Loading />;
     if (!game) return <Error text="Game not found" />;

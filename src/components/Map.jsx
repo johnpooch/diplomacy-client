@@ -29,10 +29,6 @@ class Map extends React.Component {
       interacting: false,
       hovering: null,
       tooltip: null,
-      // mousePos: {
-      //   x: 0,
-      //   y: 0,
-      // },
     };
 
     this.TOOLTIP_DELAY = 250;
@@ -77,17 +73,7 @@ class Map extends React.Component {
     return null;
   }
 
-  // updateMousePos(e) {
-  //   this.setState({
-  //     mousePos: {
-  //       x: e.nativeEvent.clientX,
-  //       y: e.nativeEvent.clientY,
-  //     },
-  //   });
-  // }
-
-  updateTooltip() {
-    console.log('tooltip');
+  updateTooltip(e) {
     const { hovering } = this.state;
 
     if (!hovering) {
@@ -121,13 +107,12 @@ class Map extends React.Component {
   clearTooltipTimeout() {
     window.clearTimeout(this.tooltipTimeout);
     this.tooltipTimeout = null;
-    this.setState({
-      tooltip: null,
-    });
   }
 
   startTooltipTimeout() {
+    const { interacting } = this.state;
     this.clearTooltipTimeout();
+    if (interacting) return;
     this.tooltipTimeout = setTimeout(
       this.updateTooltip.bind(this),
       this.TOOLTIP_DELAY
@@ -158,14 +143,17 @@ class Map extends React.Component {
           hovering={hovering === id}
           interacting={interacting}
           _mouseOver={(hoveringId) => {
+            if (interacting) return;
             this.setState({
               hovering: hoveringId,
             });
             this.startTooltipTimeout();
           }}
           _mouseOut={() => {
+            if (interacting) return;
             this.setState({
               hovering: null,
+              tooltip: null,
             });
             this.clearTooltipTimeout();
           }}
@@ -204,25 +192,15 @@ class Map extends React.Component {
   }
 
   render() {
-    console.log('Map render');
     const { turn } = this.props;
-    const { interacting } = this.state;
     if (!turn) return null;
     return (
       <StyledDiv
-        onMouseEnter={(e) => {
-          // this.updateMousePos(e);
-        }}
-        onMouseMove={(e) => {
-          // this.updateMousePos(e);
-          if (!interacting) {
-            this.startTooltipTimeout();
-          }
-          // this.setState({
-          //   tooltip: null,
-          // });
+        onMouseMove={() => {
+          this.startTooltipTimeout();
         }}
         onMouseDown={() => {
+          this.clearTooltipTimeout();
           this.setState({
             interacting: true,
             tooltip: null,
@@ -243,7 +221,6 @@ class Map extends React.Component {
         <ScrollableSVG
           viewBoxWidth={mapData.viewBoxWidth}
           viewBoxHeight={mapData.viewBoxHeight}
-          // interacting={interacting}
         >
           <rect
             x={0}

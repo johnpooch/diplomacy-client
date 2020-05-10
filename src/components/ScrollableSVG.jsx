@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import useDimensions from 'react-use-dimensions';
 
 const ScrollableSVG = (props) => {
-  console.log('SVG render');
   const ZOOM_POWER = 0.1;
   const ZOOM_MIN = 0.25;
   const ZOOM_MAX = 2.0;

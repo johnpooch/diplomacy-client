@@ -27,8 +27,6 @@ const StyledTerritory = styled.g`
 `;
 
 const Territory = (props) => {
-  console.log('Territory render');
-
   const getTerritoryColor = (type, controlledBy) => {
     if (type === 'sea') return colors.sea;
     if (controlledBy !== null && controlledBy in colors.nations) {
