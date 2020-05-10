@@ -25,6 +25,8 @@ const StyledDiv = styled.div`
   padding-top: ${sizes.headerHeight}px;
 `;
 
+console.log('here')
+
 function App(props) {
   const { alert, loggedIn } = props;
 
