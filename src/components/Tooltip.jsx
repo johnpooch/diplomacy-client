@@ -90,17 +90,20 @@ const getTooltip = (data, tooltip) => {
 };
 
 const Tooltip = (props) => {
+  console.log('Tooltip render');
   const { tooltip } = props;
   const { territory } = tooltip;
 
   const data = Utils.getObjectByKey(territory.id, mapData.territories);
   if (!data) return null;
 
-  const { pos } = tooltip;
-  const { x, y } = pos;
+  // const { pos } = tooltip;
+  // const { x, y } = pos;
 
   return (
-    <PositionedDiv x={x} y={y}>
+    <PositionedDiv
+    // x={x} y={y}
+    >
       {getTooltip(data, tooltip)}
     </PositionedDiv>
   );

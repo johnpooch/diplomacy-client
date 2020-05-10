@@ -26,66 +26,69 @@ const StyledTerritory = styled.g`
   }
 `;
 
-const getTerritoryColor = (type, controlledBy) => {
-  if (type === 'sea') return colors.sea;
-  if (controlledBy !== null && controlledBy in colors.nations) {
-    return colors.nations[controlledBy];
-  }
-  return colors.land;
-};
-
-const getPolygon = (data, props) => {
-  const { _mouseOver, _mouseOut, id } = props;
-  if ('polygon' in data) {
-    return (
-      <polygon
-        onMouseOver={() => {
-          _mouseOver(id);
-        }}
-        onFocus={() => {
-          _mouseOver(id);
-        }}
-        onMouseOut={() => {
-          _mouseOut();
-        }}
-        onBlur={() => {
-          _mouseOut();
-        }}
-        points={data.polygon}
-      />
-    );
-  }
-  return null;
-};
-
-const getText = (data) => {
-  if ('text' in data && 'abbreviation' in data) {
-    const { x } = data.text;
-    const { y } = data.text;
-    return (
-      <text x={x} y={y}>
-        {data.abbreviation}
-      </text>
-    );
-  }
-  return null;
-};
-
-const getSupplyCenter = (props) => {
-  const { supplyCenter, type, id, controlledBy } = props;
-  if (supplyCenter) {
-    const coastal = type === 'coastal';
-    return (
-      <SupplyCenter coastal={coastal} territory={id} nation={controlledBy} />
-    );
-  }
-  return null;
-};
-
 const Territory = (props) => {
-  const { id, type, controlledBy, hovering, interacting } = props;
+  console.log('Territory render');
+
+  const getTerritoryColor = (type, controlledBy) => {
+    if (type === 'sea') return colors.sea;
+    if (controlledBy !== null && controlledBy in colors.nations) {
+      return colors.nations[controlledBy];
+    }
+    return colors.land;
+  };
+
+  const getPolygon = (data) => {
+    const { _mouseOver, _mouseOut, id } = props;
+    if ('polygon' in data) {
+      return (
+        <polygon
+          onMouseOver={() => {
+            _mouseOver(id);
+          }}
+          onFocus={() => {
+            _mouseOver(id);
+          }}
+          onMouseOut={() => {
+            _mouseOut();
+          }}
+          onBlur={() => {
+            _mouseOut();
+          }}
+          points={data.polygon}
+        />
+      );
+    }
+    return null;
+  };
+
+  const getText = (data) => {
+    if ('text' in data && 'abbreviation' in data) {
+      const { x } = data.text;
+      const { y } = data.text;
+      return (
+        <text x={x} y={y}>
+          {data.abbreviation}
+        </text>
+      );
+    }
+    return null;
+  };
+
+  const getSupplyCenter = () => {
+    const { supplyCenter, type, id, controlledBy } = props;
+    if (supplyCenter) {
+      const coastal = type === 'coastal';
+      return (
+        <SupplyCenter coastal={coastal} territory={id} nation={controlledBy} />
+      );
+    }
+    return null;
+  };
+
+  const { id, type, controlledBy, interacting, hovering } = props;
   const data = Utils.getObjectByKey(id, mapData.territories);
   if (!data) return null;
+
   const hover = !interacting && hovering;
   const color = getTerritoryColor(type, controlledBy);
   return (
