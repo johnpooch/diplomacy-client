@@ -9,9 +9,10 @@ export const CREATEGAMEURL = `${serviceURI}games/create`;
 
 // Game
 export const GAMESTATEURL = `${serviceURI}game/<int:game>`;
-
-// Order
+export const JOINGAMEURL = `${serviceURI}game/<int:game>/join`;
 export const CREATEORDERURL = `${serviceURI}game/<int:game>/order`;
+export const FINALIZEORDERSURL = `${serviceURI}game/<int:game>/finalize`;
+export const UNFINALIZEORDERSURL = `${serviceURI}game/<int:game>/unfinalize`;
 
 // Auth
 export const LOGINURL = `${authURL}login`;

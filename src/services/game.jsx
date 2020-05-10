@@ -42,13 +42,36 @@ function create(token, data) {
   return fetch(API.CREATEGAMEURL, options).then(handleResponse);
 }
 
+function createOrder(token, data) {
+  headers.Authorization = `token ${token}`;
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers,
+  };
+  return fetch(API.CREATEORDERURL, options).then(handleResponse);
+}
+
+function finalizeOrders(token) {
+  headers.Authorization = `token ${token}`;
+  const options = { method: 'GET', headers };
+  return fetch(API.FINALIZEORDERSURL, options).then(handleResponse);
+}
+
+function unfinalizeOrders(token) {
+  headers.Authorization = `token ${token}`;
+  const options = { method: 'GET', headers };
+  return fetch(API.UNFINALIZEORDERSURL, options).then(handleResponse);
+}
+
 const gameService = {
   get,
   getChoices,
   getCreateGameForm,
   create,
-  //   create,
-  //   join,
+  createOrder,
+  finalizeOrders,
+  unfinalizeOrders,
 };
 
 export default gameService;
