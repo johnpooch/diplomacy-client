@@ -90,6 +90,7 @@ const getSupplyCenter = (territory) => {
       />
     );
   }
+  return null;
 };
 
 const Territory = (props) => {
