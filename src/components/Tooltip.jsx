@@ -8,20 +8,17 @@ import { colors, fontSizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`
   position: fixed;
-  padding: ${spacing[1]}px;
+  bottom: ${spacing[2]}px;
+  left: ${spacing[2]}px;
+  padding: ${spacing[2]}px;
   pointer-events: none;
   color: white;
-  font-size: ${fontSizes.sans[1]}px;
+  font-size: ${fontSizes.sans[2]}px;
   background-color: ${colors.base};
 
   p:not(:first-of-type) {
     margin-top: ${spacing[0]}px;
   }
-`;
-
-const PositionedDiv = styled(StyledDiv)`
-  left: ${(props) => props.x}px;
-  top: ${(props) => props.y}px;
 `;
 
 const StyledSpan = styled.span`
@@ -96,14 +93,7 @@ const Tooltip = (props) => {
   const data = Utils.getObjectByKey(territory.id, mapData.territories);
   if (!data) return null;
 
-  const { pos } = tooltip;
-  const { x, y } = pos;
-
-  return (
-    <PositionedDiv x={x} y={y}>
-      {getTooltip(data, tooltip)}
-    </PositionedDiv>
-  );
+  return <StyledDiv>{getTooltip(data, tooltip)}</StyledDiv>;
 };
 
 export default Tooltip;
