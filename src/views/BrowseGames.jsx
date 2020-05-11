@@ -28,16 +28,6 @@ class BrowseGames extends React.Component {
     this.fetchGamesAndChoices();
   }
 
-  static getDateDisplayFormat() {
-    return {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    };
-  }
-
   fetchGamesAndChoices() {
     const fetchGames = gameService.get();
     const fetchChoices = gameService.getChoices();

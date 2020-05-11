@@ -35,3 +35,11 @@ export const matchIdToAbbreviation = (id, mapData, mapRef) => {
   console.warn(`Missing ${ref.name}`);
   return null;
 };
+
+export const dateDisplayFormat = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+};
