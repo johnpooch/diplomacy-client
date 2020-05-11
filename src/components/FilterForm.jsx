@@ -3,7 +3,7 @@ import React from 'react';
 
 import { getOptions } from '../utils';
 
-class GamesFilters extends React.Component {
+class FilterForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -203,4 +203,4 @@ class GamesFilters extends React.Component {
   }
 }
 
-export default GamesFilters;
+export default FilterForm;
