@@ -28,6 +28,17 @@ class BrowseGames extends React.Component {
     this.fetchGamesAndChoices();
   }
 
+  getHeadingText() {
+    const { games } = this.state;
+    let text = 'No games found';
+    if (games.length === 1) {
+      text = '1 game found';
+    } else if (games.length > 1) {
+      text = `${games.length} games found`;
+    }
+    return text;
+  }
+
   fetchGamesAndChoices() {
     const fetchGames = gameService.get();
     const fetchChoices = gameService.getChoices();
@@ -78,12 +89,12 @@ class BrowseGames extends React.Component {
 
   render() {
     const { isLoaded, games, choices } = this.state;
-    if (!isLoaded) {
-      return <Loading />;
-    }
+
+    if (!isLoaded) return <Loading />;
+
     return (
       <PageWrapper className="grid">
-        <Heading text={`${games.length} games found`} />
+        <Heading text={this.getHeadingText()} />
         <GamesFilters choices={choices} callback={this.fetchGames} />
         <GamesList games={games} />
       </PageWrapper>
