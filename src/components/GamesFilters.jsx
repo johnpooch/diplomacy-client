@@ -37,35 +37,14 @@ class GamesFilters extends React.Component {
     const { name, value } = event.target;
     const { filters } = this.state;
     filters[name] = value;
-    this.setState({ filters }, () => {
-      this.filter();
-    });
+    this.setState({ filters });
+    this.filter();
   }
 
   filter() {
     const { callback } = this.props;
-    // there must be a nicer way to do this
     const { filters } = this.state;
-    const {
-      search,
-      variant,
-      status,
-      num_players,
-      nation_choice_mode,
-      order_deadline,
-      retreat_deadline,
-      build_deadline,
-    } = filters;
-    callback({
-      search,
-      variant,
-      status,
-      num_players,
-      nation_choice_mode,
-      order_deadline,
-      retreat_deadline,
-      build_deadline,
-    });
+    callback(filters);
   }
 
   renderEmptyOption() {

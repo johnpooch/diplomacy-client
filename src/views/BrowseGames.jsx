@@ -52,6 +52,7 @@ class BrowseGames extends React.Component {
   }
 
   fetchGames(filters) {
+    console.log(filters);
     gameService.get(filters).then((json) => {
       const games = json.length ? json.slice() : [];
       this.setState({ games, isLoaded: true });
