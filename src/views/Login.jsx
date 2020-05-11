@@ -24,13 +24,6 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidUpdate() {
-    const { history, loggedIn } = this.props;
-    if (loggedIn === true) {
-      history.push('/');
-    }
-  }
-
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
@@ -41,7 +34,12 @@ class Login extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
     const { onAuth } = this.props;
-    onAuth(username, password);
+    onAuth(username, password, this.redirectToHome.bind(this));
+  }
+
+  redirectToHome() {
+    const { history } = this.props;
+    history.push('/');
   }
 
   render() {
@@ -102,8 +100,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (username, password) =>
-      dispatch(authActions.login(username, password)),
+    onAuth: (username, password, redirectToHome) =>
+      dispatch(authActions.login(username, password, redirectToHome)),
   };
 };
 

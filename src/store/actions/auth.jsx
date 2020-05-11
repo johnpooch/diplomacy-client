@@ -2,7 +2,7 @@ import { authConstants } from './actionTypes';
 import authService from '../../services/auth';
 import alertActions from './alert';
 
-function login(username, password, history) {
+function login(username, password, redirect) {
   return (dispatch) => {
     dispatch({ type: authConstants.LOGIN_REQUEST, username });
 
@@ -10,6 +10,7 @@ function login(username, password, history) {
       (response) => {
         const { user, token } = response;
         dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
+        redirect();
         dispatch(
           alertActions.success({ message: 'Logged in successfully. Welcome!' })
         );
