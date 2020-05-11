@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export function getOptions(choices) {
   return choices.map((c) => {
     return (

@@ -3,8 +3,9 @@ import styled from '@emotion/styled';
 
 import BrowseGame from '../components/BrowseGame';
 import GamesList from '../components/GamesList';
+import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import FilterForm from '../components/FilterForm';
+import GamesFilters from '../components/GamesFilters';
 import { PageWrapper } from '../styles';
 import gameService from '../services/game';
 
@@ -79,7 +80,7 @@ class BrowseGames extends React.Component {
     });
     return (
       <div>
-        <FilterForm choices={choices} callback={this.fetchGames} />
+        <GamesFilters choices={choices} callback={this.fetchGames} />
         <StyledList>{gamesList}</StyledList>
       </div>
     );
@@ -92,7 +93,8 @@ class BrowseGames extends React.Component {
     }
     return (
       <PageWrapper className="grid">
-        <FilterForm choices={choices} callback={this.fetchGames} />
+        <Heading text={`${games.length} games found`} />
+        <GamesFilters choices={choices} callback={this.fetchGames} />
         <GamesList games={games} />
       </PageWrapper>
     );

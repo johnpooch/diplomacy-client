@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import Alert from './Alert';
 import BrowseGame from './BrowseGame';
 
 const StyledList = styled.ol`
@@ -38,7 +37,7 @@ class GamesList extends React.Component {
       );
     });
     if (!games || !games.length) {
-      return <Alert text="No games found" type="alert-danger" />;
+      return null;
     }
     return <StyledList>{gamesList}</StyledList>;
   }
