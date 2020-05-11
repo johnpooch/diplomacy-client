@@ -7,19 +7,7 @@ class GamesFilters extends React.Component {
   constructor(props) {
     super(props);
 
-    // const filters = {
-    //   search: '',
-    //   variant: '',
-    //   status: '',
-    //   num_players: '',
-    //   nation_choice_mode: '',
-    //   order_deadline: '',
-    //   retreat_deadline: '',
-    //   build_deadline: '',
-    // };
-
-    this.state = {
-      advancedOpen: false,
+    const filters = {
       search: '',
       variant: '',
       status: '',
@@ -28,7 +16,11 @@ class GamesFilters extends React.Component {
       order_deadline: '',
       retreat_deadline: '',
       build_deadline: '',
-      // filters,
+    };
+
+    this.state = {
+      advancedOpen: false,
+      filters,
     };
 
     this.emptyOptionString = '-------';
@@ -43,7 +35,9 @@ class GamesFilters extends React.Component {
 
   change(event) {
     const { name, value } = event.target;
-    this.setState({ [name]: value }, () => {
+    const { filters } = this.state;
+    filters[name] = value;
+    this.setState({ filters }, () => {
       this.filter();
     });
   }
@@ -51,6 +45,7 @@ class GamesFilters extends React.Component {
   filter() {
     const { callback } = this.props;
     // there must be a nicer way to do this
+    const { filters } = this.state;
     const {
       search,
       variant,
@@ -60,7 +55,7 @@ class GamesFilters extends React.Component {
       order_deadline,
       retreat_deadline,
       build_deadline,
-    } = this.state;
+    } = filters;
     callback({
       search,
       variant,
@@ -90,7 +85,8 @@ class GamesFilters extends React.Component {
   }
 
   renderSearchFilter() {
-    const { search } = this.state;
+    const { filters } = this.state;
+    const { search } = filters;
     return (
       <label htmlFor="search">
         <input
@@ -107,7 +103,8 @@ class GamesFilters extends React.Component {
   }
 
   renderVariantFilter() {
-    const { variant } = this.state;
+    const { filters } = this.state;
+    const { variant } = filters;
     const { choices } = this.props;
     const { variants } = choices;
     const options = getOptions(variants);
@@ -115,7 +112,8 @@ class GamesFilters extends React.Component {
   }
 
   renderStatusFilter() {
-    const { status } = this.state;
+    const { filters } = this.state;
+    const { status } = filters;
     const { choices } = this.props;
     const { game_statuses } = choices;
     const options = getOptions(game_statuses);
@@ -123,7 +121,8 @@ class GamesFilters extends React.Component {
   }
 
   renderNumPlayersFilter() {
-    const { num_players } = this.state;
+    const { filters } = this.state;
+    const { num_players } = filters;
     return (
       <label htmlFor="num_players">
         Number of players
@@ -152,8 +151,9 @@ class GamesFilters extends React.Component {
   }
 
   renderNationChoiceModeFilter() {
+    const { filters } = this.state;
+    const { nation_choice_mode } = filters;
     const { choices } = this.props;
-    const { nation_choice_mode } = this.state;
     const { nation_choice_modes } = choices;
     const options = getOptions(nation_choice_modes);
     return this.renderSelectFilter(
