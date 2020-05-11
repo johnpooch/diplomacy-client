@@ -22,6 +22,7 @@ class Login extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.redirectToHome = this.redirectToHome.bind(this);
   }
 
   handleChange(event) {
@@ -34,7 +35,7 @@ class Login extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
     const { onAuth } = this.props;
-    onAuth(username, password, this.redirectToHome.bind(this));
+    onAuth(username, password, this.redirectToHome);
   }
 
   redirectToHome() {
