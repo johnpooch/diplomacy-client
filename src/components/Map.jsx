@@ -142,6 +142,7 @@ class Map extends React.Component {
       const { hovering, interacting } = this.state;
       territoriesList.push(
         <Territory
+          key={territory.pk}
           territory={territory}
           hovering={hovering === territory.territory}
           interacting={interacting}
@@ -205,7 +206,7 @@ class Map extends React.Component {
     const { game, turn } = this.props;
     if (!turn) return null;
     const { interacting } = this.state;
-    const mapData = game.variant.map_data;
+    const mapData = game.variant.map_data[0];
     return (
       <StyledDiv
         onMouseMove={() => {
@@ -240,7 +241,7 @@ class Map extends React.Component {
             y={0}
             width={mapData.width}
             height={mapData.height}
-            fill={colors.sea}
+            fill={colors.base}
           />
           <g className="territories" transform="translate(-195, -170)">
             {this.renderTerritories()}

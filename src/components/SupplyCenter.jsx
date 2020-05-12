@@ -11,7 +11,7 @@ const StyledSupplyCenter = styled.circle`
 
 const SupplyCenter = (props) => {
   const { nation, coastal, x, y } = props;
-  const size = 4;
+  const size = 20;
 
   // Work out what color the marker should be
   let color = colors.land;
