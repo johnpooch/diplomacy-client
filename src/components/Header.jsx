@@ -5,7 +5,6 @@ import { NavLink } from 'react-router-dom';
 
 import { colors, fontSizes, sizes, spacing } from '../variables';
 import { PageWrapper } from '../styles';
-// import Nav from './Nav';
 import UserAccount from './UserAccount';
 
 const StyledWrapper = styled(PageWrapper)`
