@@ -14,17 +14,17 @@ import { colors, sizes, spacing } from '../variables';
 
 const StyledButton = styled(TertiaryButton)`
   margin-top: ${spacing[4]}px;
-  margin-bottom: ${spacing[4]}px;
 `;
 
 const StyledForm = styled(GenericForm)`
   margin-bottom: ${spacing[6]}px;
   border-bottom: ${sizes.border}px solid ${colors.darkgray};
+  padding: ${spacing[4]}px;
+  background: ${colors.gray};
 `;
 
 const StyledDiv = styled.div`
-  padding: ${spacing[4]}px;
-  background: ${colors.gray};
+  margin-top: ${spacing[4]}px;
 `;
 
 class FilterForm extends React.Component {
@@ -226,8 +226,8 @@ class FilterForm extends React.Component {
         }}
       >
         {this.renderFilterFields()}
-        {this.renderAdvancedToggleButton()}
         {this.renderAdvancedFilterFields()}
+        {this.renderAdvancedToggleButton()}
       </StyledForm>
     );
   }
