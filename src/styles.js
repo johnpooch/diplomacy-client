@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { colors, fontSizes, sizes, spacing } from './variables';
 
 export const PageWrapper = styled.div`
-  padding: ${spacing[4]}px;
+  padding: ${spacing[6]}px;
   max-width: ${sizes.maxWidth}px;
   margin: 0 auto;
 `;
@@ -39,17 +39,20 @@ export const TertiaryButton = styled(Button)`
   background: transparent;
   color: ${colors.darkgray};
   padding: 0;
+  font-size: ${fontSizes.sans[1]}px;
 
   &:hover {
     background-color: transparent;
-    color: ${colors.gray};
+    color: ${colors.darkgray};
+    text-decoration: underline;
   }
 `;
 
-export const Columns = styled.div`
+export const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  grid-column-gap: ${spacing[2]}px;
+  grid-template-columns: ${(props) =>
+    props.columns ? `repeat(${props.columns}, 1fr)` : 'auto'};
+  grid-column-gap: ${spacing[4]}px;
   grid-row-gap: ${spacing[4]}px;
 
   label,
@@ -59,17 +62,9 @@ export const Columns = styled.div`
   }
 `;
 
-export const TwoColumns = styled(Columns)`
-  grid-template-columns: 1fr 1fr;
-`;
-
-export const FormLabel = styled.span`
-  display: block;
-  font-size: ${fontSizes.sans[1]}px;
-  line-height: 1;
-  font-weight: bold;
-  margin-bottom: ${spacing[2]}px;
-  color: ${colors.base};
+export const GridTemplate = styled(Grid)`
+  grid-template-columns: ${(props) =>
+    props.templateColumns ? props.templateColumns : 'auto'};
 `;
 
 export const GenericForm = styled.form`
@@ -85,13 +80,18 @@ export const GenericForm = styled.form`
     line-height: 1;
     border: ${sizes.border}px solid ${colors.base};
     border-radius: ${sizes.borderRadius[0]}px;
-    padding: ${spacing[1]}px ${spacing[2]}px;
+    padding: ${spacing[2]}px;
     width: 100%;
     font-size: inherit;
+    min-height: ${sizes.input}px;
 
     &::placeholder {
       color: ${colors.darkgray};
     }
+  }
+
+  select {
+    height: ${sizes.input}px;
   }
 
   label,
@@ -99,9 +99,15 @@ export const GenericForm = styled.form`
     display: block;
     margin: ${spacing[4]}px 0;
   }
+`;
 
-  ${Columns} && {
-  }
+export const FormLabelText = styled.span`
+  display: block;
+  font-size: ${fontSizes.sans[1]}px;
+  line-height: 1;
+  font-weight: bold;
+  margin-bottom: ${spacing[2]}px;
+  color: ${colors.base};
 `;
 
 export const Alert = styled.div`

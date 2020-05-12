@@ -47,7 +47,6 @@ const gameService = {
   getChoices,
   getCreateGameForm,
   create,
-  //   create,
   //   join,
 };
 

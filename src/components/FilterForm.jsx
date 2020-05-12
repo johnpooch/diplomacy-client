@@ -1,7 +1,31 @@
 /* eslint camelcase: [2, { "allow": ["num_players", "nation_choice_mode", "order_deadline", "retreat_deadline", "build_deadline", "game_statuses"] }] */
 import React from 'react';
+import styled from '@emotion/styled';
 
+import {
+  GenericForm,
+  FormLabelText,
+  TertiaryButton,
+  Grid,
+  GridTemplate,
+} from '../styles';
 import { getOptions } from '../utils';
+import { colors, sizes, spacing } from '../variables';
+
+const StyledButton = styled(TertiaryButton)`
+  margin-top: ${spacing[4]}px;
+  margin-bottom: ${spacing[4]}px;
+`;
+
+const StyledForm = styled(GenericForm)`
+  margin-bottom: ${spacing[6]}px;
+  border-bottom: ${sizes.border}px solid ${colors.darkgray};
+`;
+
+const StyledDiv = styled.div`
+  padding: ${spacing[4]}px;
+  background: ${colors.gray};
+`;
 
 class FilterForm extends React.Component {
   constructor(props) {
@@ -24,16 +48,12 @@ class FilterForm extends React.Component {
     };
 
     this.emptyOptionString = '-------';
+
+    this.changeFilter = this.changeFilter.bind(this);
+    this.clickAdvancedToggleButton = this.clickAdvancedToggleButton.bind(this);
   }
 
-  toggleAdvancedFilters() {
-    const { advancedOpen } = this.state;
-    this.setState({
-      advancedOpen: !advancedOpen,
-    });
-  }
-
-  change(event) {
+  changeFilter(event) {
     const { name, value } = event.target;
     const { filters } = this.state;
     filters[name] = value;
@@ -47,6 +67,13 @@ class FilterForm extends React.Component {
     callback(filters);
   }
 
+  clickAdvancedToggleButton() {
+    const { advancedOpen } = this.state;
+    this.setState({
+      advancedOpen: !advancedOpen,
+    });
+  }
+
   renderEmptyOption() {
     return <option value="">{this.emptyOptionString}</option>;
   }
@@ -54,8 +81,8 @@ class FilterForm extends React.Component {
   renderSelectFilter(val, id, label, options) {
     return (
       <label htmlFor={id}>
-        {label}
-        <select id={id} name={id} value={val} onChange={this.change.bind(this)}>
+        <FormLabelText>{label}</FormLabelText>
+        <select id={id} name={id} value={val} onChange={this.changeFilter}>
           {this.renderEmptyOption()}
           {options}
         </select>
@@ -68,14 +95,15 @@ class FilterForm extends React.Component {
     const { search } = filters;
     return (
       <label htmlFor="search">
+        <FormLabelText>Search</FormLabelText>
         <input
           id="search"
           className="search"
           name="search"
           type="search"
           value={search}
-          onChange={this.change.bind(this)}
-          placeholder="Search"
+          onChange={this.changeFilter}
+          placeholder="Enter search here"
         />
       </label>
     );
@@ -96,7 +124,7 @@ class FilterForm extends React.Component {
     const { choices } = this.props;
     const { game_statuses } = choices;
     const options = getOptions(game_statuses);
-    return this.renderSelectFilter(status, 'status', 'Variant', options);
+    return this.renderSelectFilter(status, 'status', 'Status', options);
   }
 
   renderNumPlayersFilter() {
@@ -104,13 +132,13 @@ class FilterForm extends React.Component {
     const { num_players } = filters;
     return (
       <label htmlFor="num_players">
-        Number of players
+        <FormLabelText>Number of players</FormLabelText>
         <input
           id="num_players"
           name="num_players"
           type="number"
           value={num_players}
-          onChange={this.change.bind(this)}
+          onChange={this.changeFilter}
           min={1}
           max={7}
         />
@@ -120,12 +148,12 @@ class FilterForm extends React.Component {
 
   renderFilterFields() {
     return (
-      <div>
+      <GridTemplate templateColumns="3fr 2fr 2fr 1fr">
         {this.renderSearchFilter()}
         {this.renderVariantFilter()}
         {this.renderStatusFilter()}
         {this.renderNumPlayersFilter()}
-      </div>
+      </GridTemplate>
     );
   }
 
@@ -157,40 +185,42 @@ class FilterForm extends React.Component {
     const { order_deadline, retreat_deadline, build_deadline } = this.state;
 
     return (
-      <div>
-        {this.renderNationChoiceModeFilter()}
-        {this.renderDeadlineFilter(
-          order_deadline,
-          'order_deadline',
-          'Order Deadline'
-        )}
-        {this.renderDeadlineFilter(
-          retreat_deadline,
-          'retreat_deadline',
-          'Retreat Deadline'
-        )}
-        {this.renderDeadlineFilter(
-          build_deadline,
-          'build_deadline',
-          'Build Deadline'
-        )}
-      </div>
+      <StyledDiv>
+        <Grid columns={4}>
+          {this.renderNationChoiceModeFilter()}
+          {this.renderDeadlineFilter(
+            order_deadline,
+            'order_deadline',
+            'Order Deadline'
+          )}
+          {this.renderDeadlineFilter(
+            retreat_deadline,
+            'retreat_deadline',
+            'Retreat Deadline'
+          )}
+          {this.renderDeadlineFilter(
+            build_deadline,
+            'build_deadline',
+            'Build Deadline'
+          )}
+        </Grid>
+      </StyledDiv>
     );
   }
 
   renderAdvancedToggleButton() {
     const { advancedOpen } = this.state;
-    const text = `${advancedOpen ? 'Hide' : 'Show'} advanced filters`;
+    const text = `${advancedOpen ? '− Hide' : '+ Show'} advanced filters`;
     return (
-      <button type="button" onClick={this.toggleAdvancedFilters.bind(this)}>
+      <StyledButton type="button" onClick={this.clickAdvancedToggleButton}>
         {text}
-      </button>
+      </StyledButton>
     );
   }
 
   render() {
     return (
-      <form
+      <StyledForm
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -198,7 +228,7 @@ class FilterForm extends React.Component {
         {this.renderFilterFields()}
         {this.renderAdvancedToggleButton()}
         {this.renderAdvancedFilterFields()}
-      </form>
+      </StyledForm>
     );
   }
 }

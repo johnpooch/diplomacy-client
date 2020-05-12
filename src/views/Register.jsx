@@ -8,9 +8,9 @@ import Loading from '../components/Loading';
 import {
   PageWrapper,
   GenericForm,
-  FormLabel,
+  FormLabelText,
   Button,
-  TwoColumns,
+  Grid,
 } from '../styles';
 import authActions from '../store/actions/auth';
 
@@ -69,9 +69,9 @@ class Register extends Component {
         <Heading text="Register" />
         {alert}
         <GenericForm onSubmit={this.handleSubmit}>
-          <TwoColumns>
+          <Grid columns={2}>
             <label htmlFor="username">
-              <FormLabel>Username</FormLabel>
+              <FormLabelText>Username</FormLabelText>
               <input
                 type="username"
                 id="username"
@@ -84,7 +84,7 @@ class Register extends Component {
               />
             </label>
             <label htmlFor="email">
-              <FormLabel>Email address</FormLabel>
+              <FormLabelText>Email address</FormLabelText>
               <input
                 type="email"
                 id="email"
@@ -97,7 +97,7 @@ class Register extends Component {
               />
             </label>
             <label htmlFor="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabelText>Password</FormLabelText>
               <input
                 type="password"
                 id="password"
@@ -110,7 +110,7 @@ class Register extends Component {
               />
             </label>
             <label htmlFor="passwordConfirmation">
-              <FormLabel>Confirm password</FormLabel>
+              <FormLabelText>Confirm password</FormLabelText>
               <input
                 type="password"
                 id="passwordConfirmation"
@@ -122,7 +122,7 @@ class Register extends Component {
                 required
               />
             </label>
-          </TwoColumns>
+          </Grid>
           <p>
             <Button type="submit">Register</Button>
           </p>
