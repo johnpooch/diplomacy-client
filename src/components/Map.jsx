@@ -1,3 +1,4 @@
+/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y"] }] */
 import React from 'react';
 import styled from '@emotion/styled';
 
@@ -173,21 +174,21 @@ class Map extends React.Component {
     const pieceStates = turn.piece_states;
 
     const mapData = game.variant.map_data[0];
-    const { territory_data: territoryData } = mapData;
+    const { territory_data } = mapData;
 
     const piecesList = [];
     pieceStates.forEach((state) => {
       const piece = this.getPiece(state.piece);
-      const data = getObjectByKey(state.territory, territoryData, 'territory');
-      const { piece_x: x, piece_y: y } = data;
+      const data = getObjectByKey(state.territory, territory_data, 'territory');
+      const { piece_x, piece_y } = data;
       piecesList.push(
         <Piece
           key={piece.id}
           type={piece.type}
           nation={piece.nation}
           territory={state.territory}
-          x={x}
-          y={y}
+          x={piece_x}
+          y={piece_y}
         />
       );
     });
