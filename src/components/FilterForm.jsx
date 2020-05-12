@@ -132,7 +132,7 @@ class FilterForm extends React.Component {
     const { num_players } = filters;
     return (
       <label htmlFor="num_players">
-        <FormLabelText>Number of players</FormLabelText>
+        <FormLabelText>Players</FormLabelText>
         <input
           id="num_players"
           name="num_players"
@@ -148,11 +148,11 @@ class FilterForm extends React.Component {
 
   renderFilterFields() {
     return (
-      <GridTemplate templateColumns="3fr 2fr 2fr 1fr">
+      <GridTemplate templateColumns="3fr 1fr 2fr 2fr">
         {this.renderSearchFilter()}
+        {this.renderNumPlayersFilter()}
         {this.renderVariantFilter()}
         {this.renderStatusFilter()}
-        {this.renderNumPlayersFilter()}
       </GridTemplate>
     );
   }
@@ -191,17 +191,17 @@ class FilterForm extends React.Component {
           {this.renderDeadlineFilter(
             order_deadline,
             'order_deadline',
-            'Order Deadline'
+            'Order deadline'
           )}
           {this.renderDeadlineFilter(
             retreat_deadline,
             'retreat_deadline',
-            'Retreat Deadline'
+            'Retreat deadline'
           )}
           {this.renderDeadlineFilter(
             build_deadline,
             'build_deadline',
-            'Build Deadline'
+            'Build deadline'
           )}
         </Grid>
       </StyledDiv>
