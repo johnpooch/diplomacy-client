@@ -31,6 +31,7 @@ export default css`
 
   a {
     color: ${colors.darkgray};
+    cursor: pointer;
 
     &:hover {
       color: ${colors.base};
