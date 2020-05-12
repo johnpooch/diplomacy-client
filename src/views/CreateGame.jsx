@@ -75,6 +75,7 @@ class CreateGame extends Component {
               onChange={this.handleChange}
               value={description}
               required
+              rows={1}
             />
           </label>
           <p>

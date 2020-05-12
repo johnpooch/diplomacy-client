@@ -94,6 +94,10 @@ export const GenericForm = styled.form`
     height: ${sizes.input}px;
   }
 
+  textarea {
+    resize: vertical;
+  }
+
   label,
   p {
     display: block;
