@@ -3,35 +3,34 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import { PageWrapper } from '../styles';
+import { PageWrapper, IconButton } from '../styles';
 import { colorMap, spacing, fontSizes } from '../variables';
 
+const StyledWrapper = styled(PageWrapper)`
+  padding-top: 0;
+  padding-bottom: 0;
+`;
+
 const StyledDiv = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
   width: 100%;
-  height: max-content;
   color: ${(props) => colorMap[props.type].text};
-  background: ${(props) => colorMap[props.type].background};
+  background-color: ${(props) => colorMap[props.type].background};
   font-size: ${fontSizes.sans[2]}px;
 
-  &:not(:last-child) {
-    margin-bottom: ${spacing[4]}px;
-  }
-  .close {
-    padding: 1px 5px;
-    color: ${(props) => colorMap[props.type].text};
-    cursor: pointer;
-    border: none;
-    float: right;
-    margin: 0.5rem;
-    background: inherit;
-  }
-  .close:hover {
-    color: white;
-    background: ${(props) => colorMap[props.type].text};
-    border-radius: 100%;
-  }
   p {
-    padding: 1rem;
+    padding: ${spacing[2]}px;
+  }
+
+  ${IconButton} {
+    color: ${(props) => colorMap[props.type].text};
+
+    &:hover {
+      color: white;
+      background-color: ${(props) => colorMap[props.type].text};
+    }
   }
 `;
 
@@ -53,14 +52,14 @@ class FlashMessage extends React.Component {
     const { open } = this.state;
     if (text && open) {
       return (
-        <PageWrapper>
+        <StyledWrapper>
           <StyledDiv type={type}>
-            <button type="button" className="close" onClick={this.close}>
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
             <p>{text}</p>
+            <IconButton type="button" className="close" onClick={this.close}>
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
           </StyledDiv>
-        </PageWrapper>
+        </StyledWrapper>
       );
     }
     return null;

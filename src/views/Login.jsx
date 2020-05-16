@@ -52,7 +52,6 @@ class Login extends React.Component {
     return (
       <PageWrapper>
         <Heading text="Login" />
-        {alert}
         <GenericForm onSubmit={this.handleSubmit}>
           <Grid columns={2}>
             <label htmlFor="username">

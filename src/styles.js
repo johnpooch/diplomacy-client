@@ -8,16 +8,21 @@ export const PageWrapper = styled.div`
   margin: 0 auto;
 `;
 
-export const Button = styled.button`
+export const BaseButton = styled.button`
   cursor: pointer;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  text-decoration: none;
+  background-color: transparent;
+`;
+
+export const Button = styled(BaseButton)`
   color: white;
   background-color: ${colors.darkgray};
   border-radius: ${sizes.borderRadius[0]}px;
-  border: none;
-  margin: 0;
   padding: ${spacing[2]}px ${spacing[5]}px;
-  font-size: inherit;
-  text-decoration: none;
 
   &:hover {
     background-color: ${colors.base};
@@ -46,6 +51,12 @@ export const TertiaryButton = styled(Button)`
     color: ${colors.darkgray};
     text-decoration: underline;
   }
+`;
+
+export const IconButton = styled(BaseButton)`
+  font-size: inherit;
+  width: ${sizes.input}px;
+  height: ${sizes.input}px;
 `;
 
 export const Grid = styled.div`
