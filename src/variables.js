@@ -44,6 +44,7 @@ export const sizes = {
   borderRadius: [8, 16],
   maxWidth: 1260,
   headerHeight: 48,
+  input: 44,
 };
 
 export const colorMap = {

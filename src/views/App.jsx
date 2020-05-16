@@ -24,55 +24,51 @@ function App(props) {
 
   if (!loggedIn) {
     return (
-      <div>
-        <BrowserRouter>
-          <StyledDiv>
-            <FlashMessage text={alert.message} type={alert.type} />
-            <Switch>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/register">
-                <Register />
-              </Route>
-              <Route>
-                <Redirect to="/login" />
-              </Route>
-            </Switch>
-          </StyledDiv>
-        </BrowserRouter>
-      </div>
-    );
-  }
-  return (
-    <div>
       <BrowserRouter>
         <StyledDiv>
-          <Header />
           <FlashMessage text={alert.message} type={alert.type} />
           <Switch>
-            <Route path="/game/:id">
-              <Game />
+            <Route path="/login">
+              <Login />
             </Route>
-            <Route exact path="/create-game">
-              <CreateGame />
-            </Route>
-            <Route exact path="/">
-              <BrowseGames />
-            </Route>
-            <Route path="/login" exact>
-              <Redirect to="" />
-            </Route>
-            <Route path="/register" exact>
-              <Redirect to="" />
+            <Route path="/register">
+              <Register />
             </Route>
             <Route>
-              <Error text="Page not found" />
+              <Redirect to="/login" />
             </Route>
           </Switch>
         </StyledDiv>
       </BrowserRouter>
-    </div>
+    );
+  }
+  return (
+    <BrowserRouter>
+      <StyledDiv>
+        <Header />
+        <FlashMessage text={alert.message} type={alert.type} />
+        <Switch>
+          <Route path="/game/:id">
+            <Game />
+          </Route>
+          <Route exact path="/create-game">
+            <CreateGame />
+          </Route>
+          <Route exact path="/">
+            <BrowseGames />
+          </Route>
+          <Route path="/login" exact>
+            <Redirect to="" />
+          </Route>
+          <Route path="/register" exact>
+            <Redirect to="" />
+          </Route>
+          <Route>
+            <Error text="Page not found" />
+          </Route>
+        </Switch>
+      </StyledDiv>
+    </BrowserRouter>
   );
 }
 
