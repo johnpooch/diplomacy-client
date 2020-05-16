@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -49,7 +48,6 @@ class Register extends Component {
   }
 
   render() {
-    const { error } = this.props;
     const {
       username,
       email,
@@ -60,14 +58,9 @@ class Register extends Component {
     if (loading) {
       return <Loading />;
     }
-    let alert = null;
-    if (error) {
-      alert = <Alert type="error" text={error.message} />;
-    }
     return (
       <PageWrapper>
         <Heading text="Register" />
-        {alert}
         <GenericForm onSubmit={this.handleSubmit}>
           <Grid columns={2}>
             <label htmlFor="username">

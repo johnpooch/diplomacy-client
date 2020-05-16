@@ -139,12 +139,7 @@ export const Alert = styled.div`
   p {
     margin: 0;
   }
-  .alert-error {
-    background: lightcoral;
-  }
-  .alert-success {
-    background: lightgreen;
-  }
+
   .close {
     color: white;
     cursor: pointer;

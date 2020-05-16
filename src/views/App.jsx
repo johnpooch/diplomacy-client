@@ -31,7 +31,7 @@ function App(props) {
 
   if (!loggedIn) {
     return (
-      <StyledDiv>
+      <div>
         <FlashMessage text={alert.message} type={alert.type} />
         <Switch>
           <Route path="/login">
@@ -44,7 +44,7 @@ function App(props) {
             <Redirect to="/login" />
           </Route>
         </Switch>
-      </StyledDiv>
+      </div>
     );
   }
   return (

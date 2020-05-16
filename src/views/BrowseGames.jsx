@@ -30,11 +30,11 @@ class BrowseGames extends React.Component {
 
   getHeadingText() {
     const { games } = this.state;
-    let text = 'No games found';
+    let text = 'No games available';
     if (games.length === 1) {
-      text = '1 game found';
+      text = '1 game available';
     } else if (games.length > 1) {
-      text = `${games.length} games found`;
+      text = `${games.length} games available`;
     }
     return text;
   }
