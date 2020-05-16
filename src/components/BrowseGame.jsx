@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
+import { dateDisplayFormat } from '../utils';
 import { colors, spacing } from '../variables';
 
 const StyledListItem = styled.li`
@@ -51,15 +52,6 @@ const StyledListItem = styled.li`
     }
   }
 `;
-function getDateDisplayFormat() {
-  return {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  };
-}
 
 class BrowseGame extends Component {
   constructor(props) {
@@ -70,7 +62,7 @@ class BrowseGame extends Component {
   render() {
     const { createdAt, createdBy, variant, id, name } = this.props;
     const date = new Date(createdAt);
-    const dateString = date.toLocaleDateString('en-GB', getDateDisplayFormat());
+    const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
 
     return (
       <StyledListItem key={id}>

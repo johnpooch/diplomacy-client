@@ -4,11 +4,11 @@ import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Identicon from 'react-identicons';
 
-import { spacing } from '../variables';
+import { fontSizes, spacing } from '../variables';
 import { TertiaryButton } from '../styles';
 import authActions from '../store/actions/auth';
 
-export const AVATAR_SIZE = 30;
+export const AVATAR_SIZE = 24;
 
 const Avatar = styled.span`
   position: relative;
@@ -34,6 +34,7 @@ const StyledLoggedIn = styled.div`
   align-items: center;
   grid-column-gap: ${spacing[1]}px;
   color: white;
+  font-size: ${fontSizes.sans[1]}px;
 `;
 
 const renderLoggedOut = () => {
@@ -59,9 +60,9 @@ const renderLoggedIn = (props) => {
   return (
     <StyledLoggedIn>
       <Avatar>
-        <Identicon string={username} size={AVATAR_SIZE * 0.6} />
+        <Identicon string={username} size={AVATAR_SIZE * 0.65} />
       </Avatar>
-      <span className="username">{username}</span>
+      <span>{username}</span>
       <TertiaryButton
         type="button"
         onClick={logout}

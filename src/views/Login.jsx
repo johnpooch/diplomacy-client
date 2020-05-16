@@ -7,9 +7,9 @@ import Loading from '../components/Loading';
 import {
   PageWrapper,
   GenericForm,
-  FormLabel,
+  FormLabelText,
   Button,
-  TwoColumns,
+  Grid,
 } from '../styles';
 import authActions from '../store/actions/auth';
 
@@ -54,9 +54,9 @@ class Login extends React.Component {
         <Heading text="Login" />
         {alert}
         <GenericForm onSubmit={this.handleSubmit}>
-          <TwoColumns>
+          <Grid columns={2}>
             <label htmlFor="username">
-              <FormLabel>Username</FormLabel>
+              <FormLabelText>Username</FormLabelText>
               <input
                 type="text"
                 id="username"
@@ -69,7 +69,7 @@ class Login extends React.Component {
               />
             </label>
             <label htmlFor="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabelText>Password</FormLabelText>
               <input
                 type="password"
                 name="password"
@@ -80,7 +80,7 @@ class Login extends React.Component {
                 required
               />
             </label>
-          </TwoColumns>
+          </Grid>
           <p>
             <Button type="submit">Log in</Button>
           </p>
