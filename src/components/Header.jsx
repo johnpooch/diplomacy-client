@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import { colors, fontSizes, sizes, spacing } from '../variables';
 import { PageWrapper } from '../styles';
-import UserAccount from './UserAccount';
+import User from './User';
 
 const StyledWrapper = styled(PageWrapper)`
   display: flex;
@@ -29,9 +29,10 @@ const StyledLogo = styled(NavLink)`
 `;
 
 const StyledHeader = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
-  width: 100vw;
+  left: 0;
+  right: 0;
   background: ${colors.base};
   z-index: 1;
   height: ${sizes.headerHeight}px;
@@ -68,7 +69,7 @@ const Header = () => {
     <StyledHeader>
       <StyledWrapper>
         {renderLogo()}
-        <UserAccount />
+        <User />
       </StyledWrapper>
     </StyledHeader>
   );

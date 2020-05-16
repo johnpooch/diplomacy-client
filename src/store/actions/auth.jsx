@@ -10,6 +10,7 @@ function login(username, password, redirect) {
       (response) => {
         const { user, token } = response;
         dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
+        console.log(redirect);
         redirect();
         dispatch(
           alertActions.success({ message: 'Logged in successfully. Welcome!' })

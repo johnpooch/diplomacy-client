@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Identicon from 'react-identicons';
 
@@ -28,7 +27,7 @@ const Avatar = styled.span`
   }
 `;
 
-const StyledLoggedIn = styled.div`
+const StyledDiv = styled.div`
   display: grid;
   grid-template-columns: repeat(3, auto);
   align-items: center;
@@ -37,32 +36,9 @@ const StyledLoggedIn = styled.div`
   font-size: ${fontSizes.sans[1]}px;
 `;
 
-const renderLoggedOut = () => {
-  return (
-    <ul>
-      <li>
-        <NavLink to="/login" activeClassName="active" exact>
-          Login
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/register" activeClassName="active" exact>
-          Register
-        </NavLink>
-      </li>
-    </ul>
-  );
-};
-
-const renderLoggedIn = (props) => {
-  const { logout, user } = props;
-  const { username } = user;
-  return (
-    <StyledLoggedIn>
-      <Avatar>
-        <Identicon string={username} size={AVATAR_SIZE * 0.65} />
-      </Avatar>
-      <span>{username}</span>
+const renderLogOutButton = (logout) => {
+  if (logout) {
+    return (
       <TertiaryButton
         type="button"
         onClick={logout}
@@ -72,13 +48,24 @@ const renderLoggedIn = (props) => {
       >
         Log out
       </TertiaryButton>
-    </StyledLoggedIn>
-  );
+    );
+  }
+  return null;
 };
 
-const UserAccount = (props) => {
-  const { loggedIn } = props;
-  return loggedIn ? renderLoggedIn(props) : renderLoggedOut();
+const User = (props) => {
+  const { logout, user } = props;
+  const { username } = user;
+  if (!username) return null;
+  return (
+    <StyledDiv>
+      <Avatar>
+        <Identicon string={username} size={AVATAR_SIZE * 0.65} />
+      </Avatar>
+      <span>{username}</span>
+      {renderLogOutButton(logout)}
+    </StyledDiv>
+  );
 };
 
 const mapStateToProps = (state) => {
@@ -94,4 +81,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(User);

@@ -5,7 +5,7 @@ import { SecondaryButton } from '../styles';
 import { colors, sizes, spacing } from '../variables';
 
 const StyledNav = styled.nav`
-  position: fixed;
+  position: sticky;
   top: ${sizes.headerHeight}px;
   left: 0;
   right: 0;
