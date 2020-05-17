@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { lighten } from 'polished';
 
 import { PageWrapper, IconButton } from '../styles';
 import { colors, sizes, spacing, fontSizes } from '../variables';
+import alertActions from '../store/actions/alerts';
 
 const StyledWrapper = styled.div`
   background-color: ${(props) => lighten(0.45, colors[props.type])};
@@ -41,7 +43,7 @@ const StyledDiv = styled(PageWrapper)`
 `;
 
 const FlashMessage = (props) => {
-  const { text, type, _click } = props;
+  const { text, type, id, onClick } = props;
   if (!text) return null;
   return (
     <StyledWrapper type={type}>
@@ -50,7 +52,7 @@ const FlashMessage = (props) => {
         <IconButton
           type="button"
           onClick={() => {
-            _click();
+            onClick(id);
           }}
         >
           <FontAwesomeIcon icon={faTimes} />
@@ -60,4 +62,14 @@ const FlashMessage = (props) => {
   );
 };
 
-export default FlashMessage;
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onClick: (id) => dispatch(alertActions.clear(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlashMessage);

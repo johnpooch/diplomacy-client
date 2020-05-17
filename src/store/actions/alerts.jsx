@@ -16,9 +16,16 @@ function error(alert) {
   };
 }
 
-function clear() {
+function clear(id) {
   return {
     type: alertConstants.CLEAR,
+    id,
+  };
+}
+
+function clearAll() {
+  return {
+    type: alertConstants.CLEAR_ALL,
   };
 }
 
@@ -26,6 +33,7 @@ const alertActions = {
   success,
   error,
   clear,
+  clearAll,
 };
 
 export default alertActions;

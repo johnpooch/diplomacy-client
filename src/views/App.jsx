@@ -17,7 +17,7 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   useEffect(() => {
-    dispatch(alertActions.clear());
+    dispatch(alertActions.clearAll());
   }, [location.pathname]);
 
   return (
