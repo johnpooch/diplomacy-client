@@ -16,7 +16,7 @@ const FlashMessages = (props) => {
       />
     );
   });
-  return messages;
+  return <div>{messages}</div>;
 };
 
 const mapStateToProps = (state) => {
@@ -25,4 +25,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(FlashMessages);
+export default connect(mapStateToProps, null)(FlashMessages);

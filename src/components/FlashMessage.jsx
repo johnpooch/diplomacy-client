@@ -62,14 +62,10 @@ const FlashMessage = (props) => {
   );
 };
 
-const mapStateToProps = () => {
-  return {};
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
     onClick: (id) => dispatch(alertActions.clear(id)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlashMessage);
+export default connect(null, mapDispatchToProps)(FlashMessage);
