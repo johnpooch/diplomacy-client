@@ -7,13 +7,14 @@ import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
 import { getObjectByKey } from '../utils';
-import { colors, sizes } from '../variables';
+import { colors } from '../variables';
 
 const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - ${sizes.headerHeight}px);
+  height: 100vh;
   background: ${colors.sea};
+  top: 0;
 
   > svg {
     width: 100%;

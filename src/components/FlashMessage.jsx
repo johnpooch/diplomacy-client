@@ -9,6 +9,8 @@ import { colors, spacing, fontSizes } from '../variables';
 
 const StyledWrapper = styled.div`
   background-color: ${(props) => lighten(0.45, colors[props.type])};
+  position: relative;
+  z-index: 1;
 `;
 
 const StyledDiv = styled(PageWrapper)`
