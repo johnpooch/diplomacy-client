@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-// import React, { useEffect } from 'react';
-// import { connect, useDispatch } from 'react-redux';
-// import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
+// import React from 'react';
+// import { connect } from 'react-redux';
+// import { Switch, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import { Switch, Route, useLocation } from 'react-router-dom';
 
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
@@ -14,17 +14,17 @@ import Register from './Register';
 import FlashMessages from '../components/FlashMessages';
 import Header from '../components/Header';
 import PrivateRoute from '../components/PrivateRoute';
-// import alertActions from '../store/actions/alerts';
+import alertActions from '../store/actions/alerts';
 
 const App = () => {
-  // const dispatch = useDispatch();
-  // const location = useLocation();
-  // useEffect(() => {
-  //   dispatch(alertActions.clear());
-  // }, [location.pathname]);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(alertActions.clear());
+  }, [location.pathname]);
 
   return (
-    <BrowserRouter>
+    <div>
       <Header />
       <FlashMessages />
       <Switch>
@@ -35,7 +35,7 @@ const App = () => {
         <PrivateRoute exact path="/" component={BrowseGames} />
         <Route component={Error} text="Page not found" />
       </Switch>
-    </BrowserRouter>
+    </div>
   );
 };
 

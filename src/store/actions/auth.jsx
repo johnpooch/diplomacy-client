@@ -1,3 +1,5 @@
+import { push } from 'connected-react-router';
+
 import { authConstants } from './actionTypes';
 import authService from '../../services/auth';
 import alertActions from './alerts';
@@ -12,6 +14,7 @@ function login(username, password) {
         dispatch(
           alertActions.success({ message: 'Logged in successfully. Welcome!' })
         );
+        dispatch(push('/'));
       },
       (error) => {
         dispatch({ type: authConstants.LOGIN_FAILURE });
@@ -29,6 +32,7 @@ function register(username, email, password) {
       () => {
         dispatch({ type: authConstants.REGISTER_SUCCESS });
         dispatch(alertActions.success({ message: 'Registration successful!' }));
+        dispatch(push('/login'));
       },
       (error) => {
         dispatch({ type: authConstants.REGISTER_FAILURE });
