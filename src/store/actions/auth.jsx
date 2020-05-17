@@ -11,10 +11,14 @@ function login(username, password) {
       (response) => {
         const { user, token } = response;
         dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
-        dispatch(
-          alertActions.success({ message: 'Logged in successfully. Welcome!' })
-        );
         dispatch(push('/'));
+        setTimeout(() => {
+          dispatch(
+            alertActions.success({
+              message: 'Logged in successfully. Welcome!',
+            })
+          );
+        });
       },
       (error) => {
         dispatch({ type: authConstants.LOGIN_FAILURE });
@@ -31,8 +35,14 @@ function register(username, email, password) {
     authService.register(username, email, password).then(
       () => {
         dispatch({ type: authConstants.REGISTER_SUCCESS });
-        dispatch(alertActions.success({ message: 'Registration successful!' }));
         dispatch(push('/login'));
+        setTimeout(() => {
+          dispatch(
+            alertActions.success({
+              message: 'Registration successful! Please log in.',
+            })
+          );
+        });
       },
       (error) => {
         dispatch({ type: authConstants.REGISTER_FAILURE });
@@ -46,7 +56,10 @@ function logout() {
   return (dispatch) => {
     authService.logout();
     dispatch({ type: authConstants.LOGOUT });
-    dispatch(alertActions.success({ message: 'Logged out successfully.' }));
+    dispatch(push('/login'));
+    setTimeout(() => {
+      dispatch(alertActions.success({ message: 'Logged out successfully.' }));
+    });
   };
 }
 

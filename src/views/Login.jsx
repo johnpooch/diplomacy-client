@@ -45,9 +45,9 @@ class Login extends React.Component {
       return <Loading />;
     }
 
-    // if (loggedIn) {
-    //   return <Redirect to="/" />;
-    // }
+    if (loggedIn) {
+      return <Redirect to="/" />;
+    }
 
     return (
       <PageWrapper>

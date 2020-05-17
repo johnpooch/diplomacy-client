@@ -46,7 +46,6 @@ class Register extends Component {
       password,
       passwordConfirmation,
       loading,
-      registered,
       loggedIn,
     } = this.state;
 
@@ -56,10 +55,6 @@ class Register extends Component {
 
     if (loggedIn) {
       return <Redirect to="/" />;
-    }
-
-    if (registered) {
-      return <Redirect to="/login" />;
     }
 
     return (

@@ -1,6 +1,3 @@
-// import React from 'react';
-// import { connect } from 'react-redux';
-// import { Switch, Route } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Switch, Route, useLocation } from 'react-router-dom';
