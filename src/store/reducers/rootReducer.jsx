@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 
 import login from './login';
 import register from './register';
-import alert from './alert';
+import alerts from './alerts';
 
 const rootReducer = combineReducers({
   login,
   register,
-  alert,
+  alerts,
 });
 
 export default rootReducer;

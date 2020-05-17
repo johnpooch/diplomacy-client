@@ -5,10 +5,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { lighten } from 'polished';
 
 import { PageWrapper, IconButton } from '../styles';
-import { colors, spacing, fontSizes } from '../variables';
+import { colors, sizes, spacing, fontSizes } from '../variables';
 
 const StyledWrapper = styled.div`
   background-color: ${(props) => lighten(0.45, colors[props.type])};
+  border-bottom: ${sizes.border}px solid
+    ${(props) => lighten(0.2, colors[props.type])};
   position: relative;
   z-index: 1;
 `;
@@ -38,36 +40,24 @@ const StyledDiv = styled(PageWrapper)`
   }
 `;
 
-class FlashMessage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: true,
-    };
-    this.close = this.close.bind(this);
-  }
-
-  close() {
-    this.setState({ open: false });
-  }
-
-  render() {
-    const { text, type } = this.props;
-    const { open } = this.state;
-    if (text && open) {
-      return (
-        <StyledWrapper type={type}>
-          <StyledDiv type={type}>
-            <p>{text}</p>
-            <IconButton type="button" className="close" onClick={this.close}>
-              <FontAwesomeIcon icon={faTimes} />
-            </IconButton>
-          </StyledDiv>
-        </StyledWrapper>
-      );
-    }
-    return null;
-  }
-}
+const FlashMessage = (props) => {
+  const { text, type, _click } = props;
+  if (!text) return null;
+  return (
+    <StyledWrapper type={type}>
+      <StyledDiv type={type}>
+        <p>{text}</p>
+        <IconButton
+          type="button"
+          onClick={() => {
+            _click();
+          }}
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </IconButton>
+      </StyledDiv>
+    </StyledWrapper>
+  );
+};
 
 export default FlashMessage;

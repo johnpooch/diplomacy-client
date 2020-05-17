@@ -11,25 +11,22 @@ import Error from './Error';
 import Game from './Game';
 import Login from './Login';
 import Register from './Register';
-import FlashMessage from '../components/FlashMessage';
+import FlashMessages from '../components/FlashMessages';
 import Header from '../components/Header';
 import PrivateRoute from '../components/PrivateRoute';
-// import alertActions from '../store/actions/alert';
+// import alertActions from '../store/actions/alerts';
 
-const App = (props) => {
-  const { alert } = props;
-
+const App = () => {
   // const dispatch = useDispatch();
   // const location = useLocation();
   // useEffect(() => {
   //   dispatch(alertActions.clear());
   // }, [location.pathname]);
-  console.log(alert);
 
   return (
     <BrowserRouter>
       <Header />
-      <FlashMessage text={alert.message} type={alert.type} />
+      <FlashMessages />
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
@@ -44,7 +41,7 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    alert: state.alert,
+    alerts: state.alerts,
     loggedIn: state.login.loggedIn,
   };
 };

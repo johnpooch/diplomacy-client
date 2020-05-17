@@ -1,6 +1,6 @@
 import { authConstants } from './actionTypes';
 import authService from '../../services/auth';
-import alertActions from './alert';
+import alertActions from './alerts';
 
 function login(username, password) {
   return (dispatch) => {

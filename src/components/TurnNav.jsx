@@ -2,15 +2,15 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { SecondaryButton } from '../styles';
-import { colors, sizes, spacing } from '../variables';
+import { colors, spacing } from '../variables';
 
 const StyledNav = styled.nav`
-  position: sticky;
-  top: ${sizes.headerHeight}px;
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
   color: ${colors.base};
-  padding: ${spacing[1]}px;
+  padding: ${spacing[2]}px;
   overflow-x: auto;
 
   ol {

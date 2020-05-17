@@ -6,7 +6,7 @@ import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import { PageWrapper, GenericForm, FormLabelText, Button } from '../styles';
 
-import alertActions from '../store/actions/alert';
+import alertActions from '../store/actions/alerts';
 import gameService from '../services/game';
 
 class CreateGame extends Component {
