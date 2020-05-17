@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
 import Loading from './Loading';
-import Players from './PlayerList';
+import Heading from './Heading';
+import PlayerList from './PlayerList';
 import * as API from '../api';
+import { PageWrapper, Button } from '../styles';
 
 class JoinGame extends Component {
   constructor(props) {
@@ -17,38 +19,35 @@ class JoinGame extends Component {
       return;
     }
     const data = new FormData(event.target);
-    data.id = userId;
+    // data.id = userId;
     fetch(API.CREATEGAMEURL, {
       method: 'POST',
       body: data,
       headers,
     }).then((response) => {
       if (response.status === 200) {
-        console.log('Joined Game');
+        // console.log('Joined Game');
         // TODO redirect to my games? or maybe just browse games.
       }
     });
   }
 
   render() {
-    const { game, error, loading } = this.props;
+    const { game, loading } = this.props;
     const players = game.participants;
-    if (loading) {
-      return <Loading />;
-    }
-    let errorMessage = null;
-    if (error) {
-      errorMessage = <p>{error.message}</p>;
-    }
-    return (
-      <div>
-        {errorMessage}
-        <Players players={players} />
 
+    console.log(game);
+
+    if (loading) return <Loading />;
+
+    return (
+      <PageWrapper>
+        <Heading text={game.name} />
+        <PlayerList players={players} />
         <form onSubmit={this.handleSubmit}>
-          <button type="submit">Join</button>
+          <Button type="submit">Join</Button>
         </form>
-      </div>
+      </PageWrapper>
     );
   }
 }

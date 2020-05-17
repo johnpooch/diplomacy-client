@@ -3,9 +3,9 @@ import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
+import UserAccount from './UserAccount';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 import { PageWrapper } from '../styles';
-import User from './User';
 
 const StyledWrapper = styled(PageWrapper)`
   display: flex;
@@ -67,7 +67,7 @@ const Header = (props) => {
     <StyledHeader>
       <StyledWrapper>
         <StyledLogo to="/">Diplomacy</StyledLogo>
-        <User />
+        <UserAccount />
       </StyledWrapper>
     </StyledHeader>
   );

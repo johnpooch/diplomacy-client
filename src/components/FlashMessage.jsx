@@ -52,7 +52,6 @@ class FlashMessage extends React.Component {
   render() {
     const { text, type } = this.props;
     const { open } = this.state;
-    console.log(type);
     if (text && open) {
       return (
         <StyledWrapper type={type}>
