@@ -2,16 +2,13 @@ import { authConstants } from './actionTypes';
 import authService from '../../services/auth';
 import alertActions from './alert';
 
-function login(username, password, redirect) {
+function login(username, password) {
   return (dispatch) => {
     dispatch({ type: authConstants.LOGIN_REQUEST, username });
-
     authService.login(username, password).then(
       (response) => {
         const { user, token } = response;
         dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
-        console.log(redirect);
-        redirect();
         dispatch(
           alertActions.success({ message: 'Logged in successfully. Welcome!' })
         );
@@ -45,7 +42,7 @@ function logout() {
   return (dispatch) => {
     authService.logout();
     dispatch({ type: authConstants.LOGOUT });
-    // message
+    dispatch(alertActions.success({ message: 'Logged out successfully.' }));
   };
 }
 

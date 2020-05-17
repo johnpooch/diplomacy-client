@@ -60,15 +60,13 @@ const StyledHeader = styled.header`
   }
 `;
 
-const Header = () => {
-  const renderLogo = () => {
-    return <StyledLogo to="/">Diplomacy</StyledLogo>;
-  };
-
+const Header = (props) => {
+  const { loggedIn } = props;
+  if (!loggedIn) return null;
   return (
     <StyledHeader>
       <StyledWrapper>
-        {renderLogo()}
+        <StyledLogo to="/">Diplomacy</StyledLogo>
         <User />
       </StyledWrapper>
     </StyledHeader>
@@ -77,7 +75,7 @@ const Header = () => {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.token !== null,
+    loggedIn: state.login.loggedIn,
   };
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
@@ -22,7 +22,6 @@ class Login extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.redirectToHome = this.redirectToHome.bind(this);
   }
 
   handleChange(event) {
@@ -35,20 +34,21 @@ class Login extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
     const { onAuth } = this.props;
-    onAuth(username, password, this.redirectToHome);
-  }
-
-  redirectToHome() {
-    const { history } = this.props;
-    history.push('/');
+    onAuth(username, password);
   }
 
   render() {
     const { username, password } = this.state;
     const { loggedIn } = this.props;
+
     if (loggedIn === undefined) {
       return <Loading />;
     }
+
+    if (loggedIn) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <PageWrapper>
         <Heading text="Login" />
@@ -100,8 +100,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (username, password, redirectToHome) =>
-      dispatch(authActions.login(username, password, redirectToHome)),
+    onAuth: (username, password) =>
+      dispatch(authActions.login(username, password)),
   };
 };
 

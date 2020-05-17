@@ -101,7 +101,9 @@ class Game extends React.Component {
 
   render() {
     const { isLoaded, game } = this.state;
+
     if (!isLoaded) return <Loading />;
+
     if (!game) return <Error text="Game not found" />;
 
     const { status } = game;
@@ -109,6 +111,7 @@ class Game extends React.Component {
       // handle already joined!
       return <JoinGame game={game} />;
     }
+
     return (
       <div>
         {this.renderMap()}

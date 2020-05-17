@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Heading from '../components/Heading';
@@ -26,14 +26,6 @@ class Register extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidUpdate() {
-    // Note this is a bit hacky. Waits for redux state to update and then redirects.
-    const { history, registered } = this.props;
-    if (registered === true) {
-      history.push('/');
-    }
-  }
-
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
@@ -54,10 +46,22 @@ class Register extends Component {
       password,
       passwordConfirmation,
       loading,
+      registered,
+      loggedIn,
     } = this.state;
+
     if (loading) {
       return <Loading />;
     }
+
+    if (loggedIn) {
+      return <Redirect to="/" />;
+    }
+
+    if (registered) {
+      return <Redirect to="/login" />;
+    }
+
     return (
       <PageWrapper>
         <Heading text="Register" />
@@ -131,6 +135,7 @@ class Register extends Component {
 const mapStateToProps = (state) => {
   return {
     registered: state.register.registered,
+    loggedIn: state.login.loggedIn,
   };
 };
 

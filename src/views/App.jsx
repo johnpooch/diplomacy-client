@@ -1,7 +1,9 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import React from 'react';
+import { connect } from 'react-redux';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+// import React, { useEffect } from 'react';
+// import { connect, useDispatch } from 'react-redux';
+// import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
 
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
@@ -11,58 +13,31 @@ import Login from './Login';
 import Register from './Register';
 import FlashMessage from '../components/FlashMessage';
 import Header from '../components/Header';
-import alertActions from '../store/actions/alert';
-
-const renderHeader = (loggedIn) => {
-  if (!loggedIn) return null;
-  return <Header />;
-};
-
-const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      loggedIn === true ? <Component {...props} /> : <Redirect to="/login" />
-    }
-  />
-);
+import PrivateRoute from '../components/PrivateRoute';
+// import alertActions from '../store/actions/alert';
 
 const App = (props) => {
-  const { alert, loggedIn } = props;
+  const { alert } = props;
 
-  // if (!(Object.keys(alert).length === 0 && alert.constructor === Object)) {
-  //   const dispatch = useDispatch();
-  //   const location = useLocation();
-  //   useEffect(() => {
-  //     dispatch(alertActions.clear());
-  //   }, [location.pathname]);
-  // }
+  // const dispatch = useDispatch();
+  // const location = useLocation();
+  // useEffect(() => {
+  //   dispatch(alertActions.clear());
+  // }, [location.pathname]);
 
   return (
-    <div>
-      {renderHeader(loggedIn)}
+    <BrowserRouter>
+      <Header />
       <FlashMessage text={alert.message} type={alert.type} />
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
-        <PrivateRoute
-          exact
-          path="/create-game"
-          loggedIn={loggedIn}
-          component={CreateGame}
-        />
-        <PrivateRoute path="/game/:id" loggedIn={loggedIn} component={Game} />
-        <PrivateRoute
-          exact
-          path="/"
-          loggedIn={loggedIn}
-          component={BrowseGames}
-        />
-        <Route>
-          <Error text="Page not found" />
-        </Route>
+        <PrivateRoute exact path="/create-game" component={CreateGame} />
+        <PrivateRoute path="/game/:id" component={Game} />
+        <PrivateRoute exact path="/" component={BrowseGames} />
+        <Route component={Error} text="Page not found" />
       </Switch>
-    </div>
+    </BrowserRouter>
   );
 };
 
