@@ -31,8 +31,7 @@ const StyledDiv = styled.div`
   font-size: inherit;
 `;
 
-const Player = (props) => {
-  const { username, avatarSize } = props;
+const Player = ({ username, avatarSize = 24 }) => {
   return (
     <StyledDiv>
       <Avatar avatarSize={avatarSize}>

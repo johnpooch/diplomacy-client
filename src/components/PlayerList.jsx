@@ -18,7 +18,7 @@ const PlayerList = (props) => {
   players.forEach((p) => {
     participantItems.push(
       <li key={p.id}>
-        <Player username={p.username} avatarSize={24} />
+        <Player username={p.username} />
       </li>
     );
   });

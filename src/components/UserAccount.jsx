@@ -39,7 +39,7 @@ const UserAccount = (props) => {
   if (!username) return null;
   return (
     <StyledDiv>
-      <Player username={username} avatarSize={24} />
+      <Player username={username} />
       {renderLogOutButton(logout)}
     </StyledDiv>
   );
