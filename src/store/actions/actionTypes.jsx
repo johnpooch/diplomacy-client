@@ -11,8 +11,9 @@ export const authConstants = {
 };
 
 export const alertConstants = {
-  SUCCESS: 'ALERT_SUCCESS',
-  ERROR: 'ALERT_ERROR',
+  ADD: 'ALERT_ADD',
   CLEAR: 'ALERT_CLEAR',
+  CLEAR_ACTIVE: 'ALERT_CLEAR_ACTIVE',
   CLEAR_ALL: 'ALERT_CLEAR_ALL',
+  PROMOTE_PENDING: 'ALERT_PROMOTE_PENDING',
 };

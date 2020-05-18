@@ -29,7 +29,7 @@ export const colors = {
     // turkey
     7: '#ffdc00',
   },
-  danger: '#a73c57',
+  error: '#a73c57',
   success: '#3e7947',
 };
 

@@ -11,18 +11,23 @@ function login(username, password) {
       (response) => {
         const { user, token } = response;
         dispatch({ type: authConstants.LOGIN_SUCCESS, user, token });
+        dispatch(
+          alertActions.add({
+            message: 'Logged in. Welcome!',
+            category: 'success',
+            pending: true,
+          })
+        );
         dispatch(push('/'));
-        setTimeout(() => {
-          dispatch(
-            alertActions.success({
-              message: 'Logged in successfully. Welcome!',
-            })
-          );
-        });
       },
       (error) => {
         dispatch({ type: authConstants.LOGIN_FAILURE });
-        dispatch(alertActions.error(error));
+        dispatch(
+          alertActions.add({
+            message: error.message,
+            category: 'error',
+          })
+        );
       }
     );
   };
@@ -35,18 +40,23 @@ function register(username, email, password) {
     authService.register(username, email, password).then(
       () => {
         dispatch({ type: authConstants.REGISTER_SUCCESS });
+        dispatch(
+          alertActions.add({
+            message: 'Created a new account. Please log in.',
+            category: 'success',
+            pending: true,
+          })
+        );
         dispatch(push('/login'));
-        setTimeout(() => {
-          dispatch(
-            alertActions.success({
-              message: 'Registration successful! Please log in.',
-            })
-          );
-        });
       },
       (error) => {
         dispatch({ type: authConstants.REGISTER_FAILURE });
-        dispatch(alertActions.error(error));
+        dispatch(
+          alertActions.add({
+            message: error.message,
+            category: 'error',
+          })
+        );
       }
     );
   };
@@ -56,10 +66,14 @@ function logout() {
   return (dispatch) => {
     authService.logout();
     dispatch({ type: authConstants.LOGOUT });
+    dispatch(
+      alertActions.add({
+        message: 'Logged out.',
+        category: 'success',
+        pending: true,
+      })
+    );
     dispatch(push('/login'));
-    setTimeout(() => {
-      dispatch(alertActions.success({ message: 'Logged out successfully.' }));
-    });
   };
 }
 

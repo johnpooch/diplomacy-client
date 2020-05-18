@@ -38,7 +38,7 @@ class CreateGame extends Component {
     gameService.create(token, { name, description }).then(() => {
       this.setState({ isLoaded: true });
       history.push('/');
-      success({ message: 'Game created!' });
+      success({ message: 'Game created!', category: 'success' });
     });
   }
 
@@ -94,7 +94,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    success: (alert) => dispatch(alertActions.success(alert)),
+    success: (alert) => dispatch(alertActions.add(alert)),
   };
 };
 

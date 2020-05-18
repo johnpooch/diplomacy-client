@@ -1,18 +1,12 @@
 import { alertConstants } from './actionTypes';
 
-function success(alert) {
-  const { message } = alert;
+function add(alert) {
+  const { message, category, pending } = alert;
   return {
-    type: alertConstants.SUCCESS,
+    type: alertConstants.ADD,
     message,
-  };
-}
-
-function error(alert) {
-  const { message } = alert;
-  return {
-    type: alertConstants.ERROR,
-    message,
+    category,
+    pending,
   };
 }
 
@@ -23,17 +17,30 @@ function clear(id) {
   };
 }
 
+function clearActive() {
+  return {
+    type: alertConstants.CLEAR_ACTIVE,
+  };
+}
+
 function clearAll() {
   return {
     type: alertConstants.CLEAR_ALL,
   };
 }
 
+function promotePending() {
+  return {
+    type: alertConstants.PROMOTE_PENDING,
+  };
+}
+
 const alertActions = {
-  success,
-  error,
+  add,
   clear,
+  clearActive,
   clearAll,
+  promotePending,
 };
 
 export default alertActions;
