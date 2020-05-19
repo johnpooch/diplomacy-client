@@ -10,7 +10,7 @@ import Loading from '../components/Loading';
 import TurnNav from '../components/TurnNav';
 import JoinGame from '../components/JoinGame';
 import { IconButton } from '../styles';
-import { colors, spacing } from '../variables';
+import { colors, sizes, spacing } from '../variables';
 import * as API from '../api';
 import * as Utils from '../utils';
 
@@ -20,6 +20,7 @@ const StyledIconButton = styled(IconButton)`
   left: ${spacing[2]}px;
   color: ${colors.base};
   background-color: white;
+  border: ${sizes.border}px solid white;
 
   &:hover {
     color: white;
