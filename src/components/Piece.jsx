@@ -1,19 +1,21 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { lighten } from 'polished';
+// import { lighten } from 'polished';
 
 import { colors } from '../variables';
 
 const StyledPiece = styled.circle`
   fill: ${(props) => props.color};
   stroke: ${colors.base};
+  stroke-width: 3px;
   pointer-events: none;
 `;
 
-const getMarker = (props, x, y, size = 8) => {
+const getMarker = (props, x, y, size = 20) => {
   const { nation, type } = props;
 
-  const color = lighten(0.2, colors.nations[nation]);
+  // const color = lighten(0.1, colors.nations[nation]);
+  const color = colors.nations[nation];
 
   // Army piece marker style
   if (type === 'army') {

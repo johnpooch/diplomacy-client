@@ -10,7 +10,7 @@ import Loading from '../components/Loading';
 import TurnNav from '../components/TurnNav';
 import JoinGame from '../components/JoinGame';
 import { IconButton } from '../styles';
-import { colors, fontSizes } from '../variables';
+import { colors } from '../variables';
 import * as API from '../api';
 import * as Utils from '../utils';
 
@@ -18,7 +18,6 @@ const StyledIconButton = styled(IconButton)`
   position: fixed;
   top: 0;
   left: 0;
-  /* font-size: ${fontSizes.sans[4]}px; */
   color: white;
 
   &:hover {

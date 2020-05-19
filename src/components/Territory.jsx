@@ -3,7 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { lighten } from 'polished';
 
-import SupplyCenter from './SupplyCenter';
+// import SupplyCenter from './SupplyCenter';
 import { colors, fontSizes } from '../variables';
 
 const StyledTerritory = styled.g`
@@ -27,6 +27,7 @@ const StyledTerritory = styled.g`
 
 const getTerritoryColor = (territory) => {
   const { controlledBy, type } = territory;
+  // console.log(territory);
   if (type === 'sea') return colors.sea;
   if (controlledBy !== null && controlledBy in colors.nations) {
     return colors.nations[controlledBy];
@@ -56,41 +57,41 @@ const getPath = (props) => {
   );
 };
 
-const getText = (territory) => {
-  const { text_x, text_y, abbreviation } = territory;
-  if (abbreviation) {
-    return (
-      <text x={text_x} y={text_y}>
-        {abbreviation}
-      </text>
-    );
-  }
-  return null;
-};
+// const getText = (territory) => {
+//   const { text_x, text_y, abbreviation } = territory;
+//   if (abbreviation) {
+//     return (
+//       <text x={text_x} y={text_y}>
+//         {abbreviation}
+//       </text>
+//     );
+//   }
+//   return null;
+// };
 
-const getSupplyCenter = (territory) => {
-  const {
-    supplyCenter,
-    type,
-    id,
-    controlledBy,
-    supply_center_x,
-    supply_center_y,
-  } = territory;
-  if (supplyCenter) {
-    const coastal = type === 'coastal';
-    return (
-      <SupplyCenter
-        x={supply_center_x}
-        y={supply_center_y}
-        coastal={coastal}
-        territory={id}
-        nation={controlledBy}
-      />
-    );
-  }
-  return null;
-};
+// const getSupplyCenter = (territory) => {
+//   const {
+//     supplyCenter,
+//     type,
+//     id,
+//     controlledBy,
+//     supply_center_x,
+//     supply_center_y,
+//   } = territory;
+//   if (supplyCenter) {
+//     const coastal = type === 'coastal';
+//     return (
+//       <SupplyCenter
+//         x={supply_center_x}
+//         y={supply_center_y}
+//         coastal={coastal}
+//         territory={id}
+//         nation={controlledBy}
+//       />
+//     );
+//   }
+//   return null;
+// };
 
 const Territory = (props) => {
   const { territory, hovering, interacting } = props;
