@@ -11,11 +11,6 @@ export const colors = {
   base: '#444444',
   darkgray: '#999999',
   gray: '#ebeef1',
-  flashErrorText: '#ad6678',
-  flashErrorBackground: '#f2dedf',
-  flashSuccessText: '#3e7947',
-  flashSuccessBackground: '#dff0d8',
-  yellow: '#ffdc00',
   sea: '#79bde1',
   land: '#e3d8c4',
   nations: {
@@ -34,6 +29,8 @@ export const colors = {
     // turkey
     7: '#ffdc00',
   },
+  error: '#a73c57',
+  success: '#3e7947',
 };
 
 export const spacing = [4, 8, 12, 16, 24, 32, 44, 60];
@@ -45,15 +42,4 @@ export const sizes = {
   maxWidth: 1260,
   headerHeight: 48,
   input: 44,
-};
-
-export const colorMap = {
-  'alert-danger': {
-    text: colors.flashErrorText,
-    background: colors.flashErrorBackground,
-  },
-  'alert-success': {
-    text: colors.flashSuccessText,
-    background: colors.flashSuccessBackground,
-  },
 };

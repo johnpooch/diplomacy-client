@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -27,14 +26,6 @@ class Register extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidUpdate() {
-    // Note this is a bit hacky. Waits for redux state to update and then redirects.
-    const { history, registered } = this.props;
-    if (registered === true) {
-      history.push('/');
-    }
-  }
-
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
@@ -49,25 +40,26 @@ class Register extends Component {
   }
 
   render() {
-    const { error } = this.props;
     const {
       username,
       email,
       password,
       passwordConfirmation,
       loading,
+      loggedIn,
     } = this.state;
+
     if (loading) {
       return <Loading />;
     }
-    let alert = null;
-    if (error) {
-      alert = <Alert type="error" text={error.message} />;
+
+    if (loggedIn) {
+      return <Redirect to="/" />;
     }
+
     return (
       <PageWrapper>
         <Heading text="Register" />
-        {alert}
         <GenericForm onSubmit={this.handleSubmit}>
           <Grid columns={2}>
             <label htmlFor="username">
@@ -138,6 +130,7 @@ class Register extends Component {
 const mapStateToProps = (state) => {
   return {
     registered: state.register.registered,
+    loggedIn: state.login.loggedIn,
   };
 };
 

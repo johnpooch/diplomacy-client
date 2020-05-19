@@ -99,8 +99,8 @@ const Territory = (props) => {
   return (
     <StyledTerritory color={color} hover={hover}>
       {getPath(props)}
-      {getText(territory)}
-      {getSupplyCenter(territory)}
+      {/* {getText(territory)} */}
+      {/* {getSupplyCenter(territory)} */}
     </StyledTerritory>
   );
 };

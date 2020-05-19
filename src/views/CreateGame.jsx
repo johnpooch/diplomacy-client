@@ -6,7 +6,7 @@ import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import { PageWrapper, GenericForm, FormLabelText, Button } from '../styles';
 
-import alertActions from '../store/actions/alert';
+import alertActions from '../store/actions/alerts';
 import gameService from '../services/game';
 
 class CreateGame extends Component {
@@ -38,7 +38,7 @@ class CreateGame extends Component {
     gameService.create(token, { name, description }).then(() => {
       this.setState({ isLoaded: true });
       history.push('/');
-      success({ message: 'Game created!' });
+      success({ message: 'Game created!', category: 'success' });
     });
   }
 
@@ -94,7 +94,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    success: (alert) => dispatch(alertActions.success(alert)),
+    success: (alert) => dispatch(alertActions.add(alert)),
   };
 };
 

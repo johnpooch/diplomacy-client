@@ -2,18 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Global } from '@emotion/core';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 
 import App from './views/App';
 import globals from './globals';
-import store from './store/store';
+import configureStore, { history } from './store/store';
+
+const store = configureStore();
 
 const app = (
   <Provider store={store}>
     <Global styles={globals} />
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <App />
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>
 );
 ReactDOM.render(app, document.getElementById('root'));

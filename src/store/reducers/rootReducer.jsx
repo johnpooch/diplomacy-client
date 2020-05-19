@@ -1,13 +1,16 @@
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 
 import login from './login';
 import register from './register';
-import alert from './alert';
+import alerts from './alerts';
 
-const rootReducer = combineReducers({
-  login,
-  register,
-  alert,
-});
+const createRootReducer = (history) =>
+  combineReducers({
+    router: connectRouter(history),
+    login,
+    register,
+    alerts,
+  });
 
-export default rootReducer;
+export default createRootReducer;

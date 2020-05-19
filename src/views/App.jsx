@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
-
-import styled from '@emotion/styled';
+import { Switch, Route, useLocation } from 'react-router-dom';
 
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
@@ -10,74 +8,38 @@ import Error from './Error';
 import Game from './Game';
 import Login from './Login';
 import Register from './Register';
-import FlashMessage from '../components/FlashMessage';
+import FlashMessages from '../components/FlashMessages';
 import Header from '../components/Header';
-import { sizes } from '../variables';
-import alertActions from '../store/actions/alert';
+import PrivateRoute from '../components/PrivateRoute';
+import alertActions from '../store/actions/alerts';
 
-const StyledDiv = styled.div`
-  position: relative;
-  padding-top: ${sizes.headerHeight}px;
-`;
-
-function App(props) {
-  const { alert, loggedIn } = props;
+const App = () => {
   const dispatch = useDispatch();
-
   const location = useLocation();
   useEffect(() => {
-    dispatch(alertActions.clear());
+    dispatch(alertActions.clearActive());
+    dispatch(alertActions.promotePending());
   }, [location.pathname]);
 
-  if (!loggedIn) {
-    return (
-      <StyledDiv>
-        <FlashMessage text={alert.message} type={alert.type} />
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route>
-            <Redirect to="/login" />
-          </Route>
-        </Switch>
-      </StyledDiv>
-    );
-  }
   return (
-    <StyledDiv>
+    <div>
       <Header />
-      <FlashMessage text={alert.message} type={alert.type} />
+      <FlashMessages />
       <Switch>
-        <Route path="/game/:id">
-          <Game />
-        </Route>
-        <Route exact path="/create-game">
-          <CreateGame />
-        </Route>
-        <Route exact path="/">
-          <BrowseGames />
-        </Route>
-        <Route path="/login" exact>
-          <Redirect to="" />
-        </Route>
-        <Route path="/register" exact>
-          <Redirect to="" />
-        </Route>
-        <Route>
-          <Error text="Page not found" />
-        </Route>
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <PrivateRoute exact path="/create-game" component={CreateGame} />
+        <PrivateRoute path="/game/:id" component={Game} />
+        <PrivateRoute exact path="/" component={BrowseGames} />
+        <Route component={Error} text="Page not found" />
       </Switch>
-    </StyledDiv>
+    </div>
   );
-}
+};
 
 const mapStateToProps = (state) => {
   return {
-    alert: state.alert,
+    alerts: state.alerts,
     loggedIn: state.login.loggedIn,
   };
 };
