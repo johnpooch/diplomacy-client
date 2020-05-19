@@ -78,6 +78,9 @@ export const IconButton = styled(BaseButton)`
   font-size: inherit;
   width: ${sizes.input}px;
   height: ${sizes.input}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 // Forms
