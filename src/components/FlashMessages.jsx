@@ -7,14 +7,16 @@ const FlashMessages = (props) => {
   const { alerts } = props;
   const messages = [];
   alerts.forEach((alert) => {
-    messages.push(
-      <FlashMessage
-        key={alert.id}
-        id={alert.id}
-        text={alert.message}
-        type={alert.type}
-      />
-    );
+    if (alert.pending !== true) {
+      messages.push(
+        <FlashMessage
+          key={alert.id}
+          id={alert.id}
+          text={alert.message}
+          category={alert.category}
+        />
+      );
+    }
   });
   return <div>{messages}</div>;
 };

@@ -61,8 +61,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onJoin: () =>
       dispatch(
-        alertActions.success({
-          message: 'Joined game!',
+        alertActions.add({
+          message: 'Joined game.',
+          category: 'success',
         })
       ),
   };

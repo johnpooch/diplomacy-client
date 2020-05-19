@@ -3,30 +3,36 @@ import { alertConstants } from '../actions/actionTypes';
 function alerts(state = [], action) {
   const nextId = state.length !== 0 ? state[state.length - 1].id + 1 : 1;
   switch (action.type) {
-    case alertConstants.SUCCESS:
+    case alertConstants.ADD:
+      console.log(state);
       return [
         ...state,
         {
           id: nextId,
-          type: 'success',
+          category: action.category,
           message: action.message,
-        },
-      ];
-    case alertConstants.ERROR:
-      return [
-        ...state,
-        {
-          id: nextId,
-          type: 'danger',
-          message: action.message,
+          pending: action.pending === true,
         },
       ];
     case alertConstants.CLEAR:
       return state.filter((obj) => {
         return obj.id !== action.id;
       });
+    case alertConstants.CLEAR_ACTIVE:
+      return state.filter((obj) => {
+        return obj.pending === true;
+      });
     case alertConstants.CLEAR_ALL:
       return [];
+    case alertConstants.PROMOTE_PENDING: {
+      const newState = [];
+      state.forEach((obj) => {
+        const newObj = obj;
+        newObj.pending = false;
+        newState.push(newObj);
+      });
+      return newState;
+    }
     default:
       return state;
   }
