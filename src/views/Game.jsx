@@ -119,6 +119,14 @@ class Game extends React.Component {
     return null;
   }
 
+  static renderBackButton() {
+    return (
+      <StyledNavLink to="/">
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </StyledNavLink>
+    );
+  }
+
   render() {
     const { isLoaded, game } = this.state;
 
@@ -135,10 +143,8 @@ class Game extends React.Component {
     return (
       <div>
         {this.renderMap()}
-        {this.renderTurnNav()}
-        <StyledNavLink to="/">
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </StyledNavLink>
+        {/* {this.renderTurnNav()} */}
+        {Game.renderBackButton()}
       </div>
     );
   }

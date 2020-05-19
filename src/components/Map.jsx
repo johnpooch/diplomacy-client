@@ -74,6 +74,11 @@ class Map extends React.Component {
     return getObjectByKey(id, territoryStates, 'territory');
   }
 
+  getTerritoryControlledBy(id) {
+    const territoryState = this.getTerritoryState(id);
+    return territoryState ? this.getNation(territoryState.controlled_by) : null;
+  }
+
   // getTerritories() {
   //   const { game, turn } = this.props;
   //   const outData = [];
@@ -128,11 +133,7 @@ class Map extends React.Component {
 
     const piece = this.getPieceInTerritory(hovering);
     const territory = this.getTerritory(hovering);
-
-    const territoryState = this.getTerritoryState(hovering);
-    const territoryControlledBy = territoryState
-      ? this.getNation(territoryState.controlled_by)
-      : null;
+    const territoryControlledBy = this.getTerritoryControlledBy(hovering);
     const pieceControlledBy = piece ? this.getNation(piece.nation) : null;
 
     const tooltip = {
@@ -152,21 +153,20 @@ class Map extends React.Component {
     if (!turn) return null;
     // const territories = this.getTerritories();
     const territoriesList = [];
-    territory_data.forEach((territory) => {
+    territory_data.forEach((data) => {
       const { hovering, interacting } = this.state;
-      const data = getObjectByKey(
-        territory.territory,
-        territory_data,
-        'territory'
-      );
-      // console.log(data);
-      if (data) {
+      const id = data.territory;
+      const territory = this.getTerritory(id);
+      const controlledBy = this.getTerritoryControlledBy(id);
+      if (data && territory) {
         territoriesList.push(
           <Territory
-            key={territory.pk}
-            id={territory.territory}
+            key={data.pk}
+            id={id}
             territory={data}
-            hovering={hovering === territory.territory}
+            type={territory.type}
+            controlledBy={controlledBy}
+            hovering={hovering === id}
             interacting={interacting}
             _mouseOver={(hoveringId) => {
               if (interacting) return;

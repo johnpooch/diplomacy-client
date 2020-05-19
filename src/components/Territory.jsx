@@ -25,12 +25,14 @@ const StyledTerritory = styled.g`
   }
 `;
 
-const getTerritoryColor = (territory) => {
-  const { controlledBy, type } = territory;
-  // console.log(territory);
+const getTerritoryColor = (controlledBy, type) => {
+  // console.log(controlledBy);
   if (type === 'sea') return colors.sea;
-  if (controlledBy !== null && controlledBy in colors.nations) {
-    return colors.nations[controlledBy];
+  if (controlledBy) {
+    const { id } = controlledBy;
+    if (id !== null && id in colors.nations) {
+      return colors.nations[id];
+    }
   }
   return colors.land;
 };
@@ -94,9 +96,9 @@ const getPath = (props) => {
 // };
 
 const Territory = (props) => {
-  const { territory, hovering, interacting } = props;
+  const { territory, controlledBy, type, hovering, interacting } = props;
   const hover = !interacting && hovering;
-  const color = getTerritoryColor(territory);
+  const color = getTerritoryColor(controlledBy, type);
   return (
     <StyledTerritory color={color} hover={hover}>
       {getPath(props)}
