@@ -2,8 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { lighten } from 'polished';
 
-import mapRef from '../map.json';
-import * as Utils from '../utils';
 import { colors, fontSizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`
@@ -54,7 +52,7 @@ const getControlledBy = (controlledBy) => {
   return null;
 };
 
-const getTooltip = (data, tooltip) => {
+const getTooltip = (tooltip) => {
   const {
     territory,
     territoryControlledBy,
@@ -64,15 +62,13 @@ const getTooltip = (data, tooltip) => {
 
   const tooltipElements = [];
 
-  if (data.name) {
-    tooltipElements.push(
-      <p key="territory">
-        <StyledSpan className="name">{data.name}</StyledSpan>
-        {getSupplyCenter(territory)}
-        {getControlledBy(territoryControlledBy)}
-      </p>
-    );
-  }
+  tooltipElements.push(
+    <p key="territory">
+      <StyledSpan className="name">{territory.name}</StyledSpan>
+      {getSupplyCenter(territory)}
+      {getControlledBy(territoryControlledBy)}
+    </p>
+  );
 
   if (piece) {
     tooltipElements.push(
@@ -88,12 +84,7 @@ const getTooltip = (data, tooltip) => {
 
 const Tooltip = (props) => {
   const { tooltip } = props;
-  const { territory } = tooltip;
-
-  const data = Utils.matchIdToAbbreviation(territory.id, mapData, mapRef);
-  if (!data) return null;
-
-  return <StyledDiv>{getTooltip(data, tooltip)}</StyledDiv>;
+  return <StyledDiv>{getTooltip(tooltip)}</StyledDiv>;
 };
 
 export default Tooltip;

@@ -37,7 +37,7 @@ class Map extends React.Component {
   }
 
   componentWillUnmount() {
-    // this.clearTooltipTimeout();
+    this.clearTooltipTimeout();
   }
 
   getNation(id) {
@@ -60,6 +60,18 @@ class Map extends React.Component {
       return this.getPiece(pieceState.piece);
     }
     return null;
+  }
+
+  getTerritory(id) {
+    const { game } = this.props;
+    const { territories } = game.variant;
+    return getObjectByKey(id, territories, 'id');
+  }
+
+  getTerritoryState(id) {
+    const { turn } = this.props;
+    const territoryStates = turn.territory_states;
+    return getObjectByKey(id, territoryStates, 'territory');
   }
 
   // getTerritories() {
@@ -96,7 +108,7 @@ class Map extends React.Component {
 
   startTooltipTimeout() {
     const { interacting } = this.state;
-    // this.clearTooltipTimeout();
+    this.clearTooltipTimeout();
     if (interacting) return;
     this.tooltipTimeout = setTimeout(
       this.updateTooltip.bind(this),
@@ -161,7 +173,7 @@ class Map extends React.Component {
               this.setState({
                 hovering: hoveringId,
               });
-              // this.startTooltipTimeout();
+              this.startTooltipTimeout();
             }}
             _mouseOut={() => {
               if (interacting) return;
@@ -169,7 +181,7 @@ class Map extends React.Component {
                 hovering: null,
                 tooltip: null,
               });
-              // this.clearTooltipTimeout();
+              this.clearTooltipTimeout();
             }}
           />
         );
@@ -219,17 +231,17 @@ class Map extends React.Component {
     return (
       <StyledDiv
         onMouseMove={() => {
-          // this.startTooltipTimeout();
+          this.startTooltipTimeout();
         }}
         onMouseDown={() => {
-          // this.clearTooltipTimeout();
+          this.clearTooltipTimeout();
           this.setState({
             interacting: true,
             tooltip: null,
           });
         }}
         onMouseUp={() => {
-          // this.startTooltipTimeout();
+          this.startTooltipTimeout();
           this.setState({
             interacting: false,
           });
@@ -245,19 +257,19 @@ class Map extends React.Component {
           viewBoxHeight={mapData.height}
           interacting={interacting}
         >
-          <rect
+          {/* <rect
             x={0}
             y={0}
             width={mapData.width}
             height={mapData.height}
             fill={colors.base}
-          />
+          /> */}
           <g className="territories" transform="translate(-195, -170)">
             {this.renderTerritories(territory_data)}
           </g>
           <g className="pieces">{this.renderPieces(territory_data)}</g>
         </ScrollableSVG>
-        {/* {this.renderTooltip()} */}
+        {this.renderTooltip(territory_data)}
       </StyledDiv>
     );
   }
