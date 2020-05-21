@@ -34,7 +34,9 @@ const renderLogOutButton = (logout) => {
 };
 
 const UserAccount = (props) => {
-  const { logout, user } = props;
+  const { user, loggedIn } = props;
+  if (!user || !loggedIn) return null;
+  const { logout } = props;
   const { username } = user;
   if (!username) return null;
   return (

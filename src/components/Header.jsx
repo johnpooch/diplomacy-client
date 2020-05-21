@@ -61,8 +61,8 @@ const StyledHeader = styled.header`
 `;
 
 const Header = (props) => {
-  const { loggedIn, pathname } = props;
-  if (pathname.startsWith('/game/') || !loggedIn) return null;
+  const { pathname } = props;
+  if (pathname.startsWith('/game/')) return null;
   return (
     <StyledHeader>
       <StyledWrapper>
@@ -75,7 +75,6 @@ const Header = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.login.loggedIn,
     pathname: state.router.location.pathname,
   };
 };
