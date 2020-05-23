@@ -79,33 +79,6 @@ class Map extends React.Component {
     return territoryState ? this.getNation(territoryState.controlled_by) : null;
   }
 
-  // getTerritories() {
-  //   const { game, turn } = this.props;
-  //   const outData = [];
-  //   const allTerritoryMapData = game.variant.map_data[0].territory_data;
-  //   allTerritoryMapData.forEach((territoryMapData) => {
-  //     const flatTerritory = territoryMapData;
-  //     flatTerritory.type = 'impassable';
-  //     flatTerritory.controlledBy = null;
-  //     if (territoryMapData.territory) {
-  //       const territoryId = territoryMapData.territory;
-  //       const { territories } = game.variant;
-  //       const territoryStates = turn.territory_states;
-  //       const territory = getObjectByKey(territoryId, territories, 'id');
-  //       const territoryState = getObjectByKey(
-  //         territoryId,
-  //         territoryStates,
-  //         'territory'
-  //       );
-  //       flatTerritory.type = territory.type;
-  //       flatTerritory.supplyCenter = territory.supply_center;
-  //       flatTerritory.controlledBy = territoryState.controlled_by;
-  //     }
-  //     outData.push(flatTerritory);
-  //   });
-  //   return outData;
-  // }
-
   clearTooltipTimeout() {
     window.clearTimeout(this.tooltipTimeout);
     this.tooltipTimeout = null;
@@ -151,7 +124,6 @@ class Map extends React.Component {
   renderTerritories(territory_data) {
     const { turn } = this.props;
     if (!turn) return null;
-    // const territories = this.getTerritories();
     const territoriesList = [];
     territory_data.forEach((data) => {
       const { hovering, interacting } = this.state;
@@ -163,7 +135,7 @@ class Map extends React.Component {
           <Territory
             key={data.pk}
             id={id}
-            territory={data}
+            data={data}
             type={territory.type}
             controlledBy={controlledBy}
             hovering={hovering === id}
@@ -188,7 +160,11 @@ class Map extends React.Component {
       }
     });
 
-    return territoriesList;
+    return (
+      <g className="territories" transform="translate(-195, -170)">
+        {territoriesList}
+      </g>
+    );
   }
 
   renderPieces(territory_data) {
@@ -211,7 +187,7 @@ class Map extends React.Component {
         />
       );
     });
-    return piecesList;
+    return <g className="pieces">{piecesList}</g>;
   }
 
   renderTooltip() {
@@ -257,17 +233,8 @@ class Map extends React.Component {
           viewBoxHeight={mapData.height}
           interacting={interacting}
         >
-          {/* <rect
-            x={0}
-            y={0}
-            width={mapData.width}
-            height={mapData.height}
-            fill={colors.base}
-          /> */}
-          <g className="territories" transform="translate(-195, -170)">
-            {this.renderTerritories(territory_data)}
-          </g>
-          <g className="pieces">{this.renderPieces(territory_data)}</g>
+          {this.renderTerritories(territory_data)}
+          {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
       </StyledDiv>
