@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
@@ -43,10 +43,6 @@ class Login extends React.Component {
 
     if (loggedIn === undefined) {
       return <Loading />;
-    }
-
-    if (loggedIn) {
-      return <Redirect to="/" />;
     }
 
     return (
