@@ -12,16 +12,16 @@ const StyledTerritory = styled.g`
     stroke: ${colors.base};
     fill: ${(props) =>
       props.hover ? lighten(0.07, props.color) : props.color};
+  }
 
-    + text {
-      font-size: ${fontSizes.sans[1]}px;
-      text-anchor: middle;
-      pointer-events: none;
-      text-transform: uppercase;
-      user-select: none;
-      fill: ${(props) => (props.hover ? colors.base : 'white')};
-      font-weight: ${(props) => (props.hover ? 'bold' : 'normal')};
-    }
+  text {
+    font-size: ${fontSizes.sans[0]}px;
+    text-anchor: middle;
+    pointer-events: none;
+    text-transform: uppercase;
+    user-select: none;
+    fill: ${(props) => (props.hover ? colors.base : 'white')};
+    font-weight: ${(props) => (props.hover ? 'bold' : 'normal')};
   }
 `;
 
@@ -36,7 +36,7 @@ const getTerritoryColor = (controlledBy, type) => {
   return colors.land;
 };
 
-const getPath = (props) => {
+const renderPath = (props) => {
   const { data, _mouseOver, _mouseOut, id } = props;
   const { path } = data;
   return (
@@ -58,7 +58,7 @@ const getPath = (props) => {
   );
 };
 
-const getText = (data) => {
+const renderText = (data) => {
   const { text_x, text_y, abbreviation } = data;
   if (abbreviation && text_x && text_y) {
     return (
@@ -70,17 +70,17 @@ const getText = (data) => {
   return null;
 };
 
-const getSupplyCenter = (data) => {
-  const { type, id, controlledBy, supply_center_x, supply_center_y } = data;
+const renderSupplyCenter = (props, data) => {
+  const { controlledBy } = props;
+  const { type, supply_center_x, supply_center_y } = data;
+
   if (supply_center_x && supply_center_y) {
-    const coastal = type === 'coastal';
     return (
       <SupplyCenter
         x={supply_center_x}
         y={supply_center_y}
-        coastal={coastal}
-        territory={id}
-        nation={controlledBy}
+        type={type}
+        controlledBy={controlledBy}
       />
     );
   }
@@ -93,9 +93,9 @@ const Territory = (props) => {
   const color = getTerritoryColor(controlledBy, type);
   return (
     <StyledTerritory color={color} hover={hover}>
-      {getPath(props)}
-      {getText(data)}
-      {getSupplyCenter(data)}
+      {renderPath(props)}
+      {renderSupplyCenter(props, data)}
+      {renderText(data)}
     </StyledTerritory>
   );
 };

@@ -4,7 +4,7 @@ export const fontFamilies = {
 };
 
 export const fontSizes = {
-  sans: [4, 13, 15, 19, 36],
+  sans: [9, 13, 15, 19, 36],
 };
 
 export const colors = {
