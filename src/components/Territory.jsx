@@ -71,10 +71,10 @@ const renderText = (data) => {
 };
 
 const renderSupplyCenter = (props, data) => {
-  const { controlledBy } = props;
+  const { controlledBy, supplyCenter } = props;
   const { type, supply_center_x, supply_center_y } = data;
 
-  if (supply_center_x && supply_center_y) {
+  if (supplyCenter && supply_center_x && supply_center_y) {
     return (
       <SupplyCenter
         x={supply_center_x}

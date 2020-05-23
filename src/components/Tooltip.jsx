@@ -33,6 +33,8 @@ const StyledSpan = styled.span`
 `;
 
 const getSupplyCenter = (territory) => {
+  console.log(territory);
+
   if (territory.supply_center) {
     return <StyledSpan className="supply">*</StyledSpan>;
   }
@@ -42,7 +44,6 @@ const getSupplyCenter = (territory) => {
 const getControlledBy = (controlledBy) => {
   if (controlledBy) {
     const { id } = controlledBy;
-    // const color = lighten(0.25, colors.nations[controlledBy.id]);
     const color = colors.nations[id];
     return (
       <StyledSpan className="nation" color={color}>

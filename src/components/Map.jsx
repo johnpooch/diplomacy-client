@@ -137,6 +137,7 @@ class Map extends React.Component {
             id={id}
             data={data}
             type={territory.type}
+            supplyCenter={territory.supply_center}
             controlledBy={controlledBy}
             hovering={hovering === id}
             interacting={interacting}

@@ -18,7 +18,7 @@ const SupplyCenter = (props) => {
   if (controlledBy && controlledBy.id in colors.nations) {
     color = colors.nations[controlledBy.id];
   }
-  color = darken(0.15, color);
+  color = darken(0.25, color);
 
   // Army supply center marker style
   if (type !== 'sea') {
