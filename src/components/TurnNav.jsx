@@ -48,16 +48,10 @@ const TurnNav = (props) => {
   const { turns, activeTurn, _click } = props;
   const { id } = activeTurn;
 
-  console.log(turns);
-  console.log(activeTurn);
-
   const currentTurnIndex = turns.findIndex((obj) => obj.current_turn === true);
   const activeIndex = turns.findIndex((obj) => obj.id === id);
 
   const renderPrevious = () => {
-    console.log(activeIndex);
-    console.log(turns.length);
-
     if (activeIndex >= turns.length - 1) return null;
     return (
       <IconButton
