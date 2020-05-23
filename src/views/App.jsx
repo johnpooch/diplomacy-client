@@ -29,7 +29,8 @@ const App = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <PrivateRoute exact path="/create-game" component={CreateGame} />
-        <PrivateRoute path="/game/:id" component={Game} />
+        <PrivateRoute exact path="/join-game/:id" component={Game} />
+        <PrivateRoute exact path="/game/:id" component={Game} />
         <PrivateRoute exact path="/" component={BrowseGames} />
         <Route component={Error} text="Page not found" />
       </Switch>

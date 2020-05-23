@@ -60,33 +60,32 @@ class BrowseGame extends Component {
   }
 
   render() {
-    const { createdAt, createdBy, variant, id, name } = this.props;
+    const { createdAt, id, name, status } = this.props;
     const date = new Date(createdAt);
     const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
 
+    let link = `/game/${id}`;
+    if (status === 'pending') {
+      link = `/join-game/${id}`;
+    }
+
     return (
       <StyledListItem key={id}>
-        <Link to={`/game/${id}`}>
-          <header>
-            <span className="name">{name}</span>
-            <span className="id">{id}</span>
-          </header>
-          <main>
-            <p className="created-at">
-              <span className="label">Created</span>
-              <time className="value" dateTime={createdAt}>
-                {dateString}
-              </time>
-            </p>
-            <p className="created-by">
-              <span className="label">Created by</span>
-              <span className="value">{createdBy}</span>
-            </p>
-            <p className="variant">
-              <span className="label">Variant</span>
-              <span className="value">{variant.name}</span>
-            </p>
-          </main>
+        <Link to={link}>
+          <article>
+            <header>
+              <span className="name">{name}</span>
+              <span className="id">{id}</span>
+            </header>
+            <section>
+              <p className="created-at">
+                <span className="label">Created</span>
+                <time className="value" dateTime={createdAt}>
+                  {dateString}
+                </time>
+              </p>
+            </section>
+          </article>
         </Link>
       </StyledListItem>
     );
