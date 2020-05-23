@@ -18,9 +18,9 @@ const renderIcon = (props, faIcon, scale) => {
   const w = faIcon.icon[0];
   const h = faIcon.icon[0];
   const dx = x - (scale * w) / 2;
-  const dy = y - scale * h;
+  const dy = y - (scale * h) / 2;
 
-  const color = lighten(0.1, colors.nations[nation]);
+  const color = lighten(0.2, colors.nations[nation]);
 
   return (
     <g transform={`translate(${dx}, ${dy}) scale(${scale})`}>
