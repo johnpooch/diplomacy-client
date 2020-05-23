@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { withRouter, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Error from './Error';
 import Map from '../components/Map';
@@ -10,22 +10,14 @@ import Loading from '../components/Loading';
 import TurnNav from '../components/TurnNav';
 import JoinGame from '../components/JoinGame';
 import { IconButton } from '../styles';
-import { colors, sizes, spacing } from '../variables';
+import { spacing } from '../variables';
 import * as API from '../api';
 import * as Utils from '../utils';
 
 const StyledIconButton = styled(IconButton)`
   position: fixed;
   top: ${spacing[2]}px;
-  left: ${spacing[2]}px;
-  color: ${colors.base};
-  background-color: white;
-  border: ${sizes.border}px solid white;
-
-  &:hover {
-    color: white;
-    background-color: ${colors.base};
-  }
+  right: ${spacing[2]}px;
 `;
 
 const StyledNavLink = StyledIconButton.withComponent(NavLink);
@@ -123,7 +115,7 @@ class Game extends React.Component {
   static renderBackButton() {
     return (
       <StyledNavLink to="/">
-        <FontAwesomeIcon icon={faArrowLeft} />
+        <FontAwesomeIcon icon={faTimes} />
       </StyledNavLink>
     );
   }
@@ -144,7 +136,7 @@ class Game extends React.Component {
     return (
       <div>
         {this.renderMap()}
-        {/* {this.renderTurnNav()} */}
+        {this.renderTurnNav()}
         {Game.renderBackButton()}
       </div>
     );

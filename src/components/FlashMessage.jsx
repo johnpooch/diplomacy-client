@@ -34,6 +34,8 @@ const StyledDiv = styled(PageWrapper)`
 
   ${IconButton} {
     color: ${(props) => colors[props.category]};
+    background-color: transparent;
+    border-color: transparent;
 
     &:hover {
       color: white;

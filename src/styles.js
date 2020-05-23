@@ -81,6 +81,14 @@ export const IconButton = styled(BaseButton)`
   display: flex;
   align-items: center;
   justify-content: center;
+  color: ${colors.base};
+  background-color: white;
+  border: ${sizes.border}px solid white;
+
+  &:hover {
+    color: white;
+    background-color: ${colors.base};
+  }
 `;
 
 // Forms
