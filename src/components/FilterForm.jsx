@@ -1,268 +1,235 @@
+/* eslint camelcase: [2, { "allow": ["num_players", "nation_choice_mode", "order_deadline", "retreat_deadline", "build_deadline", "game_statuses"] }] */
 import React from 'react';
+import styled from '@emotion/styled';
 
+import {
+  GenericForm,
+  FormLabelText,
+  TertiaryButton,
+  Grid,
+  GridTemplate,
+} from '../styles';
 import { getOptions } from '../utils';
-import ExpandFormButton from './ExpandFormButton';
+import { colors, sizes, spacing } from '../variables';
 
-function getJSName(name) {
-  const nameMappings = {
-    num_players: 'numPlayers',
-    order_deadline: 'orderDeadline',
-    retreat_deadline: 'retreatDeadline',
-    build_deadline: 'retreatDeadline',
-    nation_choice_mode: 'nationChoiceMode',
-  };
-  if (name in nameMappings) {
-    return nameMappings[name];
-  }
-  return name;
-}
+const StyledButton = styled(TertiaryButton)`
+  margin-bottom: ${spacing[3]}px;
+`;
+
+const StyledForm = styled(GenericForm)`
+  margin-bottom: ${spacing[6]}px;
+  border-bottom: ${sizes.border}px solid ${colors.darkgray};
+  padding: ${spacing[4]}px;
+  background: ${colors.gray};
+`;
+
+const StyledDiv = styled.div`
+  margin-top: ${spacing[4]}px;
+`;
 
 class FilterForm extends React.Component {
-  static handleSubmit(event) {
-    event.preventDefault();
-    return false;
-  }
-
   constructor(props) {
     super(props);
-    this.state = {
-      open: false,
-      advancedOpen: false,
+
+    const filters = {
       search: '',
       variant: '',
       status: '',
-      numPlayers: '',
-      nationChoiceMode: '',
-      orderDeadline: '',
-      retreatDeadline: '',
-      buildDeadline: '',
+      num_players: '',
+      nation_choice_mode: '',
+      order_deadline: '',
+      retreat_deadline: '',
+      build_deadline: '',
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.toggleAdvanced = this.toggleAdvanced.bind(this);
+
+    this.state = {
+      advancedOpen: false,
+      filters,
+    };
 
     this.emptyOptionString = '-------';
-    this.emptyOption = <option value="">{this.emptyOptionString}</option>;
+
+    this.changeFilter = this.changeFilter.bind(this);
+    this.clickAdvancedToggleButton = this.clickAdvancedToggleButton.bind(this);
   }
 
-  toggle() {
-    const { open } = this.state;
-    this.setState({
-      open: !open,
-    });
-    if (open) {
-      this.setState({
-        advancedOpen: false,
-      });
-    }
+  changeFilter(event) {
+    const { name, value } = event.target;
+    const { filters } = this.state;
+    filters[name] = value;
+    this.setState({ filters });
+    this.filter();
   }
 
-  toggleAdvanced() {
+  filter() {
+    const { callback } = this.props;
+    const { filters } = this.state;
+    callback(filters);
+  }
+
+  clickAdvancedToggleButton() {
     const { advancedOpen } = this.state;
     this.setState({
       advancedOpen: !advancedOpen,
     });
   }
 
-  handleChange(event) {
-    const name = getJSName(event.target.name);
-    const { value } = event.target;
-    this.setState({ [name]: value }, () => {
-      this.filter();
-    });
+  renderEmptyOption() {
+    return <option value="">{this.emptyOptionString}</option>;
   }
 
-  filter() {
-    const { callback } = this.props;
-    // there must be a nicer way to do this
-    const {
-      search,
-      variant,
-      status,
-      numPlayers,
-      nationChoiceMode,
-      orderDeadline,
-      retreatDeadline,
-      buildDeadline,
-    } = this.state;
-    callback({
-      search,
-      variant,
-      status,
-      num_players: numPlayers,
-      nation_choice_mode: nationChoiceMode,
-      order_deadline: orderDeadline,
-      retreat_deadline: retreatDeadline,
-      build_deadline: buildDeadline,
-    });
-  }
-
-  renderSearchField() {
-    const { open, search } = this.state;
+  renderSelectFilter(val, id, label, options) {
     return (
-      <div key="search" className="form-row search-row">
-        <label htmlFor="search">
-          <input
-            id="search"
-            className="search"
-            name="search"
-            type="search"
-            value={search}
-            onChange={this.handleChange}
-            placeholder="Search"
-          />
-          <ExpandFormButton open={open} toggle={this.toggle} />
-        </label>
-      </div>
+      <label htmlFor={id}>
+        <FormLabelText>{label}</FormLabelText>
+        <select id={id} name={id} value={val} onChange={this.changeFilter}>
+          {this.renderEmptyOption()}
+          {options}
+        </select>
+      </label>
+    );
+  }
+
+  renderSearchFilter() {
+    const { filters } = this.state;
+    const { search } = filters;
+    return (
+      <label htmlFor="search">
+        <FormLabelText>Search</FormLabelText>
+        <input
+          id="search"
+          className="search"
+          name="search"
+          type="search"
+          value={search}
+          onChange={this.changeFilter}
+          placeholder="Enter search here"
+        />
+      </label>
+    );
+  }
+
+  renderVariantFilter() {
+    const { filters } = this.state;
+    const { variant } = filters;
+    const { choices } = this.props;
+    const { variants } = choices;
+    const options = getOptions(variants);
+    return this.renderSelectFilter(variant, 'variant', 'Variant', options);
+  }
+
+  renderStatusFilter() {
+    const { filters } = this.state;
+    const { status } = filters;
+    const { choices } = this.props;
+    const { game_statuses } = choices;
+    const options = getOptions(game_statuses);
+    return this.renderSelectFilter(status, 'status', 'Status', options);
+  }
+
+  renderNumPlayersFilter() {
+    const { filters } = this.state;
+    const { num_players } = filters;
+    return (
+      <label htmlFor="num_players">
+        <FormLabelText>Players</FormLabelText>
+        <input
+          id="num_players"
+          name="num_players"
+          type="number"
+          value={num_players}
+          onChange={this.changeFilter}
+          min={1}
+          max={7}
+        />
+      </label>
     );
   }
 
   renderFilterFields() {
-    const { choices } = this.props;
-    const { game_statuses: gameStatuses, variants } = choices;
-    const { variant, status, numPlayers } = this.state;
-    const variantOptions = getOptions(variants);
-    const statusOptions = getOptions(gameStatuses);
     return (
-      <div key="filters" className="form-row filter-options-row">
-        <label htmlFor="variant">
-          Variant
-          <select
-            id="variant"
-            name="variant"
-            value={variant}
-            onChange={this.handleChange}
-            placeholder="Choose..."
-          >
-            {this.emptyOption}
-            {variantOptions}
-          </select>
-        </label>
-
-        <label htmlFor="status">
-          Status
-          <select
-            id="status"
-            name="status"
-            value={status}
-            onChange={this.handleChange}
-          >
-            {this.emptyOption}
-            {statusOptions}
-          </select>
-        </label>
-
-        <label htmlFor="num_players">
-          Num players
-          <input
-            id="num_players"
-            name="num_players"
-            type="number"
-            value={numPlayers}
-            onChange={this.handleChange}
-            min={1}
-            max={7}
-          />
-        </label>
-      </div>
+      <GridTemplate templateColumns="3fr 1fr 2fr 2fr">
+        {this.renderSearchFilter()}
+        {this.renderNumPlayersFilter()}
+        {this.renderVariantFilter()}
+        {this.renderStatusFilter()}
+      </GridTemplate>
     );
+  }
+
+  renderNationChoiceModeFilter() {
+    const { filters } = this.state;
+    const { nation_choice_mode } = filters;
+    const { choices } = this.props;
+    const { nation_choice_modes } = choices;
+    const options = getOptions(nation_choice_modes);
+    return this.renderSelectFilter(
+      nation_choice_mode,
+      'nation_choice_mode',
+      'Nation choice mode',
+      options
+    );
+  }
+
+  renderDeadlineFilter(val, id, label) {
+    const { choices } = this.props;
+    const { deadlines } = choices;
+    const options = getOptions(deadlines);
+    return this.renderSelectFilter(val, id, label, options);
   }
 
   renderAdvancedFilterFields() {
-    const { choices } = this.props;
-    const { deadlines, nation_choice_modes: nationChoiceModes } = choices;
-    const {
-      nationChoiceMode,
-      orderDeadline,
-      retreatDeadline,
-      buildDeadline,
-    } = this.state;
-    const frequencyOptions = getOptions(deadlines);
-    const nationChoiceModeOptions = getOptions(nationChoiceModes);
+    const { advancedOpen } = this.state;
+    if (!advancedOpen) return null;
+
+    const { order_deadline, retreat_deadline, build_deadline } = this.state;
+
     return (
-      <div key="advanced-filters">
-        <h4>Advanced filters</h4>
-        <div className="advanced-filter-options-row">
-          <label htmlFor="nation_choice_mode">
-            Nation Choice Mode
-            <select
-              id="nation_choice_mode"
-              name="nation_choice_mode"
-              value={nationChoiceMode}
-              onChange={this.handleChange}
-            >
-              {this.emptyOption}
-              {nationChoiceModeOptions}
-            </select>
-          </label>
-          <label htmlFor="order_deadline">
-            Order Deadline
-            <select
-              id="order_deadline"
-              name="order_deadline"
-              value={orderDeadline}
-              onChange={this.handleChange}
-            >
-              {this.emptyOption}
-              {frequencyOptions}
-            </select>
-          </label>
-          <label htmlFor="retreat_deadline">
-            Retreat Deadline
-            <select
-              id="retreat_deadline"
-              name="retreat_deadline"
-              value={retreatDeadline}
-              onChange={this.handleChange}
-            >
-              {frequencyOptions}
-            </select>
-          </label>
-          <label htmlFor="build_deadline">
-            Build Deadline
-            <select
-              id="build_deadline"
-              name="build_deadline"
-              value={buildDeadline}
-              onChange={this.handleChange}
-            >
-              {frequencyOptions}
-            </select>
-          </label>
-        </div>
-        <hr />
-      </div>
+      <StyledDiv>
+        <Grid columns={4}>
+          {this.renderNationChoiceModeFilter()}
+          {this.renderDeadlineFilter(
+            order_deadline,
+            'order_deadline',
+            'Order deadline'
+          )}
+          {this.renderDeadlineFilter(
+            retreat_deadline,
+            'retreat_deadline',
+            'Retreat deadline'
+          )}
+          {this.renderDeadlineFilter(
+            build_deadline,
+            'build_deadline',
+            'Build deadline'
+          )}
+        </Grid>
+      </StyledDiv>
     );
   }
 
-  renderAdvancedButton() {
+  renderAdvancedToggleButton() {
+    const { advancedOpen } = this.state;
+    const text = `${advancedOpen ? '− Hide' : '+ Show'} advanced filters`;
     return (
-      <div key="advanced-button">
-        <button type="button" onClick={this.toggleAdvanced}>
-          Advanced filtering options
-        </button>
-        <hr />
-      </div>
+      <StyledButton type="button" onClick={this.clickAdvancedToggleButton}>
+        {text}
+      </StyledButton>
     );
   }
 
   render() {
-    const { open, advancedOpen } = this.state;
-    const formContents = [this.renderSearchField()];
-    if (open) {
-      formContents.push(this.renderFilterFields());
-      if (advancedOpen) {
-        formContents.push(this.renderAdvancedFilterFields());
-      } else {
-        formContents.push(this.renderAdvancedButton());
-      }
-    }
-
     return (
       <div>
-        <form className="game-filter-form" onSubmit={this.handleSubmit}>
-          {formContents}
-        </form>
+        {this.renderAdvancedToggleButton()}
+        <StyledForm
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          {this.renderFilterFields()}
+          {this.renderAdvancedFilterFields()}
+        </StyledForm>
       </div>
     );
   }

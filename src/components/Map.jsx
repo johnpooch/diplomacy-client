@@ -1,3 +1,4 @@
+/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y"] }] */
 import React from 'react';
 import styled from '@emotion/styled';
 
@@ -6,13 +7,14 @@ import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
 import { getObjectByKey } from '../utils';
-import { colors, sizes } from '../variables';
+import { colors } from '../variables';
 
 const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - ${sizes.headerHeight}px);
+  height: 100vh;
   background: ${colors.sea};
+  top: 0;
 
   > svg {
     width: 100%;
@@ -28,10 +30,6 @@ class Map extends React.Component {
       interacting: false,
       hovering: null,
       tooltip: null,
-      mousePos: {
-        x: 0,
-        y: 0,
-      },
     };
 
     this.TOOLTIP_DELAY = 250;
@@ -64,13 +62,46 @@ class Map extends React.Component {
     return null;
   }
 
-  updateMousePos(e) {
-    this.setState({
-      mousePos: {
-        x: e.nativeEvent.clientX,
-        y: e.nativeEvent.clientY,
-      },
+  getTerritories() {
+    const { game, turn } = this.props;
+    const outData = [];
+    const allTerritoryMapData = game.variant.map_data[0].territory_data;
+    allTerritoryMapData.forEach((territoryMapData) => {
+      const flatTerritory = territoryMapData;
+      flatTerritory.type = 'impassable';
+      flatTerritory.controlledBy = null;
+      if (territoryMapData.territory) {
+        const territoryId = territoryMapData.territory;
+        const { territories } = game.variant;
+        const territoryStates = turn.territory_states;
+        const territory = getObjectByKey(territoryId, territories, 'id');
+        const territoryState = getObjectByKey(
+          territoryId,
+          territoryStates,
+          'territory'
+        );
+        flatTerritory.type = territory.type;
+        flatTerritory.supplyCenter = territory.supply_center;
+        flatTerritory.controlledBy = territoryState.controlled_by;
+      }
+      outData.push(flatTerritory);
     });
+    return outData;
+  }
+
+  clearTooltipTimeout() {
+    window.clearTimeout(this.tooltipTimeout);
+    this.tooltipTimeout = null;
+  }
+
+  startTooltipTimeout() {
+    const { interacting } = this.state;
+    this.clearTooltipTimeout();
+    if (interacting) return;
+    this.tooltipTimeout = setTimeout(
+      this.updateTooltip.bind(this),
+      this.TOOLTIP_DELAY
+    );
   }
 
   updateTooltip() {
@@ -82,8 +113,6 @@ class Map extends React.Component {
       });
       return;
     }
-
-    const { mousePos } = this.state;
 
     const piece = this.getPieceInTerritory(hovering);
     const territory = this.getTerritory(hovering);
@@ -99,7 +128,6 @@ class Map extends React.Component {
       piece,
       territoryControlledBy,
       pieceControlledBy,
-      pos: mousePos,
     };
 
     this.setState({
@@ -107,61 +135,28 @@ class Map extends React.Component {
     });
   }
 
-  clearTooltipTimeout() {
-    window.clearTimeout(this.tooltipTimeout);
-    this.tooltipTimeout = null;
-  }
-
-  startTooltipTimeout() {
-    this.clearTooltipTimeout();
-    this.tooltipTimeout = setTimeout(
-      this.updateTooltip.bind(this),
-      this.TOOLTIP_DELAY
-    );
-  }
-
-  getTerrtitories() {
-    const { game, turn } = this.props;
-    const outData = [];
-    const allTerritoryMapData = game.variant.map_data[0].territory_data;
-    allTerritoryMapData.forEach((territoryMapData) => {
-      let flatTerritory = territoryMapData;
-      flatTerritory.type = "impassable";
-      flatTerritory.controlledBy = null;
-      if (territoryMapData.territory) {
-        const territoryId = territoryMapData.territory;
-        const { territories } = game.variant;
-        const territoryStates = turn.territory_states;
-        const territory = getObjectByKey(territoryId, territories, 'id');
-        const territoryState = getObjectByKey(territoryId, territoryStates, 'territory');
-        flatTerritory.type = territory.type;
-        flatTerritory.supplyCenter = territory.supply_center;
-        flatTerritory.controlledBy = territoryState.controlled_by;
-      }
-      outData.push(flatTerritory);
-    })
-    return outData;
-  }
-
   renderTerritories() {
-    const { game, turn } = this.props;
+    const { turn } = this.props;
     if (!turn) return null;
-    const territories = this.getTerrtitories();
-    const territoriesList = []
+    const territories = this.getTerritories();
+    const territoriesList = [];
     territories.forEach((territory) => {
       const { hovering, interacting } = this.state;
       territoriesList.push(
         <Territory
+          key={territory.pk}
           territory={territory}
           hovering={hovering === territory.territory}
           interacting={interacting}
-          _mouseOver={(hoverTerritory) => {
+          _mouseOver={(hoveringId) => {
+            if (interacting) return;
             this.setState({
-              hovering: hoverTerritory,
+              hovering: hoveringId,
             });
             this.startTooltipTimeout();
           }}
           _mouseOut={() => {
+            if (interacting) return;
             this.setState({
               hovering: null,
               tooltip: null,
@@ -180,21 +175,21 @@ class Map extends React.Component {
     const pieceStates = turn.piece_states;
 
     const mapData = game.variant.map_data[0];
-    const { territory_data: territoryData } = mapData;
+    const { territory_data } = mapData;
 
     const piecesList = [];
     pieceStates.forEach((state) => {
       const piece = this.getPiece(state.piece);
-      const data = getObjectByKey(state.territory, territoryData, 'territory');
-      const { piece_x: x, piece_y: y } = data;
+      const data = getObjectByKey(state.territory, territory_data, 'territory');
+      const { piece_x, piece_y } = data;
       piecesList.push(
         <Piece
           key={piece.id}
           type={piece.type}
           nation={piece.nation}
           territory={state.territory}
-          x={x}
-          y={y}
+          x={piece_x}
+          y={piece_y}
         />
       );
     });
@@ -213,22 +208,14 @@ class Map extends React.Component {
     const { game, turn } = this.props;
     if (!turn) return null;
     const { interacting } = this.state;
-    const mapData = game.variant.map_data;
+    const mapData = game.variant.map_data[0];
     return (
       <StyledDiv
-        onMouseEnter={(e) => {
-          this.updateMousePos(e);
-        }}
-        onMouseMove={(e) => {
-          this.updateMousePos(e);
-          if (!interacting) {
-            this.startTooltipTimeout();
-          }
-          this.setState({
-            tooltip: null,
-          });
+        onMouseMove={() => {
+          this.startTooltipTimeout();
         }}
         onMouseDown={() => {
+          this.clearTooltipTimeout();
           this.setState({
             interacting: true,
             tooltip: null,
@@ -256,7 +243,7 @@ class Map extends React.Component {
             y={0}
             width={mapData.width}
             height={mapData.height}
-            fill={colors.sea}
+            fill={colors.base}
           />
           <g className="territories" transform="translate(-195, -170)">
             {this.renderTerritories()}

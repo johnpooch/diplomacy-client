@@ -6,13 +6,7 @@ const ScrollableSVG = (props) => {
   const ZOOM_MIN = 0.25;
   const ZOOM_MAX = 2.0;
 
-  const {
-    viewBoxWidth,
-    viewBoxHeight,
-    className,
-    children,
-    interacting,
-  } = props;
+  const { viewBoxWidth, viewBoxHeight, className, children } = props;
 
   const [ref, { width, height }] = useDimensions();
   const [viewBox, setViewBox] = useState({
@@ -23,6 +17,7 @@ const ScrollableSVG = (props) => {
   });
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const [panning, setPanning] = useState(false);
 
   const getViewBox = () => {
     return `${-viewBox.x} ${-viewBox.y} ${viewBox.w} ${viewBox.h}`;
@@ -40,6 +35,7 @@ const ScrollableSVG = (props) => {
   };
 
   const mouseDown = (e) => {
+    setPanning(true);
     setOrigin({
       x: scale(e.nativeEvent.clientX) - viewBox.x,
       y: scale(e.nativeEvent.clientY) - viewBox.y,
@@ -47,7 +43,7 @@ const ScrollableSVG = (props) => {
   };
 
   const mouseMove = (e) => {
-    if (interacting) {
+    if (panning) {
       setViewBox({
         x: scale(e.nativeEvent.clientX) - origin.x,
         y: scale(e.nativeEvent.clientY) - origin.y,
@@ -55,6 +51,10 @@ const ScrollableSVG = (props) => {
         h: viewBox.h,
       });
     }
+  };
+
+  const mouseUp = () => {
+    setPanning(false);
   };
 
   const wheel = (e) => {
@@ -91,6 +91,12 @@ const ScrollableSVG = (props) => {
       }}
       onMouseMove={(e) => {
         mouseMove(e);
+      }}
+      onMouseUp={(e) => {
+        mouseUp(e);
+      }}
+      onMouseLeave={(e) => {
+        mouseUp(e);
       }}
       onWheel={(e) => {
         wheel(e);

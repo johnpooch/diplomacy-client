@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import BrowseGame from '../components/BrowseGame';
 import GamesList from '../components/GamesList';
+import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import FilterForm from '../components/FilterForm';
 import { PageWrapper } from '../styles';
@@ -27,14 +28,15 @@ class BrowseGames extends React.Component {
     this.fetchGamesAndChoices();
   }
 
-  static getDateDisplayFormat() {
-    return {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    };
+  getHeadingText() {
+    const { games } = this.state;
+    let text = 'No games available';
+    if (games.length === 1) {
+      text = '1 game available';
+    } else if (games.length > 1) {
+      text = `${games.length} games available`;
+    }
+    return text;
   }
 
   fetchGamesAndChoices() {
@@ -87,11 +89,12 @@ class BrowseGames extends React.Component {
 
   render() {
     const { isLoaded, games, choices } = this.state;
-    if (!isLoaded) {
-      return <Loading />;
-    }
+
+    if (!isLoaded) return <Loading />;
+
     return (
       <PageWrapper className="grid">
+        <Heading text={this.getHeadingText()} />
         <FilterForm choices={choices} callback={this.fetchGames} />
         <GamesList games={games} />
       </PageWrapper>

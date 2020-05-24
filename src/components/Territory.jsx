@@ -1,10 +1,9 @@
+/* eslint camelcase: [2, { "allow": ["text_x", "text_y", "supply_center_x", "supply_center_y"] }] */
 import React from 'react';
 import styled from '@emotion/styled';
 import { lighten } from 'polished';
 
 import SupplyCenter from './SupplyCenter';
-import mapRef from '../map.json';
-import * as Utils from '../utils';
 import { colors, fontSizes } from '../variables';
 
 const StyledTerritory = styled.g`
@@ -58,10 +57,10 @@ const getPath = (props) => {
 };
 
 const getText = (territory) => {
-  const { textX, textY, abbreviation } = territory;
+  const { text_x, text_y, abbreviation } = territory;
   if (abbreviation) {
     return (
-      <text x={textX} y={textY}>
+      <text x={text_x} y={text_y}>
         {abbreviation}
       </text>
     );
@@ -75,21 +74,22 @@ const getSupplyCenter = (territory) => {
     type,
     id,
     controlledBy,
-    supplyCenterX,
-    supplyCenterY,
+    supply_center_x,
+    supply_center_y,
   } = territory;
   if (supplyCenter) {
     const coastal = type === 'coastal';
     return (
       <SupplyCenter
-        x={supplyCenterX}
-        y={supplyCenterY}
+        x={supply_center_x}
+        y={supply_center_y}
         coastal={coastal}
         territory={id}
         nation={controlledBy}
       />
     );
   }
+  return null;
 };
 
 const Territory = (props) => {
@@ -99,8 +99,8 @@ const Territory = (props) => {
   return (
     <StyledTerritory color={color} hover={hover}>
       {getPath(props)}
-      {getText(territory)}
-      {getSupplyCenter(territory)}
+      {/* {getText(territory)} */}
+      {/* {getSupplyCenter(territory)} */}
     </StyledTerritory>
   );
 };

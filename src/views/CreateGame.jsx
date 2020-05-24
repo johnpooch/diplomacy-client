@@ -4,9 +4,9 @@ import { withRouter } from 'react-router-dom';
 
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import { PageWrapper, GenericForm, FormLabel, Button } from '../styles';
+import { PageWrapper, GenericForm, FormLabelText, Button } from '../styles';
 
-import alertActions from '../store/actions/alert';
+import alertActions from '../store/actions/alerts';
 import gameService from '../services/game';
 
 class CreateGame extends Component {
@@ -38,7 +38,7 @@ class CreateGame extends Component {
     gameService.create(token, { name, description }).then(() => {
       this.setState({ isLoaded: true });
       history.push('/');
-      success({ message: 'Game created!' });
+      success({ message: 'Game created!', category: 'success' });
     });
   }
 
@@ -52,7 +52,7 @@ class CreateGame extends Component {
         <Heading text="Create game" />
         <GenericForm onSubmit={this.handleSubmit}>
           <label htmlFor="name">
-            <FormLabel>Name</FormLabel>
+            <FormLabelText>Name</FormLabelText>
             <input
               type="text"
               id="name"
@@ -65,7 +65,7 @@ class CreateGame extends Component {
             />
           </label>
           <label htmlFor="description">
-            <FormLabel>Description</FormLabel>
+            <FormLabelText>Description</FormLabelText>
             <textarea
               type="text"
               id="description"
@@ -75,6 +75,7 @@ class CreateGame extends Component {
               onChange={this.handleChange}
               value={description}
               required
+              rows={1}
             />
           </label>
           <p>
@@ -93,7 +94,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    success: (alert) => dispatch(alertActions.success(alert)),
+    success: (alert) => dispatch(alertActions.add(alert)),
   };
 };
 

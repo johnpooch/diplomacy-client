@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import { PageWrapper } from '../styles';
 
@@ -9,7 +8,7 @@ const Error = (props) => {
   return (
     <PageWrapper>
       <Heading text="Error" />
-      <Alert text={text} type="alert-danger" />
+      <p>{text}</p>
     </PageWrapper>
   );
 };

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
+import UserAccount from './UserAccount';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 import { PageWrapper } from '../styles';
-import Nav from './Nav';
-import UserAccount from './UserAccount';
 
 const StyledWrapper = styled(PageWrapper)`
   display: flex;
@@ -16,10 +16,23 @@ const StyledWrapper = styled(PageWrapper)`
   padding-bottom: 0;
 `;
 
+const StyledLogo = styled(NavLink)`
+  color: white;
+  font-size: ${fontSizes.sans[2]}px;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    color: white;
+    text-decoration: underline;
+  }
+`;
+
 const StyledHeader = styled.header`
-  position: fixed;
+  position: sticky;
   top: 0;
-  width: 100vw;
+  left: 0;
+  right: 0;
   background: ${colors.base};
   z-index: 1;
   height: ${sizes.headerHeight}px;
@@ -45,29 +58,15 @@ const StyledHeader = styled.header`
       margin-right: 0;
     }
   }
-
-  a {
-    color: white;
-    font-size: ${fontSizes.sans[2]}px;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    &.active {
-      text-decoration: underline;
-    }
-  }
 `;
 
-const Header = () => {
+const Header = (props) => {
+  const { loggedIn } = props;
+  if (!loggedIn) return null;
   return (
     <StyledHeader>
       <StyledWrapper>
-        <Nav />
+        <StyledLogo to="/">Diplomacy</StyledLogo>
         <UserAccount />
       </StyledWrapper>
     </StyledHeader>
@@ -76,7 +75,7 @@ const Header = () => {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.token !== null,
+    loggedIn: state.login.loggedIn,
   };
 };
 

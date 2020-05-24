@@ -1,5 +1,16 @@
 import React from 'react';
+import styled from '@emotion/styled';
+
 import Player from './Player';
+import { spacing } from '../variables';
+
+const StyledList = styled.ul`
+  margin: ${spacing[4]}px 0;
+
+  li:not(:last-of-type) {
+    margin-bottom: ${spacing[1]}px;
+  }
+`;
 
 const PlayerList = (props) => {
   const { players } = props;
@@ -13,8 +24,8 @@ const PlayerList = (props) => {
   });
   return (
     <div>
-      <h3>Players</h3>
-      <ul>{participantItems}</ul>
+      <h2>Players</h2>
+      <StyledList>{participantItems}</StyledList>
     </div>
   );
 };
