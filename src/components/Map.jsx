@@ -161,11 +161,7 @@ class Map extends React.Component {
       }
     });
 
-    return (
-      <g className="territories" transform="translate(-195, -170)">
-        {territoriesList}
-      </g>
-    );
+    return <g transform="translate(-195, -170)">{territoriesList}</g>;
   }
 
   renderPieces(territory_data) {
@@ -188,7 +184,7 @@ class Map extends React.Component {
         />
       );
     });
-    return <g className="pieces">{piecesList}</g>;
+    return <g>{piecesList}</g>;
   }
 
   renderTooltip() {

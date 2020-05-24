@@ -33,12 +33,8 @@ const StyledSpan = styled.span`
 `;
 
 const getSupplyCenter = (territory) => {
-  console.log(territory);
-
-  if (territory.supply_center) {
-    return <StyledSpan className="supply">*</StyledSpan>;
-  }
-  return null;
+  if (!territory.supply_center) return null;
+  return <StyledSpan className="supply">*</StyledSpan>;
 };
 
 const getControlledBy = (controlledBy) => {

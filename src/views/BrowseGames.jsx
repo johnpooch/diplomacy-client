@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import Header from '../components/Header';
 import BrowseGame from '../components/BrowseGame';
 import GamesList from '../components/GamesList';
 import Heading from '../components/Heading';
@@ -93,11 +94,14 @@ class BrowseGames extends React.Component {
     if (!isLoaded) return <Loading />;
 
     return (
-      <PageWrapper className="grid">
-        <Heading text={this.getHeadingText()} />
-        <FilterForm choices={choices} callback={this.fetchGames} />
-        <GamesList games={games} />
-      </PageWrapper>
+      <div>
+        <Header />
+        <PageWrapper>
+          <Heading text={this.getHeadingText()} />
+          <FilterForm choices={choices} callback={this.fetchGames} />
+          <GamesList games={games} />
+        </PageWrapper>
+      </div>
     );
   }
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Header from '../components/Header';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
@@ -54,6 +55,7 @@ class Register extends Component {
 
     return (
       <PageWrapper>
+        <Header />
         <Heading text="Register" />
         <GenericForm onSubmit={this.handleSubmit}>
           <Grid columns={2}>

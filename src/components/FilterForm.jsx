@@ -98,7 +98,6 @@ class FilterForm extends React.Component {
         <FormLabelText>Search</FormLabelText>
         <input
           id="search"
-          className="search"
           name="search"
           type="search"
           value={search}

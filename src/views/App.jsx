@@ -9,7 +9,6 @@ import Game from './Game';
 import Login from './Login';
 import Register from './Register';
 import FlashMessages from '../components/FlashMessages';
-import Header from '../components/Header';
 import LoggedOutRoute from '../components/LoggedOutRoute';
 import PrivateRoute from '../components/PrivateRoute';
 import alertActions from '../store/actions/alerts';
@@ -24,16 +23,14 @@ const App = () => {
 
   return (
     <div>
-      <Header />
       <FlashMessages />
       <Switch>
         <LoggedOutRoute exact path="/login" component={Login} />
         <LoggedOutRoute exact path="/register" component={Register} />
         <PrivateRoute exact path="/create-game" component={CreateGame} />
-        <PrivateRoute exact path="/join-game/:id" component={Game} />
         <PrivateRoute exact path="/game/:id" component={Game} />
         <PrivateRoute exact path="/" component={BrowseGames} />
-        <Route component={Error} text="Page not found" />
+        <Route component={() => <Error text="Page not found" />} />
       </Switch>
     </div>
   );

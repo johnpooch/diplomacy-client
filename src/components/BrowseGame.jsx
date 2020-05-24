@@ -64,10 +64,7 @@ class BrowseGame extends Component {
     const date = new Date(createdAt);
     const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
 
-    let link = `/game/${id}`;
-    if (status === 'pending') {
-      link = `/join-game/${id}`;
-    }
+    const link = `/game/${id}`;
 
     return (
       <StyledListItem key={id}>
@@ -83,6 +80,10 @@ class BrowseGame extends Component {
                 <time className="value" dateTime={createdAt}>
                   {dateString}
                 </time>
+              </p>
+              <p className="status">
+                <span className="label">Status</span>
+                <span className="value">{status}</span>
               </p>
             </section>
           </article>

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Loading from './Loading';
-import Heading from './Heading';
-import PlayerList from './PlayerList';
+import Header from '../components/Header';
+import Heading from '../components/Heading';
+import Loading from '../components/Loading';
+import PlayerList from '../components/PlayerList';
 import * as API from '../api';
 import { PageWrapper, Button } from '../styles';
 import alertActions from '../store/actions/alerts';
@@ -28,7 +29,7 @@ class JoinGame extends Component {
     }).then((response) => {
       if (response.status === 200) {
         onJoin();
-        // TODO redirect to my games? or maybe just browse games.
+        // TODO redirect to my games (or browse games)
       }
     });
   }
@@ -40,13 +41,16 @@ class JoinGame extends Component {
     if (loading) return <Loading />;
 
     return (
-      <PageWrapper>
-        <Heading text={game.name} />
-        <PlayerList players={players} />
-        <form onSubmit={this.handleSubmit}>
-          <Button type="submit">Join</Button>
-        </form>
-      </PageWrapper>
+      <div>
+        <Header />
+        <PageWrapper>
+          <Heading text={game.name} />
+          <PlayerList players={players} />
+          <form onSubmit={this.handleSubmit}>
+            <Button type="submit">Join</Button>
+          </form>
+        </PageWrapper>
+      </div>
     );
   }
 }
