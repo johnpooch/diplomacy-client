@@ -53,7 +53,7 @@ const StyledListItem = styled.li`
   }
 `;
 
-class BrowseGame extends Component {
+class GameSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -93,4 +93,4 @@ class BrowseGame extends Component {
   }
 }
 
-export default connect(null, null)(BrowseGame);
+export default connect(null, null)(GameSummary);

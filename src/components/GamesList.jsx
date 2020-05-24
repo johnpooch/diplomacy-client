@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import BrowseGame from './BrowseGame';
+import GameSummary from './GameSummary';
 
 const StyledList = styled.ol`
   margin: 0;
@@ -18,7 +18,7 @@ function GamesList(props) {
   const gamesList = [];
   games.forEach((game) => {
     gamesList.push(
-      <BrowseGame
+      <GameSummary
         key={game.id}
         id={game.id}
         status={game.status}

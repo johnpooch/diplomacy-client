@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Header from '../components/Header';
-import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import { PageWrapper, GenericForm, FormLabelText, Button } from '../styles';
+import Page from '../components/Page';
+import { GenericForm, FormLabelText, Button } from '../styles';
 
 import alertActions from '../store/actions/alerts';
 import gameService from '../services/game';
@@ -49,44 +48,40 @@ class CreateGame extends Component {
       return <Loading />;
     }
     return (
-      <div>
-        <Header />
-        <PageWrapper>
-          <Heading text="Create game" />
-          <GenericForm onSubmit={this.handleSubmit}>
-            <label htmlFor="name">
-              <FormLabelText>Name</FormLabelText>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Name"
-                autoComplete="name"
-                value={name}
-                onChange={this.handleChange}
-                required
-              />
-            </label>
-            <label htmlFor="description">
-              <FormLabelText>Description</FormLabelText>
-              <textarea
-                type="text"
-                id="description"
-                name="description"
-                placeholder="Description"
-                autoComplete="description"
-                onChange={this.handleChange}
-                value={description}
-                required
-                rows={1}
-              />
-            </label>
-            <p>
-              <Button type="submit">Create game</Button>
-            </p>
-          </GenericForm>
-        </PageWrapper>
-      </div>
+      <Page headingText="Create game">
+        <GenericForm onSubmit={this.handleSubmit}>
+          <label htmlFor="name">
+            <FormLabelText>Name</FormLabelText>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Name"
+              autoComplete="name"
+              value={name}
+              onChange={this.handleChange}
+              required
+            />
+          </label>
+          <label htmlFor="description">
+            <FormLabelText>Description</FormLabelText>
+            <textarea
+              type="text"
+              id="description"
+              name="description"
+              placeholder="Description"
+              autoComplete="description"
+              onChange={this.handleChange}
+              value={description}
+              required
+              rows={1}
+            />
+          </label>
+          <p>
+            <Button type="submit">Create game</Button>
+          </p>
+        </GenericForm>
+      </Page>
     );
   }
 }

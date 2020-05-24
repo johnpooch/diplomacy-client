@@ -2,17 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import Header from '../components/Header';
-import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import {
-  PageWrapper,
-  GenericForm,
-  FormLabelText,
-  Button,
-  Grid,
-} from '../styles';
+import Page from '../components/Page';
 import authActions from '../store/actions/auth';
+import { GenericForm, FormLabelText, Button, Grid } from '../styles';
 
 class Login extends React.Component {
   constructor(props) {
@@ -47,47 +40,43 @@ class Login extends React.Component {
     }
 
     return (
-      <div>
-        <Header />
-        <PageWrapper>
-          <Heading text="Login" />
-          <GenericForm onSubmit={this.handleSubmit}>
-            <Grid columns={2}>
-              <label htmlFor="username">
-                <FormLabelText>Username</FormLabelText>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  placeholder="Username"
-                  autoComplete="username"
-                  value={username}
-                  onChange={this.handleChange}
-                  required
-                />
-              </label>
-              <label htmlFor="password">
-                <FormLabelText>Password</FormLabelText>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={this.handleChange}
-                  required
-                />
-              </label>
-            </Grid>
-            <p>
-              <Button type="submit">Log in</Button>
-            </p>
-            <p>
-              Not a member? <Link to="/register">Create an account</Link>
-            </p>
-          </GenericForm>
-        </PageWrapper>
-      </div>
+      <Page headingText="Login">
+        <GenericForm onSubmit={this.handleSubmit}>
+          <Grid columns={2}>
+            <label htmlFor="username">
+              <FormLabelText>Username</FormLabelText>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Username"
+                autoComplete="username"
+                value={username}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="password">
+              <FormLabelText>Password</FormLabelText>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                autoComplete="current-password"
+                value={password}
+                onChange={this.handleChange}
+                required
+              />
+            </label>
+          </Grid>
+          <p>
+            <Button type="submit">Log in</Button>
+          </p>
+          <p>
+            Not a member? <Link to="/register">Create an account</Link>
+          </p>
+        </GenericForm>
+      </Page>
     );
   }
 }

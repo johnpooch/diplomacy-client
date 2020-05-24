@@ -1,19 +1,13 @@
 import React from 'react';
 
-import Header from '../components/Header';
-import Heading from '../components/Heading';
-import { PageWrapper } from '../styles';
+import Page from '../components/Page';
 
 const Error = (props) => {
   const { text } = props;
   return (
-    <div>
-      <Header />
-      <PageWrapper>
-        <Heading text="Error" />
-        <p>{text}</p>
-      </PageWrapper>
-    </div>
+    <Page headingText="Error">
+      <p>{text}</p>
+    </Page>
   );
 };
 

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Header from '../components/Header';
-import Heading from '../components/Heading';
-import Loading from '../components/Loading';
-import PlayerList from '../components/PlayerList';
 import * as API from '../api';
-import { PageWrapper, Button } from '../styles';
+import Loading from '../components/Loading';
+import Page from '../components/Page';
+import PlayerList from '../components/PlayerList';
 import alertActions from '../store/actions/alerts';
+import { Button } from '../styles';
 
 class JoinGame extends Component {
   constructor(props) {
@@ -41,16 +40,12 @@ class JoinGame extends Component {
     if (loading) return <Loading />;
 
     return (
-      <div>
-        <Header />
-        <PageWrapper>
-          <Heading text={game.name} />
-          <PlayerList players={players} />
-          <form onSubmit={this.handleSubmit}>
-            <Button type="submit">Join</Button>
-          </form>
-        </PageWrapper>
-      </div>
+      <Page headingText={game.name}>
+        <PlayerList players={players} />
+        <form onSubmit={this.handleSubmit}>
+          <Button type="submit">Join</Button>
+        </form>
+      </Page>
     );
   }
 }
