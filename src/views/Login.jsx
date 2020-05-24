@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 
-import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
   PageWrapper,
   GenericForm,
-  FormLabel,
+  FormLabelText,
   Button,
-  TwoColumns,
+  Grid,
 } from '../styles';
-import * as actions from '../store/actions/auth';
+import authActions from '../store/actions/auth';
 
-class Login extends Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,32 +30,32 @@ class Login extends Component {
     });
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     const { username, password } = this.state;
     const { onAuth } = this.props;
     onAuth(username, password);
-    // const { history } = this.props;
-    // history.push('/');
   }
 
   render() {
     const { username, password } = this.state;
-    const { error, loading } = this.props;
-    if (loading) {
+    const { loggedIn } = this.props;
+
+    if (loggedIn === undefined) {
       return <Loading />;
     }
-    let alert = null;
-    if (error) {
-      alert = <Alert type="error" text="Invalid username or password" />;
+
+    if (loggedIn) {
+      return <Redirect to="/" />;
     }
+
     return (
       <PageWrapper>
         <Heading text="Login" />
-        {alert}
         <GenericForm onSubmit={this.handleSubmit}>
-          <TwoColumns>
+          <Grid columns={2}>
             <label htmlFor="username">
-              <FormLabel>Username</FormLabel>
+              <FormLabelText>Username</FormLabelText>
               <input
                 type="text"
                 id="username"
@@ -69,7 +68,7 @@ class Login extends Component {
               />
             </label>
             <label htmlFor="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabelText>Password</FormLabelText>
               <input
                 type="password"
                 name="password"
@@ -80,7 +79,7 @@ class Login extends Component {
                 required
               />
             </label>
-          </TwoColumns>
+          </Grid>
           <p>
             <Button type="submit">Log in</Button>
           </p>
@@ -95,16 +94,14 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.isAuthenticated,
-    loading: state.loading,
-    error: state.error,
+    loggedIn: state.login.loggedIn,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (username, password) =>
-      dispatch(actions.authLogin(username, password)),
+      dispatch(authActions.login(username, password)),
   };
 };
 

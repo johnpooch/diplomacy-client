@@ -1,8 +1,45 @@
-function getObjectByKey(pk, objs, key = 'pk') {
+import React from 'react';
+
+export function getOptions(choices) {
+  return choices.map((c) => {
+    return (
+      <option key={c[0]} value={c[0]}>
+        {c[1]}
+      </option>
+    );
+  });
+}
+
+export function getObjectByKey(pk, objs, key = 'pk') {
   const id = parseInt(pk, 10);
   return objs.find((obj) => {
     return obj[key] === id;
   });
 }
 
-exports.getObjectByKey = getObjectByKey;
+export const matchIdToAbbreviation = (id, mapData, mapRef) => {
+  const ref = getObjectByKey(id, mapRef.territories);
+  const { abbreviation } = ref;
+
+  if (abbreviation) {
+    const arr = Object.values(mapData.territories);
+    const data = arr.find((obj) => {
+      return obj.abbreviation === abbreviation;
+    });
+
+    if (data !== undefined) {
+      return data;
+    }
+  }
+
+  console.warn(`Missing ${ref.name}`);
+  return null;
+};
+
+export const dateDisplayFormat = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+};

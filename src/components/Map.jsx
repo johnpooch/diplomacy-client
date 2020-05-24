@@ -1,3 +1,4 @@
+/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y"] }] */
 import React from 'react';
 import styled from '@emotion/styled';
 
@@ -5,15 +6,15 @@ import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Piece from './Piece';
 import Tooltip from './Tooltip';
-import mapData from '../map.json';
-import * as Utils from '../utils';
-import { colors, sizes } from '../variables';
+import { getObjectByKey } from '../utils';
+import { colors } from '../variables';
 
 const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
-  height: calc(100vh - ${sizes.headerHeight}px);
+  height: 100vh;
   background: ${colors.sea};
+  top: 0;
 
   > svg {
     width: 100%;
@@ -42,38 +43,68 @@ class Map extends React.Component {
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
-    return Utils.getObjectByKey(id, nations, 'id');
+    return getObjectByKey(id, nations, 'id');
   }
 
   getPiece(id) {
     const { game } = this.props;
     const { pieces } = game;
-    return Utils.getObjectByKey(id, pieces, 'id');
-  }
-
-  getTerritory(id) {
-    const { game } = this.props;
-    const { territories } = game.variant;
-    return Utils.getObjectByKey(id, territories, 'id');
-  }
-
-  getTerritoryState(id) {
-    const { turn } = this.props;
-    const territoryStates = turn.territory_states;
-    return Utils.getObjectByKey(id, territoryStates, 'territory');
+    return getObjectByKey(id, pieces, 'id');
   }
 
   getPieceInTerritory(id) {
     const { turn } = this.props;
     const pieceStates = turn.piece_states;
-    const pieceState = Utils.getObjectByKey(id, pieceStates, 'territory');
+    const pieceState = getObjectByKey(id, pieceStates, 'territory');
     if (pieceState) {
       return this.getPiece(pieceState.piece);
     }
     return null;
   }
 
-  updateTooltip(e) {
+  getTerritories() {
+    const { game, turn } = this.props;
+    const outData = [];
+    const allTerritoryMapData = game.variant.map_data[0].territory_data;
+    allTerritoryMapData.forEach((territoryMapData) => {
+      const flatTerritory = territoryMapData;
+      flatTerritory.type = 'impassable';
+      flatTerritory.controlledBy = null;
+      if (territoryMapData.territory) {
+        const territoryId = territoryMapData.territory;
+        const { territories } = game.variant;
+        const territoryStates = turn.territory_states;
+        const territory = getObjectByKey(territoryId, territories, 'id');
+        const territoryState = getObjectByKey(
+          territoryId,
+          territoryStates,
+          'territory'
+        );
+        flatTerritory.type = territory.type;
+        flatTerritory.supplyCenter = territory.supply_center;
+        flatTerritory.controlledBy = territoryState.controlled_by;
+      }
+      outData.push(flatTerritory);
+    });
+    return outData;
+  }
+
+  clearTooltipTimeout() {
+    window.clearTimeout(this.tooltipTimeout);
+    this.tooltipTimeout = null;
+  }
+
+  startTooltipTimeout() {
+    const { interacting } = this.state;
+    this.clearTooltipTimeout();
+    if (interacting) return;
+    this.tooltipTimeout = setTimeout(
+      this.updateTooltip.bind(this),
+      this.TOOLTIP_DELAY
+    );
+  }
+
+  updateTooltip() {
     const { hovering } = this.state;
 
     if (!hovering) {
@@ -104,43 +135,18 @@ class Map extends React.Component {
     });
   }
 
-  clearTooltipTimeout() {
-    window.clearTimeout(this.tooltipTimeout);
-    this.tooltipTimeout = null;
-  }
-
-  startTooltipTimeout() {
-    const { interacting } = this.state;
-    this.clearTooltipTimeout();
-    if (interacting) return;
-    this.tooltipTimeout = setTimeout(
-      this.updateTooltip.bind(this),
-      this.TOOLTIP_DELAY
-    );
-  }
-
   renderTerritories() {
     const { turn } = this.props;
     if (!turn) return null;
-
-    const { game } = this.props;
-    const { territories } = game.variant;
-
+    const territories = this.getTerritories();
     const territoriesList = [];
     territories.forEach((territory) => {
       const { hovering, interacting } = this.state;
-      const { id } = territory;
-      const territoryState = this.getTerritoryState(id);
-      const controlledBy = territoryState ? territoryState.controlled_by : null;
       territoriesList.push(
         <Territory
-          key={id}
-          id={id}
-          name={territory.name}
-          type={territory.type}
-          controlledBy={controlledBy}
-          supplyCenter={territory.supply_center}
-          hovering={hovering === id}
+          key={territory.pk}
+          territory={territory}
+          hovering={hovering === territory.territory}
           interacting={interacting}
           _mouseOver={(hoveringId) => {
             if (interacting) return;
@@ -165,18 +171,25 @@ class Map extends React.Component {
   }
 
   renderPieces() {
-    const { turn } = this.props;
+    const { game, turn } = this.props;
     const pieceStates = turn.piece_states;
+
+    const mapData = game.variant.map_data[0];
+    const { territory_data } = mapData;
 
     const piecesList = [];
     pieceStates.forEach((state) => {
       const piece = this.getPiece(state.piece);
+      const data = getObjectByKey(state.territory, territory_data, 'territory');
+      const { piece_x, piece_y } = data;
       piecesList.push(
         <Piece
           key={piece.id}
           type={piece.type}
           nation={piece.nation}
           territory={state.territory}
+          x={piece_x}
+          y={piece_y}
         />
       );
     });
@@ -192,8 +205,10 @@ class Map extends React.Component {
   }
 
   render() {
-    const { turn } = this.props;
+    const { game, turn } = this.props;
     if (!turn) return null;
+    const { interacting } = this.state;
+    const mapData = game.variant.map_data[0];
     return (
       <StyledDiv
         onMouseMove={() => {
@@ -219,17 +234,20 @@ class Map extends React.Component {
         }}
       >
         <ScrollableSVG
-          viewBoxWidth={mapData.viewBoxWidth}
-          viewBoxHeight={mapData.viewBoxHeight}
+          viewBoxWidth={mapData.width}
+          viewBoxHeight={mapData.height}
+          interacting={interacting}
         >
           <rect
             x={0}
             y={0}
-            width={mapData.viewBoxWidth}
-            height={mapData.viewBoxHeight}
-            fill="white"
+            width={mapData.width}
+            height={mapData.height}
+            fill={colors.base}
           />
-          <g className="territories">{this.renderTerritories()}</g>
+          <g className="territories" transform="translate(-195, -170)">
+            {this.renderTerritories()}
+          </g>
           <g className="pieces">{this.renderPieces()}</g>
         </ScrollableSVG>
         {this.renderTooltip()}

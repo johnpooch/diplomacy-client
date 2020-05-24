@@ -5,6 +5,7 @@ import Error from './Error';
 import Map from '../components/Map';
 import Loading from '../components/Loading';
 import TurnNav from '../components/TurnNav';
+import JoinGame from '../components/JoinGame';
 import * as API from '../api';
 import * as Utils from '../utils';
 
@@ -23,6 +24,7 @@ class Game extends React.Component {
     this.getGame(match.params.id);
   }
 
+  // TODO move to service
   getGame(id) {
     const { headers } = this.props;
     const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);
@@ -39,6 +41,7 @@ class Game extends React.Component {
       .then((json) => {
         const game = json;
         const currentTurn = Game.getCurrentTurn(game);
+
         this.setState({
           game,
           activeTurn: currentTurn,
@@ -98,8 +101,17 @@ class Game extends React.Component {
 
   render() {
     const { isLoaded, game } = this.state;
+
     if (!isLoaded) return <Loading />;
+
     if (!game) return <Error text="Game not found" />;
+
+    const { status } = game;
+    if (status === 'pending') {
+      // handle already joined!
+      return <JoinGame game={game} />;
+    }
+
     return (
       <div>
         {this.renderMap()}

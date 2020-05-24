@@ -1,66 +1,47 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import styled from '@emotion/styled';
+import React, { useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import { Switch, Route, useLocation } from 'react-router-dom';
 
+import BrowseGames from './BrowseGames';
+import CreateGame from './CreateGame';
+import Error from './Error';
 import Game from './Game';
 import Login from './Login';
 import Register from './Register';
-import BrowseGames from './BrowseGames';
-import Error from './Error';
+import FlashMessages from '../components/FlashMessages';
 import Header from '../components/Header';
-import { sizes } from '../variables';
-import * as actions from '../store/actions/auth';
+import PrivateRoute from '../components/PrivateRoute';
+import alertActions from '../store/actions/alerts';
 
-const StyledDiv = styled.div`
-  position: relative;
-  padding-top: ${sizes.headerHeight}px;
-`;
+const App = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(alertActions.clearActive());
+    dispatch(alertActions.promotePending());
+  }, [location.pathname]);
 
-class App extends React.Component {
-  componentDidMount() {
-    const { onTryAutoSignup } = this.props;
-    onTryAutoSignup();
-  }
-
-  render() {
-    return (
-      <Router>
-        <StyledDiv>
-          <Header />
-          <Switch>
-            <Route path="/game/:id">
-              <Game />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route exact path="/">
-              <BrowseGames />
-            </Route>
-            <Route>
-              <Error text="Page not found" />
-            </Route>
-          </Switch>
-        </StyledDiv>
-      </Router>
-    );
-  }
-}
+  return (
+    <div>
+      <Header />
+      <FlashMessages />
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <PrivateRoute exact path="/create-game" component={CreateGame} />
+        <PrivateRoute path="/game/:id" component={Game} />
+        <PrivateRoute exact path="/" component={BrowseGames} />
+        <Route component={Error} text="Page not found" />
+      </Switch>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.token !== null,
+    alerts: state.alerts,
+    loggedIn: state.login.loggedIn,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTryAutoSignup: () => dispatch(actions.authCheckState()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, null)(App);

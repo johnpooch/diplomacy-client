@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Alert from '../components/Alert';
 import Heading from '../components/Heading';
 import Loading from '../components/Loading';
 import {
   PageWrapper,
   GenericForm,
-  FormLabel,
+  FormLabelText,
   Button,
-  TwoColumns,
+  Grid,
 } from '../styles';
-import * as actions from '../store/actions/auth';
+import authActions from '../store/actions/auth';
 
 class Register extends Component {
   constructor(props) {
@@ -33,38 +32,38 @@ class Register extends Component {
     });
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     const { username, email, password } = this.state;
     const { onAuth } = this.props;
     onAuth(username, email, password);
-    // const { history } = this.props;
-    // history.push('/');
   }
 
   render() {
-    const { error } = this.props;
     const {
       username,
       email,
       password,
       passwordConfirmation,
       loading,
+      loggedIn,
     } = this.state;
+
     if (loading) {
       return <Loading />;
     }
-    let alert = null;
-    if (error) {
-      alert = <Alert type="error" text={error.message} />;
+
+    if (loggedIn) {
+      return <Redirect to="/" />;
     }
+
     return (
       <PageWrapper>
         <Heading text="Register" />
-        {alert}
         <GenericForm onSubmit={this.handleSubmit}>
-          <TwoColumns>
+          <Grid columns={2}>
             <label htmlFor="username">
-              <FormLabel>Username</FormLabel>
+              <FormLabelText>Username</FormLabelText>
               <input
                 type="username"
                 id="username"
@@ -77,7 +76,7 @@ class Register extends Component {
               />
             </label>
             <label htmlFor="email">
-              <FormLabel>Email address</FormLabel>
+              <FormLabelText>Email address</FormLabelText>
               <input
                 type="email"
                 id="email"
@@ -90,7 +89,7 @@ class Register extends Component {
               />
             </label>
             <label htmlFor="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabelText>Password</FormLabelText>
               <input
                 type="password"
                 id="password"
@@ -103,7 +102,7 @@ class Register extends Component {
               />
             </label>
             <label htmlFor="passwordConfirmation">
-              <FormLabel>Confirm password</FormLabel>
+              <FormLabelText>Confirm password</FormLabelText>
               <input
                 type="password"
                 id="passwordConfirmation"
@@ -115,7 +114,7 @@ class Register extends Component {
                 required
               />
             </label>
-          </TwoColumns>
+          </Grid>
           <p>
             <Button type="submit">Register</Button>
           </p>
@@ -130,16 +129,19 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.loading,
-    error: state.error,
+    registered: state.register.registered,
+    loggedIn: state.login.loggedIn,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (username, email, password) =>
-      dispatch(actions.authSignup(username, email, password)),
+      dispatch(authActions.register(username, email, password)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Register));
