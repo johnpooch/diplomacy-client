@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 
 import Loading from '../components/Loading';
 import Page from '../components/Page';
-import { GenericForm, FormLabelText, Button } from '../styles';
-
-import alertActions from '../store/actions/alerts';
+import {
+  Button,
+  FormLabelText,
+  GenericForm,
+  GridTemplate,
+  SecondaryButton,
+} from '../styles';
 import gameService from '../services/game';
+import alertActions from '../store/actions/alerts';
 
+const NavLinkButton = SecondaryButton.withComponent(NavLink);
 class CreateGame extends Component {
   constructor(props) {
     super(props);
@@ -77,9 +83,10 @@ class CreateGame extends Component {
               rows={1}
             />
           </label>
-          <p>
+          <GridTemplate templateColumns="auto auto 1fr">
             <Button type="submit">Create game</Button>
-          </p>
+            <NavLinkButton to="/">Cancel</NavLinkButton>
+          </GridTemplate>
         </GenericForm>
       </Page>
     );

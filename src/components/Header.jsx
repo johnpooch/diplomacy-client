@@ -25,7 +25,7 @@ const StyledDiv = styled.div`
   max-width: ${sizes.maxWidth}px;
 `;
 
-const StyledLogo = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   color: white;
   font-size: ${fontSizes.sans[2]}px;
   font-weight: 600;
@@ -41,7 +41,7 @@ const Header = () => {
   return (
     <StyledHeader>
       <StyledDiv>
-        <StyledLogo to="/">Diplomacy</StyledLogo>
+        <StyledNavLink to="/">Diplomacy</StyledNavLink>
         <UserAccount />
       </StyledDiv>
     </StyledHeader>

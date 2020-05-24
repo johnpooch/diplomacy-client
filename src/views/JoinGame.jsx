@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import * as API from '../api';
 import Loading from '../components/Loading';
 import Page from '../components/Page';
 import PlayerList from '../components/PlayerList';
 import alertActions from '../store/actions/alerts';
-import { Button } from '../styles';
+import { Button, GridTemplate, SecondaryButton } from '../styles';
+
+const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
 class JoinGame extends Component {
   constructor(props) {
@@ -43,9 +46,12 @@ class JoinGame extends Component {
       <Page headingText={game.name}>
         {players.length ? <h2>Players</h2> : null}
         <PlayerList players={players} />
-        <form onSubmit={this.handleSubmit}>
-          <Button type="submit">Join</Button>
-        </form>
+        <GridTemplate templateColumns="auto auto 1fr">
+          <form onSubmit={this.handleSubmit}>
+            <Button type="submit">Join game</Button>
+          </form>
+          <NavLinkButton to="/">Cancel</NavLinkButton>
+        </GridTemplate>
       </Page>
     );
   }
