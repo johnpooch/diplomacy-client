@@ -9,7 +9,7 @@ import { PageWrapper, IconButton } from '../styles';
 import { colors, sizes, spacing, fontSizes } from '../variables';
 import alertActions from '../store/actions/alerts';
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.li`
   background-color: ${(props) => lighten(0.45, colors[props.category])};
   border-bottom: ${sizes.border}px solid
     ${(props) => lighten(0.2, colors[props.category])};
@@ -44,7 +44,7 @@ const StyledDiv = styled(PageWrapper)`
   }
 `;
 
-const FlashMessage = (props) => {
+const Alert = (props) => {
   const { text, category, id, onClick } = props;
   if (!text) return null;
   return (
@@ -70,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(FlashMessage);
+export default connect(null, mapDispatchToProps)(Alert);

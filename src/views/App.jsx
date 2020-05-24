@@ -8,7 +8,7 @@ import Error from './Error';
 import Game from './Game';
 import Login from './Login';
 import Register from './Register';
-import FlashMessages from '../components/FlashMessages';
+import AlertList from '../components/AlertList';
 import LoggedOutRoute from '../components/LoggedOutRoute';
 import PrivateRoute from '../components/PrivateRoute';
 import alertActions from '../store/actions/alerts';
@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div>
-      <FlashMessages />
+      <AlertList />
       <Switch>
         <LoggedOutRoute exact path="/login" component={Login} />
         <LoggedOutRoute exact path="/register" component={Register} />
