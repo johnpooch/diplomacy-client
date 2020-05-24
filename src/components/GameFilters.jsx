@@ -27,7 +27,7 @@ const StyledDiv = styled.div`
   margin-top: ${spacing[4]}px;
 `;
 
-class FilterForm extends React.Component {
+class GameFilters extends React.Component {
   constructor(props) {
     super(props);
 
@@ -234,4 +234,4 @@ class FilterForm extends React.Component {
   }
 }
 
-export default FilterForm;
+export default GameFilters;

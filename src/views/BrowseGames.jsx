@@ -1,7 +1,7 @@
 import React from 'react';
 
-import FilterForm from '../components/FilterForm';
-import GamesList from '../components/GamesList';
+import GameFilters from '../components/GameFilters';
+import GameSummaryList from '../components/GameSummaryList';
 import Loading from '../components/Loading';
 import Page from '../components/Page';
 import gameService from '../services/game';
@@ -54,8 +54,8 @@ class BrowseGames extends React.Component {
     if (!isLoaded) return <Loading />;
     return (
       <Page headingText={this.getHeadingText()}>
-        <FilterForm choices={choices} callback={this.getFilteredGames} />
-        <GamesList games={games} />
+        <GameFilters choices={choices} callback={this.getFilteredGames} />
+        <GameSummaryList games={games} />
       </Page>
     );
   }

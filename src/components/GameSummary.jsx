@@ -7,10 +7,6 @@ import { dateDisplayFormat } from '../utils';
 import { colors, spacing } from '../variables';
 
 const StyledListItem = styled.li`
-  &:not(:last-child) {
-    margin-bottom: ${spacing[5]}px;
-  }
-
   a {
     text-decoration: none;
     color: ${colors.base};
@@ -25,23 +21,13 @@ const StyledListItem = styled.li`
   }
 
   p {
-    margin: 0;
-
-    &:not(:last-child) {
-      margin-bottom: ${spacing[2]}px;
+    &:not(:last-of-type) {
+      margin-bottom: ${spacing[1]}px;
     }
   }
 
   .name {
     font-weight: 600;
-  }
-
-  .id {
-    margin-left: ${spacing[1]}px;
-
-    &:before {
-      content: '#';
-    }
   }
 
   .label {
@@ -50,6 +36,10 @@ const StyledListItem = styled.li`
     &:after {
       content: ': ';
     }
+  }
+
+  .value {
+    text-transform: capitalize;
   }
 `;
 
@@ -72,7 +62,6 @@ class GameSummary extends Component {
           <article>
             <header>
               <span className="name">{name}</span>
-              <span className="id">{id}</span>
             </header>
             <section>
               <p className="created-at">

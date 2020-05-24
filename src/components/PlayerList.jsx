@@ -14,20 +14,16 @@ const StyledList = styled.ul`
 
 const PlayerList = (props) => {
   const { players } = props;
-  const participantItems = [];
+  if (!players || !players.length) return null;
+  const elements = [];
   players.forEach((p) => {
-    participantItems.push(
+    elements.push(
       <li key={p.id}>
         <Player username={p.username} />
       </li>
     );
   });
-  return (
-    <div>
-      <h2>Players</h2>
-      <StyledList>{participantItems}</StyledList>
-    </div>
-  );
+  return <StyledList>{elements}</StyledList>;
 };
 
 export default PlayerList;

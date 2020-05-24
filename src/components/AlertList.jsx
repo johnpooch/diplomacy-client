@@ -5,10 +5,11 @@ import Alert from './Alert';
 
 const AlertList = (props) => {
   const { alerts } = props;
-  const messages = [];
+  if (!alerts || !alerts.length) return null;
+  const elements = [];
   alerts.forEach((alert) => {
     if (alert.pending !== true) {
-      messages.push(
+      elements.push(
         <Alert
           key={alert.id}
           id={alert.id}
@@ -18,7 +19,7 @@ const AlertList = (props) => {
       );
     }
   });
-  return <ol>{messages}</ol>;
+  return <ol>{elements}</ol>;
 };
 
 const mapStateToProps = (state) => {
