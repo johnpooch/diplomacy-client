@@ -78,6 +78,17 @@ export const IconButton = styled(BaseButton)`
   font-size: inherit;
   width: ${sizes.input}px;
   height: ${sizes.input}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${colors.base};
+  background-color: white;
+  border: ${sizes.border}px solid white;
+
+  &:hover {
+    color: white;
+    background-color: ${colors.base};
+  }
 `;
 
 // Forms

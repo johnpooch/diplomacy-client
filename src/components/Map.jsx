@@ -13,7 +13,7 @@ const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background: ${colors.sea};
+  background: ${colors.base};
   top: 0;
 
   > svg {
@@ -62,31 +62,21 @@ class Map extends React.Component {
     return null;
   }
 
-  getTerritories() {
-    const { game, turn } = this.props;
-    const outData = [];
-    const allTerritoryMapData = game.variant.map_data[0].territory_data;
-    allTerritoryMapData.forEach((territoryMapData) => {
-      const flatTerritory = territoryMapData;
-      flatTerritory.type = 'impassable';
-      flatTerritory.controlledBy = null;
-      if (territoryMapData.territory) {
-        const territoryId = territoryMapData.territory;
-        const { territories } = game.variant;
-        const territoryStates = turn.territory_states;
-        const territory = getObjectByKey(territoryId, territories, 'id');
-        const territoryState = getObjectByKey(
-          territoryId,
-          territoryStates,
-          'territory'
-        );
-        flatTerritory.type = territory.type;
-        flatTerritory.supplyCenter = territory.supply_center;
-        flatTerritory.controlledBy = territoryState.controlled_by;
-      }
-      outData.push(flatTerritory);
-    });
-    return outData;
+  getTerritory(id) {
+    const { game } = this.props;
+    const { territories } = game.variant;
+    return getObjectByKey(id, territories, 'id');
+  }
+
+  getTerritoryState(id) {
+    const { turn } = this.props;
+    const territoryStates = turn.territory_states;
+    return getObjectByKey(id, territoryStates, 'territory');
+  }
+
+  getTerritoryControlledBy(id) {
+    const territoryState = this.getTerritoryState(id);
+    return territoryState ? this.getNation(territoryState.controlled_by) : null;
   }
 
   clearTooltipTimeout() {
@@ -116,11 +106,7 @@ class Map extends React.Component {
 
     const piece = this.getPieceInTerritory(hovering);
     const territory = this.getTerritory(hovering);
-
-    const territoryState = this.getTerritoryState(hovering);
-    const territoryControlledBy = territoryState
-      ? this.getNation(territoryState.controlled_by)
-      : null;
+    const territoryControlledBy = this.getTerritoryControlledBy(hovering);
     const pieceControlledBy = piece ? this.getNation(piece.nation) : null;
 
     const tooltip = {
@@ -135,47 +121,56 @@ class Map extends React.Component {
     });
   }
 
-  renderTerritories() {
+  renderTerritories(territory_data) {
     const { turn } = this.props;
     if (!turn) return null;
-    const territories = this.getTerritories();
     const territoriesList = [];
-    territories.forEach((territory) => {
+    territory_data.forEach((data) => {
       const { hovering, interacting } = this.state;
-      territoriesList.push(
-        <Territory
-          key={territory.pk}
-          territory={territory}
-          hovering={hovering === territory.territory}
-          interacting={interacting}
-          _mouseOver={(hoveringId) => {
-            if (interacting) return;
-            this.setState({
-              hovering: hoveringId,
-            });
-            this.startTooltipTimeout();
-          }}
-          _mouseOut={() => {
-            if (interacting) return;
-            this.setState({
-              hovering: null,
-              tooltip: null,
-            });
-            this.clearTooltipTimeout();
-          }}
-        />
-      );
+      const id = data.territory;
+      const territory = this.getTerritory(id);
+      const controlledBy = this.getTerritoryControlledBy(id);
+      if (data && territory) {
+        territoriesList.push(
+          <Territory
+            key={data.pk}
+            id={id}
+            data={data}
+            type={territory.type}
+            supplyCenter={territory.supply_center}
+            controlledBy={controlledBy}
+            hovering={hovering === id}
+            interacting={interacting}
+            _mouseOver={(hoveringId) => {
+              if (interacting) return;
+              this.setState({
+                hovering: hoveringId,
+              });
+              this.startTooltipTimeout();
+            }}
+            _mouseOut={() => {
+              if (interacting) return;
+              this.setState({
+                hovering: null,
+                tooltip: null,
+              });
+              this.clearTooltipTimeout();
+            }}
+          />
+        );
+      }
     });
 
-    return territoriesList;
+    return (
+      <g className="territories" transform="translate(-195, -170)">
+        {territoriesList}
+      </g>
+    );
   }
 
-  renderPieces() {
-    const { game, turn } = this.props;
+  renderPieces(territory_data) {
+    const { turn } = this.props;
     const pieceStates = turn.piece_states;
-
-    const mapData = game.variant.map_data[0];
-    const { territory_data } = mapData;
 
     const piecesList = [];
     pieceStates.forEach((state) => {
@@ -193,7 +188,7 @@ class Map extends React.Component {
         />
       );
     });
-    return piecesList;
+    return <g className="pieces">{piecesList}</g>;
   }
 
   renderTooltip() {
@@ -209,6 +204,7 @@ class Map extends React.Component {
     if (!turn) return null;
     const { interacting } = this.state;
     const mapData = game.variant.map_data[0];
+    const { territory_data } = mapData;
     return (
       <StyledDiv
         onMouseMove={() => {
@@ -238,19 +234,10 @@ class Map extends React.Component {
           viewBoxHeight={mapData.height}
           interacting={interacting}
         >
-          <rect
-            x={0}
-            y={0}
-            width={mapData.width}
-            height={mapData.height}
-            fill={colors.base}
-          />
-          <g className="territories" transform="translate(-195, -170)">
-            {this.renderTerritories()}
-          </g>
-          <g className="pieces">{this.renderPieces()}</g>
+          {this.renderTerritories(territory_data)}
+          {this.renderPieces(territory_data)}
         </ScrollableSVG>
-        {this.renderTooltip()}
+        {this.renderTooltip(territory_data)}
       </StyledDiv>
     );
   }

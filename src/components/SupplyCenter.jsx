@@ -10,25 +10,34 @@ const StyledSupplyCenter = styled.circle`
 `;
 
 const SupplyCenter = (props) => {
-  const { nation, coastal, x, y } = props;
-  const size = 20;
+  const { controlledBy, type, x, y } = props;
+  const size = 8;
 
   // Work out what color the marker should be
   let color = colors.land;
-  if (nation in colors.nations) {
-    color = colors.nations[nation];
+  if (controlledBy && controlledBy.id in colors.nations) {
+    color = colors.nations[controlledBy.id];
   }
-  color = darken(0.2, color);
+  color = darken(0.25, color);
 
   // Army supply center marker style
-  if (!coastal) {
-    return <StyledSupplyCenter cx={x} cy={y} r={size / 2} color={color} />;
+  if (type !== 'sea') {
+    return (
+      <StyledSupplyCenter
+        transform="translate(195, 170)"
+        cx={x}
+        cy={y}
+        r={size / 2}
+        color={color}
+      />
+    );
   }
 
   // Fleet supply center marker style
   return (
     <g>
       <StyledSupplyCenter
+        transform="translate(195, 170)"
         as="rect"
         x={x - size / 2}
         y={y - size / 2}

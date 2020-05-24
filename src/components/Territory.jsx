@@ -12,31 +12,33 @@ const StyledTerritory = styled.g`
     stroke: ${colors.base};
     fill: ${(props) =>
       props.hover ? lighten(0.07, props.color) : props.color};
+  }
 
-    + text {
-      font-size: ${fontSizes.sans[0]}px;
-      text-anchor: left;
-      pointer-events: none;
-      text-transform: uppercase;
-      user-select: none;
-      fill: ${(props) => (props.hover ? colors.base : 'white')};
-      font-weight: ${(props) => (props.hover ? 'bold' : 'normal')};
-    }
+  text {
+    font-size: ${fontSizes.sans[0]}px;
+    text-anchor: middle;
+    pointer-events: none;
+    text-transform: uppercase;
+    user-select: none;
+    fill: ${(props) => (props.hover ? colors.base : 'white')};
+    font-weight: ${(props) => (props.hover ? 'bold' : 'normal')};
   }
 `;
 
-const getTerritoryColor = (territory) => {
-  const { controlledBy, type } = territory;
+const getTerritoryColor = (controlledBy, type) => {
   if (type === 'sea') return colors.sea;
-  if (controlledBy !== null && controlledBy in colors.nations) {
-    return colors.nations[controlledBy];
+  if (controlledBy) {
+    const { id } = controlledBy;
+    if (id !== null && id in colors.nations) {
+      return colors.nations[id];
+    }
   }
   return colors.land;
 };
 
-const getPath = (props) => {
-  const { territory, _mouseOver, _mouseOut, id } = props;
-  const { path } = territory;
+const renderPath = (props) => {
+  const { data, _mouseOver, _mouseOut, id } = props;
+  const { path } = data;
   return (
     <path
       onMouseOver={() => {
@@ -56,11 +58,11 @@ const getPath = (props) => {
   );
 };
 
-const getText = (territory) => {
-  const { text_x, text_y, abbreviation } = territory;
-  if (abbreviation) {
+const renderText = (data) => {
+  const { text_x, text_y, abbreviation } = data;
+  if (abbreviation && text_x && text_y) {
     return (
-      <text x={text_x} y={text_y}>
+      <text x={text_x} y={text_y} transform="translate(195, 170)">
         {abbreviation}
       </text>
     );
@@ -68,24 +70,17 @@ const getText = (territory) => {
   return null;
 };
 
-const getSupplyCenter = (territory) => {
-  const {
-    supplyCenter,
-    type,
-    id,
-    controlledBy,
-    supply_center_x,
-    supply_center_y,
-  } = territory;
-  if (supplyCenter) {
-    const coastal = type === 'coastal';
+const renderSupplyCenter = (props, data) => {
+  const { controlledBy, supplyCenter } = props;
+  const { type, supply_center_x, supply_center_y } = data;
+
+  if (supplyCenter && supply_center_x && supply_center_y) {
     return (
       <SupplyCenter
         x={supply_center_x}
         y={supply_center_y}
-        coastal={coastal}
-        territory={id}
-        nation={controlledBy}
+        type={type}
+        controlledBy={controlledBy}
       />
     );
   }
@@ -93,14 +88,14 @@ const getSupplyCenter = (territory) => {
 };
 
 const Territory = (props) => {
-  const { territory, hovering, interacting } = props;
+  const { data, controlledBy, type, hovering, interacting } = props;
   const hover = !interacting && hovering;
-  const color = getTerritoryColor(territory);
+  const color = getTerritoryColor(controlledBy, type);
   return (
     <StyledTerritory color={color} hover={hover}>
-      {getPath(props)}
-      {/* {getText(territory)} */}
-      {/* {getSupplyCenter(territory)} */}
+      {renderPath(props)}
+      {renderSupplyCenter(props, data)}
+      {renderText(data)}
     </StyledTerritory>
   );
 };

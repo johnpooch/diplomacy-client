@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Heading from '../components/Heading';
@@ -46,15 +46,10 @@ class Register extends Component {
       password,
       passwordConfirmation,
       loading,
-      loggedIn,
     } = this.state;
 
     if (loading) {
       return <Loading />;
-    }
-
-    if (loggedIn) {
-      return <Redirect to="/" />;
     }
 
     return (

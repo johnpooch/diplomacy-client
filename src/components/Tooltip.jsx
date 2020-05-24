@@ -1,20 +1,17 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { lighten } from 'polished';
+// import { lighten } from 'polished';
 
-import mapRef from '../map.json';
-import * as Utils from '../utils';
 import { colors, fontSizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`
   position: fixed;
   bottom: ${spacing[2]}px;
-  left: ${spacing[2]}px;
+  right: ${spacing[2]}px;
   padding: ${spacing[2]}px;
   pointer-events: none;
-  color: white;
   font-size: ${fontSizes.sans[2]}px;
-  background-color: ${colors.base};
+  background-color: white;
 
   p:not(:first-of-type) {
     margin-top: ${spacing[0]}px;
@@ -23,7 +20,7 @@ const StyledDiv = styled.div`
 
 const StyledSpan = styled.span`
   text-transform: capitalize;
-  color: ${(props) => (props.color ? props.color : 'white')};
+  color: ${(props) => (props.color ? props.color : colors.base)};
   user-select: none;
 
   &:not(:last-of-type):after {
@@ -36,6 +33,8 @@ const StyledSpan = styled.span`
 `;
 
 const getSupplyCenter = (territory) => {
+  console.log(territory);
+
   if (territory.supply_center) {
     return <StyledSpan className="supply">*</StyledSpan>;
   }
@@ -44,7 +43,8 @@ const getSupplyCenter = (territory) => {
 
 const getControlledBy = (controlledBy) => {
   if (controlledBy) {
-    const color = lighten(0.25, colors.nations[controlledBy.id]);
+    const { id } = controlledBy;
+    const color = colors.nations[id];
     return (
       <StyledSpan className="nation" color={color}>
         ({controlledBy.name})
@@ -54,7 +54,7 @@ const getControlledBy = (controlledBy) => {
   return null;
 };
 
-const getTooltip = (data, tooltip) => {
+const getTooltip = (tooltip) => {
   const {
     territory,
     territoryControlledBy,
@@ -64,15 +64,13 @@ const getTooltip = (data, tooltip) => {
 
   const tooltipElements = [];
 
-  if (data.name) {
-    tooltipElements.push(
-      <p key="territory">
-        <StyledSpan className="name">{data.name}</StyledSpan>
-        {getSupplyCenter(territory)}
-        {getControlledBy(territoryControlledBy)}
-      </p>
-    );
-  }
+  tooltipElements.push(
+    <p key="territory">
+      <StyledSpan className="name">{territory.name}</StyledSpan>
+      {getSupplyCenter(territory)}
+      {getControlledBy(territoryControlledBy)}
+    </p>
+  );
 
   if (piece) {
     tooltipElements.push(
@@ -88,12 +86,7 @@ const getTooltip = (data, tooltip) => {
 
 const Tooltip = (props) => {
   const { tooltip } = props;
-  const { territory } = tooltip;
-
-  const data = Utils.matchIdToAbbreviation(territory.id, mapData, mapRef);
-  if (!data) return null;
-
-  return <StyledDiv>{getTooltip(data, tooltip)}</StyledDiv>;
+  return <StyledDiv>{getTooltip(tooltip)}</StyledDiv>;
 };
 
 export default Tooltip;

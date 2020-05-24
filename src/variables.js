@@ -4,11 +4,11 @@ export const fontFamilies = {
 };
 
 export const fontSizes = {
-  sans: [4, 13, 15, 19, 36],
+  sans: [9, 13, 15, 19, 36],
 };
 
 export const colors = {
-  base: '#444444',
+  base: '#222222',
   darkgray: '#999999',
   gray: '#ebeef1',
   sea: '#79bde1',
@@ -21,13 +21,13 @@ export const colors = {
     // germany
     3: '#777777',
     // austria-hungary
-    4: '#ff851b',
+    4: '#E69F00',
     // italy
     5: '#2ecc40',
     // russia
     6: '#b10dc9',
     // turkey
-    7: '#ffdc00',
+    7: '#f3db4e',
   },
   error: '#a73c57',
   success: '#3e7947',
