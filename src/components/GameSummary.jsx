@@ -53,12 +53,9 @@ class GameSummary extends Component {
     const { createdAt, id, name, status } = this.props;
     const date = new Date(createdAt);
     const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
-
-    const link = `/game/${id}`;
-
     return (
       <StyledListItem key={id}>
-        <Link to={link}>
+        <Link to={`/game/${id}`}>
           <article>
             <header>
               <span className="name">{name}</span>

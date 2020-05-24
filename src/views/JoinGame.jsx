@@ -41,6 +41,7 @@ class JoinGame extends Component {
 
     return (
       <Page headingText={game.name}>
+        {players.length ? <h2>Players</h2> : null}
         <PlayerList players={players} />
         <form onSubmit={this.handleSubmit}>
           <Button type="submit">Join</Button>
