@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import FlashMessage from './FlashMessage';
+import Alert from './Alert';
 
-const FlashMessages = (props) => {
+const AlertList = (props) => {
   const { alerts } = props;
-  const messages = [];
+  if (!alerts || !alerts.length) return null;
+  const elements = [];
   alerts.forEach((alert) => {
     if (alert.pending !== true) {
-      messages.push(
-        <FlashMessage
+      elements.push(
+        <Alert
           key={alert.id}
           id={alert.id}
           text={alert.message}
@@ -18,7 +19,7 @@ const FlashMessages = (props) => {
       );
     }
   });
-  return <div>{messages}</div>;
+  return <ol>{elements}</ol>;
 };
 
 const mapStateToProps = (state) => {
@@ -27,4 +28,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(FlashMessages);
+export default connect(mapStateToProps, null)(AlertList);

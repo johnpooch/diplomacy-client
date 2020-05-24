@@ -2,16 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import Heading from '../components/Heading';
 import Loading from '../components/Loading';
-import {
-  PageWrapper,
-  GenericForm,
-  FormLabelText,
-  Button,
-  Grid,
-} from '../styles';
+import Page from '../components/Page';
 import authActions from '../store/actions/auth';
+import { GenericForm, FormLabelText, Button, Grid } from '../styles';
 
 class Login extends React.Component {
   constructor(props) {
@@ -46,8 +40,7 @@ class Login extends React.Component {
     }
 
     return (
-      <PageWrapper>
-        <Heading text="Login" />
+      <Page headingText="Login">
         <GenericForm onSubmit={this.handleSubmit}>
           <Grid columns={2}>
             <label htmlFor="username">
@@ -83,7 +76,7 @@ class Login extends React.Component {
             Not a member? <Link to="/register">Create an account</Link>
           </p>
         </GenericForm>
-      </PageWrapper>
+      </Page>
     );
   }
 }

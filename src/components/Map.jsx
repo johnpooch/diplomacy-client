@@ -1,4 +1,4 @@
-/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y"] }] */
+/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states"] }] */
 import React from 'react';
 import styled from '@emotion/styled';
 
@@ -56,10 +56,7 @@ class Map extends React.Component {
     const { turn } = this.props;
     const pieceStates = turn.piece_states;
     const pieceState = getObjectByKey(id, pieceStates, 'territory');
-    if (pieceState) {
-      return this.getPiece(pieceState.piece);
-    }
-    return null;
+    return pieceState ? this.getPiece(pieceState.piece) : null;
   }
 
   getTerritory(id) {
@@ -101,7 +98,7 @@ class Map extends React.Component {
       this.setState({
         tooltip: null,
       });
-      return;
+      return false;
     }
 
     const piece = this.getPieceInTerritory(hovering);
@@ -119,6 +116,8 @@ class Map extends React.Component {
     this.setState({
       tooltip,
     });
+
+    return true;
   }
 
   renderTerritories(territory_data) {
@@ -161,23 +160,18 @@ class Map extends React.Component {
       }
     });
 
-    return (
-      <g className="territories" transform="translate(-195, -170)">
-        {territoriesList}
-      </g>
-    );
+    return <g transform="translate(-195, -170)">{territoriesList}</g>;
   }
 
   renderPieces(territory_data) {
     const { turn } = this.props;
-    const pieceStates = turn.piece_states;
-
-    const piecesList = [];
-    pieceStates.forEach((state) => {
+    const { piece_states } = turn;
+    const elements = [];
+    piece_states.forEach((state) => {
       const piece = this.getPiece(state.piece);
       const data = getObjectByKey(state.territory, territory_data, 'territory');
       const { piece_x, piece_y } = data;
-      piecesList.push(
+      elements.push(
         <Piece
           key={piece.id}
           type={piece.type}
@@ -188,7 +182,7 @@ class Map extends React.Component {
         />
       );
     });
-    return <g className="pieces">{piecesList}</g>;
+    return <g>{elements}</g>;
   }
 
   renderTooltip() {

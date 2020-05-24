@@ -7,10 +7,6 @@ import { dateDisplayFormat } from '../utils';
 import { colors, spacing } from '../variables';
 
 const StyledListItem = styled.li`
-  &:not(:last-child) {
-    margin-bottom: ${spacing[5]}px;
-  }
-
   a {
     text-decoration: none;
     color: ${colors.base};
@@ -25,23 +21,13 @@ const StyledListItem = styled.li`
   }
 
   p {
-    margin: 0;
-
-    &:not(:last-child) {
-      margin-bottom: ${spacing[2]}px;
+    &:not(:last-of-type) {
+      margin-bottom: ${spacing[1]}px;
     }
   }
 
   .name {
     font-weight: 600;
-  }
-
-  .id {
-    margin-left: ${spacing[1]}px;
-
-    &:before {
-      content: '#';
-    }
   }
 
   .label {
@@ -51,9 +37,13 @@ const StyledListItem = styled.li`
       content: ': ';
     }
   }
+
+  .value {
+    text-transform: capitalize;
+  }
 `;
 
-class BrowseGame extends Component {
+class GameSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -63,19 +53,12 @@ class BrowseGame extends Component {
     const { createdAt, id, name, status } = this.props;
     const date = new Date(createdAt);
     const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
-
-    let link = `/game/${id}`;
-    if (status === 'pending') {
-      link = `/join-game/${id}`;
-    }
-
     return (
       <StyledListItem key={id}>
-        <Link to={link}>
+        <Link to={`/game/${id}`}>
           <article>
             <header>
               <span className="name">{name}</span>
-              <span className="id">{id}</span>
             </header>
             <section>
               <p className="created-at">
@@ -83,6 +66,10 @@ class BrowseGame extends Component {
                 <time className="value" dateTime={createdAt}>
                   {dateString}
                 </time>
+              </p>
+              <p className="status">
+                <span className="label">Status</span>
+                <span className="value">{status}</span>
               </p>
             </section>
           </article>
@@ -92,4 +79,4 @@ class BrowseGame extends Component {
   }
 }
 
-export default connect(null, null)(BrowseGame);
+export default connect(null, null)(GameSummary);

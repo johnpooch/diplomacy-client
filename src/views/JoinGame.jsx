@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
-import Loading from './Loading';
-import Heading from './Heading';
-import PlayerList from './PlayerList';
 import * as API from '../api';
-import { PageWrapper, Button } from '../styles';
+import Loading from '../components/Loading';
+import Page from '../components/Page';
+import PlayerList from '../components/PlayerList';
 import alertActions from '../store/actions/alerts';
+import { Button, GridTemplate, SecondaryButton } from '../styles';
+
+const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
 class JoinGame extends Component {
   constructor(props) {
@@ -28,7 +31,7 @@ class JoinGame extends Component {
     }).then((response) => {
       if (response.status === 200) {
         onJoin();
-        // TODO redirect to my games? or maybe just browse games.
+        // TODO redirect to my games (or browse games)
       }
     });
   }
@@ -40,13 +43,16 @@ class JoinGame extends Component {
     if (loading) return <Loading />;
 
     return (
-      <PageWrapper>
-        <Heading text={game.name} />
+      <Page headingText={game.name}>
+        {players.length ? <h2>Players</h2> : null}
         <PlayerList players={players} />
-        <form onSubmit={this.handleSubmit}>
-          <Button type="submit">Join</Button>
-        </form>
-      </PageWrapper>
+        <GridTemplate templateColumns="auto auto 1fr">
+          <form onSubmit={this.handleSubmit}>
+            <Button type="submit">Join game</Button>
+          </form>
+          <NavLinkButton to="/">Cancel</NavLinkButton>
+        </GridTemplate>
+      </Page>
     );
   }
 }

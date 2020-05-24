@@ -27,7 +27,7 @@ const StyledDiv = styled.div`
   margin-top: ${spacing[4]}px;
 `;
 
-class FilterForm extends React.Component {
+class GameFilters extends React.Component {
   constructor(props) {
     super(props);
 
@@ -98,7 +98,6 @@ class FilterForm extends React.Component {
         <FormLabelText>Search</FormLabelText>
         <input
           id="search"
-          className="search"
           name="search"
           type="search"
           value={search}
@@ -235,4 +234,4 @@ class FilterForm extends React.Component {
   }
 }
 
-export default FilterForm;
+export default GameFilters;
