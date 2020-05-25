@@ -16,11 +16,11 @@ const StyledDiv = styled.div`
   height: 100vh;
   background-color: ${colors.gray};
   top: 0;
-  cursor: ${(props) => (props.panning ? 'all-scroll' : 'pointer')};
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  cursor: ${(props) => (props.panning ? 'all-scroll' : 'initial')};
 
-  > svg {
+  svg {
     width: 100%;
     height: 100%;
   }
@@ -137,6 +137,7 @@ class Map extends React.Component {
             type={territory.type}
             supplyCenter={territory.supply_center}
             controlledBy={controlledBy}
+            panning={panning}
             hovering={hovering === id}
             selected={selected === id}
             interacting={interacting}

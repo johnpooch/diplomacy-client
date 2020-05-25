@@ -7,6 +7,8 @@ import { darken, lighten } from 'polished';
 import { colors, fontSizes } from '../variables';
 
 const StyledTerritory = styled.g`
+  cursor: ${(props) => (props.panning ? 'all-scroll' : 'pointer')};
+
   .territory {
     stroke-width: ${(props) => (props.selected ? 4 : 2)};
     stroke: ${(props) => (props.selected ? 'white' : colors.base)};
@@ -103,6 +105,7 @@ const Territory = (props) => {
     <StyledTerritory
       color={color}
       highlight={!panning && hovering}
+      panning={panning}
       selected={selected}
     >
       {renderPath(props)}
