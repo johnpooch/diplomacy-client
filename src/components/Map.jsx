@@ -213,7 +213,32 @@ class Map extends React.Component {
   renderOrders() {
     const { selected, summary } = this.state;
     if (!selected) return null;
-    return <Orders summary={summary} selected={selected} />;
+    return (
+      <Orders
+        summary={summary}
+        selected={selected}
+        _onClickHold={() => {
+          console.log('hold');
+          // TODO send hold order to API
+          this.setState({
+            selected: null,
+            summary: null,
+          });
+        }}
+        _onClickMove={() => {
+          console.log('move');
+          // TODO select where to move, then send move order to API
+        }}
+        _onClickSupport={() => {
+          console.log('support');
+          // TODO select where to support, then send support order to API
+        }}
+        _onClickConvoy={() => {
+          console.log('convoy');
+          // TODO select where to convoy, then send support order to API
+        }}
+      />
+    );
   }
 
   render() {

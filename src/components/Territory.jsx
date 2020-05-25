@@ -42,24 +42,12 @@ const renderPath = (props) => {
   return (
     <path
       d={path}
-      onMouseOver={() => {
-        _mouseOver();
-      }}
-      onFocus={() => {
-        _mouseOver();
-      }}
-      onMouseOut={() => {
-        _mouseOut();
-      }}
-      onBlur={() => {
-        _mouseOut();
-      }}
-      onMouseUp={(e) => {
-        _mouseUp(e);
-      }}
-      onContextMenu={(e) => {
-        _contextMenu(e);
-      }}
+      onMouseOver={_mouseOver}
+      onFocus={_mouseOver}
+      onMouseOut={_mouseOut}
+      onBlur={_mouseOut}
+      onMouseUp={_mouseUp}
+      onContextMenu={_contextMenu}
     />
   );
 };
