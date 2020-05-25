@@ -40,7 +40,7 @@ const Orders = (props) => {
         <TerritorySummary summary={summary} />
         <StyledGrid columns={2}>
           <Button>Hold</Button>
-          <Button>Attack</Button>
+          <Button>Move</Button>
           <Button>Support</Button>
           <Button>Convoy</Button>
         </StyledGrid>
