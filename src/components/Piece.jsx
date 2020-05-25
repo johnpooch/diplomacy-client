@@ -33,11 +33,11 @@ const Piece = (props) => {
   const { type } = props;
 
   if (type === 'army') {
-    return renderIcon(props, faChessPawn, 0.08);
+    return renderIcon(props, faChessPawn, 0.06);
   }
 
   if (type === 'fleet') {
-    return renderIcon(props, faAnchor, 0.07);
+    return renderIcon(props, faAnchor, 0.05);
   }
 
   return null;
