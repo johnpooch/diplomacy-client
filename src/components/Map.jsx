@@ -44,8 +44,6 @@ class Map extends React.Component {
     this.resetPan = this.resetPan.bind(this);
 
     this.PANNING_THRESHOLD = 5;
-    // this.MOUSE_MOVE_DELAY = 300;
-    // this.mouseMoveTimeout = null;
   }
 
   getNation(id) {
@@ -96,34 +94,6 @@ class Map extends React.Component {
       pieceControlledBy,
     };
   }
-
-  // clearMouseMoveTimeout() {
-  //   window.clearTimeout(this.mouseMoveTimeout);
-  //   this.mouseMoveTimeout = null;
-  // }
-
-  // startMouseMoveTimeout() {
-  //   const { interacting } = this.state;
-  //   this.clearMouseMoveTimeout();
-  //   if (interacting) return;
-  //   this.mouseMoveTimeout = setTimeout(
-  //     this.handleMouseMoveTimeout.bind(this),
-  //     this.MOUSE_MOVE_DELAY
-  //   );
-  // }
-
-  // handleMouseMoveTimeout() {
-  //   const { hovering } = this.state;
-  //   if (!hovering) {
-  //     this.setState({
-  //       tooltip: null,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       tooltip: this.getTerritorySummary(hovering),
-  //     });
-  //   }
-  // }
 
   checkPanDistance() {
     const { clickPos, mousePos } = this.state;
