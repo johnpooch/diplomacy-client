@@ -280,6 +280,7 @@ class Map extends React.Component {
           viewBoxWidth={mapData.width}
           viewBoxHeight={mapData.height}
           interacting={interacting}
+          panning={panning}
         >
           {this.renderTerritories(territory_data)}
           {this.renderPieces(territory_data)}
