@@ -12,6 +12,7 @@ const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 `;
 
 const StyledDiv = styled.div`
@@ -23,13 +24,11 @@ const StyledDiv = styled.div`
 `;
 
 const Orders = (props) => {
-  const { selected, summary } = props;
+  const { summary } = props;
   return (
     <StyledWrapper>
       <StyledDiv>
-        {/* {selected} */}
         <TerritorySummary summary={summary} />
-        {/* <button type="button">Cancel</button> */}
       </StyledDiv>
     </StyledWrapper>
   );

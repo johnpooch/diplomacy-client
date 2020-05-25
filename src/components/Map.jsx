@@ -16,6 +16,7 @@ const StyledDiv = styled.div`
   height: 100vh;
   background: ${colors.base};
   top: 0;
+  cursor: ${(props) => (props.panning ? 'all-scroll' : 'pointer')};
 
   > svg {
     width: 100%;
@@ -29,24 +30,32 @@ class Map extends React.Component {
 
     this.state = {
       interacting: false,
-      clickable: false,
+      panning: false,
       selected: null,
       summary: null,
       hovering: null,
       tooltip: null,
+      clickPos: null,
+      mousePos: null,
     };
 
-    this.TOOLTIP_DELAY = 300;
-    this.CLICK_DELAY = 200;
+    this.resetPan = this.resetPan.bind(this);
 
-    this.tooltipTimeout = null;
-    this.clickTimeout = null;
+    this.PANNING_THRESHOLD = 5;
+    // this.MOUSE_MOVE_DELAY = 300;
+    // this.CLICK_DELAY = 200;
+
+    // this.mouseMoveTimeout = null;
+    // this.clickTimeout = null;
   }
 
-  componentWillUnmount() {
-    this.clearTooltipTimeout();
-    this.clearClickTimeout();
-  }
+  // componentWillUnmount() {
+  //   this.clearMouseMoveTimeout();
+  //   // this.clearClickTimeout();
+  // }
+  // componentDidUpdate() {
+  //   this.checkPanDistance();
+  // }
 
   getNation(id) {
     const { game } = this.props;
@@ -97,53 +106,77 @@ class Map extends React.Component {
     };
   }
 
-  clearTooltipTimeout() {
-    window.clearTimeout(this.tooltipTimeout);
-    this.tooltipTimeout = null;
-  }
+  // clearMouseMoveTimeout() {
+  //   window.clearTimeout(this.mouseMoveTimeout);
+  //   this.mouseMoveTimeout = null;
+  // }
 
-  startTooltipTimeout() {
-    const { interacting } = this.state;
-    this.clearTooltipTimeout();
-    if (interacting) return;
-    this.tooltipTimeout = setTimeout(
-      this.handleTooltipTimeout.bind(this),
-      this.TOOLTIP_DELAY
-    );
-  }
+  // startMouseMoveTimeout() {
+  //   const { interacting } = this.state;
+  //   this.clearMouseMoveTimeout();
+  //   if (interacting) return;
+  //   this.mouseMoveTimeout = setTimeout(
+  //     this.handleMouseMoveTimeout.bind(this),
+  //     this.MOUSE_MOVE_DELAY
+  //   );
+  // }
 
-  handleTooltipTimeout() {
-    const { hovering } = this.state;
-    if (!hovering) {
+  // handleMouseMoveTimeout() {
+  //   const { hovering } = this.state;
+  //   if (!hovering) {
+  //     this.setState({
+  //       tooltip: null,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       tooltip: this.getTerritorySummary(hovering),
+  //     });
+  //   }
+  // }
+
+  // clearClickTimeout() {
+  //   window.clearTimeout(this.clickTimeout);
+  //   this.clickTimeout = null;
+  // }
+
+  // startClickTimeout() {
+  //   this.setState({
+  //     clickable: true,
+  //   });
+  //   this.clearClickTimeout();
+  //   this.clickTimeout = setTimeout(
+  //     this.handleClickTimeout.bind(this),
+  //     this.CLICK_DELAY
+  //   );
+  // }
+
+  // handleClickTimeout() {
+  //   this.setState({
+  //     clickable: false,
+  //   });
+  // }
+
+  checkPanDistance() {
+    const { clickPos, mousePos } = this.state;
+    if (!clickPos || !mousePos) return;
+
+    const { x: x1, y: y1 } = clickPos;
+    const { x: x2, y: y2 } = mousePos;
+    const d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+
+    if (d > this.PANNING_THRESHOLD) {
       this.setState({
-        tooltip: null,
-      });
-    } else {
-      this.setState({
-        tooltip: this.getTerritorySummary(hovering),
+        panning: true,
       });
     }
   }
 
-  clearClickTimeout() {
-    window.clearTimeout(this.clickTimeout);
-    this.clickTimeout = null;
-  }
-
-  startClickTimeout() {
+  resetPan() {
     this.setState({
-      clickable: true,
-    });
-    this.clearClickTimeout();
-    this.clickTimeout = setTimeout(
-      this.handleClickTimeout.bind(this),
-      this.CLICK_DELAY
-    );
-  }
-
-  handleClickTimeout() {
-    this.setState({
-      clickable: false,
+      interacting: false,
+      panning: false,
+      clickPos: null,
+      mousePos: null,
     });
   }
 
@@ -152,7 +185,7 @@ class Map extends React.Component {
     if (!turn) return null;
     const territoriesList = [];
     territory_data.forEach((data) => {
-      const { hovering, interacting, selected } = this.state;
+      const { hovering, interacting, panning, selected } = this.state;
       const id = data.territory;
       const territory = this.getTerritory(id);
       const controlledBy = this.getTerritoryControlledBy(id);
@@ -173,7 +206,6 @@ class Map extends React.Component {
               this.setState({
                 hovering: hoveringId,
               });
-              this.startTooltipTimeout();
             }}
             _mouseOut={() => {
               if (interacting) return;
@@ -181,20 +213,13 @@ class Map extends React.Component {
                 hovering: null,
                 tooltip: null,
               });
-              this.clearTooltipTimeout();
             }}
-            _mouseDown={() => {
-              this.startClickTimeout();
-            }}
-            _click={(e, clickId) => {
-              const { clickable } = this.state;
-              if (clickable) {
-                this.setState({
-                  selected: clickId,
-                  summary: this.getTerritorySummary(clickId),
-                });
-              }
-              this.clearClickTimeout();
+            _mouseUp={() => {
+              if (panning) return;
+              this.setState({
+                selected: id,
+                summary: this.getTerritorySummary(id),
+              });
             }}
           />
         );
@@ -241,34 +266,39 @@ class Map extends React.Component {
   render() {
     const { game, turn } = this.props;
     if (!turn) return null;
-    const { interacting } = this.state;
+    const { interacting, panning } = this.state;
     const mapData = game.variant.map_data[0];
     const { territory_data } = mapData;
     return (
       <StyledDiv
-        onMouseMove={() => {
-          this.startTooltipTimeout();
+        panning={panning}
+        onMouseMove={(e) => {
+          // this.startMouseMoveTimeout();
+          if (interacting && !panning) {
+            this.setState({
+              mousePos: {
+                x: e.nativeEvent.clientX,
+                y: e.nativeEvent.clientY,
+              },
+            });
+            this.checkPanDistance();
+          }
         }}
-        onMouseDown={() => {
-          this.clearTooltipTimeout();
-          this.clearClickTimeout();
+        onMouseDown={(e) => {
+          // this.clearMouseMoveTimeout();
+          // this.clearClickTimeout();
           this.setState({
             interacting: true,
+            panning: false,
             tooltip: null,
-            selected: null,
+            clickPos: {
+              x: e.nativeEvent.clientX,
+              y: e.nativeEvent.clientY,
+            },
           });
         }}
-        onMouseUp={() => {
-          this.startTooltipTimeout();
-          this.setState({
-            interacting: false,
-          });
-        }}
-        onMouseLeave={() => {
-          this.setState({
-            interacting: false,
-          });
-        }}
+        onMouseUp={this.resetPan}
+        onMouseLeave={this.resetPan}
       >
         <ScrollableSVG
           viewBoxWidth={mapData.width}

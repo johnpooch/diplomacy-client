@@ -37,10 +37,11 @@ const getTerritoryColor = (controlledBy, type) => {
 };
 
 const renderPath = (props) => {
-  const { _click, _mouseDown, _mouseOver, _mouseOut, data, id } = props;
+  const { _mouseUp, _mouseOver, _mouseOut, data, id } = props;
   const { path } = data;
   return (
     <path
+      d={path}
       onMouseOver={() => {
         _mouseOver(id);
       }}
@@ -53,13 +54,9 @@ const renderPath = (props) => {
       onBlur={() => {
         _mouseOut();
       }}
-      onMouseDown={() => {
-        _mouseDown(id);
+      onMouseUp={(e) => {
+        _mouseUp(e, id);
       }}
-      onClick={(e) => {
-        _click(e, id);
-      }}
-      d={path}
     />
   );
 };
@@ -94,12 +91,12 @@ const renderSupplyCenter = (props, data) => {
 };
 
 const Territory = (props) => {
-  const { data, controlledBy, type, hovering, interacting, selected } = props;
+  const { data, controlledBy, type, hovering, panning, selected } = props;
   const color = getTerritoryColor(controlledBy, type);
   return (
     <StyledTerritory
       color={color}
-      highlight={!interacting && hovering}
+      highlight={!panning && hovering}
       selected={selected}
     >
       {renderPath(props)}
