@@ -2,7 +2,6 @@ import React from 'react';
 
 import GameFilters from '../components/GameFilters';
 import GameSummaryList from '../components/GameSummaryList';
-import Loading from '../components/Loading';
 import Page from '../components/Page';
 import gameService from '../services/game';
 
@@ -41,19 +40,18 @@ class BrowseGames extends React.Component {
   getHeadingText() {
     const { games } = this.state;
     let text = 'No games available';
-    if (games.length === 1) {
+    if (games && games.length === 1) {
       text = '1 game available';
-    } else if (games.length > 1) {
+    } else if (games && games.length > 1) {
       text = `${games.length} games available`;
     }
     return text;
   }
 
   render() {
-    const { isLoaded, games, choices } = this.state;
-    if (!isLoaded) return <Loading />;
+    const { choices, games, isLoaded } = this.state;
     return (
-      <Page headingText={this.getHeadingText()}>
+      <Page headingText={this.getHeadingText()} isLoaded={isLoaded}>
         <GameFilters choices={choices} callback={this.getFilteredGames} />
         <GameSummaryList games={games} />
       </Page>

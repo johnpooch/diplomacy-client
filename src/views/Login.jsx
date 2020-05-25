@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import Loading from '../components/Loading';
 import Page from '../components/Page';
 import authActions from '../store/actions/auth';
 import { GenericForm, FormLabelText, Button, Grid } from '../styles';
@@ -33,14 +32,8 @@ class Login extends React.Component {
 
   render() {
     const { username, password } = this.state;
-    const { loggedIn } = this.props;
-
-    if (loggedIn === undefined) {
-      return <Loading />;
-    }
-
     return (
-      <Page headingText="Login">
+      <Page headingText="Login" isLoaded>
         <GenericForm onSubmit={this.handleSubmit}>
           <Grid columns={2}>
             <label htmlFor="username">

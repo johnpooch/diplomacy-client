@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Loading from '../components/Loading';
 import Page from '../components/Page';
 import authActions from '../store/actions/auth';
 import { GenericForm, FormLabelText, Button, Grid } from '../styles';
@@ -34,20 +33,10 @@ class Register extends Component {
   }
 
   render() {
-    const {
-      username,
-      email,
-      password,
-      passwordConfirmation,
-      loading,
-    } = this.state;
-
-    if (loading) {
-      return <Loading />;
-    }
+    const { username, email, password, passwordConfirmation } = this.state;
 
     return (
-      <Page headingText="Register">
+      <Page headingText="Register" isLoaded>
         <GenericForm onSubmit={this.handleSubmit}>
           <Grid columns={2}>
             <label htmlFor="username">

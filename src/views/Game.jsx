@@ -2,10 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 import Error from './Error';
-import Loading from '../components/Loading';
-import PlayGame from './PlayGame';
 import JoinGame from './JoinGame';
+import PlayGame from './PlayGame';
 import * as API from '../api';
+import Loading from '../components/Loading';
 
 class Game extends React.Component {
   constructor(props) {
@@ -62,17 +62,18 @@ class Game extends React.Component {
   render() {
     const { isLoaded, game } = this.state;
 
-    if (!isLoaded) return <Loading />;
+    if (isLoaded) {
+      if (!game) return <Error text="Game not found" />;
 
-    if (!game) return <Error text="Game not found" />;
-
-    const { status } = game;
-    if (status === 'pending') {
-      // TODO handle already joined
-      return <JoinGame game={game} />;
+      const { status } = game;
+      if (status === 'active') {
+        // TODO handle already joined
+        return <PlayGame game={game} />;
+      }
     }
 
-    return <PlayGame game={game} />;
+    return <JoinGame game={game} isLoaded={isLoaded} />;
+    // return <Loading />;
   }
 }
 

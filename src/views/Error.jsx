@@ -5,7 +5,7 @@ import Page from '../components/Page';
 const Error = (props) => {
   const { text } = props;
   return (
-    <Page headingText="Error">
+    <Page headingText="Error" isLoaded>
       <p>{text}</p>
     </Page>
   );
