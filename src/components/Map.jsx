@@ -29,8 +29,9 @@ class Map extends React.Component {
 
     this.state = {
       interacting: false,
-      clickable: true,
+      clickable: false,
       selected: null,
+      summary: null,
       hovering: null,
       tooltip: null,
     };
@@ -83,6 +84,19 @@ class Map extends React.Component {
     return territoryState ? this.getNation(territoryState.controlled_by) : null;
   }
 
+  getTerritorySummary(id) {
+    const piece = this.getPieceInTerritory(id);
+    const territory = this.getTerritory(id);
+    const territoryControlledBy = this.getTerritoryControlledBy(id);
+    const pieceControlledBy = piece ? this.getNation(piece.nation) : null;
+    return {
+      territory,
+      piece,
+      territoryControlledBy,
+      pieceControlledBy,
+    };
+  }
+
   clearTooltipTimeout() {
     window.clearTimeout(this.tooltipTimeout);
     this.tooltipTimeout = null;
@@ -100,40 +114,26 @@ class Map extends React.Component {
 
   handleTooltipTimeout() {
     const { hovering } = this.state;
-
     if (!hovering) {
       this.setState({
         tooltip: null,
       });
-      return;
+    } else {
+      this.setState({
+        tooltip: this.getTerritorySummary(hovering),
+      });
     }
-
-    const piece = this.getPieceInTerritory(hovering);
-    const territory = this.getTerritory(hovering);
-    const territoryControlledBy = this.getTerritoryControlledBy(hovering);
-    const pieceControlledBy = piece ? this.getNation(piece.nation) : null;
-
-    const tooltip = {
-      territory,
-      piece,
-      territoryControlledBy,
-      pieceControlledBy,
-    };
-
-    this.setState({
-      tooltip,
-    });
   }
 
   clearClickTimeout() {
     window.clearTimeout(this.clickTimeout);
     this.clickTimeout = null;
-    this.setState({
-      clickable: true,
-    });
   }
 
   startClickTimeout() {
+    this.setState({
+      clickable: true,
+    });
     this.clearClickTimeout();
     this.clickTimeout = setTimeout(
       this.handleClickTimeout.bind(this),
@@ -186,11 +186,12 @@ class Map extends React.Component {
             _mouseDown={() => {
               this.startClickTimeout();
             }}
-            _click={(clickId) => {
+            _click={(e, clickId) => {
               const { clickable } = this.state;
               if (clickable) {
                 this.setState({
                   selected: clickId,
+                  summary: this.getTerritorySummary(clickId),
                 });
               }
               this.clearClickTimeout();
@@ -227,18 +228,14 @@ class Map extends React.Component {
 
   renderTooltip() {
     const { tooltip, interacting } = this.state;
-    if (tooltip) {
-      return <Tooltip tooltip={tooltip} interacting={interacting} />;
-    }
-    return null;
+    if (!tooltip) return null;
+    return <Tooltip summary={tooltip} interacting={interacting} />;
   }
 
   renderOrders() {
-    const { selected } = this.state;
-    if (selected) {
-      return <Orders selected={selected} />;
-    }
-    return null;
+    const { selected, summary } = this.state;
+    if (!selected) return null;
+    return <Orders summary={summary} selected={selected} />;
   }
 
   render() {
@@ -254,9 +251,11 @@ class Map extends React.Component {
         }}
         onMouseDown={() => {
           this.clearTooltipTimeout();
+          this.clearClickTimeout();
           this.setState({
             interacting: true,
             tooltip: null,
+            selected: null,
           });
         }}
         onMouseUp={() => {

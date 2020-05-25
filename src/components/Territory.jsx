@@ -8,7 +8,7 @@ import { colors, fontSizes } from '../variables';
 
 const StyledTerritory = styled.g`
   path {
-    stroke-width: ${(props) => (props.selected ? 4 : 1)};
+    stroke-width: ${(props) => (props.selected ? 4 : 2)};
     stroke: ${(props) => (props.selected ? 'white' : colors.base)};
     fill: ${(props) =>
       props.highlight ? lighten(0.07, props.color) : props.color};
@@ -56,8 +56,8 @@ const renderPath = (props) => {
       onMouseDown={() => {
         _mouseDown(id);
       }}
-      onClick={() => {
-        _click(id);
+      onClick={(e) => {
+        _click(e, id);
       }}
       d={path}
     />
@@ -95,10 +95,13 @@ const renderSupplyCenter = (props, data) => {
 
 const Territory = (props) => {
   const { data, controlledBy, type, hovering, interacting, selected } = props;
-  const highlight = (!interacting && hovering) || selected;
   const color = getTerritoryColor(controlledBy, type);
   return (
-    <StyledTerritory color={color} highlight={highlight} selected={selected}>
+    <StyledTerritory
+      color={color}
+      highlight={!interacting && hovering}
+      selected={selected}
+    >
       {renderPath(props)}
       {renderSupplyCenter(props, data)}
       {renderText(data)}
