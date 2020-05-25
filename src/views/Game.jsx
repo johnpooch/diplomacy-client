@@ -5,7 +5,6 @@ import Error from './Error';
 import JoinGame from './JoinGame';
 import PlayGame from './PlayGame';
 import * as API from '../api';
-import Loading from '../components/Loading';
 
 class Game extends React.Component {
   constructor(props) {
@@ -73,7 +72,6 @@ class Game extends React.Component {
     }
 
     return <JoinGame game={game} isLoaded={isLoaded} />;
-    // return <Loading />;
   }
 }
 

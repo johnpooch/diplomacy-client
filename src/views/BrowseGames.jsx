@@ -9,6 +9,8 @@ class BrowseGames extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      games: null,
+      choices: null,
       isLoaded: false,
     };
     this.getFilteredGames = this.getFilteredGames.bind(this);
@@ -21,13 +23,19 @@ class BrowseGames extends React.Component {
   getGamesAndChoices() {
     const fetchGames = gameService.get();
     const fetchChoices = gameService.getChoices();
-    Promise.all([fetchGames, fetchChoices]).then(([games, choices]) => {
-      this.setState({
-        games,
-        choices,
-        isLoaded: true,
+    Promise.all([fetchGames, fetchChoices])
+      .then(([games, choices]) => {
+        this.setState({
+          games,
+          choices,
+          isLoaded: true,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          isLoaded: true,
+        });
       });
-    });
   }
 
   getFilteredGames(filters) {
