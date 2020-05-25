@@ -14,7 +14,7 @@ const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background: ${colors.base};
+  background-color: ${colors.gray};
   top: 0;
   cursor: ${(props) => (props.panning ? 'all-scroll' : 'pointer')};
   user-select: none;
@@ -282,6 +282,11 @@ class Map extends React.Component {
           interacting={interacting}
           panning={panning}
         >
+          <rect
+            width={mapData.width}
+            height={mapData.height}
+            fill={colors.base}
+          />
           {this.renderTerritories(territory_data)}
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
