@@ -134,28 +134,6 @@ class Map extends React.Component {
   //   }
   // }
 
-  // clearClickTimeout() {
-  //   window.clearTimeout(this.clickTimeout);
-  //   this.clickTimeout = null;
-  // }
-
-  // startClickTimeout() {
-  //   this.setState({
-  //     clickable: true,
-  //   });
-  //   this.clearClickTimeout();
-  //   this.clickTimeout = setTimeout(
-  //     this.handleClickTimeout.bind(this),
-  //     this.CLICK_DELAY
-  //   );
-  // }
-
-  // handleClickTimeout() {
-  //   this.setState({
-  //     clickable: false,
-  //   });
-  // }
-
   checkPanDistance() {
     const { clickPos, mousePos } = this.state;
     if (!clickPos || !mousePos) return;
@@ -201,10 +179,10 @@ class Map extends React.Component {
             hovering={hovering === id}
             selected={selected === id}
             interacting={interacting}
-            _mouseOver={(hoveringId) => {
+            _mouseOver={() => {
               if (interacting) return;
               this.setState({
-                hovering: hoveringId,
+                hovering: id,
               });
             }}
             _mouseOut={() => {
@@ -214,11 +192,18 @@ class Map extends React.Component {
                 tooltip: null,
               });
             }}
-            _mouseUp={() => {
+            _mouseUp={(e) => {
+              if (e.nativeEvent.which !== 1) return;
               if (panning) return;
               this.setState({
                 selected: id,
                 summary: this.getTerritorySummary(id),
+              });
+            }}
+            _contextMenu={(e) => {
+              e.nativeEvent.preventDefault();
+              this.setState({
+                tooltip: this.getTerritorySummary(id),
               });
             }}
           />
@@ -273,7 +258,6 @@ class Map extends React.Component {
       <StyledDiv
         panning={panning}
         onMouseMove={(e) => {
-          // this.startMouseMoveTimeout();
           if (interacting && !panning) {
             this.setState({
               mousePos: {
@@ -285,8 +269,7 @@ class Map extends React.Component {
           }
         }}
         onMouseDown={(e) => {
-          // this.clearMouseMoveTimeout();
-          // this.clearClickTimeout();
+          if (e.nativeEvent.which !== 1) return;
           this.setState({
             interacting: true,
             panning: false,

@@ -37,16 +37,16 @@ const getTerritoryColor = (controlledBy, type) => {
 };
 
 const renderPath = (props) => {
-  const { _mouseUp, _mouseOver, _mouseOut, data, id } = props;
+  const { _contextMenu, _mouseOut, _mouseOver, _mouseUp, data } = props;
   const { path } = data;
   return (
     <path
       d={path}
       onMouseOver={() => {
-        _mouseOver(id);
+        _mouseOver();
       }}
       onFocus={() => {
-        _mouseOver(id);
+        _mouseOver();
       }}
       onMouseOut={() => {
         _mouseOut();
@@ -55,7 +55,10 @@ const renderPath = (props) => {
         _mouseOut();
       }}
       onMouseUp={(e) => {
-        _mouseUp(e, id);
+        _mouseUp(e);
+      }}
+      onContextMenu={(e) => {
+        _contextMenu(e);
       }}
     />
   );
