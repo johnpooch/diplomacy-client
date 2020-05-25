@@ -17,6 +17,8 @@ const StyledDiv = styled.div`
   background: ${colors.base};
   top: 0;
   cursor: ${(props) => (props.panning ? 'all-scroll' : 'pointer')};
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 
   > svg {
     width: 100%;
@@ -43,19 +45,8 @@ class Map extends React.Component {
 
     this.PANNING_THRESHOLD = 5;
     // this.MOUSE_MOVE_DELAY = 300;
-    // this.CLICK_DELAY = 200;
-
     // this.mouseMoveTimeout = null;
-    // this.clickTimeout = null;
   }
-
-  // componentWillUnmount() {
-  //   this.clearMouseMoveTimeout();
-  //   // this.clearClickTimeout();
-  // }
-  // componentDidUpdate() {
-  //   this.checkPanDistance();
-  // }
 
   getNation(id) {
     const { game } = this.props;
@@ -195,10 +186,17 @@ class Map extends React.Component {
             _mouseUp={(e) => {
               if (e.nativeEvent.which !== 1) return;
               if (panning) return;
-              this.setState({
-                selected: id,
-                summary: this.getTerritorySummary(id),
-              });
+              if (selected !== id) {
+                this.setState({
+                  selected: id,
+                  summary: this.getTerritorySummary(id),
+                });
+              } else {
+                this.setState({
+                  selected: null,
+                  summary: null,
+                });
+              }
             }}
             _contextMenu={(e) => {
               e.nativeEvent.preventDefault();

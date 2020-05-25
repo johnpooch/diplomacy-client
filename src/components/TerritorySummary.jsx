@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { colors, fontSizes, spacing } from '../variables';
+import { colors, fontSizes, sizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`
-  padding: ${spacing[2]}px;
   pointer-events: none;
   font-size: ${fontSizes.sans[2]}px;
 
@@ -15,7 +14,9 @@ const StyledDiv = styled.div`
 
 const StyledSpan = styled.span`
   text-transform: capitalize;
-  color: ${(props) => (props.color ? props.color : 'inherit')};
+  /* color: ${(props) => (props.color ? props.color : 'inherit')}; */
+  border-bottom: ${sizes.border}px solid ${(props) =>
+  props.color ? props.color : 'transparent'};
   user-select: none;
 
   &:not(:last-of-type):after {

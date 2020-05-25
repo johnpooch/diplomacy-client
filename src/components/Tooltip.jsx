@@ -2,13 +2,15 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import TerritorySummary from './TerritorySummary';
-import { spacing } from '../variables';
+import { colors, spacing } from '../variables';
 
 const StyledDiv = styled.div`
   position: fixed;
   bottom: ${spacing[2]}px;
   right: ${spacing[2]}px;
-  background-color: white;
+  padding: ${spacing[3]}px;
+  background-color: ${colors.base};
+  color: white;
 `;
 
 const Tooltip = (props) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import TerritorySummary from './TerritorySummary';
+import { Button, Grid } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
 const StyledWrapper = styled.div`
@@ -16,11 +17,19 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledDiv = styled.div`
-  color: white;
-  background-color: ${colors.base};
-  padding: ${spacing[2]}px;
+  background-color: white;
+  color: ${colors.base};
+  padding: ${spacing[3]}px;
   font-size: ${fontSizes.sans[2]}px;
   border-radius: ${sizes.borderRadius[1]}px;
+  pointer-events: all;
+  cursor: initial;
+`;
+
+const StyledGrid = styled(Grid)`
+  margin-top: ${spacing[3]}px;
+  grid-column-gap: ${spacing[1]}px;
+  grid-row-gap: ${spacing[1]}px;
 `;
 
 const Orders = (props) => {
@@ -29,6 +38,12 @@ const Orders = (props) => {
     <StyledWrapper>
       <StyledDiv>
         <TerritorySummary summary={summary} />
+        <StyledGrid columns={2}>
+          <Button>Hold</Button>
+          <Button>Attack</Button>
+          <Button>Support</Button>
+          <Button>Convoy</Button>
+        </StyledGrid>
       </StyledDiv>
     </StyledWrapper>
   );
