@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-// import { lighten } from 'polished';
 
 import { colors, fontSizes, spacing } from '../variables';
 

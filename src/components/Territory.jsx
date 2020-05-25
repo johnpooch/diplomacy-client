@@ -8,10 +8,10 @@ import { colors, fontSizes } from '../variables';
 
 const StyledTerritory = styled.g`
   path {
-    stroke-width: 1;
-    stroke: ${colors.base};
+    stroke-width: ${(props) => (props.selected ? 4 : 1)};
+    stroke: ${(props) => (props.selected ? 'white' : colors.base)};
     fill: ${(props) =>
-      props.hover ? lighten(0.07, props.color) : props.color};
+      props.highlight ? lighten(0.07, props.color) : props.color};
   }
 
   text {
@@ -20,8 +20,8 @@ const StyledTerritory = styled.g`
     pointer-events: none;
     text-transform: uppercase;
     user-select: none;
-    fill: ${(props) => (props.hover ? colors.base : 'white')};
-    font-weight: ${(props) => (props.hover ? 'bold' : 'normal')};
+    fill: ${(props) => (props.highlight ? colors.base : 'white')};
+    font-weight: ${(props) => (props.highlight ? 'bold' : 'normal')};
   }
 `;
 
@@ -37,7 +37,7 @@ const getTerritoryColor = (controlledBy, type) => {
 };
 
 const renderPath = (props) => {
-  const { data, _mouseOver, _mouseOut, id } = props;
+  const { _click, _mouseDown, _mouseOver, _mouseOut, data, id } = props;
   const { path } = data;
   return (
     <path
@@ -52,6 +52,12 @@ const renderPath = (props) => {
       }}
       onBlur={() => {
         _mouseOut();
+      }}
+      onMouseDown={() => {
+        _mouseDown(id);
+      }}
+      onClick={() => {
+        _click(id);
       }}
       d={path}
     />
@@ -88,11 +94,11 @@ const renderSupplyCenter = (props, data) => {
 };
 
 const Territory = (props) => {
-  const { data, controlledBy, type, hovering, interacting } = props;
-  const hover = !interacting && hovering;
+  const { data, controlledBy, type, hovering, interacting, selected } = props;
+  const highlight = (!interacting && hovering) || selected;
   const color = getTerritoryColor(controlledBy, type);
   return (
-    <StyledTerritory color={color} hover={hover}>
+    <StyledTerritory color={color} highlight={highlight} selected={selected}>
       {renderPath(props)}
       {renderSupplyCenter(props, data)}
       {renderText(data)}

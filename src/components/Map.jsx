@@ -2,9 +2,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import Orders from './Orders';
+import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
-import Piece from './Piece';
 import Tooltip from './Tooltip';
 import { getObjectByKey } from '../utils';
 import { colors } from '../variables';
@@ -28,16 +29,22 @@ class Map extends React.Component {
 
     this.state = {
       interacting: false,
+      clickable: true,
+      selected: null,
       hovering: null,
       tooltip: null,
     };
 
-    this.TOOLTIP_DELAY = 250;
+    this.TOOLTIP_DELAY = 300;
+    this.CLICK_DELAY = 200;
+
     this.tooltipTimeout = null;
+    this.clickTimeout = null;
   }
 
   componentWillUnmount() {
     this.clearTooltipTimeout();
+    this.clearClickTimeout();
   }
 
   getNation(id) {
@@ -86,19 +93,19 @@ class Map extends React.Component {
     this.clearTooltipTimeout();
     if (interacting) return;
     this.tooltipTimeout = setTimeout(
-      this.updateTooltip.bind(this),
+      this.handleTooltipTimeout.bind(this),
       this.TOOLTIP_DELAY
     );
   }
 
-  updateTooltip() {
+  handleTooltipTimeout() {
     const { hovering } = this.state;
 
     if (!hovering) {
       this.setState({
         tooltip: null,
       });
-      return false;
+      return;
     }
 
     const piece = this.getPieceInTerritory(hovering);
@@ -116,8 +123,28 @@ class Map extends React.Component {
     this.setState({
       tooltip,
     });
+  }
 
-    return true;
+  clearClickTimeout() {
+    window.clearTimeout(this.clickTimeout);
+    this.clickTimeout = null;
+    this.setState({
+      clickable: true,
+    });
+  }
+
+  startClickTimeout() {
+    this.clearClickTimeout();
+    this.clickTimeout = setTimeout(
+      this.handleClickTimeout.bind(this),
+      this.CLICK_DELAY
+    );
+  }
+
+  handleClickTimeout() {
+    this.setState({
+      clickable: false,
+    });
   }
 
   renderTerritories(territory_data) {
@@ -125,7 +152,7 @@ class Map extends React.Component {
     if (!turn) return null;
     const territoriesList = [];
     territory_data.forEach((data) => {
-      const { hovering, interacting } = this.state;
+      const { hovering, interacting, selected } = this.state;
       const id = data.territory;
       const territory = this.getTerritory(id);
       const controlledBy = this.getTerritoryControlledBy(id);
@@ -139,6 +166,7 @@ class Map extends React.Component {
             supplyCenter={territory.supply_center}
             controlledBy={controlledBy}
             hovering={hovering === id}
+            selected={selected === id}
             interacting={interacting}
             _mouseOver={(hoveringId) => {
               if (interacting) return;
@@ -154,6 +182,18 @@ class Map extends React.Component {
                 tooltip: null,
               });
               this.clearTooltipTimeout();
+            }}
+            _mouseDown={() => {
+              this.startClickTimeout();
+            }}
+            _click={(clickId) => {
+              const { clickable } = this.state;
+              if (clickable) {
+                this.setState({
+                  selected: clickId,
+                });
+              }
+              this.clearClickTimeout();
             }}
           />
         );
@@ -189,6 +229,14 @@ class Map extends React.Component {
     const { tooltip, interacting } = this.state;
     if (tooltip) {
       return <Tooltip tooltip={tooltip} interacting={interacting} />;
+    }
+    return null;
+  }
+
+  renderOrders() {
+    const { selected } = this.state;
+    if (selected) {
+      return <Orders selected={selected} />;
     }
     return null;
   }
@@ -232,6 +280,7 @@ class Map extends React.Component {
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
+        {this.renderOrders()}
       </StyledDiv>
     );
   }
