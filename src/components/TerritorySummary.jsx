@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIndustry } from '@fortawesome/free-solid-svg-icons';
 
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
@@ -14,9 +16,8 @@ const StyledDiv = styled.div`
 
 const StyledSpan = styled.span`
   text-transform: capitalize;
-  /* color: ${(props) => (props.color ? props.color : 'inherit')}; */
-  border-bottom: ${sizes.border}px solid ${(props) =>
-  props.color ? props.color : 'transparent'};
+  border-bottom: ${sizes.border}px solid
+    ${(props) => (props.color ? props.color : 'transparent')};
   user-select: none;
 
   &:not(:last-of-type):after {
@@ -30,7 +31,11 @@ const StyledSpan = styled.span`
 
 const renderSupplyCenter = (territory) => {
   if (!territory.supply_center) return null;
-  return <StyledSpan className="supply">*</StyledSpan>;
+  return (
+    <StyledSpan className="supply">
+      <FontAwesomeIcon icon={faIndustry} />
+    </StyledSpan>
+  );
 };
 
 const renderControlledBy = (controlledBy) => {
