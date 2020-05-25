@@ -26,13 +26,13 @@ const StyledDiv = styled.div`
   cursor: initial;
 `;
 
-const StyledGrid = styled(Grid)`
+const StyledGrid = styled(Grid.withComponent('nav'))`
   margin-top: ${spacing[3]}px;
   grid-column-gap: ${spacing[1]}px;
   grid-row-gap: ${spacing[1]}px;
 `;
 
-const Orders = (props) => {
+const OrderNav = (props) => {
   const {
     _onClickHold,
     _onClickMove,
@@ -55,4 +55,4 @@ const Orders = (props) => {
   );
 };
 
-export default Orders;
+export default OrderNav;

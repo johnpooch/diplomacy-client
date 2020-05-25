@@ -17,25 +17,6 @@ export function getObjectByKey(pk, objs, key = 'pk') {
   });
 }
 
-export const matchIdToAbbreviation = (id, mapData, mapRef) => {
-  const ref = getObjectByKey(id, mapRef.territories);
-  const { abbreviation } = ref;
-
-  if (abbreviation) {
-    const arr = Object.values(mapData.territories);
-    const data = arr.find((obj) => {
-      return obj.abbreviation === abbreviation;
-    });
-
-    if (data !== undefined) {
-      return data;
-    }
-  }
-
-  console.warn(`Missing ${ref.name}`);
-  return null;
-};
-
 export const dateDisplayFormat = {
   year: 'numeric',
   month: 'long',
