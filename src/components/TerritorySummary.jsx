@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndustry } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
@@ -33,7 +33,7 @@ const renderSupplyCenter = (territory) => {
   if (!territory.supply_center) return null;
   return (
     <StyledSpan className="supply">
-      <FontAwesomeIcon icon={faIndustry} />
+      <FontAwesomeIcon icon={faStar} />
     </StyledSpan>
   );
 };
