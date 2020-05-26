@@ -6,21 +6,21 @@ import { Vector } from '../utils';
 const StyledLine = styled.line`
   stroke: white;
   stroke-width: 4px;
+  pointer-events: none;
 `;
 
 const OrderArrow = (props) => {
-  const { type, x1, y1, x2, y2 } = props;
+  const { type, offsetSize, x1, y1, x2, y2 } = props;
   const v = new Vector(x2 - x1, y2 - y1);
   v.normalize();
-  const offsetStart = v.length > 20 ? 20 : 0;
-  const offsetEnd = v.length > 26 ? 26 : 0;
+  const offset = v.length > offsetSize ? offsetSize : 0;
   return (
     <g>
       <StyledLine
-        x1={x1 + offsetStart * v.x}
-        y1={y1 + offsetStart * v.y}
-        x2={x2 - offsetEnd * v.x}
-        y2={y2 - offsetEnd * v.y}
+        x1={x1}
+        y1={y1}
+        x2={x2 - offset * v.x}
+        y2={y2 - offset * v.y}
         markerEnd={`url(#arrow-${type})`}
       />
     </g>

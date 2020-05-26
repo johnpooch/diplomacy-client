@@ -227,6 +227,7 @@ class Map extends React.Component {
           x2={x2}
           y1={y1}
           y2={y2}
+          offsetSize={26}
         />
       );
     });
