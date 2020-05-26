@@ -37,8 +37,6 @@ class Map extends React.Component {
     this.state = {
       interacting: false,
       panning: false,
-      selected: null,
-      summary: null,
       hovering: null,
       tooltip: null,
       clickPos: null,
@@ -105,10 +103,12 @@ class Map extends React.Component {
     };
   }
 
+  static getTerritoryIdFromSummary(summary) {
+    if (summary) return summary.territory.id;
+    return null;
+  }
+
   postOrder() {
-    const { order } = this.state;
-    const { type, source, aux, target } = order;
-    console.log('order:', type, source, aux, target);
     // Hold - source
     // Move - source, target, target_coast=None, via_convoy=False
     // Support - source, aux, target
@@ -116,12 +116,17 @@ class Map extends React.Component {
     // Retreat - source, target, target_coast=None
     // Build - source, target_coast=None
     // Disband - source
+    const { order } = this.state;
+    const { type, aux, source, target } = order;
+    const auxId = Map.getTerritoryIdFromSummary(aux);
+    const sourceId = Map.getTerritoryIdFromSummary(source);
+    const targetId = Map.getTerritoryIdFromSummary(target);
+    console.log('order:', type, sourceId, auxId, targetId);
     this.resetOrder();
   }
 
   resetOrder() {
     this.setState({
-      selected: null,
       order: {
         type: null,
         aux: null,
@@ -164,6 +169,7 @@ class Map extends React.Component {
         if (!target) {
           this.setState({
             order: {
+              ...order,
               target: summary,
             },
           });
@@ -175,6 +181,7 @@ class Map extends React.Component {
         if (!aux) {
           this.setState({
             order: {
+              ...order,
               aux: summary,
             },
           });
@@ -182,6 +189,7 @@ class Map extends React.Component {
         if (!target) {
           this.setState({
             order: {
+              ...order,
               target: summary,
             },
           });
@@ -196,14 +204,6 @@ class Map extends React.Component {
         });
         break;
     }
-
-    const { selected } = this.state;
-    if (!selected) {
-      this.setState({
-        selected: id,
-        summary: this.getTerritorySummary(id),
-      });
-    }
   }
 
   renderTerritories(territory_data) {
@@ -211,10 +211,11 @@ class Map extends React.Component {
     if (!turn) return null;
     const territoriesList = [];
     territory_data.forEach((data) => {
-      const { hovering, interacting, panning, selected } = this.state;
+      const { hovering, interacting, order, panning } = this.state;
       const id = data.territory;
       const territory = this.getTerritory(id);
       const controlledBy = this.getTerritoryControlledBy(id);
+      const { source } = order;
       if (data && territory) {
         territoriesList.push(
           <Territory
@@ -226,7 +227,7 @@ class Map extends React.Component {
             controlledBy={controlledBy}
             panning={panning}
             hovering={hovering === id}
-            selected={selected === id}
+            selected={Map.getTerritoryIdFromSummary(source) === id}
             interacting={interacting}
             _mouseOver={() => {
               if (interacting) return;
@@ -366,24 +367,20 @@ class Map extends React.Component {
     }
   }
 
-  renderOrderSelector() {
-    const { selected } = this.state;
-    if (!selected) return null;
-
+  renderOrder() {
     const { order } = this.state;
-    const { type } = order;
-    if (!type) {
-      const { summary } = this.state;
+    const { type, source } = order;
+
+    if (!type && source) {
       return (
         <OrderSelector
-          summary={summary}
-          selected={selected}
+          summary={source}
           _onClickHold={() => {
             console.log('hold');
             this.setState({
               order: {
+                ...order,
                 type: 'hold',
-                source: selected,
               },
             });
           }}
@@ -391,40 +388,31 @@ class Map extends React.Component {
             console.log('move');
             this.setState({
               order: {
+                ...order,
                 type: 'move',
-                source: selected,
-                target: null,
               },
             });
           }}
           _onClickSupport={() => {
             console.log('support');
-            // TODO select where to support, then send support order to API
+            this.setState({
+              order: {
+                ...order,
+                type: 'support',
+              },
+            });
           }}
           _onClickConvoy={() => {
             console.log('convoy');
-            // TODO select where to convoy, then send support order to API
+            this.setState({
+              order: {
+                ...order,
+                type: 'convoy',
+              },
+            });
           }}
         />
       );
-    }
-
-    const { source, to } = order;
-    if (source && to) {
-      return this.renderOrderConfirmation();
-    }
-
-    return this.renderOrderMessage();
-  }
-
-  renderOrder() {
-    const { selected } = this.state;
-    if (!selected) return null;
-
-    const { order } = this.state;
-    const { type } = order;
-    if (!type) {
-      return this.renderOrderSelector();
     }
 
     return this.renderOrderMessage();
