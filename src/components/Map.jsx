@@ -185,6 +185,7 @@ class Map extends React.Component {
               aux: summary,
             },
           });
+          break;
         }
         if (!target) {
           this.setState({
@@ -215,7 +216,7 @@ class Map extends React.Component {
       const id = data.territory;
       const territory = this.getTerritory(id);
       const controlledBy = this.getTerritoryControlledBy(id);
-      const { source } = order;
+      const { aux, source, target } = order;
       if (data && territory) {
         territoriesList.push(
           <Territory
@@ -227,8 +228,10 @@ class Map extends React.Component {
             controlledBy={controlledBy}
             panning={panning}
             hovering={hovering === id}
-            selected={Map.getTerritoryIdFromSummary(source) === id}
             interacting={interacting}
+            isSource={Map.getTerritoryIdFromSummary(source) === id}
+            isAux={Map.getTerritoryIdFromSummary(aux) === id}
+            isTarget={Map.getTerritoryIdFromSummary(target) === id}
             _mouseOver={() => {
               if (interacting) return;
               this.setState({
@@ -333,7 +336,7 @@ class Map extends React.Component {
 
   renderOrderMessage() {
     const { order } = this.state;
-    const { source, target, type } = order;
+    const { aux, target, type } = order;
     switch (type) {
       case 'hold':
         return this.renderOrderConfirmation();
@@ -345,8 +348,8 @@ class Map extends React.Component {
         return this.renderOrderConfirmation();
 
       case 'support':
-        if (!source) {
-          return <OrderMessage text="Select a territory to support source." />;
+        if (!aux) {
+          return <OrderMessage text="Select a territory to support from." />;
         }
         if (!target) {
           return <OrderMessage text="Select a territory to support into." />;
@@ -354,8 +357,8 @@ class Map extends React.Component {
         return this.renderOrderConfirmation();
 
       case 'convoy':
-        if (!source) {
-          return <OrderMessage text="Select a territory to convoy source." />;
+        if (!aux) {
+          return <OrderMessage text="Select a territory to convoy from." />;
         }
         if (!target) {
           return <OrderMessage text="Select a territory to convoy into." />;

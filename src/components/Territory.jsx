@@ -10,8 +10,7 @@ const StyledTerritory = styled.g`
   cursor: ${(props) => (props.panning ? 'all-scroll' : 'pointer')};
 
   .territory {
-    stroke-width: ${(props) => (props.selected ? 4 : 2)};
-    stroke: ${(props) => (props.selected ? 'white' : colors.base)};
+    stroke-width: ${(props) => (props.isSource ? 3.5 : 2)};
     fill: ${(props) =>
       props.highlight ? lighten(0.07, props.color) : props.color};
   }
@@ -32,7 +31,23 @@ const StyledTerritory = styled.g`
   }
 `;
 
-const getTerritoryColor = (controlledBy, type) => {
+const getStrokeColor = (props) => {
+  const { isAux, isSource, isTarget } = props;
+  if (isAux) return 'white';
+  if (isSource) return 'white';
+  if (isTarget) return 'white';
+  return colors.base;
+};
+
+const getStrokeDasharray = (props) => {
+  const { isAux, isTarget } = props;
+  if (isAux) return 10;
+  if (isTarget) return 10;
+  return 0;
+};
+
+const getFillColor = (props) => {
+  const { controlledBy, type } = props;
   if (type === 'sea') return colors.sea;
   if (controlledBy) {
     const { id } = controlledBy;
@@ -56,6 +71,8 @@ const renderPath = (props) => {
       onBlur={_mouseOut}
       onMouseUp={_mouseUp}
       onContextMenu={_contextMenu}
+      stroke={getStrokeColor(props)}
+      strokeDasharray={getStrokeDasharray(props)}
     />
   );
 };
@@ -99,14 +116,15 @@ const renderSupplyCenter = (props, data) => {
 };
 
 const Territory = (props) => {
-  const { data, controlledBy, type, hovering, panning, selected } = props;
-  const color = getTerritoryColor(controlledBy, type);
+  const { data, hovering, isAux, isSource, isTarget, panning } = props;
+  const color = getFillColor(props);
   return (
     <StyledTerritory
       color={color}
       highlight={!panning && hovering}
       panning={panning}
-      selected={selected}
+      isSource={isSource}
+      selected={isAux || isSource || isTarget}
     >
       {renderPath(props)}
       {renderSupplyCenter(props, data)}
