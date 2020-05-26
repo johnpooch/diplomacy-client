@@ -41,23 +41,24 @@ export const BaseButton = styled.button`
 
 export const Button = styled(BaseButton)`
   color: white;
-  background-color: ${colors.darkgray};
+  background-color: ${colors.base};
   border-radius: ${sizes.borderRadius[0]}px;
   padding: ${spacing[2]}px ${spacing[5]}px;
 
   &:hover {
-    background-color: ${colors.base};
+    background-color: ${colors.darkgray};
     color: white;
   }
 `;
 
 export const SecondaryButton = styled(Button)`
   background: white;
-  color: ${colors.darkgray};
-  border: ${sizes.border}px solid ${colors.darkgray};
+  color: ${colors.base};
+  border: ${sizes.border}px solid ${colors.base};
 
   &:hover {
-    border-color: ${colors.base};
+    border-color: ${colors.darkgray};
+    color: white;
   }
 `;
 

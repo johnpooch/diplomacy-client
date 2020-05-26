@@ -21,8 +21,10 @@ const StyledDiv = styled.div`
   color: ${colors.base};
   padding: ${spacing[3]}px;
   font-size: ${fontSizes.sans[2]}px;
+  border: ${sizes.border}px solid ${colors.base};
   border-radius: ${sizes.borderRadius[1]}px;
   pointer-events: all;
+  text-align: center;
   cursor: initial;
 `;
 
@@ -44,7 +46,7 @@ const OrderNav = (props) => {
     <StyledWrapper>
       <StyledDiv>
         <TerritorySummary summary={summary} />
-        <StyledGrid columns={2}>
+        <StyledGrid columns={4}>
           <Button onClick={_onClickHold}>Hold</Button>
           <Button onClick={_onClickMove}>Move</Button>
           <Button onClick={_onClickSupport}>Support</Button>
