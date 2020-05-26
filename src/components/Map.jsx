@@ -315,8 +315,8 @@ class Map extends React.Component {
             <ArrowheadMarker
               id="arrow-move"
               fill="white"
-              width={5}
-              height={5}
+              width={3}
+              height={3}
             />
           </defs>
           <rect
