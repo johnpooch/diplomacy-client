@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
 const StyledDiv = styled.div`
   background-color: white;
   color: ${colors.base};
-  padding: ${spacing[3]}px;
+  padding: ${spacing[4]}px;
   font-size: ${fontSizes.sans[2]}px;
   border: ${sizes.border}px solid ${colors.base};
   border-radius: ${sizes.borderRadius[1]}px;
@@ -28,13 +28,11 @@ const StyledDiv = styled.div`
   cursor: initial;
 `;
 
-const StyledGrid = styled(Grid.withComponent('nav'))`
-  margin-top: ${spacing[3]}px;
-  grid-column-gap: ${spacing[1]}px;
-  grid-row-gap: ${spacing[1]}px;
+const StyledGrid = styled(Grid)`
+  margin-top: ${spacing[4]}px;
 `;
 
-const OrderNav = (props) => {
+const OrderSelector = (props) => {
   const {
     _onClickHold,
     _onClickMove,
@@ -46,7 +44,7 @@ const OrderNav = (props) => {
     <StyledWrapper>
       <StyledDiv>
         <TerritorySummary summary={summary} />
-        <StyledGrid columns={4}>
+        <StyledGrid columns={4} columnGap={`${spacing[1]}px`}>
           <Button onClick={_onClickHold}>Hold</Button>
           <Button onClick={_onClickMove}>Move</Button>
           <Button onClick={_onClickSupport}>Support</Button>
@@ -57,4 +55,4 @@ const OrderNav = (props) => {
   );
 };
 
-export default OrderNav;
+export default OrderSelector;

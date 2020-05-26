@@ -4,7 +4,9 @@ import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
 import OrderArrow from './OrderArrow';
-import OrderNav from './OrderNav';
+import OrderConfirmation from './OrderConfirmation';
+import OrderMessage from './OrderMessage';
+import OrderSelector from './OrderSelector';
 import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
@@ -41,6 +43,12 @@ class Map extends React.Component {
       tooltip: null,
       clickPos: null,
       mousePos: null,
+      order: {
+        type: null,
+        aux: null,
+        source: null,
+        target: null,
+      },
     };
 
     this.resetPan = this.resetPan.bind(this);
@@ -97,6 +105,41 @@ class Map extends React.Component {
     };
   }
 
+  postOrder() {
+    const { order } = this.state;
+    const { type, source, aux, target } = order;
+    console.log('order:', type, source, aux, target);
+    // Hold - source
+    // Move - source, target, target_coast=None, via_convoy=False
+    // Support - source, aux, target
+    // Convoy - source, aux, target
+    // Retreat - source, target, target_coast=None
+    // Build - source, target_coast=None
+    // Disband - source
+    this.resetOrder();
+  }
+
+  resetOrder() {
+    this.setState({
+      selected: null,
+      order: {
+        type: null,
+        aux: null,
+        source: null,
+        target: null,
+      },
+    });
+  }
+
+  resetPan() {
+    this.setState({
+      interacting: false,
+      panning: false,
+      clickPos: null,
+      mousePos: null,
+    });
+  }
+
   checkPanDistance() {
     const { clickPos, mousePos } = this.state;
     if (!clickPos || !mousePos) return;
@@ -112,13 +155,55 @@ class Map extends React.Component {
     }
   }
 
-  resetPan() {
-    this.setState({
-      interacting: false,
-      panning: false,
-      clickPos: null,
-      mousePos: null,
-    });
+  clickTerritory(id) {
+    const { order } = this.state;
+    const { aux, target, type } = order;
+    const summary = this.getTerritorySummary(id);
+    switch (type) {
+      case 'move':
+        if (!target) {
+          this.setState({
+            order: {
+              target: summary,
+            },
+          });
+        }
+        break;
+
+      case 'support':
+      case 'convoy':
+        if (!aux) {
+          this.setState({
+            order: {
+              aux: summary,
+            },
+          });
+        }
+        if (!target) {
+          this.setState({
+            order: {
+              target: summary,
+            },
+          });
+        }
+        break;
+
+      default:
+        this.setState({
+          order: {
+            source: summary,
+          },
+        });
+        break;
+    }
+
+    const { selected } = this.state;
+    if (!selected) {
+      this.setState({
+        selected: id,
+        summary: this.getTerritorySummary(id),
+      });
+    }
   }
 
   renderTerritories(territory_data) {
@@ -159,17 +244,7 @@ class Map extends React.Component {
             _mouseUp={(e) => {
               if (e.nativeEvent.which !== 1) return;
               if (panning) return;
-              if (selected !== id) {
-                this.setState({
-                  selected: id,
-                  summary: this.getTerritorySummary(id),
-                });
-              } else {
-                this.setState({
-                  selected: null,
-                  summary: null,
-                });
-              }
+              this.clickTerritory(id);
             }}
             _contextMenu={(e) => {
               e.nativeEvent.preventDefault();
@@ -240,35 +315,119 @@ class Map extends React.Component {
     return <Tooltip summary={tooltip} interacting={interacting} />;
   }
 
-  renderOrderNav() {
-    const { selected, summary } = this.state;
-    if (!selected) return null;
+  renderOrderConfirmation() {
     return (
-      <OrderNav
-        summary={summary}
-        selected={selected}
-        _onClickHold={() => {
-          console.log('hold');
-          // TODO send hold order to API
-          this.setState({
-            selected: null,
-            summary: null,
-          });
+      <OrderConfirmation
+        _onClickConfirm={() => {
+          console.log('confirm');
+          this.postOrder();
         }}
-        _onClickMove={() => {
-          console.log('move');
-          // TODO select where to move, then send move order to API
-        }}
-        _onClickSupport={() => {
-          console.log('support');
-          // TODO select where to support, then send support order to API
-        }}
-        _onClickConvoy={() => {
-          console.log('convoy');
-          // TODO select where to convoy, then send support order to API
+        _onClickCancel={() => {
+          console.log('cancel');
+          this.resetOrder();
         }}
       />
     );
+  }
+
+  renderOrderMessage() {
+    const { order } = this.state;
+    const { source, target, type } = order;
+    switch (type) {
+      case 'hold':
+        return this.renderOrderConfirmation();
+
+      case 'move':
+        if (!target) {
+          return <OrderMessage text="Select a territory to move into." />;
+        }
+        return this.renderOrderConfirmation();
+
+      case 'support':
+        if (!source) {
+          return <OrderMessage text="Select a territory to support source." />;
+        }
+        if (!target) {
+          return <OrderMessage text="Select a territory to support into." />;
+        }
+        return this.renderOrderConfirmation();
+
+      case 'convoy':
+        if (!source) {
+          return <OrderMessage text="Select a territory to convoy source." />;
+        }
+        if (!target) {
+          return <OrderMessage text="Select a territory to convoy into." />;
+        }
+        return this.renderOrderConfirmation();
+
+      default:
+        return null;
+    }
+  }
+
+  renderOrderSelector() {
+    const { selected } = this.state;
+    if (!selected) return null;
+
+    const { order } = this.state;
+    const { type } = order;
+    if (!type) {
+      const { summary } = this.state;
+      return (
+        <OrderSelector
+          summary={summary}
+          selected={selected}
+          _onClickHold={() => {
+            console.log('hold');
+            this.setState({
+              order: {
+                type: 'hold',
+                source: selected,
+              },
+            });
+          }}
+          _onClickMove={() => {
+            console.log('move');
+            this.setState({
+              order: {
+                type: 'move',
+                source: selected,
+                target: null,
+              },
+            });
+          }}
+          _onClickSupport={() => {
+            console.log('support');
+            // TODO select where to support, then send support order to API
+          }}
+          _onClickConvoy={() => {
+            console.log('convoy');
+            // TODO select where to convoy, then send support order to API
+          }}
+        />
+      );
+    }
+
+    const { source, to } = order;
+    if (source && to) {
+      return this.renderOrderConfirmation();
+    }
+
+    return this.renderOrderMessage();
+  }
+
+  renderOrder() {
+    const { selected } = this.state;
+    if (!selected) return null;
+
+    const { order } = this.state;
+    const { type } = order;
+    if (!type) {
+      return this.renderOrderSelector();
+    }
+
+    return this.renderOrderMessage();
   }
 
   render() {
@@ -330,7 +489,7 @@ class Map extends React.Component {
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
-        {this.renderOrderNav()}
+        {this.renderOrder()}
       </StyledDiv>
     );
   }
