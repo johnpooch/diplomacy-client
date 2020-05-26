@@ -116,7 +116,7 @@ const renderSupplyCenter = (props, data) => {
 };
 
 const Territory = (props) => {
-  const { data, hovering, isAux, isSource, isTarget, panning } = props;
+  const { data, hovering, isSource, panning } = props;
   const color = getFillColor(props);
   return (
     <StyledTerritory
@@ -124,7 +124,6 @@ const Territory = (props) => {
       highlight={!panning && hovering}
       panning={panning}
       isSource={isSource}
-      selected={isAux || isSource || isTarget}
     >
       {renderPath(props)}
       {renderSupplyCenter(props, data)}
