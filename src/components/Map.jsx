@@ -162,8 +162,9 @@ class Map extends React.Component {
 
   clickTerritory(id) {
     const { order } = this.state;
-    const { aux, target, type } = order;
+    const { aux, source, target, type } = order;
     const summary = this.getTerritorySummary(id);
+    const sourceId = Map.getTerritoryIdFromSummary(source);
     switch (type) {
       case 'move':
         if (!target) {
@@ -198,6 +199,10 @@ class Map extends React.Component {
         break;
 
       default:
+        if (sourceId === id) {
+          this.resetOrder();
+          break;
+        }
         this.setState({
           order: {
             source: summary,
