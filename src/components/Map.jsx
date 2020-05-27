@@ -320,8 +320,10 @@ class Map extends React.Component {
   }
 
   renderOrderConfirmation() {
+    const { order } = this.state;
     return (
       <OrderConfirmation
+        order={order}
         _onClickConfirm={() => {
           console.log('confirm');
           this.postOrder();
@@ -343,25 +345,25 @@ class Map extends React.Component {
 
       case 'move':
         if (!target) {
-          return <OrderMessage text="Select a territory to move into." />;
+          return <OrderMessage text="Select a territory to move into" />;
         }
         return this.renderOrderConfirmation();
 
       case 'support':
         if (!aux) {
-          return <OrderMessage text="Select a territory to support from." />;
+          return <OrderMessage text="Select a territory to support from" />;
         }
         if (!target) {
-          return <OrderMessage text="Select a territory to support into." />;
+          return <OrderMessage text="Select a territory to support into" />;
         }
         return this.renderOrderConfirmation();
 
       case 'convoy':
         if (!aux) {
-          return <OrderMessage text="Select a territory to convoy from." />;
+          return <OrderMessage text="Select a territory to convoy from" />;
         }
         if (!target) {
-          return <OrderMessage text="Select a territory to convoy into." />;
+          return <OrderMessage text="Select a territory to convoy into" />;
         }
         return this.renderOrderConfirmation();
 
