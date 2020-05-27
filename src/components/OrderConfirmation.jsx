@@ -80,15 +80,17 @@ const renderOrderSummary = (props) => {
 
       case 'convoy':
       case 'support':
-        orderSummary = (
-          <StyledP>
-            <span className="piece">{source.piece.type}</span>
-            in <span className="source">{source.territory.name}</span>
-            to <span className="action">{type}</span>
-            <span className="aux">{aux.territory.name}</span>
-            to <span className="target">{target.territory.name}</span>
-          </StyledP>
-        );
+        if (source.piece.type === 'fleet' && aux.piece) {
+          orderSummary = (
+            <StyledP>
+              <span className="piece">{source.piece.type}</span>
+              in <span className="source">{source.territory.name}</span>
+              to <span className="action">{type}</span>
+              <span className="aux">{aux.territory.name}</span>
+              to <span className="target">{target.territory.name}</span>
+            </StyledP>
+          );
+        }
         break;
 
       default:
