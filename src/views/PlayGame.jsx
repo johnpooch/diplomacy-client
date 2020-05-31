@@ -23,7 +23,6 @@ class PlayGame extends React.Component {
     super(props);
     this.state = {
       activeTurn: null,
-      currentTurnIndex: null,
     };
   }
 
@@ -35,7 +34,6 @@ class PlayGame extends React.Component {
     );
     this.setState({
       activeTurn: turns[currentTurnIndex],
-      currentTurnIndex,
     });
   }
 
@@ -58,15 +56,11 @@ class PlayGame extends React.Component {
   }
 
   renderTurnNav() {
-    const { activeTurn, currentTurnIndex } = this.state;
-    const { game } = this.props;
-    const { turns } = game;
-    if (turns && activeTurn) {
+    const { activeTurn } = this.state;
+    if (activeTurn) {
       return (
         <TurnNav
-          turns={turns}
-          activeTurn={activeTurn}
-          currentTurnIndex={currentTurnIndex}
+          turn={activeTurn}
           _click={(id) => {
             this.setTurn(id);
           }}
