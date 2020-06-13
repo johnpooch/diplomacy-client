@@ -45,19 +45,16 @@ const StyledNav = styled.nav`
 `;
 
 const TurnNav = (props) => {
-  const { turns, activeTurn, _click } = props;
-  const { id } = activeTurn;
-
-  const currentTurnIndex = turns.findIndex((obj) => obj.current_turn === true);
-  const activeIndex = turns.findIndex((obj) => obj.id === id);
+  const { turn, _click } = props;
+  const { previous_turn: previousTurn, next_turn: nextTurn } = turn;
 
   const renderPrevious = () => {
-    if (activeIndex >= turns.length - 1) return null;
+    if (!previousTurn) return null;
     return (
       <IconButton
         className="previous"
         onClick={() => {
-          _click(2);
+          _click(previousTurn);
         }}
       >
         <FontAwesomeIcon icon={faArrowLeft} />
@@ -66,12 +63,12 @@ const TurnNav = (props) => {
   };
 
   const renderNext = () => {
-    if (activeIndex === currentTurnIndex) return null;
+    if (!nextTurn) return null;
     return (
       <IconButton
         className="next"
         onClick={() => {
-          _click(3);
+          _click(nextTurn);
         }}
       >
         <FontAwesomeIcon icon={faArrowRight} />
@@ -83,8 +80,13 @@ const TurnNav = (props) => {
     <StyledNav>
       {renderPrevious()}
       <p className="active-turn">
-        <span className="season">{activeTurn.season}</span>
-        <span className="year">{activeTurn.year}</span>
+        <div>
+          <span className="season">{turn.season}</span>
+          <span className="year">{turn.year}</span>
+        </div>
+        <div>
+          <span className="phase">{turn.phase}</span>
+        </div>
       </p>
       {renderNext()}
     </StyledNav>
