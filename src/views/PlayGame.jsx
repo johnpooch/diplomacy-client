@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { withRouter, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Map from '../components/Map';
+import PlayerStatus from '../components/PlayerStatus';
 import TurnNav from '../components/TurnNav';
 import { IconButton } from '../styles';
 import { spacing } from '../variables';
@@ -23,18 +25,21 @@ class PlayGame extends React.Component {
     super(props);
     this.state = {
       activeTurn: null,
+      userNationState: null,
     };
   }
 
   componentDidMount() {
-    const { game } = this.props;
+    const { game, user } = this.props;
     const { turns } = game;
     const currentTurnIndex = turns.findIndex(
       (obj) => obj.current_turn === true
     );
-    this.setState({
-      activeTurn: turns[currentTurnIndex],
+    const activeTurn = turns[currentTurnIndex];
+    const userNationState = activeTurn.nation_states.find((nationState) => {
+      return nationState.user.id === user.id;
     });
+    this.setState({ activeTurn, userNationState });
   }
 
   getTurn(id) {
@@ -71,9 +76,11 @@ class PlayGame extends React.Component {
   }
 
   render() {
+    const { userNationState } = this.state;
     return (
       <div>
         {this.renderMap()}
+        <PlayerStatus userNationState={userNationState} />
         {this.renderTurnNav()}
         <StyledNavLink to="/">
           <FontAwesomeIcon icon={faTimes} />
@@ -83,4 +90,10 @@ class PlayGame extends React.Component {
   }
 }
 
-export default withRouter(PlayGame);
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(withRouter(PlayGame));
