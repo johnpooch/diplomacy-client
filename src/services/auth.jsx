@@ -39,7 +39,6 @@ function login(username, password) {
 }
 
 function register(username, email, password) {
-  console.log(username, password, email);
   const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

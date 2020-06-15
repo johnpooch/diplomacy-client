@@ -20,7 +20,7 @@ const StyledIconButton = styled(IconButton)`
 
 const StyledNavLink = StyledIconButton.withComponent(NavLink);
 
-class PlayGame extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,6 +75,14 @@ class PlayGame extends React.Component {
     return null;
   }
 
+  static renderBackButton() {
+    return (
+      <StyledNavLink to="/">
+        <FontAwesomeIcon icon={faTimes} />
+      </StyledNavLink>
+    );
+  }
+
   render() {
     const { userNationState } = this.state;
     return (
@@ -82,9 +90,7 @@ class PlayGame extends React.Component {
         {this.renderMap()}
         <PlayerStatus userNationState={userNationState} />
         {this.renderTurnNav()}
-        <StyledNavLink to="/">
-          <FontAwesomeIcon icon={faTimes} />
-        </StyledNavLink>
+        {Game.renderBackButton()}
       </div>
     );
   }
@@ -96,4 +102,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withRouter(PlayGame));
+export default connect(mapStateToProps, null)(withRouter(Game));

@@ -218,6 +218,8 @@ class GameFilters extends React.Component {
   }
 
   render() {
+    const { choices } = this.props;
+    if (!choices) return null;
     return (
       <div>
         {this.renderAdvancedToggleButton()}

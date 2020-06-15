@@ -19,7 +19,7 @@ const AlertList = (props) => {
       );
     }
   });
-  return <ol>{elements}</ol>;
+  return <ul>{elements}</ul>;
 };
 
 const mapStateToProps = (state) => {
