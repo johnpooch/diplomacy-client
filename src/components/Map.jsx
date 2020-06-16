@@ -384,40 +384,14 @@ class Map extends React.Component {
     if (!type && source) {
       return (
         <OrderSelector
+          option="hold"
           summary={source}
-          _onClickHold={() => {
-            console.log('hold');
+          _onClickOption={(option) => {
+            console.log(option);
             this.setState({
               order: {
                 ...order,
-                type: 'hold',
-              },
-            });
-          }}
-          _onClickMove={() => {
-            console.log('move');
-            this.setState({
-              order: {
-                ...order,
-                type: 'move',
-              },
-            });
-          }}
-          _onClickSupport={() => {
-            console.log('support');
-            this.setState({
-              order: {
-                ...order,
-                type: 'support',
-              },
-            });
-          }}
-          _onClickConvoy={() => {
-            console.log('convoy');
-            this.setState({
-              order: {
-                ...order,
-                type: 'convoy',
+                type: option,
               },
             });
           }}

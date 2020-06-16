@@ -33,22 +33,14 @@ const StyledGrid = styled(Grid)`
 `;
 
 const OrderSelector = (props) => {
-  const {
-    _onClickHold,
-    _onClickMove,
-    _onClickSupport,
-    _onClickConvoy,
-    summary,
-  } = props;
+  const { option, summary, _onClickOption } = props;
+
   return (
     <StyledWrapper>
       <StyledDiv>
         <TerritorySummary summary={summary} />
         <StyledGrid columns={4} columnGap={`${spacing[1]}px`}>
-          <Button onClick={_onClickHold}>Hold</Button>
-          <Button onClick={_onClickMove}>Move</Button>
-          <Button onClick={_onClickSupport}>Support</Button>
-          <Button onClick={_onClickConvoy}>Convoy</Button>
+          <Button onClick={() => _onClickOption(option)}>{option}</Button>
         </StyledGrid>
       </StyledDiv>
     </StyledWrapper>
