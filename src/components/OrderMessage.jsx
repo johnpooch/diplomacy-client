@@ -28,11 +28,7 @@ const StyledDiv = styled.div`
 
 const OrderMessage = (props) => {
   const { text } = props;
-  return (
-    <StyledWrapper>
-      <StyledDiv>{text}</StyledDiv>
-    </StyledWrapper>
-  );
+  return <div>{text}</div>;
 };
 
 export default OrderMessage;

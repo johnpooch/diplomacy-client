@@ -3,12 +3,13 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import { IconButton } from '../styles';
+import { Button, IconButton } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
 import OrderConfirmation from './OrderConfirmation';
 import OrderMessage from './OrderMessage';
 import OrderSelector from './OrderSelector';
+import OrderSummary from './OrderSummary';
 
 const StyledIconButton = styled(IconButton)`
   float: right;
@@ -38,14 +39,69 @@ const StyledDiv = styled.div`
 `;
 
 const OrderDialogue = (props) => {
-  const { onClickCancel, order } = props;
-  const { type, source } = order;
+  const {
+    onClickCancel,
+    onClickOrderTypeChoice,
+    onClickConfirm,
+    orderTypeChoices,
+    order,
+  } = props;
+  const { type, source, aux, target } = order;
 
   const renderOrderSelector = () => {
     if (type || !source) {
       return null;
     }
-    return <OrderSelector summary={source} />;
+    return (
+      <OrderSelector
+        summary={source}
+        choices={orderTypeChoices}
+        onClickChoice={onClickOrderTypeChoice}
+      />
+    );
+  };
+
+  const renderOrderConfirmation = () => {
+    return (
+      <div>
+        <OrderSummary order={order} />
+        <Button onClick={onClickConfirm}>Confirm</Button>
+      </div>
+    );
+  };
+
+  const renderOrderMessage = () => {
+    switch (type) {
+      case 'hold':
+        return renderOrderConfirmation();
+
+      case 'move':
+        if (!target) {
+          return <OrderMessage text="Select a territory to move into" />;
+        }
+        return renderOrderConfirmation();
+
+      case 'support':
+        if (!aux) {
+          return <OrderMessage text="Select a territory to support from" />;
+        }
+        if (!target) {
+          return <OrderMessage text="Select a territory to support into" />;
+        }
+        return renderOrderConfirmation();
+
+      case 'convoy':
+        if (!aux) {
+          return <OrderMessage text="Select a territory to convoy from" />;
+        }
+        if (!target) {
+          return <OrderMessage text="Select a territory to convoy into" />;
+        }
+        return renderOrderConfirmation();
+
+      default:
+        return null;
+    }
   };
 
   return (
@@ -55,6 +111,7 @@ const OrderDialogue = (props) => {
           <FontAwesomeIcon icon={faTimes} />
         </StyledIconButton>
         {renderOrderSelector()}
+        {renderOrderMessage()}
       </StyledDiv>
     </StyledWrapper>
   );

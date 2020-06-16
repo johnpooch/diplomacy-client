@@ -1,5 +1,7 @@
 /* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states"] }] */
 import React from 'react';
+import { connect } from 'react-redux';
+
 import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
@@ -52,14 +54,32 @@ class Map extends React.Component {
     };
     this.resetPan = this.resetPan.bind(this);
     this.resetOrder = this.resetOrder.bind(this);
+    this.onClickOrderTypeChoice = this.onClickOrderTypeChoice.bind(this);
+    this.onClickConfirm = this.onClickConfirm.bind(this);
 
     this.PANNING_THRESHOLD = 5;
+  }
+
+  getCurrentTurn() {
+    const { game } = this.props;
+    const { turns } = game;
+    const currentTurnIndex = turns.findIndex(
+      (obj) => obj.current_turn === true
+    );
+    return turns[currentTurnIndex];
   }
 
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
     return getObjectByKey(id, nations, 'id');
+  }
+
+  getUserNationState(userId) {
+    const currentTurn = this.getCurrentTurn();
+    return currentTurn.nation_states.find((nationState) => {
+      return nationState.user.id === userId;
+    });
   }
 
   getPiece(id) {
@@ -163,6 +183,63 @@ class Map extends React.Component {
     }
   }
 
+  onClickOrderTypeChoice(choice) {
+    const { order } = this.state;
+    console.log(choice);
+    this.setState({
+      order: {
+        ...order,
+        type: choice,
+      },
+    });
+  }
+
+  getOrderTypeChoices(source) {
+    const { turn } = this.props;
+    const { piece } = source;
+    const { type } = piece;
+    if (turn.phase === 'Order') {
+      const options = ['hold', 'move', 'support'];
+      if (type === 'fleet') {
+        // TODO check for coastal
+        options.push('convoy');
+      }
+      return options;
+    }
+    // TODO add build and retreat logic
+    return [];
+  }
+
+  // TODO break this out into a separate script
+  userCanOrder(territoryId) {
+    /* Determine whether a user can create an order for the given territory */
+    const { user, turn } = this.props;
+    if (!user) {
+      return false;
+    }
+    const userNationState = this.getUserNationState(user.id);
+    if (!userNationState) {
+      // User is not controlling a nation in the game.
+      return false;
+    }
+    const currentTurn = this.getCurrentTurn();
+    if (currentTurn !== turn) {
+      // Cannot order if not looking at current turn
+      return false;
+    }
+
+    // Orders turn
+    if (currentTurn.phase === 'Order') {
+      const piece = this.getPieceInTerritory(territoryId);
+      if (!piece) {
+        return false;
+      }
+      const pieceBelongsToUser = piece.nation === userNationState.nation.id;
+      return pieceBelongsToUser;
+    }
+    return false;
+  }
+
   clickTerritory(id) {
     const { order } = this.state;
     const { aux, source, target, type } = order;
@@ -205,6 +282,9 @@ class Map extends React.Component {
         if (sourceId === id) {
           this.resetOrder();
           break;
+        }
+        if (!this.userCanOrder(id)) {
+          return;
         }
         this.setState({
           orderDialogueActive: true,
@@ -328,6 +408,11 @@ class Map extends React.Component {
     return <Tooltip summary={tooltip} interacting={interacting} />;
   }
 
+  onClickConfirm() {
+    console.log('confirm');
+    this.postOrder();
+  }
+
   renderOrderConfirmation() {
     const { order } = this.state;
     return (
@@ -383,69 +468,51 @@ class Map extends React.Component {
 
   renderOrder() {
     const { order } = this.state;
-    const { type, source } = order;
-
-    if (!type && source) {
-      return (
-        <OrderSelector
-          summary={source}
-          onClickCancel={this.resetOrder}
-          _onClickHold={() => {
-            console.log('hold');
-            this.setState({
-              order: {
-                ...order,
-                type: 'hold',
-              },
-            });
-          }}
-          _onClickMove={() => {
-            console.log('move');
-            this.setState({
-              order: {
-                ...order,
-                type: 'move',
-              },
-            });
-          }}
-          _onClickSupport={() => {
-            console.log('support');
-            this.setState({
-              order: {
-                ...order,
-                type: 'support',
-              },
-            });
-          }}
-          _onClickConvoy={() => {
-            console.log('convoy');
-            this.setState({
-              order: {
-                ...order,
-                type: 'convoy',
-              },
-            });
-          }}
-        />
-      );
+    const { source, type } = order;
+    if (!source || type) {
+      return this.renderOrderMessage();
     }
+    const orderOptions = this.getOrderOptions(source);
 
-    return this.renderOrderMessage();
+    return (
+      <OrderSelector
+        orderOptions={orderOptions}
+        summary={source}
+        _onClickOption={(option) => {
+          console.log(option);
+          this.setState({
+            order: {
+              ...order,
+              type: option,
+            },
+          });
+        }}
+      />
+    );
   }
 
   render() {
     const { game, turn } = this.props;
     if (!turn) return null;
-    const { order, interacting, panning } = this.state;
+    const { order, interacting, panning, orderDialogueActive } = this.state;
     const mapData = game.variant.map_data[0];
     const { territory_data } = mapData;
 
     const renderOrderDialogue = () => {
-      const { orderDialogueActive } = this.state;
-      if (orderDialogueActive) {
-        return <OrderDialogue onClickCancel={this.resetOrder} order={order} />;
+      if (!orderDialogueActive) {
+        return null;
       }
-      return null;
+      const { source } = order;
+      const orderTypeChoices = this.getOrderTypeChoices(source);
+      return (
+        <OrderDialogue
+          onClickCancel={this.resetOrder}
+          onClickOrderTypeChoice={this.onClickOrderTypeChoice}
+          onClickConfirm={this.onClickConfirm}
+          orderTypeChoices={orderTypeChoices}
+          order={order}
+        />
+      );
     };
 
     return (
@@ -507,4 +574,10 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(Map);
