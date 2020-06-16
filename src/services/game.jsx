@@ -1,6 +1,12 @@
 import * as API from '../api';
 
-const headers = { 'Content-Type': 'application/json' };
+function getHeaders(token = null) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) {
+    headers.Authorization = `token ${token}`;
+  }
+  return headers;
+}
 
 function handleResponse(response) {
   return response.json().then((json) => {
@@ -8,11 +14,13 @@ function handleResponse(response) {
     if (!response.ok) {
       throw new Error('Failed to connect to service');
     }
+    // TODO if response is 401 token may have expired - log out?
     return data;
   });
 }
 
-function get(filters) {
+function get(token, filters) {
+  const headers = getHeaders(token);
   const options = { method: 'GET', headers };
   let url = API.ALLGAMESURL;
   if (filters) {
@@ -23,17 +31,19 @@ function get(filters) {
 }
 
 function getChoices() {
+  const headers = getHeaders();
   const options = { method: 'GET', headers };
   return fetch(API.GAMEFILTERCHOICESURL, options).then(handleResponse);
 }
 
 function getCreateGameForm() {
+  const headers = getHeaders();
   const options = { method: 'GET', headers };
   return fetch(API.CREATEGAMEURL, options).then(handleResponse);
 }
 
 function create(token, data) {
-  headers.Authorization = `token ${token}`;
+  const headers = getHeaders(token);
   const options = {
     method: 'POST',
     body: JSON.stringify(data),
