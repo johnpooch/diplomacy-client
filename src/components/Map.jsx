@@ -1,5 +1,7 @@
 /* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states"] }] */
 import React from 'react';
+import { connect } from 'react-redux';
+
 import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
@@ -54,10 +56,26 @@ class Map extends React.Component {
     this.PANNING_THRESHOLD = 5;
   }
 
+  getActiveTurn() {
+    const { game } = this.props;
+    const { turns } = game;
+    const currentTurnIndex = turns.findIndex(
+      (obj) => obj.current_turn === true
+    );
+    return turns[currentTurnIndex];
+  }
+
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
     return getObjectByKey(id, nations, 'id');
+  }
+
+  getUserNationState(userId) {
+    const activeTurn = this.getActiveTurn();
+    return activeTurn.nation_states.find((nationState) => {
+      return nationState.user.id === userId;
+    });
   }
 
   getPiece(id) {
@@ -160,7 +178,28 @@ class Map extends React.Component {
     }
   }
 
+  userCanOrder(territoryId) {
+    /* Determine whether a user can create and order for the given territory */
+    const { user } = this.props;
+    if (!user) {
+      return false;
+    }
+    const userNationState = this.getUserNationState(user.id);
+    if (!userNationState) {
+      // User is not controlling a nation in the game.
+      return false;
+    }
+
+    // Orders turn
+    const piece = this.getPieceInTerritory(territoryId);
+    const pieceBelongsToUser = piece.nation === userNationState.nation.id;
+    return pieceBelongsToUser;
+  }
+
   clickTerritory(id) {
+    if (!this.userCanOrder(id)) {
+      return;
+    }
     const { order } = this.state;
     const { aux, source, target, type } = order;
     const summary = this.getTerritorySummary(id);
@@ -493,4 +532,10 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(Map);
