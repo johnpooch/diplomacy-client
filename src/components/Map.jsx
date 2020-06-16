@@ -196,12 +196,12 @@ class Map extends React.Component {
 
   getOrderTypeChoices(source) {
     const { turn } = this.props;
-    const { piece } = source;
-    const { type } = piece;
+    const { piece, territory } = source;
+    const { type: territoryType } = territory;
+    const { type: pieceType } = piece;
     if (turn.phase === 'Order') {
       const options = ['hold', 'move', 'support'];
-      if (type === 'fleet') {
-        // TODO check for coastal
+      if (pieceType === 'fleet' && territoryType === 'sea') {
         options.push('convoy');
       }
       return options;
