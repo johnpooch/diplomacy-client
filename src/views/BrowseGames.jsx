@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import GameFilters from '../components/GameFilters';
 import GameSummaryList from '../components/GameSummaryList';
@@ -20,7 +21,8 @@ class BrowseGames extends React.Component {
   }
 
   getGamesAndChoices() {
-    const fetchGames = gameService.get();
+    const { token } = this.props;
+    const fetchGames = gameService.get(token);
     const fetchChoices = gameService.getChoices();
     Promise.all([fetchGames, fetchChoices]).then(([games, choices]) => {
       this.setState({
@@ -32,7 +34,8 @@ class BrowseGames extends React.Component {
   }
 
   getFilteredGames(filters) {
-    gameService.get(filters).then((json) => {
+    const { token } = this.props;
+    gameService.get(token, filters).then((json) => {
       const games = json.length ? json.slice() : [];
       this.setState({ games, isLoaded: true });
     });
@@ -61,4 +64,10 @@ class BrowseGames extends React.Component {
   }
 }
 
-export default BrowseGames;
+const mapStateToProps = (state) => {
+  return {
+    token: state.login.token,
+  };
+};
+
+export default connect(mapStateToProps, null)(BrowseGames);
