@@ -56,7 +56,7 @@ class Map extends React.Component {
     this.PANNING_THRESHOLD = 5;
   }
 
-  getActiveTurn() {
+  getCurrentTurn() {
     const { game } = this.props;
     const { turns } = game;
     const currentTurnIndex = turns.findIndex(
@@ -72,8 +72,8 @@ class Map extends React.Component {
   }
 
   getUserNationState(userId) {
-    const activeTurn = this.getActiveTurn();
-    return activeTurn.nation_states.find((nationState) => {
+    const currentTurn = this.getCurrentTurn();
+    return currentTurn.nation_states.find((nationState) => {
       return nationState.user.id === userId;
     });
   }
