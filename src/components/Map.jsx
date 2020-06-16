@@ -160,6 +160,21 @@ class Map extends React.Component {
     }
   }
 
+  getOrderOptions(source) {
+    const { turn } = this.props;
+    const { piece } = source;
+    const { type } = piece;
+    if (turn.phase === 'Order') {
+      const options = ['hold', 'move', 'support'];
+      if (type === 'fleet') {
+        options.push('convoy');
+      }
+      return options;
+    }
+    // TODO add build and retreat logic
+    return [];
+  }
+
   clickTerritory(id) {
     const { order } = this.state;
     const { aux, source, target, type } = order;
@@ -379,27 +394,27 @@ class Map extends React.Component {
 
   renderOrder() {
     const { order } = this.state;
-    const { type, source } = order;
-
-    if (!type && source) {
-      return (
-        <OrderSelector
-          option="hold"
-          summary={source}
-          _onClickOption={(option) => {
-            console.log(option);
-            this.setState({
-              order: {
-                ...order,
-                type: option,
-              },
-            });
-          }}
-        />
-      );
+    const { source, type } = order;
+    if (!source || type) {
+      return this.renderOrderMessage();
     }
+    const orderOptions = this.getOrderOptions(source);
 
-    return this.renderOrderMessage();
+    return (
+      <OrderSelector
+        orderOptions={orderOptions}
+        summary={source}
+        _onClickOption={(option) => {
+          console.log(option);
+          this.setState({
+            order: {
+              ...order,
+              type: option,
+            },
+          });
+        }}
+      />
+    );
   }
 
   render() {
