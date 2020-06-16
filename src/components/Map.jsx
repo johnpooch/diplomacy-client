@@ -210,7 +210,6 @@ class Map extends React.Component {
     return [];
   }
 
-  // TODO break this out into a separate script
   userCanOrder(territoryId) {
     /* Determine whether a user can create an order for the given territory */
     const { user, turn } = this.props;
