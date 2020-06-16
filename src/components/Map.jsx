@@ -95,6 +95,23 @@ class Map extends React.Component {
     return pieceState ? this.getPiece(pieceState.piece) : null;
   }
 
+  getDislodgedPieceInTerritory(id) {
+    const { turn } = this.props;
+    const pieceStates = turn.piece_states;
+    const dislodgedPieceState = pieceStates.find((pieceState) => {
+      return pieceState.territory === id && pieceState.must_retreat;
+    });
+    return dislodgedPieceState
+      ? this.getPiece(dislodgedPieceState.piece)
+      : null;
+  }
+
+  getPieceStateInTerritory(territoryId) {
+    const { turn } = this.props;
+    const pieceStates = turn.piece_states;
+    return getObjectByKey(territoryId, pieceStates, 'territory');
+  }
+
   getTerritory(id) {
     const { game } = this.props;
     const { territories } = game.variant;
@@ -206,7 +223,11 @@ class Map extends React.Component {
       }
       return options;
     }
-    // TODO add build and retreat logic
+    if (turn.phase === 'Retreat and Disband') {
+      const options = ['retreat', 'disband'];
+      return options;
+    }
+    // TODO add build logic
     return [];
   }
 
@@ -235,6 +256,12 @@ class Map extends React.Component {
       }
       const pieceBelongsToUser = piece.nation === userNationState.nation.id;
       return pieceBelongsToUser;
+    }
+
+    // Retreat turn
+    if (currentTurn.phase === 'Retreat and Disband') {
+      const pieceState = this.getDislodgedPieceInTerritory(territoryId);
+      return Boolean(pieceState);
     }
     return false;
   }
