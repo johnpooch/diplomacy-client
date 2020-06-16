@@ -3,9 +3,12 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import TerritorySummary from './TerritorySummary';
-import { IconButton, Button, Grid } from '../styles';
+import { IconButton } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
+
+import OrderConfirmation from './OrderConfirmation';
+import OrderMessage from './OrderMessage';
+import OrderSelector from './OrderSelector';
 
 const StyledIconButton = styled(IconButton)`
   float: right;
@@ -34,23 +37,27 @@ const StyledDiv = styled.div`
   cursor: initial;
 `;
 
-const StyledGrid = styled(Grid)`
-  margin-top: ${spacing[4]}px;
-`;
+const OrderDialogue = (props) => {
+  const { onClickCancel, order } = props;
+  const { type, source } = order;
 
-const OrderSelector = (props) => {
-  const { _onClickHold, summary } = props;
+  const renderOrderSelector = () => {
+    if (type || !source) {
+      return null;
+    }
+    return <OrderSelector summary={source} />;
+  };
+
   return (
-    <div>
-      <TerritorySummary summary={summary} />
-      <StyledGrid columns={4} columnGap={`${spacing[1]}px`}>
-        <Button onClick={_onClickHold}>Hold</Button>
-        <Button onClick={_onClickHold}>Move</Button>
-        <Button onClick={_onClickHold}>Support</Button>
-        <Button onClick={_onClickHold}>Convoy</Button>
-      </StyledGrid>
-    </div>
+    <StyledWrapper>
+      <StyledDiv>
+        <StyledIconButton onClick={onClickCancel}>
+          <FontAwesomeIcon icon={faTimes} />
+        </StyledIconButton>
+        {renderOrderSelector()}
+      </StyledDiv>
+    </StyledWrapper>
   );
 };
 
-export default OrderSelector;
+export default OrderDialogue;

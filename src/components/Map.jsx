@@ -7,6 +7,7 @@ import OrderArrow from './OrderArrow';
 import OrderConfirmation from './OrderConfirmation';
 import OrderMessage from './OrderMessage';
 import OrderSelector from './OrderSelector';
+import OrderDialogue from './OrderDialogue';
 import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
@@ -41,6 +42,7 @@ class Map extends React.Component {
       tooltip: null,
       clickPos: null,
       mousePos: null,
+      orderDialogueActive: false,
       order: {
         type: null,
         aux: null,
@@ -127,6 +129,7 @@ class Map extends React.Component {
 
   resetOrder() {
     this.setState({
+      orderDialogueActive: false,
       order: {
         type: null,
         aux: null,
@@ -204,6 +207,7 @@ class Map extends React.Component {
           break;
         }
         this.setState({
+          orderDialogueActive: true,
           order: {
             source: summary,
           },
@@ -432,9 +436,18 @@ class Map extends React.Component {
   render() {
     const { game, turn } = this.props;
     if (!turn) return null;
-    const { interacting, panning } = this.state;
+    const { order, interacting, panning } = this.state;
     const mapData = game.variant.map_data[0];
     const { territory_data } = mapData;
+
+    const renderOrderDialogue = () => {
+      const { orderDialogueActive } = this.state;
+      if (orderDialogueActive) {
+        return <OrderDialogue onClickCancel={this.resetOrder} order={order} />;
+      }
+      return null;
+    };
+
     return (
       <StyledDiv
         panning={panning}
@@ -488,7 +501,7 @@ class Map extends React.Component {
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
-        {this.renderOrder()}
+        {renderOrderDialogue()}
       </StyledDiv>
     );
   }
