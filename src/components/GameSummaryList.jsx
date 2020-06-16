@@ -25,6 +25,7 @@ function GameSummaryList(props) {
         createdBy={game.created_by}
         variant={game.variant}
         name={game.name}
+        userNationState={game.user_nation_state}
       />
     );
   });

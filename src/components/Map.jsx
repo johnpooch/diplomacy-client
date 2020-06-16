@@ -1,5 +1,7 @@
 /* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states"] }] */
 import React from 'react';
+import { connect } from 'react-redux';
+
 import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
@@ -54,10 +56,26 @@ class Map extends React.Component {
     this.PANNING_THRESHOLD = 5;
   }
 
+  getCurrentTurn() {
+    const { game } = this.props;
+    const { turns } = game;
+    const currentTurnIndex = turns.findIndex(
+      (obj) => obj.current_turn === true
+    );
+    return turns[currentTurnIndex];
+  }
+
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
     return getObjectByKey(id, nations, 'id');
+  }
+
+  getUserNationState(userId) {
+    const currentTurn = this.getCurrentTurn();
+    return currentTurn.nation_states.find((nationState) => {
+      return nationState.user.id === userId;
+    });
   }
 
   getPiece(id) {
@@ -167,6 +185,7 @@ class Map extends React.Component {
     if (turn.phase === 'Order') {
       const options = ['hold', 'move', 'support'];
       if (type === 'fleet') {
+        // TODO check for coastal
         options.push('convoy');
       }
       return options;
@@ -175,7 +194,40 @@ class Map extends React.Component {
     return [];
   }
 
+  // TODO break this out into a separate script
+  userCanOrder(territoryId) {
+    /* Determine whether a user can create an order for the given territory */
+    const { user, turn } = this.props;
+    if (!user) {
+      return false;
+    }
+    const userNationState = this.getUserNationState(user.id);
+    if (!userNationState) {
+      // User is not controlling a nation in the game.
+      return false;
+    }
+    const currentTurn = this.getCurrentTurn();
+    if (currentTurn !== turn) {
+      // Cannot order if not looking at current turn
+      return false;
+    }
+
+    // Orders turn
+    if (currentTurn.phase === 'Order') {
+      const piece = this.getPieceInTerritory(territoryId);
+      if (!piece) {
+        return false;
+      }
+      const pieceBelongsToUser = piece.nation === userNationState.nation.id;
+      return pieceBelongsToUser;
+    }
+    return false;
+  }
+
   clickTerritory(id) {
+    if (!this.userCanOrder(id)) {
+      return;
+    }
     const { order } = this.state;
     const { aux, source, target, type } = order;
     const summary = this.getTerritorySummary(id);
@@ -482,4 +534,10 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(Map);
