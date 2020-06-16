@@ -179,8 +179,8 @@ class Map extends React.Component {
   }
 
   userCanOrder(territoryId) {
-    /* Determine whether a user can create and order for the given territory */
-    const { user } = this.props;
+    /* Determine whether a user can create an order for the given territory */
+    const { user, turn } = this.props;
     if (!user) {
       return false;
     }
@@ -189,11 +189,22 @@ class Map extends React.Component {
       // User is not controlling a nation in the game.
       return false;
     }
+    const currentTurn = this.getCurrentTurn();
+    if (currentTurn !== turn) {
+      // Cannot order if not looking at current turn
+      return false;
+    }
 
     // Orders turn
-    const piece = this.getPieceInTerritory(territoryId);
-    const pieceBelongsToUser = piece.nation === userNationState.nation.id;
-    return pieceBelongsToUser;
+    if (currentTurn.phase === 'Order') {
+      const piece = this.getPieceInTerritory(territoryId);
+      if (!piece) {
+        return false;
+      }
+      const pieceBelongsToUser = piece.nation === userNationState.nation.id;
+      return pieceBelongsToUser;
+    }
+    return false;
   }
 
   clickTerritory(id) {
