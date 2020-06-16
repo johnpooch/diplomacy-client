@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import TerritorySummary from './TerritorySummary';
-import { Button, Grid } from '../styles';
+import { IconButton, Button, Grid } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
+
+const StyledIconButton = styled(IconButton)`
+  float: right;
+`;
 
 const StyledWrapper = styled.div`
   position: fixed;
@@ -34,6 +40,7 @@ const StyledGrid = styled(Grid)`
 
 const OrderSelector = (props) => {
   const {
+    onClickCancel,
     _onClickHold,
     _onClickMove,
     _onClickSupport,
@@ -43,6 +50,9 @@ const OrderSelector = (props) => {
   return (
     <StyledWrapper>
       <StyledDiv>
+        <StyledIconButton onClick={onClickCancel}>
+          <FontAwesomeIcon icon={faTimes} />
+        </StyledIconButton>
         <TerritorySummary summary={summary} />
         <StyledGrid columns={4} columnGap={`${spacing[1]}px`}>
           <Button onClick={_onClickHold}>Hold</Button>

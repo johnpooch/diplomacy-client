@@ -48,8 +48,8 @@ class Map extends React.Component {
         target: null,
       },
     };
-
     this.resetPan = this.resetPan.bind(this);
+    this.resetOrder = this.resetOrder.bind(this);
 
     this.PANNING_THRESHOLD = 5;
   }
@@ -385,6 +385,7 @@ class Map extends React.Component {
       return (
         <OrderSelector
           summary={source}
+          onClickCancel={this.resetOrder}
           _onClickHold={() => {
             console.log('hold');
             this.setState({
