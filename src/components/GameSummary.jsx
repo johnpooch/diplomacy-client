@@ -50,7 +50,7 @@ class GameSummary extends Component {
   }
 
   render() {
-    const { createdAt, id, name, status } = this.props;
+    const { createdAt, id, name, status, userNationState } = this.props;
     const date = new Date(createdAt);
     const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
     return (
