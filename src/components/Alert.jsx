@@ -45,7 +45,6 @@ const StyledDiv = styled(PageWrapper)`
 `;
 
 const Alert = (props) => {
-<<<<<<< HEAD
   const { text, category, id, onClick } = props;
   if (!text) return null;
   return (
@@ -69,17 +68,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClick: (id) => dispatch(alertActions.clear(id)),
   };
-=======
-  const { text, type } = props;
-  if (text) {
-    return (
-      <PageWrapper>
-        <StyledDiv type={type}>{text}</StyledDiv>
-      </PageWrapper>
-    );
-  }
-  return null;
->>>>>>> john-order-service
 };
 
 export default connect(null, mapDispatchToProps)(Alert);

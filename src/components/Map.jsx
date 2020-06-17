@@ -145,23 +145,6 @@ class Map extends React.Component {
     return null;
   }
 
-  postOrder() {
-    // Hold - source
-    // Move - source, target, target_coast=None, via_convoy=False
-    // Support - source, aux, target
-    // Convoy - source, aux, target
-    // Retreat - source, target, target_coast=None
-    // Build - source, target_coast=None
-    // Disband - source
-    const { order } = this.state;
-    const { type, aux, source, target } = order;
-    const auxId = Map.getTerritoryIdFromSummary(aux);
-    const sourceId = Map.getTerritoryIdFromSummary(source);
-    const targetId = Map.getTerritoryIdFromSummary(target);
-    console.log('order:', type, sourceId, auxId, targetId);
-    this.resetOrder();
-  }
-
   resetOrder() {
     this.setState({
       orderDialogueActive: false,
@@ -251,6 +234,23 @@ class Map extends React.Component {
       return options;
     }
     return [];
+  }
+
+  postOrder() {
+    // Hold - source
+    // Move - source, target, target_coast=None, via_convoy=False
+    // Support - source, aux, target
+    // Convoy - source, aux, target
+    // Retreat - source, target, target_coast=None
+    // Build - source, target_coast=None
+    // Disband - source
+    const { order } = this.state;
+    const { type, aux, source, target } = order;
+    const auxId = Map.getTerritoryIdFromSummary(aux);
+    const sourceId = Map.getTerritoryIdFromSummary(source);
+    const targetId = Map.getTerritoryIdFromSummary(target);
+    console.log('order:', type, sourceId, auxId, targetId);
+    this.resetOrder();
   }
 
   userCanOrder(territoryId) {
