@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Build army 1`] = `
+<DocumentFragment>
+  <p
+    class="css-8t79ir-StyledP e19maj680"
+  >
+    <span
+      class="action"
+    >
+      build
+    </span>
+    <span
+      class="piece"
+    >
+      army
+    </span>
+    in 
+    <span
+      class="source"
+    >
+      london
+    </span>
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Build fleet 1`] = `
+<DocumentFragment>
+  <p
+    class="css-8t79ir-StyledP e19maj680"
+  >
+    <span
+      class="action"
+    >
+      build
+    </span>
+    <span
+      class="piece"
+    >
+      fleet
+    </span>
+    in 
+    <span
+      class="source"
+    >
+      london
+    </span>
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Hold army 1`] = `
+<DocumentFragment>
+  <p
+    class="css-8t79ir-StyledP e19maj680"
+  >
+    <span
+      class="piece"
+    >
+      army
+    </span>
+    in 
+    <span
+      class="source"
+    >
+      london
+    </span>
+    to 
+    <span
+      class="action"
+    >
+      hold
+    </span>
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Move army 1`] = `
+<DocumentFragment>
+  <p
+    class="css-8t79ir-StyledP e19maj680"
+  >
+    <span
+      class="piece"
+    >
+      army
+    </span>
+    in 
+    <span
+      class="source"
+    >
+      london
+    </span>
+    to 
+    <span
+      class="action"
+    >
+      move
+    </span>
+    to 
+    <span
+      class="target"
+    >
+      wales
+    </span>
+  </p>
+</DocumentFragment>
+`;

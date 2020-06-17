@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@testing-library/react": "10.2.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.3.0",
     "enzyme-to-json": "^3.4.4",
@@ -13,7 +14,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
-    "jest": "^25.3.0",
+    "jest": "^25.5.4",
     "jest-css-modules": "^2.1.0",
     "prettier": "^2.0.4",
     "prettier-eslint-cli": "^5.0.0",
@@ -63,7 +64,7 @@
     "build": "webpack --config webpack.prod.js && gulp",
     "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
     "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
-    "test": "jest"
+    "test": "jest --watchAll"
   },
   "browserslist": [
     "last 1 version",
