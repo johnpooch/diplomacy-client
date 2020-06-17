@@ -9,7 +9,7 @@ const StyledDiv = styled.nav`
   left: 0;
   right: 0;
 
-  .playing-as {
+  span {
     grid-area: active;
     color: white;
     background: ${colors.base};
@@ -21,14 +21,35 @@ const StyledDiv = styled.nav`
 
 const PlayerStatus = (props) => {
   const { userNationState } = props;
+  let ordersRemainingMessage = null;
+  let orderType = null;
 
   if (!userNationState) {
     return null;
   }
-  const { nation } = userNationState;
+  const {
+    nation,
+    num_orders_remaining: ordersRemaining,
+    num_builds: numBuilds,
+    num_disbands: numDisbands,
+  } = userNationState;
+
+  // Format ordersRemainingMessage
+  if (numBuilds) {
+    orderType = ordersRemaining === 1 ? 'build' : 'builds';
+    ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
+  } else if (numDisbands) {
+    orderType = ordersRemaining === 1 ? 'disband' : 'disbands';
+    ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
+  } else {
+    orderType = ordersRemaining === 1 ? 'order' : 'orders';
+    ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
+  }
+
   return (
     <StyledDiv>
       <span className="playing-as">Playing as {nation.name}</span>
+      <span className="orders-remaining">{ordersRemainingMessage}</span>
     </StyledDiv>
   );
 };

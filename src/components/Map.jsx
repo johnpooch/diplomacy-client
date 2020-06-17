@@ -6,9 +6,6 @@ import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
 import OrderArrow from './OrderArrow';
-import OrderConfirmation from './OrderConfirmation';
-import OrderMessage from './OrderMessage';
-import OrderSelector from './OrderSelector';
 import OrderDialogue from './OrderDialogue';
 import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
@@ -55,6 +52,7 @@ class Map extends React.Component {
     this.resetPan = this.resetPan.bind(this);
     this.resetOrder = this.resetOrder.bind(this);
     this.onClickOrderTypeChoice = this.onClickOrderTypeChoice.bind(this);
+    this.onClickPieceTypeChoice = this.onClickPieceTypeChoice.bind(this);
     this.onClickConfirm = this.onClickConfirm.bind(this);
 
     this.PANNING_THRESHOLD = 5;
@@ -211,13 +209,24 @@ class Map extends React.Component {
     });
   }
 
+  onClickPieceTypeChoice(choice) {
+    const { order } = this.state;
+    console.log(choice);
+    this.setState({
+      order: {
+        ...order,
+        piece_type: choice,
+      },
+    });
+  }
+
   getOrderTypeChoices(source) {
     const { turn } = this.props;
     const { piece, territory } = source;
     const { type: territoryType } = territory;
-    const { type: pieceType } = piece;
     if (turn.phase === 'Order') {
       const options = ['hold', 'move', 'support'];
+      const { type: pieceType } = piece;
       if (pieceType === 'fleet' && territoryType === 'sea') {
         options.push('convoy');
       }
@@ -227,8 +236,7 @@ class Map extends React.Component {
       const options = ['retreat', 'disband'];
       return options;
     }
-    // TODO add build logic
-    return [];
+    return ['build'];
   }
 
   userCanOrder(territoryId) {
@@ -263,7 +271,28 @@ class Map extends React.Component {
       const pieceState = this.getDislodgedPieceInTerritory(territoryId);
       return Boolean(pieceState);
     }
-    return false;
+
+    // Build turn
+    const piece = this.getPieceInTerritory(territoryId);
+    const {
+      num_orders_remaining: ordersRemaining,
+      supply_delta: supplyDelta,
+      build_territories: buildTerritories,
+    } = userNationState;
+    console.log(ordersRemaining);
+    if (piece || !ordersRemaining) {
+      return false;
+    }
+    if (supplyDelta > 0) {
+      console.log('HERE');
+      // player can build
+      return buildTerritories.includes(territoryId);
+    }
+    // player must disband
+    if (!piece) {
+      return false;
+    }
+    return piece.nation === userNationState.nation;
   }
 
   clickTerritory(id) {
@@ -456,6 +485,7 @@ class Map extends React.Component {
         <OrderDialogue
           onClickCancel={this.resetOrder}
           onClickOrderTypeChoice={this.onClickOrderTypeChoice}
+          onClickPieceTypeChoice={this.onClickPieceTypeChoice}
           onClickConfirm={this.onClickConfirm}
           orderTypeChoices={orderTypeChoices}
           order={order}

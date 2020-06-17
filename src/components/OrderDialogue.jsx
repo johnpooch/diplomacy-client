@@ -6,7 +6,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Button, IconButton } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
-import OrderConfirmation from './OrderConfirmation';
 import OrderMessage from './OrderMessage';
 import OrderSelector from './OrderSelector';
 import OrderSummary from './OrderSummary';
@@ -42,11 +41,12 @@ const OrderDialogue = (props) => {
   const {
     onClickCancel,
     onClickOrderTypeChoice,
+    onClickPieceTypeChoice,
     onClickConfirm,
     orderTypeChoices,
     order,
   } = props;
-  const { type, source, aux, target } = order;
+  const { type, source, aux, target, piece_type: pieceType } = order;
 
   const renderOrderSelector = () => {
     if (type || !source) {
@@ -57,6 +57,20 @@ const OrderDialogue = (props) => {
         summary={source}
         choices={orderTypeChoices}
         onClickChoice={onClickOrderTypeChoice}
+      />
+    );
+  };
+
+  const renderPieceTypeSelector = () => {
+    const pieceTypeChoices = ['army', 'fleet'];
+    if (pieceType) {
+      return null;
+    }
+    return (
+      <OrderSelector
+        summary={source}
+        choices={pieceTypeChoices}
+        onClickChoice={onClickPieceTypeChoice}
       />
     );
   };
@@ -96,6 +110,12 @@ const OrderDialogue = (props) => {
         }
         if (!target) {
           return <OrderMessage text="Select a territory to convoy into" />;
+        }
+        return renderOrderConfirmation();
+
+      case 'build':
+        if (!pieceType) {
+          return renderPieceTypeSelector();
         }
         return renderOrderConfirmation();
 

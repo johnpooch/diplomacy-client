@@ -24,9 +24,19 @@ const StyledP = styled.p`
 
 const OrderSummary = (props) => {
   const { order } = props;
-  const { aux, source, target, type } = order;
+  const { aux, source, target, type, piece_type: pieceType } = order;
 
   let orderSummary = null;
+
+  if (type === 'build') {
+    orderSummary = (
+      <StyledP>
+        <span className="action">{type}</span>
+        <span className="piece">{pieceType}</span>
+        in <span className="source">{source.territory.name}</span>
+      </StyledP>
+    );
+  }
 
   if (source.piece) {
     switch (type) {
