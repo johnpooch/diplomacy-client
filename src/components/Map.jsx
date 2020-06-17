@@ -1,4 +1,4 @@
-/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states"] }] */
+/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states", "piece_type"] }] */
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -237,6 +237,20 @@ class Map extends React.Component {
       return options;
     }
     return ['build'];
+  }
+
+  getPieceTypeChoices(source) {
+    const { turn } = this.props;
+    const { territory } = source;
+    const { type: territoryType } = territory;
+    if (turn.phase === 'Build') {
+      const options = ['army'];
+      if (territoryType === 'coastal') {
+        options.push('fleet');
+      }
+      return options;
+    }
+    return [];
   }
 
   userCanOrder(territoryId) {
@@ -481,6 +495,7 @@ class Map extends React.Component {
       }
       const { source } = order;
       const orderTypeChoices = this.getOrderTypeChoices(source);
+      const pieceTypeChoices = this.getPieceTypeChoices(source);
       return (
         <OrderDialogue
           onClickCancel={this.resetOrder}
@@ -488,6 +503,7 @@ class Map extends React.Component {
           onClickPieceTypeChoice={this.onClickPieceTypeChoice}
           onClickConfirm={this.onClickConfirm}
           orderTypeChoices={orderTypeChoices}
+          pieceTypeChoices={pieceTypeChoices}
           order={order}
         />
       );
