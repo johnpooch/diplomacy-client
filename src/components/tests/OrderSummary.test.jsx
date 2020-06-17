@@ -12,6 +12,15 @@ const source = {
   },
 };
 
+const aux = {
+  piece: {
+    type: 'army',
+  },
+  territory: {
+    name: 'york',
+  },
+};
+
 const target = {
   territory: {
     name: 'wales',
@@ -38,7 +47,7 @@ test('Build fleet', () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-test('Hold army', () => {
+test('Hold', () => {
   const order = {
     type: 'hold',
     piece_type: null,
@@ -48,11 +57,46 @@ test('Hold army', () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-test('Move army', () => {
+test('Move', () => {
   const order = {
     type: 'move',
     piece_type: null,
     source,
+    target,
+  };
+  const { asFragment } = render(<OrderSummary order={order} />);
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('Retreat', () => {
+  const order = {
+    type: 'retreat',
+    piece_type: null,
+    source,
+    target,
+  };
+  const { asFragment } = render(<OrderSummary order={order} />);
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('Support', () => {
+  const order = {
+    type: 'support',
+    piece_type: null,
+    source,
+    aux,
+    target,
+  };
+  const { asFragment } = render(<OrderSummary order={order} />);
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('Convoy', () => {
+  const order = {
+    type: 'convoy',
+    piece_type: null,
+    source,
+    aux,
     target,
   };
   const { asFragment } = render(<OrderSummary order={order} />);

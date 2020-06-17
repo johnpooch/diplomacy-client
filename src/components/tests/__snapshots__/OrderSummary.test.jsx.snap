@@ -50,7 +50,44 @@ exports[`Build fleet 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Hold army 1`] = `
+exports[`Convoy 1`] = `
+<DocumentFragment>
+  <p
+    class="css-8t79ir-StyledP e19maj680"
+  >
+    <span
+      class="piece"
+    >
+      army
+    </span>
+    in 
+    <span
+      class="source"
+    >
+      london
+    </span>
+    to 
+    <span
+      class="action"
+    >
+      convoy
+    </span>
+    <span
+      class="aux"
+    >
+      york
+    </span>
+    to 
+    <span
+      class="target"
+    >
+      wales
+    </span>
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Hold 1`] = `
 <DocumentFragment>
   <p
     class="css-8t79ir-StyledP e19maj680"
@@ -76,7 +113,7 @@ exports[`Hold army 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Move army 1`] = `
+exports[`Move 1`] = `
 <DocumentFragment>
   <p
     class="css-8t79ir-StyledP e19maj680"
@@ -97,6 +134,75 @@ exports[`Move army 1`] = `
       class="action"
     >
       move
+    </span>
+    to 
+    <span
+      class="target"
+    >
+      wales
+    </span>
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Retreat 1`] = `
+<DocumentFragment>
+  <p
+    class="css-8t79ir-StyledP e19maj680"
+  >
+    <span
+      class="piece"
+    >
+      army
+    </span>
+    in 
+    <span
+      class="source"
+    >
+      london
+    </span>
+    to 
+    <span
+      class="action"
+    >
+      retreat
+    </span>
+    to 
+    <span
+      class="target"
+    >
+      wales
+    </span>
+  </p>
+</DocumentFragment>
+`;
+
+exports[`Support 1`] = `
+<DocumentFragment>
+  <p
+    class="css-8t79ir-StyledP e19maj680"
+  >
+    <span
+      class="piece"
+    >
+      army
+    </span>
+    in 
+    <span
+      class="source"
+    >
+      london
+    </span>
+    to 
+    <span
+      class="action"
+    >
+      support
+    </span>
+    <span
+      class="aux"
+    >
+      york
     </span>
     to 
     <span
