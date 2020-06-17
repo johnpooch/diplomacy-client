@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import TerritorySummary from './TerritorySummary';
 import { Button, Grid } from '../styles';
 import { spacing } from '../variables';
 
@@ -10,7 +9,7 @@ const StyledGrid = styled(Grid)`
 `;
 
 const OrderSelector = (props) => {
-  const { choices, summary, onClickChoice } = props;
+  const { choices, onClickChoice } = props;
 
   const buttons = [];
   choices.forEach((choice) => {
@@ -23,8 +22,7 @@ const OrderSelector = (props) => {
 
   return (
     <div>
-      <TerritorySummary summary={summary} />
-      <StyledGrid columns={4} columnGap={`${spacing[1]}px`}>
+      <StyledGrid columns={buttons.length} columnGap={`${spacing[1]}px`}>
         {buttons}
       </StyledGrid>
     </div>

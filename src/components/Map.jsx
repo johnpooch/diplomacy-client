@@ -313,6 +313,7 @@ class Map extends React.Component {
     const { order } = this.state;
     const { aux, source, target, type } = order;
     const summary = this.getTerritorySummary(id);
+    console.log(summary);
     const sourceId = Map.getTerritoryIdFromSummary(source);
     switch (type) {
       case 'move':
@@ -356,11 +357,15 @@ class Map extends React.Component {
           return;
         }
         this.setState({
-          orderDialogueActive: true,
           order: {
+            ...order,
             source: summary,
           },
+          orderDialogueActive: true,
         });
+
+        console.log('yo');
+        console.log(order);
         break;
     }
   }

@@ -7,8 +7,9 @@ import { Button, IconButton } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
 import OrderMessage from './OrderMessage';
-import OrderSelector from './OrderSelector';
+import OrderTypeSelector from './OrderTypeSelector';
 import OrderSummary from './OrderSummary';
+import TerritorySummary from './TerritorySummary';
 
 const StyledIconButton = styled(IconButton)`
   float: right;
@@ -37,92 +38,63 @@ const StyledDiv = styled.div`
   cursor: initial;
 `;
 
-const OrderDialogue = (props) => {
+function renderOrderConfirmation(order, callback) {
+  return (
+    <div>
+      <OrderSummary order={order} />
+      <Button onClick={callback}>Confirm</Button>
+    </div>
+  );
+}
+
+// This function is exported for patching in test
+export function renderSubComponent(props) {
+  /* Gets the appropriate sub component based on the state of the order. */
   const {
-    onClickCancel,
+    onClickConfirm,
     onClickOrderTypeChoice,
     onClickPieceTypeChoice,
-    onClickConfirm,
     orderTypeChoices,
+    pieceTypeChoices,
     order,
   } = props;
-  const { type, source, aux, target, piece_type: pieceType } = order;
+  const { type, source, target, piece_type: pieceType } = order;
 
-  const renderOrderSelector = () => {
-    if (type || !source) {
-      return null;
-    }
+  if (!type) {
     return (
-      <OrderSelector
+      <OrderTypeSelector
         summary={source}
         choices={orderTypeChoices}
         onClickChoice={onClickOrderTypeChoice}
       />
     );
-  };
+  }
 
-  const renderPieceTypeSelector = () => {
-    const pieceTypeChoices = ['army', 'fleet'];
-    if (pieceType) {
-      return null;
-    }
-    return (
-      <OrderSelector
-        summary={source}
-        choices={pieceTypeChoices}
-        onClickChoice={onClickPieceTypeChoice}
-      />
-    );
-  };
+  switch (type) {
+    case 'build':
+      if (!pieceType) {
+        return (
+          <OrderTypeSelector
+            summary={source}
+            choices={pieceTypeChoices}
+            onClickChoice={onClickPieceTypeChoice}
+          />
+        );
+      }
+      return renderOrderConfirmation(order, onClickConfirm);
 
-  const renderOrderConfirmation = () => {
-    return (
-      <div>
-        <OrderSummary order={order} />
-        <Button onClick={onClickConfirm}>Confirm</Button>
-      </div>
-    );
-  };
+    case 'hold':
+      return renderOrderConfirmation(order, onClickConfirm);
 
-  const renderOrderMessage = () => {
-    switch (type) {
-      case 'hold':
-        return renderOrderConfirmation();
+    default:
+      if (!target) return <OrderMessage order={order} />;
+      return renderOrderConfirmation(order, onClickConfirm);
+  }
+}
 
-      case 'move':
-        if (!target) {
-          return <OrderMessage text="Select a territory to move into" />;
-        }
-        return renderOrderConfirmation();
-
-      case 'support':
-        if (!aux) {
-          return <OrderMessage text="Select a territory to support from" />;
-        }
-        if (!target) {
-          return <OrderMessage text="Select a territory to support into" />;
-        }
-        return renderOrderConfirmation();
-
-      case 'convoy':
-        if (!aux) {
-          return <OrderMessage text="Select a territory to convoy from" />;
-        }
-        if (!target) {
-          return <OrderMessage text="Select a territory to convoy into" />;
-        }
-        return renderOrderConfirmation();
-
-      case 'build':
-        if (!pieceType) {
-          return renderPieceTypeSelector();
-        }
-        return renderOrderConfirmation();
-
-      default:
-        return null;
-    }
-  };
+const OrderDialogue = (props) => {
+  const { order, onClickCancel } = props;
+  const { source } = order;
 
   return (
     <StyledWrapper>
@@ -130,8 +102,8 @@ const OrderDialogue = (props) => {
         <StyledIconButton onClick={onClickCancel}>
           <FontAwesomeIcon icon={faTimes} />
         </StyledIconButton>
-        {renderOrderSelector()}
-        {renderOrderMessage()}
+        <TerritorySummary summary={source} />
+        {renderSubComponent(props)}
       </StyledDiv>
     </StyledWrapper>
   );

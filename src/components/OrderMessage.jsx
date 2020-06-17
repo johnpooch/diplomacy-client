@@ -1,34 +1,29 @@
 import React from 'react';
-import styled from '@emotion/styled';
 
-import { colors, fontSizes, sizes, spacing } from '../variables';
+function shouldRender(order) {
+  const { type, target } = order;
+  const possibleOrderTypes = ['move', 'retreat', 'support', 'convoy'];
+  return target ? false : possibleOrderTypes.includes(type);
+}
 
-const StyledWrapper = styled.div`
-  position: fixed;
-  bottom: ${spacing[2]}px;
-  left: ${spacing[2]}px;
-  right: ${spacing[2]}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-`;
-
-const StyledDiv = styled.div`
-  background-color: white;
-  color: ${colors.base};
-  padding: ${spacing[4]}px;
-  font-size: ${fontSizes.sans[2]}px;
-  border: ${sizes.border}px solid ${colors.base};
-  border-radius: ${sizes.borderRadius[1]}px;
-  pointer-events: all;
-  text-align: center;
-  cursor: initial;
-`;
+function getPreposition(order) {
+  const { type, aux } = order;
+  if (['move', 'retreat'].includes(type)) {
+    return 'into';
+  }
+  return aux ? 'into' : 'from';
+}
 
 const OrderMessage = (props) => {
-  const { text } = props;
-  return <div>{text}</div>;
+  const { order } = props;
+  const { type } = order;
+  if (!shouldRender(order)) return null;
+  const preposition = getPreposition(order);
+  return (
+    <div>
+      Select a territory to {type} {preposition}.
+    </div>
+  );
 };
 
 export default OrderMessage;
