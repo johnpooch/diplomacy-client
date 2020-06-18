@@ -20,7 +20,7 @@ const StyledDiv = styled.nav`
 `;
 
 const PlayerStatus = (props) => {
-  const { privateNationState } = props;
+  const { game, privateNationState, finalizeOrders } = props;
   let ordersRemainingMessage = null;
   let orderType = null;
 
@@ -29,10 +29,12 @@ const PlayerStatus = (props) => {
     return null;
   }
   const {
+    id,
     nation,
     num_orders_remaining: ordersRemaining,
     num_builds: numBuilds,
     num_disbands: numDisbands,
+    orders_finalized: ordersFinalized,
   } = privateNationState;
 
   // Format ordersRemainingMessage
@@ -47,10 +49,18 @@ const PlayerStatus = (props) => {
     ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
   }
 
+  const onClickToggleFinalize = () => {
+    const { id: gameId } = game;
+    finalizeOrders(id, gameId);
+  };
+
+  const verb = ordersFinalized ? 'Un-finalize' : 'Finalize';
+
   return (
     <StyledDiv>
       <span className="playing-as">Playing as {nation.name}</span>
       <span className="orders-remaining">{ordersRemainingMessage}</span>
+      <button type='submit' onClick={onClickToggleFinalize}>{verb} orders</button>
     </StyledDiv>
   );
 };

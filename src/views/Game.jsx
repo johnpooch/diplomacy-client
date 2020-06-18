@@ -19,6 +19,7 @@ class Game extends React.Component {
     };
     this.refreshPlayerOrders = this.refreshPlayerOrders.bind(this);
     this.refreshPrivateNationState = this.refreshPrivateNationState.bind(this);
+    this.finalizeOrders = this.finalizeOrders.bind(this);
   }
 
   componentDidMount() {
@@ -80,6 +81,17 @@ class Game extends React.Component {
       });
   }
 
+  finalizeOrders(nationStateId, gameId) {
+    const { token } = this.props;
+    this.setState({ isLoaded: false });
+    gameService.toggleFinalizeOrders(token, nationStateId).then(() => {
+      this.refreshPrivateNationState(gameId);
+      this.setState({
+        isLoaded: true,
+      });
+    });
+  }
+
   render() {
     const { isLoaded, game, playerOrders, privateNationState } = this.state;
 
@@ -96,6 +108,7 @@ class Game extends React.Component {
             refreshPlayerOrders={this.refreshPlayerOrders}
             privateNationState={privateNationState}
             refreshPrivateNationState={this.refreshPrivateNationState}
+            finalizeOrders={this.finalizeOrders}
           />
         );
       }

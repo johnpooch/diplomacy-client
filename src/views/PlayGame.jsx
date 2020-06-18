@@ -95,13 +95,17 @@ class Game extends React.Component {
   }
 
   render() {
-    const { privateNationState } = this.props;
+    const { game, privateNationState, finalizeOrders } = this.props;
     return (
       <div>
         {this.renderMap()}
-        <PlayerStatus privateNationState={privateNationState} />
         {this.renderTurnNav()}
         {Game.renderBackButton()}
+        <PlayerStatus
+          game={game}
+          privateNationState={privateNationState}
+          finalizeOrders={finalizeOrders}
+        />
       </div>
     );
   }

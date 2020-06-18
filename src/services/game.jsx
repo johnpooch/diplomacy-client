@@ -96,10 +96,11 @@ function destroyOrder(token, gameId, orderId) {
   return fetch(url, options);
 }
 
-function toggleFinalizeOrders(token) {
+function toggleFinalizeOrders(token, nationStateId) {
   const headers = getHeaders(token);
-  const options = { method: 'GET', headers };
-  return fetch(API.FINALIZEORDERSURL, options).then(handleResponse);
+  const options = { method: 'PUT', headers };
+  const url = API.FINALIZEORDERSURL.replace('<int:pk>', nationStateId);
+  return fetch(url, options).then(handleResponse);
 }
 
 const gameService = {

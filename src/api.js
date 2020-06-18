@@ -17,8 +17,7 @@ export const LISTORDERSURL = `${serviceURI}game/<int:game>/orders`;
 
 export const RETRIEVEPRIVATENATIONSTATE = `${serviceURI}game/<int:game>/nation-state`;
 
-export const FINALIZEORDERSURL = `${serviceURI}game/<int:game>/finalize`;
-export const UNFINALIZEORDERSURL = `${serviceURI}game/<int:game>/unfinalize`;
+export const FINALIZEORDERSURL = `${serviceURI}game/finalize/<int:pk>`;
 
 // Auth
 export const LOGINURL = `${authURL}login`;
