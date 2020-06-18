@@ -11,6 +11,7 @@ export const CREATEGAMEURL = `${serviceURI}games/create`;
 export const GAMESTATEURL = `${serviceURI}game/<int:game>`;
 export const JOINGAMEURL = `${serviceURI}game/<int:game>/join`;
 export const CREATEORDERURL = `${serviceURI}game/<int:game>/order`;
+export const LISTORDERSURL = `${serviceURI}game/<int:game>/orders`;
 export const FINALIZEORDERSURL = `${serviceURI}game/<int:game>/finalize`;
 export const UNFINALIZEORDERSURL = `${serviceURI}game/<int:game>/unfinalize`;
 

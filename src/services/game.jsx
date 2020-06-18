@@ -27,6 +27,14 @@ function getGame(token, id) {
   return fetch(url, options).then(handleResponse);
 }
 
+function listPlayerOrders(token, id) {
+  /* Get all of the orders that a player has created for the current turn */
+  const headers = getHeaders(token);
+  const url = API.LISTORDERSURL.replace('<int:game>', id);
+  const options = { method: 'GET', headers };
+  return fetch(url, options).then(handleResponse);
+}
+
 function getGames(token, filters) {
   const headers = getHeaders(token);
   const options = { method: 'GET', headers };
@@ -84,6 +92,7 @@ const gameService = {
   getCreateGameForm,
   create,
   createOrder,
+  listPlayerOrders,
   toggleFinalizeOrders,
 };
 

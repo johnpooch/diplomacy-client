@@ -56,8 +56,15 @@ class Game extends React.Component {
 
   renderMap() {
     const { activeTurn } = this.state;
-    const { game } = this.props;
-    return <Map game={game} turn={activeTurn} />;
+    const { game, playerOrders, refreshPlayerOrders } = this.props;
+    return (
+      <Map
+        game={game}
+        turn={activeTurn}
+        playerOrders={playerOrders}
+        refreshPlayerOrders={refreshPlayerOrders}
+      />
+    );
   }
 
   renderTurnNav() {

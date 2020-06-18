@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Error from './Error';
 import JoinGame from './JoinGame';
@@ -13,21 +14,25 @@ class Game extends React.Component {
 
     this.state = {
       isLoaded: false,
+      playerOrders: null,
     };
+    this.refreshPlayerOrders = this.refreshPlayerOrders.bind(this);
   }
 
   componentDidMount() {
     const { match } = this.props;
-    this.getGame(match.params.id);
+    this.getGameAndOrders(match.params.id);
   }
 
-  getGame(id) {
+  getGameAndOrders(id) {
     const { token } = this.props;
-    gameService
-      .getGame(token, id)
-      .then((game) => {
+    const fetchGame = gameService.getGame(token, id);
+    const fetchOrders = gameService.listPlayerOrders(token, id);
+    Promise.all([fetchGame, fetchOrders])
+      .then(([game, playerOrders]) => {
         this.setState({
           game,
+          playerOrders,
           isLoaded: true,
         });
       })
@@ -48,8 +53,17 @@ class Game extends React.Component {
     return null;
   }
 
+  refreshPlayerOrders(id) {
+    const { token } = this.props;
+    gameService.listPlayerOrders(token, id).then((playerOrders) => {
+      this.setState({
+        playerOrders,
+      });
+    });
+  }
+
   render() {
-    const { isLoaded, game } = this.state;
+    const { isLoaded, game, playerOrders } = this.state;
 
     if (isLoaded) {
       if (!game) return <Error text="Game not found" />;
@@ -57,7 +71,13 @@ class Game extends React.Component {
       const { status } = game;
       if (status === 'active') {
         // TODO handle already joined
-        return <PlayGame game={game} />;
+        return (
+          <PlayGame
+            game={game}
+            playerOrders={playerOrders}
+            refreshPlayerOrders={this.refreshPlayerOrders}
+          />
+        );
       }
     }
 
@@ -65,4 +85,11 @@ class Game extends React.Component {
   }
 }
 
-export default withRouter(Game);
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+    token: state.login.token,
+  };
+};
+
+export default connect(mapStateToProps, null)(withRouter(Game));
