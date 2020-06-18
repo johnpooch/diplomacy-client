@@ -23,7 +23,7 @@ class BrowseGames extends React.Component {
 
   getGamesAndChoices() {
     const { token } = this.props;
-    const fetchGames = gameService.get(token);
+    const fetchGames = gameService.getGames(token);
     const fetchChoices = gameService.getChoices();
     Promise.all([fetchGames, fetchChoices])
       .then(([games, choices]) => {

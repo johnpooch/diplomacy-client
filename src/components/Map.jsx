@@ -14,6 +14,8 @@ import Tooltip from './Tooltip';
 import { getObjectByKey } from '../utils';
 import { colors } from '../variables';
 
+import gameService from '../services/game';
+
 const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
@@ -245,11 +247,15 @@ class Map extends React.Component {
     // Build - source, target_coast=None
     // Disband - source
     const { order } = this.state;
-    const { type, aux, source, target } = order;
-    const auxId = Map.getTerritoryIdFromSummary(aux);
-    const sourceId = Map.getTerritoryIdFromSummary(source);
-    const targetId = Map.getTerritoryIdFromSummary(target);
-    console.log('order:', type, sourceId, auxId, targetId);
+    const { game, token } = this.props;
+    const gameId = game.id;
+    let { aux, source, target } = order;
+    const { type, pieceType } = order;
+    aux = Map.getTerritoryIdFromSummary(aux);
+    source = Map.getTerritoryIdFromSummary(source);
+    target = Map.getTerritoryIdFromSummary(target);
+    const data = { type, source, target, aux, pieceType };
+    gameService.createOrder(token, gameId, data);
     this.resetOrder();
   }
 
@@ -576,6 +582,7 @@ class Map extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.login.user,
+    token: state.login.token,
   };
 };
 

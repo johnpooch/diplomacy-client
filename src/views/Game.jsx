@@ -5,6 +5,7 @@ import Error from './Error';
 import JoinGame from './JoinGame';
 import PlayGame from './PlayGame';
 import * as API from '../api';
+import gameService from '../services/game';
 
 class Game extends React.Component {
   constructor(props) {
@@ -20,22 +21,11 @@ class Game extends React.Component {
     this.getGame(match.params.id);
   }
 
-  // TODO move to service
   getGame(id) {
-    const { headers } = this.props;
-    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);
-    fetch(GAMESTATEURL, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        return null;
-      })
-      .then((json) => {
-        const game = json;
+    const { token } = this.props;
+    gameService
+      .getGame(token, id)
+      .then((game) => {
         this.setState({
           game,
           isLoaded: true,

@@ -9,17 +9,25 @@ function getHeaders(token = null) {
 }
 
 function handleResponse(response) {
+  console.log(response);
+  if (!response.ok) {
+    throw new Error('Failed to connect to service');
+  }
   return response.json().then((json) => {
-    const data = json;
-    if (!response.ok) {
-      throw new Error('Failed to connect to service');
-    }
     // TODO if response is 401 token may have expired - log out?
-    return data;
+    console.log(json);
+    return json;
   });
 }
 
-function get(token, filters) {
+function getGame(token, id) {
+  const headers = getHeaders(token);
+  const url = API.GAMESTATEURL.replace('<int:game>', id);
+  const options = { method: 'GET', headers };
+  return fetch(url, options).then(handleResponse);
+}
+
+function getGames(token, filters) {
   const headers = getHeaders(token);
   const options = { method: 'GET', headers };
   let url = API.ALLGAMESURL;
@@ -52,14 +60,15 @@ function create(token, data) {
   return fetch(API.CREATEGAMEURL, options).then(handleResponse);
 }
 
-function createOrder(token, data) {
+function createOrder(token, gameId, data) {
+  const url = API.CREATEORDERURL.replace('<int:game>', gameId);
   const headers = getHeaders(token);
   const options = {
     method: 'POST',
     body: JSON.stringify(data),
     headers,
   };
-  return fetch(API.CREATEORDERURL, options).then(handleResponse);
+  return fetch(url, options).then(handleResponse);
 }
 
 function toggleFinalizeOrders(token) {
@@ -69,7 +78,8 @@ function toggleFinalizeOrders(token) {
 }
 
 const gameService = {
-  get,
+  getGame,
+  getGames,
   getChoices,
   getCreateGameForm,
   create,
