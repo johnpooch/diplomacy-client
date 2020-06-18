@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
+import AuxArrow from './AuxArrow';
 import BuildOrder from './BuildOrder';
-import OrderArrow from './OrderArrow';
+import TargetArrow from './TargetArrow';
 import OrderDialogue from './OrderDialogue';
 import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
@@ -480,12 +481,15 @@ class Map extends React.Component {
     const elements = [];
     orders.forEach((order) => {
       const { id, nation, source, target, type } = order;
+      if (type === 'hold') {
+        return;
+      }
       const sourceData = getObjectByKey(source, territory_data, 'territory');
       const { piece_x: x1, piece_y: y1 } = sourceData;
       const targetData = getObjectByKey(target, territory_data, 'territory');
       const { piece_x: x2, piece_y: y2 } = targetData;
       elements.push(
-        <OrderArrow
+        <TargetArrow
           key={id}
           id={id}
           type={type}
@@ -505,11 +509,47 @@ class Map extends React.Component {
     const dummy = this;
     const elements = [];
     orders.forEach((order) => {
-      const { id, source, type } = order;
+      const { id, nation, source, target, aux, type } = order;
       const sourceData = getObjectByKey(source, territory_data, 'territory');
       const { piece_x: x, piece_y: y } = sourceData;
       if (type === 'build') {
         elements.push(<BuildOrder key={id} order={order} x={x} y={y} />);
+      }
+      if (target) {
+        const { piece_x: x1, piece_y: y1 } = sourceData;
+        const targetData = getObjectByKey(target, territory_data, 'territory');
+        const { piece_x: x2, piece_y: y2 } = targetData;
+        elements.push(
+          <TargetArrow
+            key={`move-${id}`}
+            id={id}
+            type={type}
+            nation={nation}
+            x1={x1}
+            x2={x2}
+            y1={y1}
+            y2={y2}
+            offsetSize={26}
+          />
+        );
+      }
+      if (aux) {
+        const { piece_x: x1, piece_y: y1 } = sourceData;
+        const auxData = getObjectByKey(aux, territory_data, 'territory');
+        const { piece_x: x2, piece_y: y2 } = auxData;
+        elements.push(
+          <AuxArrow
+            key={`aux-${id}`}
+            id={id}
+            type={type}
+            nation={nation}
+            x1={x1}
+            x2={x2}
+            y1={y1}
+            y2={y2}
+            offsetSize={26}
+          />
+        );
       }
     });
     return elements;

@@ -15,7 +15,6 @@ function handleResponse(response) {
   }
   return response.json().then((json) => {
     // TODO if response is 401 token may have expired - log out?
-    console.log(json);
     return json;
   });
 }

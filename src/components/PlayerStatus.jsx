@@ -24,7 +24,8 @@ const PlayerStatus = (props) => {
   let ordersRemainingMessage = null;
   let orderType = null;
 
-  if (!privateNationState) {
+  // If not playing
+  if (Object.keys(privateNationState).length === 0) {
     return null;
   }
   const {
