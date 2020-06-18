@@ -475,38 +475,7 @@ class Map extends React.Component {
     return <g>{elements}</g>;
   }
 
-  renderOrderArrows(territory_data) {
-    const { turn } = this.props;
-    const { orders } = turn;
-    const elements = [];
-    orders.forEach((order) => {
-      const { id, nation, source, target, type } = order;
-      if (type === 'hold') {
-        return;
-      }
-      const sourceData = getObjectByKey(source, territory_data, 'territory');
-      const { piece_x: x1, piece_y: y1 } = sourceData;
-      const targetData = getObjectByKey(target, territory_data, 'territory');
-      const { piece_x: x2, piece_y: y2 } = targetData;
-      elements.push(
-        <TargetArrow
-          key={id}
-          id={id}
-          type={type}
-          nation={nation}
-          x1={x1}
-          x2={x2}
-          y1={y1}
-          y2={y2}
-          offsetSize={26}
-        />
-      );
-    });
-    return <g>{elements}</g>;
-  }
-
   renderOrders(orders, territory_data) {
-    const dummy = this;
     const elements = [];
     orders.forEach((order) => {
       const { id, nation, source, target, aux, type } = order;
@@ -593,6 +562,12 @@ class Map extends React.Component {
       );
     };
 
+    let { orders } = turn;
+    if (turn === this.getCurrentTurn()) {
+      orders = playerOrders;
+    }
+    const orderArrows = this.renderOrders(orders, territory_data);
+
     return (
       <StyledDiv
         panning={panning}
@@ -642,8 +617,7 @@ class Map extends React.Component {
             fill={colors.base}
           />
           {this.renderTerritories(territory_data)}
-          {this.renderOrderArrows(territory_data)}
-          {this.renderOrders(playerOrders, territory_data)}
+          {orderArrows}
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}

@@ -56,7 +56,7 @@ const AuxArrow = (props) => {
       <g>
         <StyledCircle r={circleSize} cx={cx} cy={cy} />
         <text x={cx} y={cy} style={letterStyle}>
-          S
+          {type.charAt(0).toUpperCase()}
         </text>
       </g>
     </g>
