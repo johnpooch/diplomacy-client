@@ -57,6 +57,7 @@ class Map extends React.Component {
     this.onClickOrderTypeChoice = this.onClickOrderTypeChoice.bind(this);
     this.onClickPieceTypeChoice = this.onClickPieceTypeChoice.bind(this);
     this.onClickConfirm = this.onClickConfirm.bind(this);
+    this.onClickCancelOrder = this.onClickCancelOrder.bind(this);
 
     this.PANNING_THRESHOLD = 5;
   }
@@ -191,6 +192,16 @@ class Map extends React.Component {
     this.postOrder();
   }
 
+  onClickCancelOrder(orderId) {
+    const { game, token, refreshPlayerOrders, refreshPrivateNationState } = this.props;
+    const { id: gameId } = game;
+    gameService.destroyOrder(token, gameId, orderId).then(() => {
+      refreshPlayerOrders(gameId);
+      refreshPrivateNationState(gameId);
+    });
+    this.resetOrder();
+  }
+
   getPieceTypeChoices(source) {
     const { turn } = this.props;
     const { territory } = source;
@@ -250,7 +261,7 @@ class Map extends React.Component {
     // Build - source, target_coast=None
     // Disband - source
     const { order } = this.state;
-    const { game, token, refreshPlayerOrders } = this.props;
+    const { game, token, refreshPlayerOrders, refreshPrivateNationState } = this.props;
     const { id: gameId } = game;
     let { aux, source, target } = order;
     const { type, piece_type } = order;
@@ -258,23 +269,21 @@ class Map extends React.Component {
     source = Map.getTerritoryIdFromSummary(source);
     target = Map.getTerritoryIdFromSummary(target);
     const data = { type, source, target, aux, piece_type };
-    console.log('YARHGGG');
-    console.log(gameId);
     gameService.createOrder(token, gameId, data).then(() => {
       refreshPlayerOrders(gameId);
+      refreshPrivateNationState(gameId);
     });
     this.resetOrder();
   }
 
-  hasOrder(territoryId) {
+  getOrder(territoryId) {
     const { playerOrders } = this.props;
-    const territory = getObjectByKey(territoryId, playerOrders, 'source');
-    return Boolean(territory);
+    return getObjectByKey(territoryId, playerOrders, 'source');
   }
 
   userCanOrder(territoryId) {
     /* Determine whether a user can create an order for the given territory */
-    const { user, turn } = this.props;
+    const { user, turn, privateNationState } = this.props;
     if (!user) {
       return false;
     }
@@ -311,14 +320,14 @@ class Map extends React.Component {
       num_orders_remaining: ordersRemaining,
       supply_delta: supplyDelta,
       build_territories: buildTerritories,
-    } = userNationState;
+    } = privateNationState;
     if (piece) {
       return false;
     }
     if (supplyDelta > 0) {
       // player can build
       if (!ordersRemaining) {
-        return this.hasOrder(territoryId);
+        return Boolean(this.getOrder(territoryId));
       }
       return buildTerritories.includes(territoryId);
     }
@@ -326,7 +335,7 @@ class Map extends React.Component {
     if (!piece) {
       return false;
     }
-    return piece.nation === userNationState.nation;
+    return false;
   }
 
   clickTerritory(id) {
@@ -526,15 +535,20 @@ class Map extends React.Component {
       const { source } = order;
       const orderTypeChoices = this.getOrderTypeChoices(source);
       const pieceTypeChoices = this.getPieceTypeChoices(source);
+      const { territory } = source;
+      const { id: territoryId } = territory;
+      const existingOrder = this.getOrder(territoryId);
       return (
         <OrderDialogue
           onClickCancel={this.resetOrder}
           onClickOrderTypeChoice={this.onClickOrderTypeChoice}
           onClickPieceTypeChoice={this.onClickPieceTypeChoice}
           onClickConfirm={this.onClickConfirm}
+          onClickCancelOrder={this.onClickCancelOrder}
           orderTypeChoices={orderTypeChoices}
           pieceTypeChoices={pieceTypeChoices}
           order={order}
+          existingOrder={existingOrder}
         />
       );
     };

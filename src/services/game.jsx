@@ -35,6 +35,13 @@ function listPlayerOrders(token, id) {
   return fetch(url, options).then(handleResponse);
 }
 
+function retrievePrivateNationState(token, id) {
+  const headers = getHeaders(token);
+  const url = API.RETRIEVEPRIVATENATIONSTATE.replace('<int:game>', id);
+  const options = { method: 'GET', headers };
+  return fetch(url, options).then(handleResponse);
+}
+
 function getGames(token, filters) {
   const headers = getHeaders(token);
   const options = { method: 'GET', headers };
@@ -79,6 +86,17 @@ function createOrder(token, gameId, data) {
   return fetch(url, options).then(handleResponse);
 }
 
+function destroyOrder(token, gameId, orderId) {
+  let url = API.DESTROYORDERURL.replace('<int:game>', gameId);
+  url = url.replace('<int:pk>', orderId);
+  const headers = getHeaders(token);
+  const options = {
+    method: 'DELETE',
+    headers,
+  };
+  return fetch(url, options);
+}
+
 function toggleFinalizeOrders(token) {
   const headers = getHeaders(token);
   const options = { method: 'GET', headers };
@@ -92,7 +110,9 @@ const gameService = {
   getCreateGameForm,
   create,
   createOrder,
+  destroyOrder,
   listPlayerOrders,
+  retrievePrivateNationState,
   toggleFinalizeOrders,
 };
 

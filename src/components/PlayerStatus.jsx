@@ -20,11 +20,11 @@ const StyledDiv = styled.nav`
 `;
 
 const PlayerStatus = (props) => {
-  const { userNationState } = props;
+  const { privateNationState } = props;
   let ordersRemainingMessage = null;
   let orderType = null;
 
-  if (!userNationState) {
+  if (!privateNationState) {
     return null;
   }
   const {
@@ -32,7 +32,7 @@ const PlayerStatus = (props) => {
     num_orders_remaining: ordersRemaining,
     num_builds: numBuilds,
     num_disbands: numDisbands,
-  } = userNationState;
+  } = privateNationState;
 
   // Format ordersRemainingMessage
   if (numBuilds) {

@@ -25,21 +25,17 @@ class Game extends React.Component {
     super(props);
     this.state = {
       activeTurn: null,
-      userNationState: null,
     };
   }
 
   componentDidMount() {
-    const { game, user } = this.props;
+    const { game } = this.props;
     const { turns } = game;
     const currentTurnIndex = turns.findIndex(
       (obj) => obj.current_turn === true
     );
     const activeTurn = turns[currentTurnIndex];
-    const userNationState = activeTurn.nation_states.find((nationState) => {
-      return nationState.user.id === user.id;
-    });
-    this.setState({ activeTurn, userNationState });
+    this.setState({ activeTurn });
   }
 
   getTurn(id) {
@@ -56,13 +52,21 @@ class Game extends React.Component {
 
   renderMap() {
     const { activeTurn } = this.state;
-    const { game, playerOrders, refreshPlayerOrders } = this.props;
+    const {
+      game,
+      playerOrders,
+      refreshPlayerOrders,
+      refreshPrivateNationState,
+      privateNationState,
+    } = this.props;
     return (
       <Map
         game={game}
         turn={activeTurn}
         playerOrders={playerOrders}
         refreshPlayerOrders={refreshPlayerOrders}
+        privateNationState={privateNationState}
+        refreshPrivateNationState={refreshPrivateNationState}
       />
     );
   }
@@ -91,11 +95,11 @@ class Game extends React.Component {
   }
 
   render() {
-    const { userNationState } = this.state;
+    const { privateNationState } = this.props;
     return (
       <div>
         {this.renderMap()}
-        <PlayerStatus userNationState={userNationState} />
+        <PlayerStatus privateNationState={privateNationState} />
         {this.renderTurnNav()}
         {Game.renderBackButton()}
       </div>

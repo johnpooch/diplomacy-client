@@ -15,8 +15,10 @@ class Game extends React.Component {
     this.state = {
       isLoaded: false,
       playerOrders: null,
+      privateNationState: null,
     };
     this.refreshPlayerOrders = this.refreshPlayerOrders.bind(this);
+    this.refreshPrivateNationState = this.refreshPrivateNationState.bind(this);
   }
 
   componentDidMount() {
@@ -28,11 +30,16 @@ class Game extends React.Component {
     const { token } = this.props;
     const fetchGame = gameService.getGame(token, id);
     const fetchOrders = gameService.listPlayerOrders(token, id);
-    Promise.all([fetchGame, fetchOrders])
-      .then(([game, playerOrders]) => {
+    const fetchPrivateNationState = gameService.retrievePrivateNationState(
+      token,
+      id
+    );
+    Promise.all([fetchGame, fetchOrders, fetchPrivateNationState])
+      .then(([game, playerOrders, privateNationState]) => {
         this.setState({
           game,
           playerOrders,
+          privateNationState,
           isLoaded: true,
         });
       })
@@ -62,8 +69,19 @@ class Game extends React.Component {
     });
   }
 
+  refreshPrivateNationState(id) {
+    const { token } = this.props;
+    gameService
+      .retrievePrivateNationState(token, id)
+      .then((privateNationState) => {
+        this.setState({
+          privateNationState,
+        });
+      });
+  }
+
   render() {
-    const { isLoaded, game, playerOrders } = this.state;
+    const { isLoaded, game, playerOrders, privateNationState } = this.state;
 
     if (isLoaded) {
       if (!game) return <Error text="Game not found" />;
@@ -76,6 +94,8 @@ class Game extends React.Component {
             game={game}
             playerOrders={playerOrders}
             refreshPlayerOrders={this.refreshPlayerOrders}
+            privateNationState={privateNationState}
+            refreshPrivateNationState={this.refreshPrivateNationState}
           />
         );
       }

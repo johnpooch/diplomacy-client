@@ -13,9 +13,11 @@ const OrderSelector = (props) => {
 
   const buttons = [];
   choices.forEach((choice) => {
+    const capitalizedChoice =
+      choice.charAt(0).toUpperCase() + choice.substr(1).toLowerCase();
     buttons.push(
       <Button key={choice} onClick={() => onClickChoice(choice)}>
-        {choice}
+        {capitalizedChoice}
       </Button>
     );
   });

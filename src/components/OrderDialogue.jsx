@@ -52,13 +52,31 @@ export function renderSubComponent(props) {
   /* Gets the appropriate sub component based on the state of the order. */
   const {
     onClickConfirm,
+    onClickCancelOrder,
     onClickOrderTypeChoice,
     onClickPieceTypeChoice,
     orderTypeChoices,
     pieceTypeChoices,
     order,
+    existingOrder,
   } = props;
   const { type, source, target, piece_type: pieceType } = order;
+
+  const cancelOrder = () => {
+    const { id } = existingOrder;
+    return onClickCancelOrder(id);
+  };
+
+  if (existingOrder) {
+    const choices = ['cancel'];
+    return (
+      <OrderTypeSelector
+        summary={source}
+        choices={choices}
+        onClickChoice={cancelOrder}
+      />
+    );
+  }
 
   if (!type) {
     return (
