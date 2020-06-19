@@ -42,6 +42,7 @@ const Header = () => {
     <StyledHeader>
       <StyledDiv>
         <StyledNavLink to="/">Diplomacy</StyledNavLink>
+        <StyledNavLink to="/create-game">Create new game</StyledNavLink>
         <UserAccount />
       </StyledDiv>
     </StyledHeader>

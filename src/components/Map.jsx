@@ -194,11 +194,10 @@ class Map extends React.Component {
   }
 
   onClickCancelOrder(orderId) {
-    const { game, token, refreshPlayerOrders, refreshPrivateNationState } = this.props;
+    const { game, token, getPrivate } = this.props;
     const { id: gameId } = game;
     gameService.destroyOrder(token, gameId, orderId).then(() => {
-      refreshPlayerOrders(gameId);
-      refreshPrivateNationState(gameId);
+      getPrivate(gameId);
     });
     this.resetOrder();
   }
@@ -262,7 +261,7 @@ class Map extends React.Component {
     // Build - source, target_coast=None
     // Disband - source
     const { order } = this.state;
-    const { game, token, refreshPlayerOrders, refreshPrivateNationState } = this.props;
+    const { game, token, getPrivate } = this.props;
     const { id: gameId } = game;
     let { aux, source, target } = order;
     const { type, piece_type } = order;
@@ -271,8 +270,7 @@ class Map extends React.Component {
     target = Map.getTerritoryIdFromSummary(target);
     const data = { type, source, target, aux, piece_type };
     gameService.createOrder(token, gameId, data).then(() => {
-      refreshPlayerOrders(gameId);
-      refreshPrivateNationState(gameId);
+      getPrivate(gameId);
     });
     this.resetOrder();
   }

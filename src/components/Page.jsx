@@ -9,6 +9,7 @@ const Page = (props) => {
   const { children, headingText, isLoaded } = props;
 
   const renderPageWrapper = () => {
+    console.log(isLoaded);
     if (!isLoaded) return <Loading />;
     return (
       <PageWrapper>

@@ -2,45 +2,37 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Loading from '../components/Loading';
 import Error from './Error';
-import JoinGame from './JoinGame';
+import PreGame from './PreGame';
 import PlayGame from './PlayGame';
-import * as API from '../api';
 import gameService from '../services/game';
+import alertActions from '../store/actions/alerts';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isLoaded: false,
       playerOrders: null,
       privateNationState: null,
     };
-    this.refreshPlayerOrders = this.refreshPlayerOrders.bind(this);
-    this.refreshPrivateNationState = this.refreshPrivateNationState.bind(this);
+    this.toggleJoinGame = this.toggleJoinGame.bind(this);
     this.finalizeOrders = this.finalizeOrders.bind(this);
   }
 
   componentDidMount() {
     const { match } = this.props;
-    this.getGameAndOrders(match.params.id);
+    this.getGame(match.params.id);
   }
 
-  getGameAndOrders(id) {
+  getGame(id) {
     const { token } = this.props;
-    const fetchGame = gameService.getGame(token, id);
-    const fetchOrders = gameService.listPlayerOrders(token, id);
-    const fetchPrivateNationState = gameService.retrievePrivateNationState(
-      token,
-      id
-    );
-    Promise.all([fetchGame, fetchOrders, fetchPrivateNationState])
-      .then(([game, playerOrders, privateNationState]) => {
+    gameService
+      .getGame(token, id)
+      .then((game) => {
         this.setState({
           game,
-          playerOrders,
-          privateNationState,
           isLoaded: true,
         });
       })
@@ -61,24 +53,21 @@ class Game extends React.Component {
     return null;
   }
 
-  refreshPlayerOrders(id) {
-    const { token } = this.props;
-    gameService.listPlayerOrders(token, id).then((playerOrders) => {
-      this.setState({
-        playerOrders,
-      });
-    });
-  }
+  toggleJoinGame() {
+    this.setState({ isLoaded: false });
+    const { user, token, onJoin, onLeave } = this.props;
+    const { game } = this.state;
+    const { id, name } = game;
 
-  refreshPrivateNationState(id) {
-    const { token } = this.props;
-    gameService
-      .retrievePrivateNationState(token, id)
-      .then((privateNationState) => {
-        this.setState({
-          privateNationState,
-        });
-      });
+    const players = game ? game.participants : [];
+    const playerIds = players.map((p) => p.id);
+    const joining = !playerIds.includes(user.id);
+
+    gameService.joinGame(token, id).then(() => {
+      const alertFunction = joining ? onJoin : onLeave;
+      alertFunction(name);
+      this.getGame(id);
+    });
   }
 
   finalizeOrders(nationStateId, gameId) {
@@ -94,27 +83,34 @@ class Game extends React.Component {
 
   render() {
     const { isLoaded, game, playerOrders, privateNationState } = this.state;
+    const { user } = this.props;
 
-    if (isLoaded) {
-      if (!game) return <Error text="Game not found" />;
-
-      const { status } = game;
-      if (status === 'active') {
-        // TODO handle already joined
-        return (
-          <PlayGame
-            game={game}
-            playerOrders={playerOrders}
-            refreshPlayerOrders={this.refreshPlayerOrders}
-            privateNationState={privateNationState}
-            refreshPrivateNationState={this.refreshPrivateNationState}
-            finalizeOrders={this.finalizeOrders}
-          />
-        );
-      }
+    if (!isLoaded) {
+      return <Loading />;
     }
+    if (!game) return <Error text="Game not found" />;
 
-    return <JoinGame game={game} isLoaded={isLoaded} />;
+    const { status } = game;
+    if (status === 'active') {
+      return (
+        <PlayGame
+          game={game}
+          playerOrders={playerOrders}
+          refreshPlayerOrders={this.refreshPlayerOrders}
+          privateNationState={privateNationState}
+          refreshPrivateNationState={this.refreshPrivateNationState}
+          finalizeOrders={this.finalizeOrders}
+        />
+      );
+    }
+    return (
+      <PreGame
+        game={game}
+        isLoaded={isLoaded}
+        toggleJoinGame={this.toggleJoinGame}
+        user={user}
+      />
+    );
   }
 }
 
@@ -125,4 +121,23 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withRouter(Game));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onJoin: (name) =>
+      dispatch(
+        alertActions.add({
+          message: `Joined "${name}"! The game will begin once all players have joined.`,
+          category: 'success',
+        })
+      ),
+    onLeave: (name) =>
+      dispatch(
+        alertActions.add({
+          message: `You have left "${name}".`,
+          category: 'success',
+        })
+      ),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

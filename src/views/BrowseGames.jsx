@@ -48,21 +48,10 @@ class BrowseGames extends React.Component {
     });
   }
 
-  getHeadingText() {
-    const { games } = this.state;
-    let text = 'No games available';
-    if (games && games.length === 1) {
-      text = '1 game available';
-    } else if (games && games.length > 1) {
-      text = `${games.length} games available`;
-    }
-    return text;
-  }
-
   render() {
     const { choices, games, isLoaded } = this.state;
     return (
-      <Page headingText={this.getHeadingText()} isLoaded={isLoaded}>
+      <Page headingText={null} isLoaded={isLoaded}>
         <GameFilters choices={choices} callback={this.getFilteredGames} />
         <GameSummaryList games={games} />
       </Page>

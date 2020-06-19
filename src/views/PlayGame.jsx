@@ -5,9 +5,11 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import Loading from '../components/Loading';
 import Map from '../components/Map';
 import PlayerStatus from '../components/PlayerStatus';
 import TurnNav from '../components/TurnNav';
+import gameService from '../services/game';
 import { IconButton } from '../styles';
 import { spacing } from '../variables';
 import * as Utils from '../utils';
@@ -24,8 +26,12 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoaded: false,
       activeTurn: null,
+      playerOrders: null,
+      privateNationState: null,
     };
+    this.getPrivate = this.getPrivate.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +42,33 @@ class Game extends React.Component {
     );
     const activeTurn = turns[currentTurnIndex];
     this.setState({ activeTurn });
+    const { id } = game;
+    this.getPrivate(id);
+  }
+
+  getPrivate(id) {
+    /* Get the player's current orders and nation state. This should not be
+     * seen by other players. */
+    this.setState({ isLoaded: false });
+    const { token } = this.props;
+    const fetchOrders = gameService.listPlayerOrders(token, id);
+    const fetchPrivateNationState = gameService.retrievePrivateNationState(
+      token,
+      id
+    );
+    Promise.all([fetchOrders, fetchPrivateNationState])
+      .then(([playerOrders, privateNationState]) => {
+        this.setState({
+          playerOrders,
+          privateNationState,
+          isLoaded: true,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          isLoaded: true,
+        });
+      });
   }
 
   getTurn(id) {
@@ -50,57 +83,35 @@ class Game extends React.Component {
     });
   }
 
-  renderMap() {
-    const { activeTurn } = this.state;
+  render() {
     const {
-      game,
+      activeTurn,
+      isLoaded,
       playerOrders,
-      refreshPlayerOrders,
-      refreshPrivateNationState,
       privateNationState,
-    } = this.props;
+    } = this.state;
+    const { game, finalizeOrders } = this.props;
+    if (!isLoaded) {
+      return <Loading />;
+    }
     return (
-      <Map
-        game={game}
-        turn={activeTurn}
-        playerOrders={playerOrders}
-        refreshPlayerOrders={refreshPlayerOrders}
-        privateNationState={privateNationState}
-        refreshPrivateNationState={refreshPrivateNationState}
-      />
-    );
-  }
-
-  renderTurnNav() {
-    const { activeTurn } = this.state;
-    if (activeTurn) {
-      return (
+      <div>
+        <Map
+          game={game}
+          turn={activeTurn}
+          playerOrders={playerOrders}
+          privateNationState={privateNationState}
+          getPrivate={this.getPrivate}
+        />
         <TurnNav
           turn={activeTurn}
           _click={(id) => {
             this.setTurn(id);
           }}
         />
-      );
-    }
-    return null;
-  }
-
-  static renderBackButton() {
-    return (
-      <StyledNavLink to="/">
-        <FontAwesomeIcon icon={faTimes} />
-      </StyledNavLink>
-    );
-  }
-
-  render() {
-    const { game, privateNationState, finalizeOrders } = this.props;
-    return (
-      <div>
-        {this.renderMap()}
-        {this.renderTurnNav()}
-        {Game.renderBackButton()}
+        <StyledNavLink to="/">
+          <FontAwesomeIcon icon={faTimes} />
+        </StyledNavLink>
         <PlayerStatus
           game={game}
           privateNationState={privateNationState}

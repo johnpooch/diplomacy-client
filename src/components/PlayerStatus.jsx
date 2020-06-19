@@ -26,7 +26,13 @@ const PlayerStatus = (props) => {
 
   // If not playing
   if (Object.keys(privateNationState).length === 0) {
-    return null;
+    return (
+      <StyledDiv>
+        <span className="playing-as">
+          You are not participating in this game.
+        </span>
+      </StyledDiv>
+    );
   }
   const {
     id,
@@ -62,7 +68,9 @@ const PlayerStatus = (props) => {
     <StyledDiv>
       <span className="playing-as">Playing as {nation.name}</span>
       <span className="orders-remaining">{ordersRemainingMessage}</span>
-      <button type='submit' onClick={onClickToggleFinalize}>{verb} orders</button>
+      <button type="submit" onClick={onClickToggleFinalize}>
+        {verb} orders
+      </button>
     </StyledDiv>
   );
 };

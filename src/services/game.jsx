@@ -26,6 +26,13 @@ function getGame(token, id) {
   return fetch(url, options).then(handleResponse);
 }
 
+function joinGame(token, id) {
+  const headers = getHeaders(token);
+  const url = API.JOINGAMEURL.replace('<int:game>', id);
+  const options = { method: 'PATCH', headers };
+  return fetch(url, options).then(handleResponse);
+}
+
 function listPlayerOrders(token, id) {
   /* Get all of the orders that a player has created for the current turn */
   const headers = getHeaders(token);
@@ -111,6 +118,7 @@ const gameService = {
   create,
   createOrder,
   destroyOrder,
+  joinGame,
   listPlayerOrders,
   retrievePrivateNationState,
   toggleFinalizeOrders,
