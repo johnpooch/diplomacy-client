@@ -38,7 +38,9 @@ const PlayerStatus = (props) => {
   } = privateNationState;
 
   // Format ordersRemainingMessage
-  if (numBuilds) {
+  if (ordersFinalized) {
+    ordersRemainingMessage = 'Orders finalized';
+  } else if (numBuilds) {
     orderType = ordersRemaining === 1 ? 'build' : 'builds';
     ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
   } else if (numDisbands) {

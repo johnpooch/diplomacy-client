@@ -42,7 +42,7 @@ class BrowseGames extends React.Component {
 
   getFilteredGames(filters) {
     const { token } = this.props;
-    gameService.get(token, filters).then((json) => {
+    gameService.getGames(token, filters).then((json) => {
       const games = json.length ? json.slice() : [];
       this.setState({ games, isLoaded: true });
     });
