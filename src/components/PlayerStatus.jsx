@@ -23,6 +23,7 @@ const PlayerStatus = (props) => {
   const { game, privateNationState, finalizeOrders } = props;
   let ordersRemainingMessage = null;
   let orderType = null;
+  console.log(privateNationState);
 
   // If not playing
   if (Object.keys(privateNationState).length === 0) {

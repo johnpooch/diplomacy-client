@@ -343,6 +343,7 @@ class Map extends React.Component {
     const summary = this.getTerritorySummary(id);
     const sourceId = Map.getTerritoryIdFromSummary(source);
     switch (type) {
+      case 'retreat':
       case 'move':
         if (!target) {
           this.setState({
@@ -456,17 +457,27 @@ class Map extends React.Component {
     const { piece_states } = turn;
     const elements = [];
     piece_states.forEach((state) => {
+      const { must_retreat: mustRetreat } = state;
       const piece = this.getPiece(state.piece);
       const data = getObjectByKey(state.territory, territory_data, 'territory');
-      const { piece_x, piece_y } = data;
+
+      let x = null;
+      let y = null;
+      if (mustRetreat) {
+        x = data.dislodged_piece_x;
+        y = data.dislodged_piece_y;
+      } else {
+        x = data.piece_x;
+        y = data.piece_y;
+      }
       elements.push(
         <Piece
           key={piece.id}
           type={piece.type}
           nation={piece.nation}
-          territory={state.territory}
-          x={piece_x}
-          y={piece_y}
+          x={x}
+          y={y}
+          mustRetreat={mustRetreat}
         />
       );
     });

@@ -32,6 +32,7 @@ class Game extends React.Component {
       privateNationState: null,
     };
     this.getPrivate = this.getPrivate.bind(this);
+    this.finalizeOrders = this.finalizeOrders.bind(this);
   }
 
   componentDidMount() {
@@ -83,6 +84,17 @@ class Game extends React.Component {
     });
   }
 
+  finalizeOrders(nationStateId, gameId) {
+    const { token } = this.props;
+    this.setState({ isLoaded: false });
+    gameService.toggleFinalizeOrders(token, nationStateId).then(() => {
+      this.getPrivate(gameId);
+      this.setState({
+        isLoaded: true,
+      });
+    });
+  }
+
   render() {
     const {
       activeTurn,
@@ -90,7 +102,7 @@ class Game extends React.Component {
       playerOrders,
       privateNationState,
     } = this.state;
-    const { game, finalizeOrders } = this.props;
+    const { game } = this.props;
     if (!isLoaded) {
       return <Loading />;
     }
@@ -115,7 +127,7 @@ class Game extends React.Component {
         <PlayerStatus
           game={game}
           privateNationState={privateNationState}
-          finalizeOrders={finalizeOrders}
+          finalizeOrders={this.finalizeOrders}
         />
       </div>
     );
@@ -125,6 +137,7 @@ class Game extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.login.user,
+    token: state.login.token,
   };
 };
 

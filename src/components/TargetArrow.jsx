@@ -32,7 +32,7 @@ const TargetArrow = (props) => {
         y1={y1}
         x2={x2 - offset * v.x}
         y2={y2 - offset * v.y}
-        markerEnd={`url(#arrow-move)`}
+        markerEnd="url(#arrow-move)"
         style={styles[type]}
       />
     </g>
