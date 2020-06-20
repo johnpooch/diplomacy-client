@@ -5,6 +5,7 @@ import GameFilters from '../components/GameFilters';
 import GameSummaryList from '../components/GameSummaryList';
 import Page from '../components/Page';
 import gameService from '../services/game';
+import authActions from '../store/actions/auth';
 
 class BrowseGames extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class BrowseGames extends React.Component {
   }
 
   getGamesAndChoices() {
-    const { token } = this.props;
+    const { logout, token } = this.props;
     const fetchGames = gameService.getGames(token);
     const fetchChoices = gameService.getChoices();
     Promise.all([fetchGames, fetchChoices])
@@ -33,7 +34,11 @@ class BrowseGames extends React.Component {
           isLoaded: true,
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        const { status } = error;
+        if (status === 401) {
+          logout();
+        }
         this.setState({
           isLoaded: true,
         });
@@ -65,4 +70,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(BrowseGames);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(authActions.logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BrowseGames);

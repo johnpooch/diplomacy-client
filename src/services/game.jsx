@@ -1,4 +1,5 @@
 import * as API from '../api';
+import logout from './auth';
 
 function getHeaders(token = null) {
   const headers = { 'Content-Type': 'application/json' };
@@ -9,13 +10,13 @@ function getHeaders(token = null) {
 }
 
 function handleResponse(response) {
-  console.log(response);
   if (!response.ok) {
-    throw new Error('Failed to connect to service');
+    const { status, statusText } = response;
+    const error = { status, statusText };
+    return Promise.reject(error);
   }
-  return response.json().then((json) => {
-    // TODO if response is 401 token may have expired - log out?
-    return json;
+  return response.json().then((data) => {
+    return data;
   });
 }
 

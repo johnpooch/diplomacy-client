@@ -8,6 +8,7 @@ import PreGame from './PreGame';
 import PlayGame from './PlayGame';
 import gameService from '../services/game';
 import alertActions from '../store/actions/alerts';
+import authActions from '../store/actions/auth';
 
 class Game extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class Game extends React.Component {
   }
 
   getGame(id) {
-    const { token } = this.props;
+    const { logout, token } = this.props;
     gameService
       .getGame(token, id)
       .then((game) => {
@@ -35,7 +36,11 @@ class Game extends React.Component {
           isLoaded: true,
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        const { status } = error;
+        if (status === 401) {
+          logout();
+        }
         this.setState({
           isLoaded: true,
         });
@@ -122,6 +127,7 @@ const mapDispatchToProps = (dispatch) => {
           category: 'success',
         })
       ),
+    logout: () => dispatch(authActions.logout()),
   };
 };
 

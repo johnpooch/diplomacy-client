@@ -11,9 +11,6 @@ function handleResponse(response) {
     const data = json;
     if (!response.ok) {
       const { status, statusText } = response;
-      if (status === 401) {
-        logout();
-      }
       const message = json[Object.keys(json)[0]];
       const error = { status, statusText, message };
       return Promise.reject(error);
