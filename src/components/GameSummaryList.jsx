@@ -16,18 +16,7 @@ function GameSummaryList(props) {
   if (!games || !games.length) return null;
   const elements = [];
   games.forEach((game) => {
-    elements.push(
-      <GameSummary
-        key={game.id}
-        id={game.id}
-        status={game.status}
-        createdAt={game.created_at}
-        createdBy={game.created_by}
-        variant={game.variant}
-        name={game.name}
-        userNationState={game.user_nation_state}
-      />
-    );
+    elements.push(<GameSummary game={game} key={game.id} />);
   });
   return <StyledList>{elements}</StyledList>;
 }

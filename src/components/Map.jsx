@@ -13,7 +13,7 @@ import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Tooltip from './Tooltip';
-import { getObjectByKey } from '../utils';
+import { getCurrentTurn, getObjectByKey } from '../utils';
 import { colors } from '../variables';
 
 import gameService from '../services/game';
@@ -83,15 +83,6 @@ class Map extends React.Component {
     });
   }
 
-  getCurrentTurn() {
-    const { game } = this.props;
-    const { turns } = game;
-    const currentTurnIndex = turns.findIndex(
-      (obj) => obj.current_turn === true
-    );
-    return turns[currentTurnIndex];
-  }
-
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
@@ -99,7 +90,8 @@ class Map extends React.Component {
   }
 
   getUserNationState(userId) {
-    const currentTurn = this.getCurrentTurn();
+    const { game } = this.props;
+    const currentTurn = getCurrentTurn(game);
     return currentTurn.nation_states.find((nationState) => {
       return nationState.user.id === userId;
     });
@@ -282,7 +274,7 @@ class Map extends React.Component {
 
   userCanOrder(territoryId) {
     /* Determine whether a user can create an order for the given territory */
-    const { user, turn, privateNationState } = this.props;
+    const { user, turn, privateNationState, game } = this.props;
     if (!user) {
       return false;
     }
@@ -291,7 +283,7 @@ class Map extends React.Component {
       // User is not controlling a nation in the game.
       return false;
     }
-    const currentTurn = this.getCurrentTurn();
+    const currentTurn = getCurrentTurn(game);
     if (currentTurn !== turn) {
       // Cannot order if not looking at current turn
       return false;
@@ -572,7 +564,7 @@ class Map extends React.Component {
     };
 
     let { orders } = turn;
-    if (turn === this.getCurrentTurn()) {
+    if (turn === getCurrentTurn(game)) {
       orders = playerOrders;
     }
     const orderArrows = this.renderOrders(orders, territory_data);

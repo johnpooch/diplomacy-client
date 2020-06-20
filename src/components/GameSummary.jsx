@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { dateDisplayFormat } from '../utils';
+import { dateDisplayFormat, getCurrentTurn } from '../utils';
 import { colors, spacing } from '../variables';
 
 const StyledListItem = styled.li`
@@ -44,20 +44,41 @@ const StyledListItem = styled.li`
 `;
 
 const GameSummary = (props) => {
-  const { createdAt, id, name, status, userNationState } = props;
+  const { game, user } = props;
+  const {
+    created_at: createdAt,
+    id,
+    name,
+    status,
+    current_turn: currentTurn,
+  } = game;
+
   const date = new Date(createdAt);
   const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
 
-  const renderPlayingAs = (nationState) => {
-    if (!nationState) return null;
-    const { nation } = nationState;
-    const { name: nationName } = nation;
-    return (
-      <p className="playing-as">
-        <span className="label">Playing as</span>
-        <span className="value">{nationName}</span>
-      </p>
-    );
+  const renderPlayingAs = () => {
+    if (currentTurn === null) {
+      return null;
+    }
+    const { nation_states: nationStates } = currentTurn;
+    let userNationState = null;
+    for (let i = 0; i < nationStates.length; i += 1) {
+      const nationState = nationStates[i];
+      if (nationState.user.id === user.id) {
+        userNationState = nationState;
+      }
+    }
+    if (userNationState) {
+      const { nation } = userNationState;
+      const { name: nationName } = nation;
+      return (
+        <p className="playing-as">
+          <span className="label">Playing as</span>
+          <span className="value">{nationName}</span>
+        </p>
+      );
+    }
+    return null;
   };
 
   return (
@@ -78,7 +99,7 @@ const GameSummary = (props) => {
               <span className="label">Status</span>
               <span className="value">{status}</span>
             </p>
-            {renderPlayingAs(userNationState)}
+            {renderPlayingAs()}
           </section>
         </article>
       </Link>
@@ -86,4 +107,10 @@ const GameSummary = (props) => {
   );
 };
 
-export default connect(null, null)(GameSummary);
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(GameSummary);

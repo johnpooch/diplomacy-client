@@ -42,3 +42,10 @@ export class Vector {
     this.y /= length;
   }
 }
+
+// TODO game related utils should be put in a separate module
+export function getCurrentTurn(game) {
+  const { turns } = game;
+  const currentTurnIndex = turns.findIndex((obj) => obj.current_turn === true);
+  return turns[currentTurnIndex];
+}
