@@ -9,8 +9,8 @@ import { PageWrapper, IconButton } from '../styles';
 import { colors, sizes, spacing, fontSizes } from '../variables';
 import alertActions from '../store/actions/alerts';
 
-const StyledWrapper = styled.li`
-  background-color: ${(props) => lighten(0.45, colors[props.category])};
+const StyledListItem = styled.li`
+  background-color: ${(props) => lighten(0.4, colors[props.category])};
   border-bottom: ${sizes.border}px solid
     ${(props) => lighten(0.2, colors[props.category])};
   position: relative;
@@ -48,7 +48,7 @@ const Alert = (props) => {
   const { text, category, id, onClick } = props;
   if (!text) return null;
   return (
-    <StyledWrapper category={category}>
+    <StyledListItem category={category}>
       <StyledDiv category={category}>
         <p>{text}</p>
         <IconButton
@@ -60,7 +60,7 @@ const Alert = (props) => {
           <FontAwesomeIcon icon={faTimes} />
         </IconButton>
       </StyledDiv>
-    </StyledWrapper>
+    </StyledListItem>
   );
 };
 

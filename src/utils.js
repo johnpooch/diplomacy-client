@@ -17,25 +17,6 @@ export function getObjectByKey(pk, objs, key = 'pk') {
   });
 }
 
-export const matchIdToAbbreviation = (id, mapData, mapRef) => {
-  const ref = getObjectByKey(id, mapRef.territories);
-  const { abbreviation } = ref;
-
-  if (abbreviation) {
-    const arr = Object.values(mapData.territories);
-    const data = arr.find((obj) => {
-      return obj.abbreviation === abbreviation;
-    });
-
-    if (data !== undefined) {
-      return data;
-    }
-  }
-
-  console.warn(`Missing ${ref.name}`);
-  return null;
-};
-
 export const dateDisplayFormat = {
   year: 'numeric',
   month: 'long',
@@ -43,3 +24,21 @@ export const dateDisplayFormat = {
   hour: '2-digit',
   minute: '2-digit',
 };
+
+export class Vector {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.length = this.getLength();
+  }
+
+  getLength() {
+    return Math.sqrt(this.x ** 2 + this.y ** 2);
+  }
+
+  normalize() {
+    const { length } = this;
+    this.x /= length;
+    this.y /= length;
+  }
+}

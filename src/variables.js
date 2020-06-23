@@ -15,7 +15,7 @@ export const colors = {
   land: '#e3d8c4',
   nations: {
     // england
-    1: '#ff4136',
+    1: '#ff1103',
     // france
     2: '#0074d9',
     // germany
@@ -27,17 +27,17 @@ export const colors = {
     // russia
     6: '#b10dc9',
     // turkey
-    7: '#f3db4e',
+    7: '#508e59',
   },
-  error: '#a73c57',
-  success: '#3e7947',
+  error: '#ff1103',
+  success: '#508e59',
 };
 
 export const spacing = [4, 8, 12, 16, 24, 32, 44, 60];
 
 export const sizes = {
   padding: spacing[3],
-  border: 1,
+  border: 2,
   borderRadius: [8, 16],
   maxWidth: 1260,
   headerHeight: 48,

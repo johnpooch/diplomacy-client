@@ -18,7 +18,7 @@ const StyledIconButton = styled(IconButton)`
 
 const StyledNavLink = StyledIconButton.withComponent(NavLink);
 
-class PlayGame extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -70,17 +70,23 @@ class PlayGame extends React.Component {
     return null;
   }
 
+  static renderBackButton() {
+    return (
+      <StyledNavLink to="/">
+        <FontAwesomeIcon icon={faTimes} />
+      </StyledNavLink>
+    );
+  }
+
   render() {
     return (
       <div>
         {this.renderMap()}
         {this.renderTurnNav()}
-        <StyledNavLink to="/">
-          <FontAwesomeIcon icon={faTimes} />
-        </StyledNavLink>
+        {Game.renderBackButton()}
       </div>
     );
   }
 }
 
-export default withRouter(PlayGame);
+export default withRouter(Game);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import * as API from '../api';
-import Loading from '../components/Loading';
 import Page from '../components/Page';
 import PlayerList from '../components/PlayerList';
 import alertActions from '../store/actions/alerts';
@@ -37,13 +36,10 @@ class JoinGame extends Component {
   }
 
   render() {
-    const { game, loading } = this.props;
-    const players = game.participants;
-
-    if (loading) return <Loading />;
-
+    const { game, isLoaded } = this.props;
+    const players = game ? game.participants : [];
     return (
-      <Page headingText={game.name}>
+      <Page headingText={game ? game.name : null} isLoaded={isLoaded}>
         {players.length ? <h2>Players</h2> : null}
         <PlayerList players={players} />
         <GridTemplate templateColumns="auto auto 1fr">

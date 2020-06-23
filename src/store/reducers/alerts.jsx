@@ -4,7 +4,6 @@ function alerts(state = [], action) {
   const nextId = state.length !== 0 ? state[state.length - 1].id + 1 : 1;
   switch (action.type) {
     case alertConstants.ADD:
-      console.log(state);
       return [
         ...state,
         {
