@@ -57,7 +57,7 @@ const GameSummary = (props) => {
   const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
 
   const renderPlayingAs = () => {
-    if (currentTurn === null) {
+    if (!currentTurn) {
       return null;
     }
     const { nation_states: nationStates } = currentTurn;
