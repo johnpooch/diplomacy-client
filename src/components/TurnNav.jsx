@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-// import { getObjectByKey } from '../utils';
 import { IconButton } from '../styles';
 import { colors, spacing } from '../variables';
 
@@ -30,7 +29,7 @@ const StyledNav = styled.nav`
     color: white;
     background: ${colors.base};
     padding: ${spacing[2]}px ${spacing[3]}px;
-    min-width: 120px;
+    min-width: 200px;
     text-align: center;
   }
 
@@ -40,6 +39,13 @@ const StyledNav = styled.nav`
 
     &.year {
       margin-left: ${spacing[0]}px;
+    }
+
+    &.phase {
+      &:before {
+        content: '';
+        margin-left: ${spacing[0]}px;
+      }
     }
   }
 `;
@@ -83,9 +89,7 @@ const TurnNav = (props) => {
         <div>
           <span className="season">{turn.season}</span>
           <span className="year">{turn.year}</span>
-        </div>
-        <div>
-          <span className="phase">{turn.phase}</span>
+          <span className="phase">({turn.phase})</span>
         </div>
       </p>
       {renderNext()}
