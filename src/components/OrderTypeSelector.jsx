@@ -8,7 +8,7 @@ const StyledGrid = styled(Grid)`
   margin-top: ${spacing[4]}px;
 `;
 
-const OrderSelector = (props) => {
+const OrderTypeSelector = (props) => {
   const { choices, onClickChoice } = props;
 
   const buttons = [];
@@ -31,4 +31,4 @@ const OrderSelector = (props) => {
   );
 };
 
-export default OrderSelector;
+export default OrderTypeSelector;
