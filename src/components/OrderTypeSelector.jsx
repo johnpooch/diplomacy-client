@@ -1,12 +1,7 @@
 import React from 'react';
-import styled from '@emotion/styled';
 
 import { Button, Grid } from '../styles';
 import { spacing } from '../variables';
-
-const StyledGrid = styled(Grid)`
-  margin-top: ${spacing[4]}px;
-`;
 
 const OrderTypeSelector = (props) => {
   const { choices, onClickChoice } = props;
@@ -24,9 +19,9 @@ const OrderTypeSelector = (props) => {
 
   return (
     <div>
-      <StyledGrid columns={buttons.length} columnGap={`${spacing[1]}px`}>
+      <Grid columns={buttons.length} columnGap={`${spacing[1]}px`}>
         {buttons}
-      </StyledGrid>
+      </Grid>
     </div>
   );
 };

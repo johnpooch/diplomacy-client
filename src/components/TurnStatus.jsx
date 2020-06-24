@@ -4,32 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import { IconButton } from '../styles';
-import { colors, spacing } from '../variables';
+import { fontSizes, spacing } from '../variables';
 
-const StyledNav = styled.nav`
-  position: fixed;
-  top: ${spacing[2]}px;
-  left: 0;
-  right: 0;
+const StyledDiv = styled.div`
+  color: white;
   display: grid;
-  grid-template: 'previous active next' auto / 1fr auto 1fr;
-
-  .previous {
-    grid-area: previous;
-    margin-left: auto;
-  }
-
-  .next {
-    grid-area: next;
-    margin-right: auto;
-  }
+  grid-template-columns: 1fr 200px 1fr;
+  align-items: center;
 
   .active-turn {
-    grid-area: active;
-    color: white;
-    background: ${colors.base};
-    padding: ${spacing[2]}px ${spacing[3]}px;
-    min-width: 200px;
+    padding: 0 ${spacing[3]}px;
     text-align: center;
   }
 
@@ -42,25 +26,26 @@ const StyledNav = styled.nav`
     }
 
     &.phase {
-      &:before {
-        content: '';
-        margin-left: ${spacing[0]}px;
-      }
+      display: block;
+      margin-top: ${spacing[0]}px;
+      font-size: ${fontSizes.sans[2]}px;
     }
   }
 `;
 
-const TurnNav = (props) => {
+const TurnStatus = (props) => {
   const { turn, _click } = props;
   const { previous_turn: previousTurn, next_turn: nextTurn } = turn;
 
   const renderPrevious = () => {
-    if (!previousTurn) return null;
     return (
       <IconButton
         className="previous"
+        disabled={previousTurn === null}
         onClick={() => {
-          _click(previousTurn);
+          if (previousTurn) {
+            _click(previousTurn);
+          }
         }}
       >
         <FontAwesomeIcon icon={faArrowLeft} />
@@ -69,12 +54,14 @@ const TurnNav = (props) => {
   };
 
   const renderNext = () => {
-    if (!nextTurn) return null;
     return (
       <IconButton
         className="next"
+        disabled={nextTurn === null}
         onClick={() => {
-          _click(nextTurn);
+          if (nextTurn) {
+            _click(nextTurn);
+          }
         }}
       >
         <FontAwesomeIcon icon={faArrowRight} />
@@ -83,7 +70,7 @@ const TurnNav = (props) => {
   };
 
   return (
-    <StyledNav>
+    <StyledDiv>
       {renderPrevious()}
       <div className="active-turn">
         <div>
@@ -93,8 +80,8 @@ const TurnNav = (props) => {
         </div>
       </div>
       {renderNext()}
-    </StyledNav>
+    </StyledDiv>
   );
 };
 
-export default TurnNav;
+export default TurnStatus;

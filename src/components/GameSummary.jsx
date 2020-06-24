@@ -50,6 +50,7 @@ const GameSummary = (props) => {
     id,
     name,
     status,
+    players,
     current_turn: currentTurn,
   } = game;
 

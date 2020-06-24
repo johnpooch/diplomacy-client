@@ -7,20 +7,17 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Loading from '../components/Loading';
 import Map from '../components/Map';
-import PlayerStatus from '../components/PlayerStatus';
-import TurnNav from '../components/TurnNav';
+import StatusBar from '../components/StatusBar';
 import gameService from '../services/game';
 import { IconButton } from '../styles';
 import { spacing } from '../variables';
 import * as Utils from '../utils';
 
-const StyledIconButton = styled(IconButton)`
+const StyledCloseButton = styled(IconButton)`
   position: fixed;
   top: ${spacing[2]}px;
   right: ${spacing[2]}px;
-`;
-
-const StyledNavLink = StyledIconButton.withComponent(NavLink);
+`.withComponent(NavLink);
 
 class Game extends React.Component {
   constructor(props) {
@@ -115,19 +112,17 @@ class Game extends React.Component {
           privateNationState={privateNationState}
           getPrivate={this.getPrivate}
         />
-        <TurnNav
-          turn={activeTurn}
-          _click={(id) => {
-            this.setTurn(id);
-          }}
-        />
-        <StyledNavLink to="/">
+        <StyledCloseButton to="/">
           <FontAwesomeIcon icon={faTimes} />
-        </StyledNavLink>
-        <PlayerStatus
+        </StyledCloseButton>
+        <StatusBar
           game={game}
           privateNationState={privateNationState}
           finalizeOrders={this.finalizeOrders}
+          turn={activeTurn}
+          _setTurn={(id) => {
+            this.setTurn(id);
+          }}
         />
       </div>
     );

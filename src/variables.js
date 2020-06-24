@@ -41,5 +41,6 @@ export const sizes = {
   borderRadius: [8, 16],
   maxWidth: 1260,
   headerHeight: 48,
+  statusBarHeight: 68,
   input: 44,
 };

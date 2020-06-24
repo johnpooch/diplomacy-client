@@ -2,24 +2,20 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-
-import { Button, IconButton } from '../styles';
-import { colors, fontSizes, sizes, spacing } from '../variables';
+import { darken } from 'polished';
 
 import OrderMessage from './OrderMessage';
 import OrderTypeSelector from './OrderTypeSelector';
 import OrderSummary from './OrderSummary';
 import TerritorySummary from './TerritorySummary';
-
-const StyledIconButton = styled(IconButton)`
-  float: right;
-`;
+import { Button, BaseButton } from '../styles';
+import { colors, fontSizes, sizes, spacing } from '../variables';
 
 const StyledWrapper = styled.div`
   position: fixed;
-  bottom: ${spacing[2]}px;
-  left: ${spacing[2]}px;
-  right: ${spacing[2]}px;
+  bottom: ${spacing[3] + sizes.statusBarHeight}px;
+  left: ${spacing[3]}px;
+  right: ${spacing[3]}px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +23,7 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledDiv = styled.div`
+  position: relative;
   background-color: white;
   color: ${colors.base};
   padding: ${spacing[4]}px;
@@ -36,11 +33,41 @@ const StyledDiv = styled.div`
   pointer-events: all;
   text-align: center;
   cursor: initial;
+  min-width: 500px;
+
+  .territory-summary {
+    margin: 0 ${sizes.input + spacing[3]}px;
+  }
+
+  .order-confirmation {
+    p,
+    button {
+      margin-top: ${spacing[3]}px;
+      width: 100%;
+    }
+  }
+
+  .order-actions {
+    margin-top: ${spacing[3]}px;
+  }
+`;
+
+const StyledCloseButton = styled(BaseButton)`
+  position: absolute;
+  top: ${spacing[3]}px;
+  right: ${spacing[3]}px;
+  color: ${colors.darkgray};
+  min-width: ${sizes.input}px;
+  height: ${sizes.input}px;
+
+  &:hover {
+    color: ${darken(0.2, colors.darkgray)};
+  }
 `;
 
 function renderOrderConfirmation(order, callback) {
   return (
-    <div>
+    <div className="order-confirmation">
       <OrderSummary order={order} />
       <Button onClick={callback}>Confirm</Button>
     </div>
@@ -48,7 +75,7 @@ function renderOrderConfirmation(order, callback) {
 }
 
 // This function is exported for patching in test
-export function renderSubComponent(props) {
+export function renderOrderActions(props) {
   /* Gets the appropriate sub component based on the state of the order. */
   const {
     onClickConfirm,
@@ -68,7 +95,7 @@ export function renderSubComponent(props) {
   };
 
   if (existingOrder) {
-    const choices = ['cancel'];
+    const choices = ['cancel order'];
     return (
       <OrderTypeSelector
         summary={source}
@@ -117,11 +144,13 @@ const OrderDialogue = (props) => {
   return (
     <StyledWrapper>
       <StyledDiv>
-        <StyledIconButton onClick={onClickCancel}>
+        <StyledCloseButton onClick={onClickCancel}>
           <FontAwesomeIcon icon={faTimes} />
-        </StyledIconButton>
-        <TerritorySummary summary={source} />
-        {renderSubComponent(props)}
+        </StyledCloseButton>
+        <div className="territory-summary">
+          <TerritorySummary summary={source} />
+        </div>
+        <div className="order-actions">{renderOrderActions(props)}</div>
       </StyledDiv>
     </StyledWrapper>
   );

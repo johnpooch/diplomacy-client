@@ -38,6 +38,11 @@ export const BaseButton = styled.button`
   font-size: inherit;
   text-decoration: none;
   background-color: transparent;
+
+  &[disabled] {
+    opacity: 0;
+    cursor: initial;
+  }
 `;
 
 export const Button = styled(BaseButton)`
@@ -56,6 +61,8 @@ export const SecondaryButton = styled(Button)`
   background: white;
   color: ${colors.base};
   border: ${sizes.border}px solid ${colors.base};
+  padding: ${spacing[1]}px ${spacing[2]}px;
+  font-size: ${fontSizes.sans[2]}px;
 
   &:hover {
     border-color: ${colors.darkgray};
@@ -77,15 +84,16 @@ export const TertiaryButton = styled(Button)`
 `;
 
 export const IconButton = styled(BaseButton)`
+  border-radius: ${sizes.borderRadius[0]}px;
   font-size: inherit;
-  width: ${sizes.input}px;
+  min-width: ${sizes.input}px;
   height: ${sizes.input}px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${colors.base};
-  background-color: white;
-  border: ${sizes.border}px solid white;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: ${sizes.border}px solid rgba(255, 255, 255, 0.5);
 
   &:hover {
     color: white;

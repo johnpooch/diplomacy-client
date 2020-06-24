@@ -59,7 +59,7 @@ const getFillColor = (props) => {
 };
 
 const renderPath = (props) => {
-  const { _contextMenu, _mouseOut, _mouseOver, _mouseUp, data } = props;
+  const { _mouseOut, _mouseOver, _mouseUp, data } = props;
   const { path } = data;
   return (
     <path
@@ -70,7 +70,7 @@ const renderPath = (props) => {
       onMouseOut={_mouseOut}
       onBlur={_mouseOut}
       onMouseUp={_mouseUp}
-      onContextMenu={_contextMenu}
+      // onContextMenu={_contextMenu}
       stroke={getStrokeColor(props)}
       strokeDasharray={getStrokeDasharray(props)}
     />

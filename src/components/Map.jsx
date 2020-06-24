@@ -374,7 +374,10 @@ class Map extends React.Component {
           break;
         }
         if (!this.userCanOrder(id)) {
-          return;
+          this.setState({
+            tooltip: this.getTerritorySummary(id),
+          });
+          break;
         }
         this.setState({
           order: {
@@ -430,12 +433,12 @@ class Map extends React.Component {
               if (panning) return;
               this.clickTerritory(id);
             }}
-            _contextMenu={(e) => {
-              e.nativeEvent.preventDefault();
-              this.setState({
-                tooltip: this.getTerritorySummary(id),
-              });
-            }}
+            // _contextMenu={(e) => {
+            //   e.nativeEvent.preventDefault();
+            //   this.setState({
+            //     tooltip: this.getTerritorySummary(id),
+            //   });
+            // }}
           />
         );
       }
@@ -476,7 +479,15 @@ class Map extends React.Component {
     return <g>{elements}</g>;
   }
 
-  renderOrders(orders, territory_data) {
+  renderOrders(territory_data) {
+    const { game, playerOrders, turn } = this.props;
+    if (!turn) return null;
+
+    let { orders } = turn;
+    if (turn === getCurrentTurn(game)) {
+      orders = playerOrders;
+    }
+
     const elements = [];
     orders.forEach((order) => {
       const { id, nation, source, target, aux, type } = order;
@@ -532,7 +543,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const { game, playerOrders, turn } = this.props;
+    const { game, turn } = this.props;
     if (!turn) return null;
     const { order, interacting, panning, orderDialogueActive } = this.state;
     const mapData = game.variant.map_data[0];
@@ -562,12 +573,6 @@ class Map extends React.Component {
         />
       );
     };
-
-    let { orders } = turn;
-    if (turn === getCurrentTurn(game)) {
-      orders = playerOrders;
-    }
-    const orderArrows = this.renderOrders(orders, territory_data);
 
     return (
       <StyledDiv
@@ -618,7 +623,7 @@ class Map extends React.Component {
             fill={colors.base}
           />
           {this.renderTerritories(territory_data)}
-          {orderArrows}
+          {this.renderOrders(territory_data)}
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
