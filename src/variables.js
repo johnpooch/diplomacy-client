@@ -42,4 +42,5 @@ export const sizes = {
   headerHeight: 48,
   statusBarHeight: 72,
   input: 44,
+  button: 160,
 };

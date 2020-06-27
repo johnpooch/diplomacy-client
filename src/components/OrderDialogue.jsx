@@ -33,7 +33,6 @@ const StyledDiv = styled.div`
   pointer-events: all;
   text-align: center;
   cursor: initial;
-  min-width: 500px;
 
   .territory-summary {
     margin: 0 ${sizes.input + spacing[3]}px;
@@ -43,12 +42,19 @@ const StyledDiv = styled.div`
     p,
     button {
       margin-top: ${spacing[3]}px;
-      width: 100%;
     }
   }
 
   .order-actions {
     margin-top: ${spacing[3]}px;
+
+    button {
+      width: ${sizes.button}px;
+
+      &:not(:last-of-type) {
+        margin-right: ${spacing[2]}px;
+      }
+    }
   }
 `;
 
