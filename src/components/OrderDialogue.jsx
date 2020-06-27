@@ -35,7 +35,7 @@ const StyledDiv = styled.div`
   cursor: initial;
 
   .territory-summary {
-    margin: 0 ${sizes.input + spacing[3]}px;
+    margin: 0 ${sizes.input}px;
   }
 
   .order-confirmation {
@@ -60,10 +60,10 @@ const StyledDiv = styled.div`
 
 const StyledCloseButton = styled(BaseButton)`
   position: absolute;
-  top: ${spacing[3]}px;
-  right: ${spacing[3]}px;
+  top: 0;
+  right: 0;
   color: ${colors.darkgray};
-  min-width: ${sizes.input}px;
+  width: ${sizes.input}px;
   height: ${sizes.input}px;
 
   &:hover {
