@@ -70,7 +70,6 @@ const renderPath = (props) => {
       onMouseOut={_mouseOut}
       onBlur={_mouseOut}
       onMouseUp={_mouseUp}
-      // onContextMenu={_contextMenu}
       stroke={getStrokeColor(props)}
       strokeDasharray={getStrokeDasharray(props)}
     />

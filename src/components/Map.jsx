@@ -83,6 +83,19 @@ class Map extends React.Component {
     });
   }
 
+  onClickConfirm() {
+    this.postOrder();
+  }
+
+  onClickCancelOrder(orderId) {
+    const { game, token, getPrivate } = this.props;
+    const { id: gameId } = game;
+    gameService.destroyOrder(token, gameId, orderId).then(() => {
+      getPrivate(gameId);
+    });
+    this.resetOrder();
+  }
+
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
@@ -181,19 +194,6 @@ class Map extends React.Component {
     return ['build'];
   }
 
-  onClickConfirm() {
-    this.postOrder();
-  }
-
-  onClickCancelOrder(orderId) {
-    const { game, token, getPrivate } = this.props;
-    const { id: gameId } = game;
-    gameService.destroyOrder(token, gameId, orderId).then(() => {
-      getPrivate(gameId);
-    });
-    this.resetOrder();
-  }
-
   getPieceTypeChoices(source) {
     const { turn } = this.props;
     const { territory } = source;
@@ -206,6 +206,34 @@ class Map extends React.Component {
       return options;
     }
     return [];
+  }
+
+  getOrder(territoryId) {
+    const { playerOrders } = this.props;
+    return getObjectByKey(territoryId, playerOrders, 'source');
+  }
+
+  postOrder() {
+    // Hold - source
+    // Move - source, target, target_coast=None, via_convoy=False
+    // Support - source, aux, target
+    // Convoy - source, aux, target
+    // Retreat - source, target, target_coast=None
+    // Build - source, target_coast=None
+    // Disband - source
+    const { order } = this.state;
+    const { game, token, getPrivate } = this.props;
+    const { id: gameId } = game;
+    let { aux, source, target } = order;
+    const { type, piece_type } = order;
+    aux = Map.getTerritoryIdFromSummary(aux);
+    source = Map.getTerritoryIdFromSummary(source);
+    target = Map.getTerritoryIdFromSummary(target);
+    const data = { type, source, target, aux, piece_type };
+    gameService.createOrder(token, gameId, data).then(() => {
+      getPrivate(gameId);
+    });
+    this.resetOrder();
   }
 
   resetOrder() {
@@ -242,34 +270,6 @@ class Map extends React.Component {
         panning: true,
       });
     }
-  }
-
-  postOrder() {
-    // Hold - source
-    // Move - source, target, target_coast=None, via_convoy=False
-    // Support - source, aux, target
-    // Convoy - source, aux, target
-    // Retreat - source, target, target_coast=None
-    // Build - source, target_coast=None
-    // Disband - source
-    const { order } = this.state;
-    const { game, token, getPrivate } = this.props;
-    const { id: gameId } = game;
-    let { aux, source, target } = order;
-    const { type, piece_type } = order;
-    aux = Map.getTerritoryIdFromSummary(aux);
-    source = Map.getTerritoryIdFromSummary(source);
-    target = Map.getTerritoryIdFromSummary(target);
-    const data = { type, source, target, aux, piece_type };
-    gameService.createOrder(token, gameId, data).then(() => {
-      getPrivate(gameId);
-    });
-    this.resetOrder();
-  }
-
-  getOrder(territoryId) {
-    const { playerOrders } = this.props;
-    return getObjectByKey(territoryId, playerOrders, 'source');
   }
 
   userCanOrder(territoryId) {
@@ -433,12 +433,6 @@ class Map extends React.Component {
               if (panning) return;
               this.clickTerritory(id);
             }}
-            // _contextMenu={(e) => {
-            //   e.nativeEvent.preventDefault();
-            //   this.setState({
-            //     tooltip: this.getTerritorySummary(id),
-            //   });
-            // }}
           />
         );
       }
@@ -473,6 +467,8 @@ class Map extends React.Component {
           x={x}
           y={y}
           mustRetreat={mustRetreat}
+          userCanOrder={this.userCanOrder(state.territory)}
+          hasOrders={this.getOrder(state.territory) !== undefined}
         />
       );
     });

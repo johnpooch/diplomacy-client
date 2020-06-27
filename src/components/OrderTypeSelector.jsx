@@ -1,19 +1,22 @@
 import React from 'react';
+import styled from '@emotion/styled';
 
 import { Button, Grid } from '../styles';
 import { spacing } from '../variables';
+
+const StyledButton = styled(Button)`
+  text-transform: capitalize;
+`;
 
 const OrderTypeSelector = (props) => {
   const { choices, onClickChoice } = props;
 
   const buttons = [];
   choices.forEach((choice) => {
-    const capitalizedChoice =
-      choice.charAt(0).toUpperCase() + choice.substr(1).toLowerCase();
     buttons.push(
-      <Button key={choice} onClick={() => onClickChoice(choice)}>
-        {capitalizedChoice}
-      </Button>
+      <StyledButton key={choice} onClick={() => onClickChoice(choice)}>
+        {choice}
+      </StyledButton>
     );
   });
 
