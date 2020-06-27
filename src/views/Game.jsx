@@ -1,105 +1,121 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import Loading from '../components/Loading';
-import Error from './Error';
-import PreGame from './PreGame';
-import PlayGame from './PlayGame';
+import Map from '../components/Map';
+import StatusBar from '../components/StatusBar';
 import gameService from '../services/game';
-import alertActions from '../store/actions/alerts';
-import authActions from '../store/actions/auth';
+import * as Utils from '../utils';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoaded: false,
+      isProcessing: false,
+      activeTurn: null,
       playerOrders: null,
       privateNationState: null,
     };
-    this.toggleJoinGame = this.toggleJoinGame.bind(this);
+    this.getPrivate = this.getPrivate.bind(this);
+    this.finalizeOrders = this.finalizeOrders.bind(this);
   }
 
   componentDidMount() {
-    const { match } = this.props;
-    this.getGame(match.params.id);
+    const { game } = this.props;
+    const { turns } = game;
+    const currentTurnIndex = turns.findIndex(
+      (obj) => obj.current_turn === true
+    );
+    const activeTurn = turns[currentTurnIndex];
+    this.setState({ activeTurn });
+    const { id } = game;
+    this.getPrivate(id);
   }
 
-  getGame(id) {
-    const { logout, token } = this.props;
-    gameService
-      .getGame(token, id)
-      .then((game) => {
+  getPrivate(id) {
+    /* Get the player's current orders and nation state. This should not be
+     * seen by other players. */
+    this.setState({ isProcessing: true });
+    const { token } = this.props;
+    const fetchOrders = gameService.listPlayerOrders(token, id);
+    const fetchPrivateNationState = gameService.retrievePrivateNationState(
+      token,
+      id
+    );
+    Promise.all([fetchOrders, fetchPrivateNationState])
+      .then(([playerOrders, privateNationState]) => {
         this.setState({
-          game,
+          playerOrders,
+          privateNationState,
           isLoaded: true,
+          isProcessing: false,
         });
       })
-      .catch((error) => {
-        const { status } = error;
-        if (status === 401) {
-          logout();
-        }
+      .catch(() => {
         this.setState({
           isLoaded: true,
+          isProcessing: false,
         });
       });
   }
 
-  static getCurrentTurn(game) {
+  getTurn(id) {
+    const { game } = this.props;
     const { turns } = game;
-    for (let i = 0; i < turns.length; i += 1) {
-      if (turns[i].current_turn === true) {
-        return turns[i];
-      }
-    }
-    return null;
+    return Utils.getObjectByKey(id, turns, 'id');
   }
 
-  toggleJoinGame() {
-    this.setState({ isLoaded: false });
-    const { user, token, onJoin, onLeave } = this.props;
-    const { game } = this.state;
-    const { id, name } = game;
+  setTurn(id) {
+    this.setState({
+      activeTurn: this.getTurn(id),
+    });
+  }
 
-    const players = game ? game.participants : [];
-    const playerIds = players.map((p) => p.id);
-    const joining = !playerIds.includes(user.id);
-
-    gameService.joinGame(token, id).then(() => {
-      const alertFunction = joining ? onJoin : onLeave;
-      alertFunction(name);
-      this.getGame(id);
+  finalizeOrders(nationStateId, gameId) {
+    const { token } = this.props;
+    this.setState({ isProcessing: true });
+    gameService.toggleFinalizeOrders(token, nationStateId).then(() => {
+      this.getPrivate(gameId);
+      this.setState({
+        isProcessing: false,
+      });
     });
   }
 
   render() {
-    const { isLoaded, game, playerOrders, privateNationState } = this.state;
-    const { user } = this.props;
-
+    const {
+      activeTurn,
+      isLoaded,
+      isProcessing,
+      playerOrders,
+      privateNationState,
+    } = this.state;
+    const { game } = this.props;
     if (!isLoaded) {
       return <Loading />;
     }
-    if (!game) return <Error text="Game not found" />;
-
-    const { status } = game;
-    if (status === 'active') {
-      return (
-        <PlayGame
+    return (
+      <div>
+        <Map
           game={game}
+          turn={activeTurn}
           playerOrders={playerOrders}
           privateNationState={privateNationState}
+          getPrivate={this.getPrivate}
         />
-      );
-    }
-    return (
-      <PreGame
-        game={game}
-        isLoaded={isLoaded}
-        toggleJoinGame={this.toggleJoinGame}
-        user={user}
-      />
+        <StatusBar
+          game={game}
+          privateNationState={privateNationState}
+          finalizeOrders={this.finalizeOrders}
+          turn={activeTurn}
+          isProcessing={isProcessing}
+          _setTurn={(id) => {
+            this.setTurn(id);
+          }}
+        />
+      </div>
     );
   }
 }
@@ -111,24 +127,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onJoin: (name) =>
-      dispatch(
-        alertActions.add({
-          message: `Joined "${name}"! The game will begin once all players have joined.`,
-          category: 'success',
-        })
-      ),
-    onLeave: (name) =>
-      dispatch(
-        alertActions.add({
-          message: `You have left "${name}".`,
-          category: 'success',
-        })
-      ),
-    logout: () => dispatch(authActions.logout()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));
+export default connect(mapStateToProps, null)(withRouter(Game));

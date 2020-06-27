@@ -5,7 +5,7 @@ import { Switch, Route, useLocation } from 'react-router-dom';
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
 import Error from './Error';
-import Game from './Game';
+import GameRouter from './GameRouter';
 import Login from './Login';
 import Register from './Register';
 import AlertList from '../components/AlertList';
@@ -30,7 +30,7 @@ const App = () => {
         <LoggedOutRoute exact path="/login" component={Login} />
         <LoggedOutRoute exact path="/register" component={Register} />
         <PrivateRoute exact path="/create-game" component={CreateGame} />
-        <PrivateRoute exact path="/game/:id" component={Game} />
+        <PrivateRoute exact path="/game/:id" component={GameRouter} />
         <PrivateRoute exact path="/" component={BrowseGames} />
         <Route component={() => <Error text="Page not found" />} />
       </Switch>
