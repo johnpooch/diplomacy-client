@@ -1,15 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { dateDisplayFormat, getCurrentTurn } from '../utils';
-import { colors, spacing } from '../variables';
+import { dateDisplayFormat } from '../utils';
+import { colors, sizes, spacing } from '../variables';
 
 const StyledListItem = styled.li`
+  border-left: ${sizes.border}px solid transparent;
+  border-color: ${(props) => props.color};
+  padding: 0 ${spacing[3]}px;
+  /* padding: ${(props) => (props.hasJoinedGame ? `${spacing[2]}px` : 0)}; */
+  /* border-radius: ${sizes.borderRadius[0]}px; */
+
   a {
     text-decoration: none;
-    color: ${colors.base};
+    color: inherit;
 
     &:hover .name {
       text-decoration: underline;
@@ -50,47 +56,54 @@ const GameSummary = (props) => {
     id,
     name,
     status,
-    players,
+    participants,
+    num_players: numPlayers,
     current_turn: currentTurn,
   } = game;
 
-  const date = new Date(createdAt);
-  const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
-
-  const renderPlayingAs = () => {
-    if (!currentTurn) {
-      return null;
-    }
+  const getUserNationState = () => {
+    if (!currentTurn) return null;
     const { nation_states: nationStates } = currentTurn;
     let userNationState = null;
     for (let i = 0; i < nationStates.length; i += 1) {
       const nationState = nationStates[i];
       if (nationState.user.id === user.id) {
         userNationState = nationState;
+        break;
       }
     }
-    if (userNationState) {
-      const { nation } = userNationState;
-      const { name: nationName } = nation;
-      return (
-        <p className="playing-as">
-          <span className="label">Playing as</span>
-          <span className="value">{nationName}</span>
-        </p>
-      );
-    }
-    return null;
+    return userNationState;
+  };
+
+  const date = new Date(createdAt);
+  const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
+
+  const userNationState = getUserNationState();
+
+  let color = 'transparent';
+  if (userNationState) {
+    color = colors.nations[userNationState.nation.id];
+  }
+
+  const renderPlayingAs = () => {
+    if (!userNationState) return null;
+    return (
+      <p className="playing-as">
+        <span className="label">Playing as</span>
+        <span className="value">{userNationState.nation.name}</span>
+      </p>
+    );
   };
 
   return (
-    <StyledListItem key={id}>
+    <StyledListItem key={id} color={color}>
       <Link to={`/game/${id}`}>
         <article>
           <header>
             <span className="name">{name}</span>
           </header>
           <section>
-            <p className="created-at">
+            <p className="created">
               <span className="label">Created</span>
               <time className="value" dateTime={createdAt}>
                 {dateString}
@@ -99,6 +112,12 @@ const GameSummary = (props) => {
             <p className="status">
               <span className="label">Status</span>
               <span className="value">{status}</span>
+            </p>
+            <p className="players">
+              <span className="label">Players</span>
+              <span className="value">
+                {participants.length} / {numPlayers}
+              </span>
             </p>
             {renderPlayingAs()}
           </section>

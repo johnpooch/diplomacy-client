@@ -19,7 +19,7 @@ const StyledButton = styled(TertiaryButton)`
 const StyledForm = styled(GenericForm)`
   margin-bottom: ${spacing[6]}px;
   border-bottom: ${sizes.border}px solid ${colors.darkgray};
-  padding: ${spacing[4]}px;
+  padding: ${spacing[4]}px ${spacing[3]}px;
   background: ${colors.gray};
 `;
 

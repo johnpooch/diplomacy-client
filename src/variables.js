@@ -36,7 +36,6 @@ export const colors = {
 export const spacing = [4, 8, 12, 16, 24, 32, 44, 60];
 
 export const sizes = {
-  padding: spacing[3],
   border: 2,
   borderRadius: [8, 16],
   maxWidth: 1260,
