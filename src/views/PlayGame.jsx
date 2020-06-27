@@ -13,6 +13,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       isLoaded: false,
+      isProcessing: false,
       activeTurn: null,
       playerOrders: null,
       privateNationState: null,
@@ -36,7 +37,7 @@ class Game extends React.Component {
   getPrivate(id) {
     /* Get the player's current orders and nation state. This should not be
      * seen by other players. */
-    this.setState({ isLoaded: false });
+    this.setState({ isProcessing: true });
     const { token } = this.props;
     const fetchOrders = gameService.listPlayerOrders(token, id);
     const fetchPrivateNationState = gameService.retrievePrivateNationState(
@@ -49,11 +50,13 @@ class Game extends React.Component {
           playerOrders,
           privateNationState,
           isLoaded: true,
+          isProcessing: false,
         });
       })
       .catch(() => {
         this.setState({
           isLoaded: true,
+          isProcessing: false,
         });
       });
   }
@@ -72,11 +75,11 @@ class Game extends React.Component {
 
   finalizeOrders(nationStateId, gameId) {
     const { token } = this.props;
-    this.setState({ isLoaded: false });
+    this.setState({ isProcessing: true });
     gameService.toggleFinalizeOrders(token, nationStateId).then(() => {
       this.getPrivate(gameId);
       this.setState({
-        isLoaded: true,
+        isProcessing: false,
       });
     });
   }
@@ -85,6 +88,7 @@ class Game extends React.Component {
     const {
       activeTurn,
       isLoaded,
+      isProcessing,
       playerOrders,
       privateNationState,
     } = this.state;
@@ -106,6 +110,7 @@ class Game extends React.Component {
           privateNationState={privateNationState}
           finalizeOrders={this.finalizeOrders}
           turn={activeTurn}
+          isProcessing={isProcessing}
           _setTurn={(id) => {
             this.setTurn(id);
           }}

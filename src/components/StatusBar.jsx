@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import Spinner from './Spinner';
 import TurnStatus from './TurnStatus';
 import { SecondaryButton } from '../styles';
 import { colors, sizes, spacing } from '../variables';
@@ -15,7 +16,13 @@ const StyledFooter = styled.footer`
   height: ${sizes.statusBarHeight}px;
 
   .orders {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .spinner {
+      margin-right: ${spacing[3]}px;
+    }
 
     button {
       margin-left: ${spacing[3]}px;
@@ -54,18 +61,20 @@ const StatusBar = (props) => {
     orders_finalized: ordersFinalized,
   } = privateNationState;
 
+  const remainingText = 'remaining';
+
   // Format ordersRemainingMessage
   if (ordersFinalized) {
     ordersRemainingMessage = 'Orders finalized';
   } else if (numBuilds) {
     orderType = ordersRemaining === 1 ? 'build' : 'builds';
-    ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
+    ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
   } else if (numDisbands) {
     orderType = ordersRemaining === 1 ? 'disband' : 'disbands';
-    ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
+    ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
   } else {
     orderType = ordersRemaining === 1 ? 'order' : 'orders';
-    ordersRemainingMessage = `${ordersRemaining} ${orderType} to submit`;
+    ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
   }
 
   const onClickToggleFinalize = () => {
@@ -91,10 +100,17 @@ const StatusBar = (props) => {
     );
   };
 
+  const renderProcessing = () => {
+    const { isProcessing } = props;
+    if (!isProcessing) return null;
+    return <Spinner size={24} color="white" />;
+  };
+
   const renderOrders = () => {
     if (!privateNationState.id) return '';
     return (
       <div className="orders">
+        {renderProcessing()}
         <span className="orders-remaining">{ordersRemainingMessage}</span>
         <SecondaryButton type="submit" onClick={onClickToggleFinalize}>
           {verb} orders
