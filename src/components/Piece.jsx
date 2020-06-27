@@ -65,7 +65,7 @@ const Piece = (props) => {
   const { type } = props;
 
   if (type === 'army') {
-    return renderIcon(props, faChessPawn, 0.06);
+    return renderIcon(props, faChessPawn, 0.05);
   }
 
   if (type === 'fleet') {
