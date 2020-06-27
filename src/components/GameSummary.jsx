@@ -10,8 +10,6 @@ const StyledListItem = styled.li`
   border-left: ${sizes.border}px solid transparent;
   border-color: ${(props) => props.color};
   padding: 0 ${spacing[3]}px;
-  /* padding: ${(props) => (props.hasJoinedGame ? `${spacing[2]}px` : 0)}; */
-  /* border-radius: ${sizes.borderRadius[0]}px; */
 
   a {
     text-decoration: none;

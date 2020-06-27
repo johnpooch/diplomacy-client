@@ -1,5 +1,4 @@
 import * as API from '../api';
-import logout from './auth';
 
 function getHeaders(token = null) {
   const headers = { 'Content-Type': 'application/json' };

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 
-import Loading from '../components/Loading';
 import Page from '../components/Page';
 import {
   Button,
