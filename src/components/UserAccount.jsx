@@ -13,7 +13,9 @@ const StyledDiv = styled.div`
   grid-column-gap: ${spacing[2]}px;
   align-items: center;
   color: white;
-  font-size: ${fontSizes.sans[1]}px;
+  font-size: ${fontSizes.sans[2]}px;
+  width: min-content;
+  margin-left: auto;
 `;
 
 const renderLogOutButton = (logout) => {

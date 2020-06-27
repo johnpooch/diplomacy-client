@@ -9,6 +9,7 @@ import Game from './Game';
 import Login from './Login';
 import Register from './Register';
 import AlertList from '../components/AlertList';
+import Header from '../components/Header';
 import LoggedOutRoute from '../components/LoggedOutRoute';
 import PrivateRoute from '../components/PrivateRoute';
 import alertActions from '../store/actions/alerts';
@@ -23,6 +24,7 @@ const App = () => {
 
   return (
     <div>
+      <Header />
       <AlertList />
       <Switch>
         <LoggedOutRoute exact path="/login" component={Login} />

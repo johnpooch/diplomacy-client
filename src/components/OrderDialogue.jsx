@@ -24,7 +24,7 @@ const StyledWrapper = styled.div`
 
 const StyledDiv = styled.div`
   position: relative;
-  background-color: white;
+  background: white;
   color: ${colors.base};
   padding: ${spacing[4]}px;
   font-size: ${fontSizes.sans[2]}px;

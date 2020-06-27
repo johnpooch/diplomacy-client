@@ -22,7 +22,7 @@ const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: ${colors.gray};
+  background: ${colors.gray};
   top: 0;
   user-select: none;
   -webkit-tap-highlight-color: transparent;

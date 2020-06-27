@@ -9,7 +9,7 @@ export const fontSizes = {
 
 export const colors = {
   base: '#222222',
-  darkgray: '#999999',
+  darkgray: '#777777',
   gray: '#ebeef1',
   sea: '#79bde1',
   land: '#e3d8c4',
@@ -41,6 +41,6 @@ export const sizes = {
   borderRadius: [8, 16],
   maxWidth: 1260,
   headerHeight: 48,
-  statusBarHeight: 68,
+  statusBarHeight: 72,
   input: 44,
 };

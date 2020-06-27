@@ -1,23 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled';
-import { withRouter, NavLink } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { withRouter } from 'react-router-dom';
 
 import Loading from '../components/Loading';
 import Map from '../components/Map';
 import StatusBar from '../components/StatusBar';
 import gameService from '../services/game';
-import { IconButton } from '../styles';
-import { spacing } from '../variables';
 import * as Utils from '../utils';
-
-const StyledCloseButton = styled(IconButton)`
-  position: fixed;
-  top: ${spacing[2]}px;
-  right: ${spacing[2]}px;
-`.withComponent(NavLink);
 
 class Game extends React.Component {
   constructor(props) {
@@ -112,9 +101,6 @@ class Game extends React.Component {
           privateNationState={privateNationState}
           getPrivate={this.getPrivate}
         />
-        <StyledCloseButton to="/">
-          <FontAwesomeIcon icon={faTimes} />
-        </StyledCloseButton>
         <StatusBar
           game={game}
           privateNationState={privateNationState}

@@ -5,29 +5,32 @@ import TurnStatus from './TurnStatus';
 import { SecondaryButton } from '../styles';
 import { colors, sizes, spacing } from '../variables';
 
-const StyledDiv = styled.nav`
+const StyledFooter = styled.footer`
   color: white;
+  background: ${colors.darkgray};
   position: fixed;
   right: 0;
   bottom: 0;
   left: 0;
-  background: ${colors.base};
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
   height: ${sizes.statusBarHeight}px;
-
-  > * {
-    padding: ${spacing[2]}px ${spacing[3]}px;
-  }
 
   .orders {
     text-align: right;
 
     button {
-      margin-left: ${spacing[2]}px;
+      margin-left: ${spacing[3]}px;
     }
   }
+`;
+
+const StyledDiv = styled.div`
+  margin: 0 auto;
+  padding: 0 ${spacing[6]}px;
+  max-width: ${sizes.maxWidth}px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 100%;
 `;
 
 const StyledPlayingAs = styled.span`
@@ -101,16 +104,18 @@ const StatusBar = (props) => {
   };
 
   return (
-    <StyledDiv>
-      {renderPlayingAs()}
-      <TurnStatus
-        turn={turn}
-        _click={(turnId) => {
-          _setTurn(turnId);
-        }}
-      />
-      {renderOrders()}
-    </StyledDiv>
+    <StyledFooter>
+      <StyledDiv>
+        {renderPlayingAs()}
+        <TurnStatus
+          turn={turn}
+          _click={(turnId) => {
+            _setTurn(turnId);
+          }}
+        />
+        {renderOrders()}
+      </StyledDiv>
+    </StyledFooter>
   );
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Header from './Header';
 import Heading from './Heading';
 import Loading from './Loading';
 import { PageWrapper } from '../styles';
@@ -9,7 +8,6 @@ const Page = (props) => {
   const { children, headingText, isLoaded } = props;
 
   const renderPageWrapper = () => {
-    console.log(isLoaded);
     if (!isLoaded) return <Loading />;
     return (
       <PageWrapper>
@@ -19,12 +17,7 @@ const Page = (props) => {
     );
   };
 
-  return (
-    <main>
-      <Header />
-      {renderPageWrapper()}
-    </main>
-  );
+  return <main>{renderPageWrapper()}</main>;
 };
 
 export default Page;

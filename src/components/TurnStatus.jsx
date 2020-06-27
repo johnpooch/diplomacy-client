@@ -7,7 +7,6 @@ import { IconButton } from '../styles';
 import { fontSizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`
-  color: white;
   display: grid;
   grid-template-columns: 1fr 200px 1fr;
   align-items: center;
