@@ -20,9 +20,7 @@ const GameStatus = (props) => {
     const { phase, season, year } = currentTurn;
     message = `${season} ${year} - ${phase}`;
   }
-  return (
-    <StyledSpan style={{ textTransform: 'capitalize' }}>{message}</StyledSpan>
-  );
+  return <StyledSpan>{message}</StyledSpan>;
 };
 
 export default GameStatus;

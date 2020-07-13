@@ -7,6 +7,10 @@ export const fontSizes = {
   sans: [9, 13, 15, 19, 36],
 };
 
+export const flagSizes = {
+  small: 40,
+};
+
 export const colors = {
   base: '#222222',
   darkgray: '#999999',
