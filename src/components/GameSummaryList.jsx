@@ -6,7 +6,7 @@ import { spacing } from '../variables';
 
 const StyledList = styled.ol`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-row-gap: ${spacing[5]}px;
   grid-column-gap: ${spacing[5]}px;
 `;

@@ -24,7 +24,7 @@ const StyledListItem = styled.li`
   padding: 0 ${spacing[3]}px;
 
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr 4fr 2fr;
   grid-row-gap: ${spacing[5]}px;
   grid-column-gap: ${spacing[5]}px;
 
@@ -94,6 +94,19 @@ const GameSummary = (props) => {
   return (
     <StyledLink to={`/game/${id}`}>
       <StyledListItem key={id} color={color}>
+        <div className="game-preview">
+          <svg width={300} height={200}>
+            <rect
+              width={300}
+              height={200}
+              style={{
+                fill: 'rgb(0,0,255)',
+                strokeWidth: '3',
+                stroke: 'rgb(0,0,0)',
+              }}
+            />
+          </svg>
+        </div>
         <div>
           <article>
             <header>
