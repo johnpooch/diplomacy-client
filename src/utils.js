@@ -42,3 +42,19 @@ export class Vector {
     this.y /= length;
   }
 }
+
+export const getUserNationState = (turn, user) => {
+  if (!turn) {
+    return null;
+  }
+  const { nation_states: nationStates } = turn;
+  let userNationState = null;
+  for (let i = 0; i < nationStates.length; i += 1) {
+    const nationState = nationStates[i];
+    if (nationState.user.id === user.id) {
+      userNationState = nationState;
+      break;
+    }
+  }
+  return userNationState;
+};

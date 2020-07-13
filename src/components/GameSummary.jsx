@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { dateDisplayFormat } from '../utils';
+import { dateDisplayFormat, getUserNationState } from '../utils';
 import { colors, spacing, sizes } from '../variables';
 
-import Flag from './Flag';
+import GameStatus from './GameStatus';
 import PlayerCount from './PlayerCount';
+import ParticipantList from './ParticipantList';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -64,31 +65,9 @@ const StyledListItem = styled.li`
 
   .player-count {
     margin-bottom: ${spacing[2]}px;
+    text-align: right;
   }
 `;
-
-const renderParticipants = (currentTurn) => {
-  if (!currentTurn) return null;
-  const { nation_states: nationStates } = currentTurn;
-  const participantDivs = [];
-  nationStates.forEach((nationState) => {
-    const { user, nation } = nationState;
-    const { username } = user;
-    const { flag_as_data: flagData } = nation;
-    participantDivs.push(
-      <div
-        className="participant-div"
-        style={{ display: 'flex', justifyContent: 'space-between' }}
-      >
-        <span style={{ marginRight: '1rem', marginBottom: `${spacing[1]}px` }}>
-          {username}
-        </span>
-        <Flag flagData={flagData} />
-      </div>
-    );
-  });
-  return <div>{participantDivs}</div>;
-};
 
 const GameSummary = (props) => {
   const { game, user } = props;
@@ -102,24 +81,10 @@ const GameSummary = (props) => {
     current_turn: currentTurn,
   } = game;
 
-  const getUserNationState = () => {
-    if (!currentTurn) return null;
-    const { nation_states: nationStates } = currentTurn;
-    let userNationState = null;
-    for (let i = 0; i < nationStates.length; i += 1) {
-      const nationState = nationStates[i];
-      if (nationState.user.id === user.id) {
-        userNationState = nationState;
-        break;
-      }
-    }
-    return userNationState;
-  };
-
   const date = new Date(createdAt);
   const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
 
-  const userNationState = getUserNationState();
+  const userNationState = getUserNationState(currentTurn, user);
 
   let color = 'transparent';
   if (userNationState) {
@@ -138,6 +103,9 @@ const GameSummary = (props) => {
               <p className="description" style={{ fontStyle: 'italic' }}>
                 <span className="value">{description}</span>
               </p>
+              <p className="game-status">
+                <GameStatus game={game} />
+              </p>
               <p className="created">
                 <span className="label">Created</span>
                 <time className="value" dateTime={createdAt}>
@@ -148,12 +116,12 @@ const GameSummary = (props) => {
             </section>
           </article>
         </div>
-        <div style={{ textAlign: 'right' }}>
+        <div>
           <PlayerCount
             numParticipants={participants.length}
             numPlayers={numPlayers}
           />
-          {renderParticipants(currentTurn)}
+          <ParticipantList game={game} turn={currentTurn} />
         </div>
         <div />
       </StyledListItem>

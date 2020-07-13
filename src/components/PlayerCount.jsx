@@ -3,8 +3,10 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMale } from '@fortawesome/free-solid-svg-icons';
 
+import { spacing } from '../variables';
+
 const StyledIcon = styled(FontAwesomeIcon)`
-  margin-right: 1rem;
+  margin-right: ${spacing[1]}px;
 `;
 
 const PlayerCount = (props) => {
