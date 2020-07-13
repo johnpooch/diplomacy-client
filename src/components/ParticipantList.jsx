@@ -50,6 +50,7 @@ const ParticipantList = (props) => {
     const { flag_as_data: flagData } = nation;
     participantDivs.push(
       <StyledDivFlags
+        key={username}
         className="participant-div"
         fontWeight={fontWeight}
         color={color}

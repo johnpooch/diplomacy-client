@@ -14,7 +14,7 @@ const Flag = (props) => {
   const SVGPaths = [];
   paths.forEach((pathData) => {
     const { fill, path } = pathData;
-    SVGPaths.push(<path key="" fill={fill} d={path} />);
+    SVGPaths.push(<path key={`${path}_${fill}`} fill={fill} d={path} />);
   });
   return (
     <StyledDiv className="flag-div">
