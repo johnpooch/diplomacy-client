@@ -6,7 +6,7 @@ import { faMale } from '@fortawesome/free-solid-svg-icons';
 import { spacing } from '../variables';
 
 const StyledIcon = styled(FontAwesomeIcon)`
-  margin-right: ${spacing[1]}px;
+  margin-right: ${spacing[2]}px;
 `;
 
 const PlayerCount = (props) => {

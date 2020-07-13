@@ -14,7 +14,6 @@ const StyledDiv = styled.div`
 
 const Flag = (props) => {
   const { flagData, size } = props;
-  console.log(size);
   const { paths, viewBox } = flagData;
   const SVGPaths = [];
   paths.forEach((pathData) => {
