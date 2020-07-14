@@ -75,6 +75,7 @@ const GameSummary = (props) => {
   const {
     created_at: createdAt,
     id,
+    slug,
     name,
     description,
     participants,
@@ -93,7 +94,7 @@ const GameSummary = (props) => {
   }
 
   return (
-    <StyledLink to={`/game/${id}`}>
+    <StyledLink to={`/game/${slug}`}>
       <StyledListItem key={id} color={color}>
         <div className="game-preview">
           <MapPreview size="small" turn={currentTurn} game={game} />

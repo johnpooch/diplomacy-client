@@ -17,13 +17,13 @@ class Game extends React.Component {
 
   componentDidMount() {
     const { match } = this.props;
-    this.getGame(match.params.id);
+    this.getGame(match.params.slug);
   }
 
   // TODO move to service
-  getGame(id) {
+  getGame(slug) {
     const { headers } = this.props;
-    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);
+    const GAMESTATEURL = API.GAMESTATEURL.replace('<game>', slug);
     fetch(GAMESTATEURL, {
       method: 'GET',
       headers,

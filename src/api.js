@@ -8,7 +8,7 @@ export const USERGAMESURL = `${serviceURI}games/mygames`;
 export const CREATEGAMEURL = `${serviceURI}games/create`;
 
 // Game
-export const GAMESTATEURL = `${serviceURI}game/<int:game>`;
+export const GAMESTATEURL = `${serviceURI}game/<game>`;
 
 // Auth
 export const LOGINURL = `${authURL}login`;
