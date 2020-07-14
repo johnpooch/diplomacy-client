@@ -30,12 +30,6 @@ const MapPreview = (props) => {
     return getObjectByKey(id, pieces, 'id');
   };
 
-  const getPieceInTerritory = (id) => {
-    const pieceStates = turn.piece_states;
-    const pieceState = getObjectByKey(id, pieceStates, 'territory');
-    return pieceState ? getPiece(pieceState.piece) : null;
-  };
-
   const getTerritory = (id) => {
     const { territories } = game.variant;
     return getObjectByKey(id, territories, 'id');
@@ -60,7 +54,7 @@ const MapPreview = (props) => {
       if (data && territory) {
         territoriesList.push(
           <PreviewTerritory
-            key={data.pk}
+            key={data.id}
             id={id}
             data={data}
             type={territory.type}

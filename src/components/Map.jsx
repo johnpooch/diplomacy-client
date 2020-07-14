@@ -225,7 +225,7 @@ class Map extends React.Component {
       if (data && territory) {
         territoriesList.push(
           <Territory
-            key={data.pk}
+            key={data.id}
             id={id}
             data={data}
             type={territory.type}

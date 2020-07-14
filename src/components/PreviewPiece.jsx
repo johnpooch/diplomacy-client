@@ -42,7 +42,6 @@ const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
 
 const PreviewPiece = (props) => {
   const { type } = props;
-  console.log('HERE');
 
   if (type === 'army') {
     return renderIcon(props, faChessPawn, 0.12);
