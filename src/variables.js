@@ -12,6 +12,9 @@ export const flagSizes = {
 };
 
 export const colors = {
+  white: '#ffffff',
+  offwhite: '#fafafa',
+  border: '#dbdbdb',
   base: '#222222',
   darkgray: '#999999',
   gray: '#ebeef1',

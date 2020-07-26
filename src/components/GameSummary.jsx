@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 import { dateDisplayFormat, getCurrentTurn, getUserNationState } from '../utils';
-import { colors, spacing, sizes } from '../variables';
+import { borders, colors, spacing, sizes } from '../variables';
 
 import GameStatus from './GameStatus';
 import MapPreview from './MapPreview';
@@ -14,6 +14,10 @@ import ParticipantList from './ParticipantList';
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
+  background: ${colors.white};
+  padding: ${spacing[2]}px;
+  border: solid 1px ${colors.border};
+  border-radius: 3px;
 
   &:hover .name {
     text-decoration: underline;

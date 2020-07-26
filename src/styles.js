@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { colors, fontSizes, sizes, spacing } from './variables';
 
 // Layout
+
 export const PageWrapper = styled.div`
   padding: ${spacing[6]}px;
   max-width: ${sizes.maxWidth}px;
