@@ -16,15 +16,10 @@ const StyledPath = styled.path`
   stroke-width: 30px;
   pointer-events: none;
 `;
-const mustRetreatStyle = {
-  stroke: 'red',
-  strokeWidth: '5px',
-  strokeDasharray: '2, 8',
-  strokeLinecap: 'round',
-};
 
 const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
-  const { nation, x, y, mustRetreat } = props;
+  const { order, x, y } = props;
+  const { nation } = order;
 
   const w = faIcon.icon[0];
   const h = faIcon.icon[1];
@@ -32,15 +27,11 @@ const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
   const dx = x - (scale * w) / 2;
   const dy = y - (scale * h) / 2;
 
-  let style = null;
-  const color = lighten(0.2, colors.nations[nation]);
-  if (mustRetreat) {
-    style = mustRetreatStyle;
-  }
+  const color = lighten(1, colors.nations[nation]);
 
   return (
     <g>
-      <StyledCircle r={shadowSize} cx={x} cy={y} style={style} />;
+      <StyledCircle r={shadowSize} cx={x} cy={y} />;
       <StyledPath
         d={faIcon.icon[4]}
         color={color}
@@ -50,18 +41,14 @@ const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
   );
 };
 
-const Piece = (props) => {
-  const { type } = props;
+const BuildOrder = (props) => {
+  const { order } = props;
+  const { piece_type: pieceType } = order;
 
-  if (type === 'army') {
+  if (pieceType === 'army') {
     return renderIcon(props, faChessPawn, 0.06);
   }
-
-  if (type === 'fleet') {
-    return renderIcon(props, faAnchor, 0.05);
-  }
-
-  return null;
+  return renderIcon(props, faAnchor, 0.05);
 };
 
-export default Piece;
+export default BuildOrder;

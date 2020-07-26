@@ -9,11 +9,22 @@ const StyledLine = styled.line`
   pointer-events: none;
 `;
 
-const OrderArrow = (props) => {
+const supportStyle = {
+  strokeDasharray: '.5, 10',
+  strokeLinecap: 'round',
+};
+
+const styles = {
+  move: null,
+  support: supportStyle,
+};
+
+const TargetArrow = (props) => {
   const { type, offsetSize, x1, y1, x2, y2 } = props;
   const v = new Vector(x2 - x1, y2 - y1);
   v.normalize();
   const offset = v.length > offsetSize ? offsetSize : 0;
+
   return (
     <g>
       <StyledLine
@@ -21,10 +32,11 @@ const OrderArrow = (props) => {
         y1={y1}
         x2={x2 - offset * v.x}
         y2={y2 - offset * v.y}
-        markerEnd={`url(#arrow-${type})`}
+        markerEnd="url(#arrow-move)"
+        style={styles[type]}
       />
     </g>
   );
 };
 
-export default OrderArrow;
+export default TargetArrow;

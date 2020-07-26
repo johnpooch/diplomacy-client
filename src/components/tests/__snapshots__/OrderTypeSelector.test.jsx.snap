@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Clicking choice executes callback 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="css-1021laz-Grid-StyledGrid ejucsgu0"
+    >
+      <button
+        class="css-1f7z8bo-BaseButton-Button e70lpu24"
+      >
+        Choice A
+      </button>
+      <button
+        class="css-1f7z8bo-BaseButton-Button e70lpu24"
+      >
+        Choice B
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

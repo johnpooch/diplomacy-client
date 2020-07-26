@@ -50,11 +50,8 @@ class CreateGame extends Component {
 
   render() {
     const { isLoaded, name, description } = this.state;
-    if (!isLoaded) {
-      return <Loading />;
-    }
     return (
-      <Page headingText="Create game">
+      <Page headingText="Create game" isLoaded={isLoaded}>
         <GenericForm onSubmit={this.handleSubmit}>
           <label htmlFor="name">
             <FormLabelText>Name</FormLabelText>
@@ -71,7 +68,7 @@ class CreateGame extends Component {
           </label>
           <label htmlFor="description">
             <FormLabelText>Description</FormLabelText>
-            <textarea
+            <input
               type="text"
               id="description"
               name="description"

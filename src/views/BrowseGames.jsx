@@ -1,9 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import GameFilters from '../components/GameFilters';
 import GameSummaryList from '../components/GameSummaryList';
 import Page from '../components/Page';
 import gameService from '../services/game';
+import authActions from '../store/actions/auth';
 
 class BrowseGames extends React.Component {
   constructor(props) {
@@ -21,7 +23,8 @@ class BrowseGames extends React.Component {
   }
 
   getGamesAndChoices() {
-    const fetchGames = gameService.get();
+    const { logout, token } = this.props;
+    const fetchGames = gameService.getGames(token);
     const fetchChoices = gameService.getChoices();
     Promise.all([fetchGames, fetchChoices])
       .then(([games, choices]) => {
@@ -31,7 +34,11 @@ class BrowseGames extends React.Component {
           isLoaded: true,
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        const { status } = error;
+        if (status === 401) {
+          logout();
+        }
         this.setState({
           isLoaded: true,
         });
@@ -39,31 +46,34 @@ class BrowseGames extends React.Component {
   }
 
   getFilteredGames(filters) {
-    gameService.get(filters).then((json) => {
+    const { token } = this.props;
+    gameService.getGames(token, filters).then((json) => {
       const games = json.length ? json.slice() : [];
       this.setState({ games, isLoaded: true });
     });
   }
 
-  getHeadingText() {
-    const { games } = this.state;
-    let text = 'No games available';
-    if (games && games.length === 1) {
-      text = '1 game available';
-    } else if (games && games.length > 1) {
-      text = `${games.length} games available`;
-    }
-    return text;
-  }
-
   render() {
     const { choices, games, isLoaded } = this.state;
     return (
-      <Page isLoaded={isLoaded}>
+      <Page headingText={null} isLoaded={isLoaded}>
+        <GameFilters choices={choices} callback={this.getFilteredGames} />
         <GameSummaryList games={games} />
       </Page>
     );
   }
 }
 
-export default BrowseGames;
+const mapStateToProps = (state) => {
+  return {
+    token: state.login.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(authActions.logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BrowseGames);

@@ -1,18 +1,22 @@
-/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states"] }] */
+/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states", "piece_type"] }] */
 import React from 'react';
+import { connect } from 'react-redux';
+
 import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
-import OrderArrow from './OrderArrow';
-import OrderConfirmation from './OrderConfirmation';
-import OrderMessage from './OrderMessage';
-import OrderSelector from './OrderSelector';
+import AuxArrow from './AuxArrow';
+import BuildOrder from './BuildOrder';
+import TargetArrow from './TargetArrow';
+import OrderDialogue from './OrderDialogue';
 import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
 import Territory from './Territory';
 import Tooltip from './Tooltip';
-import { getObjectByKey } from '../utils';
+import { getCurrentTurn, getObjectByKey } from '../utils';
 import { colors } from '../variables';
+
+import gameService from '../services/game';
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -41,6 +45,7 @@ class Map extends React.Component {
       tooltip: null,
       clickPos: null,
       mousePos: null,
+      orderDialogueActive: false,
       order: {
         type: null,
         aux: null,
@@ -48,16 +53,48 @@ class Map extends React.Component {
         target: null,
       },
     };
-
     this.resetPan = this.resetPan.bind(this);
+    this.resetOrder = this.resetOrder.bind(this);
+    this.onClickOrderTypeChoice = this.onClickOrderTypeChoice.bind(this);
+    this.onClickPieceTypeChoice = this.onClickPieceTypeChoice.bind(this);
+    this.onClickConfirm = this.onClickConfirm.bind(this);
+    this.onClickCancelOrder = this.onClickCancelOrder.bind(this);
 
     this.PANNING_THRESHOLD = 5;
+  }
+
+  onClickOrderTypeChoice(choice) {
+    const { order } = this.state;
+    this.setState({
+      order: {
+        ...order,
+        type: choice,
+      },
+    });
+  }
+
+  onClickPieceTypeChoice(choice) {
+    const { order } = this.state;
+    this.setState({
+      order: {
+        ...order,
+        piece_type: choice,
+      },
+    });
   }
 
   getNation(id) {
     const { game } = this.props;
     const { nations } = game.variant;
     return getObjectByKey(id, nations, 'id');
+  }
+
+  getUserNationState(userId) {
+    const { game } = this.props;
+    const currentTurn = getCurrentTurn(game);
+    return currentTurn.nation_states.find((nationState) => {
+      return nationState.user.id === userId;
+    });
   }
 
   getPiece(id) {
@@ -71,6 +108,23 @@ class Map extends React.Component {
     const pieceStates = turn.piece_states;
     const pieceState = getObjectByKey(id, pieceStates, 'territory');
     return pieceState ? this.getPiece(pieceState.piece) : null;
+  }
+
+  getDislodgedPieceInTerritory(id) {
+    const { turn } = this.props;
+    const pieceStates = turn.piece_states;
+    const dislodgedPieceState = pieceStates.find((pieceState) => {
+      return pieceState.territory === id && pieceState.must_retreat;
+    });
+    return dislodgedPieceState
+      ? this.getPiece(dislodgedPieceState.piece)
+      : null;
+  }
+
+  getPieceStateInTerritory(territoryId) {
+    const { turn } = this.props;
+    const pieceStates = turn.piece_states;
+    return getObjectByKey(territoryId, pieceStates, 'territory');
   }
 
   getTerritory(id) {
@@ -108,25 +162,55 @@ class Map extends React.Component {
     return null;
   }
 
-  postOrder() {
-    // Hold - source
-    // Move - source, target, target_coast=None, via_convoy=False
-    // Support - source, aux, target
-    // Convoy - source, aux, target
-    // Retreat - source, target, target_coast=None
-    // Build - source, target_coast=None
-    // Disband - source
-    const { order } = this.state;
-    const { type, aux, source, target } = order;
-    const auxId = Map.getTerritoryIdFromSummary(aux);
-    const sourceId = Map.getTerritoryIdFromSummary(source);
-    const targetId = Map.getTerritoryIdFromSummary(target);
-    console.log('order:', type, sourceId, auxId, targetId);
+  getOrderTypeChoices(source) {
+    const { turn } = this.props;
+    const { piece, territory } = source;
+    const { type: territoryType } = territory;
+    if (turn.phase === 'Order') {
+      const options = ['hold', 'move', 'support'];
+      const { type: pieceType } = piece;
+      if (pieceType === 'fleet' && territoryType === 'sea') {
+        options.push('convoy');
+      }
+      return options;
+    }
+    if (turn.phase === 'Retreat and Disband') {
+      const options = ['retreat', 'disband'];
+      return options;
+    }
+    return ['build'];
+  }
+
+  onClickConfirm() {
+    this.postOrder();
+  }
+
+  onClickCancelOrder(orderId) {
+    const { game, token, getPrivate } = this.props;
+    const { slug } = game;
+    gameService.destroyOrder(token, slug, orderId).then(() => {
+      getPrivate(slug);
+    });
     this.resetOrder();
+  }
+
+  getPieceTypeChoices(source) {
+    const { turn } = this.props;
+    const { territory } = source;
+    const { type: territoryType } = territory;
+    if (turn.phase === 'Build') {
+      const options = ['army'];
+      if (territoryType === 'coastal') {
+        options.push('fleet');
+      }
+      return options;
+    }
+    return [];
   }
 
   resetOrder() {
     this.setState({
+      orderDialogueActive: false,
       order: {
         type: null,
         aux: null,
@@ -160,12 +244,98 @@ class Map extends React.Component {
     }
   }
 
+  postOrder() {
+    // Hold - source
+    // Move - source, target, target_coast=None, via_convoy=False
+    // Support - source, aux, target
+    // Convoy - source, aux, target
+    // Retreat - source, target, target_coast=None
+    // Build - source, target_coast=None
+    // Disband - source
+    const { order } = this.state;
+    const { game, token, getPrivate } = this.props;
+    const { slug } = game;
+    let { aux, source, target } = order;
+    const { type, piece_type } = order;
+    aux = Map.getTerritoryIdFromSummary(aux);
+    source = Map.getTerritoryIdFromSummary(source);
+    target = Map.getTerritoryIdFromSummary(target);
+    const data = { type, source, target, aux, piece_type };
+    gameService.createOrder(token, slug, data).then(() => {
+      getPrivate(slug);
+    });
+    this.resetOrder();
+  }
+
+  getOrder(territoryId) {
+    const { playerOrders } = this.props;
+    return getObjectByKey(territoryId, playerOrders, 'source');
+  }
+
+  userCanOrder(territoryId) {
+    /* Determine whether a user can create an order for the given territory */
+    const { user, turn, privateNationState, game } = this.props;
+    if (!user) {
+      return false;
+    }
+    const userNationState = this.getUserNationState(user.id);
+    if (!userNationState) {
+      // User is not controlling a nation in the game.
+      return false;
+    }
+    const currentTurn = getCurrentTurn(game);
+    if (currentTurn !== turn) {
+      // Cannot order if not looking at current turn
+      return false;
+    }
+
+    // Orders turn
+    if (currentTurn.phase === 'Order') {
+      const piece = this.getPieceInTerritory(territoryId);
+      if (!piece) {
+        return false;
+      }
+      const pieceBelongsToUser = piece.nation === userNationState.nation.id;
+      return pieceBelongsToUser;
+    }
+
+    // Retreat turn
+    if (currentTurn.phase === 'Retreat and Disband') {
+      const pieceState = this.getDislodgedPieceInTerritory(territoryId);
+      return Boolean(pieceState);
+    }
+
+    // Build turn
+    const piece = this.getPieceInTerritory(territoryId);
+    const {
+      num_orders_remaining: ordersRemaining,
+      supply_delta: supplyDelta,
+      build_territories: buildTerritories,
+    } = privateNationState;
+    if (piece) {
+      return false;
+    }
+    if (supplyDelta > 0) {
+      // player can build
+      if (!ordersRemaining) {
+        return Boolean(this.getOrder(territoryId));
+      }
+      return buildTerritories.includes(territoryId);
+    }
+    // player must disband
+    if (!piece) {
+      return false;
+    }
+    return false;
+  }
+
   clickTerritory(id) {
     const { order } = this.state;
     const { aux, source, target, type } = order;
     const summary = this.getTerritorySummary(id);
     const sourceId = Map.getTerritoryIdFromSummary(source);
     switch (type) {
+      case 'retreat':
       case 'move':
         if (!target) {
           this.setState({
@@ -203,10 +373,15 @@ class Map extends React.Component {
           this.resetOrder();
           break;
         }
+        if (!this.userCanOrder(id)) {
+          return;
+        }
         this.setState({
           order: {
+            ...order,
             source: summary,
           },
+          orderDialogueActive: true,
         });
         break;
     }
@@ -274,48 +449,80 @@ class Map extends React.Component {
     const { piece_states } = turn;
     const elements = [];
     piece_states.forEach((state) => {
+      const { must_retreat: mustRetreat } = state;
       const piece = this.getPiece(state.piece);
       const data = getObjectByKey(state.territory, territory_data, 'territory');
-      const { piece_x, piece_y } = data;
+
+      let x = null;
+      let y = null;
+      if (mustRetreat) {
+        x = data.dislodged_piece_x;
+        y = data.dislodged_piece_y;
+      } else {
+        x = data.piece_x;
+        y = data.piece_y;
+      }
       elements.push(
         <Piece
           key={piece.id}
           type={piece.type}
           nation={piece.nation}
-          territory={state.territory}
-          x={piece_x}
-          y={piece_y}
+          x={x}
+          y={y}
+          mustRetreat={mustRetreat}
         />
       );
     });
     return <g>{elements}</g>;
   }
 
-  renderOrderArrows(territory_data) {
-    const { turn } = this.props;
-    const { orders } = turn;
+  renderOrders(orders, territory_data) {
     const elements = [];
     orders.forEach((order) => {
-      const { id, nation, source, target, type } = order;
+      const { id, nation, source, target, aux, type } = order;
       const sourceData = getObjectByKey(source, territory_data, 'territory');
-      const { piece_x: x1, piece_y: y1 } = sourceData;
-      const targetData = getObjectByKey(target, territory_data, 'territory');
-      const { piece_x: x2, piece_y: y2 } = targetData;
-      elements.push(
-        <OrderArrow
-          key={id}
-          id={id}
-          type={type}
-          nation={nation}
-          x1={x1}
-          x2={x2}
-          y1={y1}
-          y2={y2}
-          offsetSize={26}
-        />
-      );
+      const { piece_x: x, piece_y: y } = sourceData;
+      if (type === 'build') {
+        elements.push(<BuildOrder key={id} order={order} x={x} y={y} />);
+      }
+      if (target) {
+        const { piece_x: x1, piece_y: y1 } = sourceData;
+        const targetData = getObjectByKey(target, territory_data, 'territory');
+        const { piece_x: x2, piece_y: y2 } = targetData;
+        elements.push(
+          <TargetArrow
+            key={`move-${id}`}
+            id={id}
+            type={type}
+            nation={nation}
+            x1={x1}
+            x2={x2}
+            y1={y1}
+            y2={y2}
+            offsetSize={26}
+          />
+        );
+      }
+      if (aux) {
+        const { piece_x: x1, piece_y: y1 } = sourceData;
+        const auxData = getObjectByKey(aux, territory_data, 'territory');
+        const { piece_x: x2, piece_y: y2 } = auxData;
+        elements.push(
+          <AuxArrow
+            key={`aux-${id}`}
+            id={id}
+            type={type}
+            nation={nation}
+            x1={x1}
+            x2={x2}
+            y1={y1}
+            y2={y2}
+            offsetSize={26}
+          />
+        );
+      }
     });
-    return <g>{elements}</g>;
+    return elements;
   }
 
   renderTooltip() {
@@ -324,116 +531,44 @@ class Map extends React.Component {
     return <Tooltip summary={tooltip} interacting={interacting} />;
   }
 
-  renderOrderConfirmation() {
-    const { order } = this.state;
-    return (
-      <OrderConfirmation
-        order={order}
-        _onClickConfirm={() => {
-          console.log('confirm');
-          this.postOrder();
-        }}
-        _onClickCancel={() => {
-          console.log('cancel');
-          this.resetOrder();
-        }}
-      />
-    );
-  }
-
-  renderOrderMessage() {
-    const { order } = this.state;
-    const { aux, target, type } = order;
-    switch (type) {
-      case 'hold':
-        return this.renderOrderConfirmation();
-
-      case 'move':
-        if (!target) {
-          return <OrderMessage text="Select a territory to move into" />;
-        }
-        return this.renderOrderConfirmation();
-
-      case 'support':
-        if (!aux) {
-          return <OrderMessage text="Select a territory to support from" />;
-        }
-        if (!target) {
-          return <OrderMessage text="Select a territory to support into" />;
-        }
-        return this.renderOrderConfirmation();
-
-      case 'convoy':
-        if (!aux) {
-          return <OrderMessage text="Select a territory to convoy from" />;
-        }
-        if (!target) {
-          return <OrderMessage text="Select a territory to convoy into" />;
-        }
-        return this.renderOrderConfirmation();
-
-      default:
-        return null;
-    }
-  }
-
-  renderOrder() {
-    const { order } = this.state;
-    const { type, source } = order;
-
-    if (!type && source) {
-      return (
-        <OrderSelector
-          summary={source}
-          _onClickHold={() => {
-            console.log('hold');
-            this.setState({
-              order: {
-                ...order,
-                type: 'hold',
-              },
-            });
-          }}
-          _onClickMove={() => {
-            console.log('move');
-            this.setState({
-              order: {
-                ...order,
-                type: 'move',
-              },
-            });
-          }}
-          _onClickSupport={() => {
-            console.log('support');
-            this.setState({
-              order: {
-                ...order,
-                type: 'support',
-              },
-            });
-          }}
-          _onClickConvoy={() => {
-            console.log('convoy');
-            this.setState({
-              order: {
-                ...order,
-                type: 'convoy',
-              },
-            });
-          }}
-        />
-      );
-    }
-
-    return this.renderOrderMessage();
-  }
-
   render() {
-    const { game, turn } = this.props;
+    const { game, playerOrders, turn } = this.props;
     if (!turn) return null;
-    const { interacting, panning } = this.state;
+    const { order, interacting, panning, orderDialogueActive } = this.state;
     const mapData = game.variant.map_data[0];
     const { territory_data } = mapData;
+
+    const renderOrderDialogue = () => {
+      if (!orderDialogueActive) {
+        return null;
+      }
+      const { source } = order;
+      const orderTypeChoices = this.getOrderTypeChoices(source);
+      const pieceTypeChoices = this.getPieceTypeChoices(source);
+      const { territory } = source;
+      const { id: territoryId } = territory;
+      const existingOrder = this.getOrder(territoryId);
+      return (
+        <OrderDialogue
+          onClickCancel={this.resetOrder}
+          onClickOrderTypeChoice={this.onClickOrderTypeChoice}
+          onClickPieceTypeChoice={this.onClickPieceTypeChoice}
+          onClickConfirm={this.onClickConfirm}
+          onClickCancelOrder={this.onClickCancelOrder}
+          orderTypeChoices={orderTypeChoices}
+          pieceTypeChoices={pieceTypeChoices}
+          order={order}
+          existingOrder={existingOrder}
+        />
+      );
+    };
+
+    let { orders } = turn;
+    if (turn === getCurrentTurn(game)) {
+      orders = playerOrders;
+    }
+    const orderArrows = this.renderOrders(orders, territory_data);
+
     return (
       <StyledDiv
         panning={panning}
@@ -483,14 +618,21 @@ class Map extends React.Component {
             fill={colors.base}
           />
           {this.renderTerritories(territory_data)}
-          {this.renderOrderArrows(territory_data)}
+          {orderArrows}
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
-        {this.renderOrder()}
+        {renderOrderDialogue()}
       </StyledDiv>
     );
   }
 }
 
-export default Map;
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+    token: state.login.token,
+  };
+};
+
+export default connect(mapStateToProps, null)(Map);

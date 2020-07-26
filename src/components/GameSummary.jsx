@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { dateDisplayFormat, getUserNationState } from '../utils';
+import { dateDisplayFormat, getCurrentTurn, getUserNationState } from '../utils';
 import { colors, spacing, sizes } from '../variables';
 
 import GameStatus from './GameStatus';
@@ -58,10 +58,6 @@ const StyledListItem = styled.li`
     &:after {
       content: ': ';
     }
-  }
-
-  .value {
-    text-transform: capitalize;
   }
 
   .player-count {

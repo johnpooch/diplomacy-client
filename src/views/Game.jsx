@@ -1,18 +1,24 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+import Loading from '../components/Loading';
 import Error from './Error';
-import JoinGame from './JoinGame';
+import PreGame from './PreGame';
 import PlayGame from './PlayGame';
-import * as API from '../api';
+import gameService from '../services/game';
+import alertActions from '../store/actions/alerts';
+import authActions from '../store/actions/auth';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isLoaded: false,
+      playerOrders: null,
+      privateNationState: null,
     };
+    this.toggleJoinGame = this.toggleJoinGame.bind(this);
   }
 
   componentDidMount() {
@@ -20,28 +26,21 @@ class Game extends React.Component {
     this.getGame(match.params.slug);
   }
 
-  // TODO move to service
   getGame(slug) {
-    const { headers } = this.props;
-    const GAMESTATEURL = API.GAMESTATEURL.replace('<game>', slug);
-    fetch(GAMESTATEURL, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        return null;
-      })
-      .then((json) => {
-        const game = json;
+    const { logout, token } = this.props;
+    gameService
+      .getGame(token, slug)
+      .then((game) => {
         this.setState({
           game,
           isLoaded: true,
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        const { status } = error;
+        if (status === 401) {
+          logout();
+        }
         this.setState({
           isLoaded: true,
         });
@@ -58,21 +57,78 @@ class Game extends React.Component {
     return null;
   }
 
+  toggleJoinGame() {
+    this.setState({ isLoaded: false });
+    const { user, token, onJoin, onLeave } = this.props;
+    const { game } = this.state;
+    const { slug, name } = game;
+
+    const players = game ? game.participants : [];
+    const playerIds = players.map((p) => p.id);
+    const joining = !playerIds.includes(user.id);
+
+    gameService.joinGame(token, slug).then(() => {
+      const alertFunction = joining ? onJoin : onLeave;
+      alertFunction(name);
+      this.getGame(slug);
+    });
+  }
+
   render() {
-    const { isLoaded, game } = this.state;
+    const { isLoaded, game, playerOrders, privateNationState } = this.state;
+    const { user } = this.props;
 
-    if (isLoaded) {
-      if (!game) return <Error text="Game not found" />;
-
-      const { status } = game;
-      if (status === 'active') {
-        // TODO handle already joined
-        return <PlayGame game={game} />;
-      }
+    if (!isLoaded) {
+      return <Loading />;
     }
+    if (!game) return <Error text="Game not found" />;
 
-    return <JoinGame game={game} isLoaded={isLoaded} />;
+    const { status } = game;
+    if (status === 'active') {
+      return (
+        <PlayGame
+          game={game}
+          playerOrders={playerOrders}
+          privateNationState={privateNationState}
+        />
+      );
+    }
+    return (
+      <PreGame
+        game={game}
+        isLoaded={isLoaded}
+        toggleJoinGame={this.toggleJoinGame}
+        user={user}
+      />
+    );
   }
 }
 
-export default withRouter(Game);
+const mapStateToProps = (state) => {
+  return {
+    user: state.login.user,
+    token: state.login.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onJoin: (name) =>
+      dispatch(
+        alertActions.add({
+          message: `Joined "${name}"! The game will begin once all players have joined.`,
+          category: 'success',
+        })
+      ),
+    onLeave: (name) =>
+      dispatch(
+        alertActions.add({
+          message: `You have left "${name}".`,
+          category: 'success',
+        })
+      ),
+    logout: () => dispatch(authActions.logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

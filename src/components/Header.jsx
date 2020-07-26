@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import UserAccount from './UserAccount';
 import { colors, fontSizes, sizes, spacing } from '../variables';
@@ -37,15 +38,26 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-const Header = () => {
+const Header = (props) => {
+  const { loggedIn } = props;
+  const createGameNavLink = loggedIn ? (
+    <StyledNavLink to="/create-game">Create game</StyledNavLink>
+  ) : null;
   return (
     <StyledHeader>
       <StyledDiv>
         <StyledNavLink to="/">Diplomacy</StyledNavLink>
+        {createGameNavLink}
         <UserAccount />
       </StyledDiv>
     </StyledHeader>
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.login.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, null)(Header);

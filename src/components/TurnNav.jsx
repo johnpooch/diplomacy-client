@@ -86,8 +86,13 @@ const TurnNav = (props) => {
     <StyledNav>
       {renderPrevious()}
       <div className="active-turn">
-        <span className="season">{turn.season}</span>
-        <span className="year">{turn.year}</span>
+        <div>
+          <span className="season">{turn.season}</span>
+          <span className="year">{turn.year}</span>
+        </div>
+        <div>
+          <span className="phase">{turn.phase}</span>
+        </div>
       </div>
       {renderNext()}
     </StyledNav>

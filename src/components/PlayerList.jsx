@@ -12,9 +12,15 @@ const StyledList = styled.ul`
   }
 `;
 
+const StyledDiv = styled.div`
+  margin: ${spacing[4]}px 0;
+`;
+
 const PlayerList = (props) => {
   const { players } = props;
-  if (!players || !players.length) return null;
+  if (!players || !players.length) {
+    return <StyledDiv>No players have joined.</StyledDiv>;
+  }
   const elements = [];
   players.forEach((p) => {
     elements.push(
