@@ -10,9 +10,9 @@ const StyledHeader = styled.header`
   top: 0;
   left: 0;
   right: 0;
-  background: ${colors.base};
+  background: white;
   z-index: 1;
-  height: ${sizes.headerHeight}px;
+  height: ${sizes.headerHeight * 2}px;
 `;
 
 const StyledDiv = styled.div`
@@ -26,7 +26,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledNavLink = styled(NavLink)`
-  color: white;
+  color: ${colors.base};
   font-size: ${fontSizes.sans[2]}px;
   font-weight: 600;
   text-decoration: none;

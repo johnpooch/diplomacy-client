@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
   grid-template-columns: auto auto;
   grid-column-gap: ${spacing[2]}px;
   align-items: center;
-  color: white;
+  color: black;
   font-size: ${fontSizes.sans[1]}px;
 `;
 

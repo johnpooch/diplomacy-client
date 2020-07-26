@@ -59,8 +59,7 @@ class BrowseGames extends React.Component {
   render() {
     const { choices, games, isLoaded } = this.state;
     return (
-      <Page headingText={this.getHeadingText()} isLoaded={isLoaded}>
-        <GameFilters choices={choices} callback={this.getFilteredGames} />
+      <Page isLoaded={isLoaded}>
         <GameSummaryList games={games} />
       </Page>
     );
