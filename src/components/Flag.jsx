@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import { sizes } from '../variables';
+
 const flagSizes = {
   small: 30,
 };
@@ -8,7 +10,7 @@ const flagSizes = {
 const StyledDiv = styled.div`
   width: ${(props) => flagSizes[props.size]}px;
   svg {
-    border-radius: 6px;
+    border-radius: ${sizes.borderRadius[1]}px;
   }
 `;
 

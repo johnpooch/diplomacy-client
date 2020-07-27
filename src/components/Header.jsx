@@ -14,7 +14,7 @@ const StyledHeader = styled.header`
   background: white;
   z-index: 1;
   height: ${sizes.headerHeight * 2}px;
-  border-bottom: solid 1px ${colors.border};
+  border-bottom: solid ${sizes.border}px ${colors.border};
 `;
 
 const StyledDiv = styled.div`

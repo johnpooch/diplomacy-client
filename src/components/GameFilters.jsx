@@ -18,9 +18,9 @@ const StyledButton = styled(TertiaryButton)`
 
 const StyledForm = styled(GenericForm)`
   margin-bottom: ${spacing[6]}px;
-  border-bottom: ${sizes.border}px solid ${colors.darkgray};
+  border-bottom: ${sizes.border}px solid ${colors.border};
   padding: ${spacing[4]}px;
-  background: ${colors.gray};
+  background: ${colors.white};
 `;
 
 const StyledDiv = styled.div`
@@ -102,7 +102,7 @@ class GameFilters extends React.Component {
           type="search"
           value={search}
           onChange={this.changeFilter}
-          placeholder="Enter search here"
+          placeholder="Search by game name"
         />
       </label>
     );

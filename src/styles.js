@@ -106,7 +106,8 @@ export const GenericForm = styled.form`
     padding: 0;
     display: block;
     line-height: 1;
-    border: ${sizes.border}px solid ${colors.base};
+    background: ${colors.offwhite};
+    border: ${sizes.border}px solid ${colors.border};
     border-radius: ${sizes.borderRadius[0]}px;
     padding: ${spacing[2]}px;
     width: 100%;

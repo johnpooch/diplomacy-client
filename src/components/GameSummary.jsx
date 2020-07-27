@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { dateDisplayFormat, getCurrentTurn, getUserNationState } from '../utils';
-import { borders, colors, spacing, sizes } from '../variables';
+import { dateDisplayFormat, getUserNationState } from '../utils';
+import { colors, spacing, sizes } from '../variables';
 
 import GameStatus from './GameStatus';
 import MapPreview from './MapPreview';
@@ -17,14 +17,14 @@ const StyledLink = styled(Link)`
   background: ${colors.white};
   padding: ${spacing[2]}px;
   border: solid 1px ${colors.border};
-  border-radius: 3px;
+  border-radius: ${sizes[0]}px;
 
   &:hover .name {
     text-decoration: underline;
 `;
 
 const StyledListItem = styled.li`
-  border-left: ${sizes.border}px solid transparent;
+  border-left: ${sizes.line}px solid transparent;
   border-color: ${(props) => props.color};
   padding: 0 ${spacing[3]}px;
 

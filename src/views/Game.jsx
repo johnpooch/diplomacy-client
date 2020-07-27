@@ -31,6 +31,7 @@ class Game extends React.Component {
     gameService
       .getGame(token, slug)
       .then((game) => {
+        console.log(game);
         this.setState({
           game,
           isLoaded: true,
