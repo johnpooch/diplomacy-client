@@ -96,7 +96,7 @@ export const IconButton = styled(BaseButton)`
 
 // Forms
 export const GenericForm = styled.form`
-  font-size: ${fontSizes.sans[2]}px;
+  font-size: ${fontSizes.sans[1]}px;
 
   input,
   select,

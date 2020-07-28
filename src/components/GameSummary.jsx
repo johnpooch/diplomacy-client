@@ -30,7 +30,6 @@ const StyledListItem = styled.li`
 
   display: grid;
   grid-template-columns: 3fr 6fr 2fr;
-  grid-row-gap: ${spacing[5]}px;
   grid-column-gap: ${spacing[5]}px;
 
   a {

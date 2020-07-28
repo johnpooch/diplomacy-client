@@ -22,19 +22,28 @@ const data = {
       phase: 'Order',
       territory_states: [
         {
-          territory: 21,
+          territory: 1,
           controlled_by: 7,
         },
       ],
       piece_states: [
         {
           piece: 1,
-          territory: 21,
+          territory: 1,
           named_coast: null,
           dislodged: false,
           dislodged_by: null,
           attacker_territory: null,
           must_retreat: false,
+        },
+        {
+          piece: 2,
+          territory: 1,
+          named_coast: null,
+          dislodged: false,
+          dislodged_by: null,
+          attacker_territory: null,
+          must_retreat: true,
         },
       ],
       nation_states: [
@@ -62,26 +71,6 @@ const data = {
   pieces: [
     { id: 1, type: 'fleet', nation: 7 },
     { id: 2, type: 'army', nation: 3 },
-    { id: 3, type: 'fleet', nation: 2 },
-    { id: 4, type: 'army', nation: 7 },
-    { id: 5, type: 'fleet', nation: 1 },
-    { id: 6, type: 'fleet', nation: 3 },
-    { id: 7, type: 'fleet', nation: 1 },
-    { id: 8, type: 'army', nation: 1 },
-    { id: 9, type: 'army', nation: 2 },
-    { id: 10, type: 'fleet', nation: 5 },
-    { id: 11, type: 'army', nation: 5 },
-    { id: 12, type: 'fleet', nation: 6 },
-    { id: 13, type: 'army', nation: 7 },
-    { id: 14, type: 'fleet', nation: 4 },
-    { id: 15, type: 'army', nation: 5 },
-    { id: 16, type: 'army', nation: 4 },
-    { id: 17, type: 'army', nation: 6 },
-    { id: 18, type: 'army', nation: 3 },
-    { id: 19, type: 'army', nation: 2 },
-    { id: 20, type: 'army', nation: 4 },
-    { id: 21, type: 'army', nation: 6 },
-    { id: 22, type: 'fleet', nation: 6 },
   ],
   variant: {
     id: 1,
@@ -103,8 +92,8 @@ const data = {
             pk: 1,
             supply_center_x: 1271,
             supply_center_y: 1144,
-            territory: 21,
-            text_x: 1368.800048828125,
+            territory: 1,
+            text_x: 1368,
             text_y: 1115.5,
             type: 'land',
           },
@@ -113,27 +102,103 @@ const data = {
     ],
     territories: [
       {
-        id: 21,
+        id: 1,
         name: 'ankara',
-        named_coasts: [],
+        named_coasts: [
+          {
+            "id": 1,
+            "parent": 1,
+            "name": "ankara north coast"
+          },
+          {
+            "id": 2,
+            "parent": 1,
+            "name": "ankara south coast"
+          }
+        ],
         supply_center: true,
         type: 'coastal',
+      },
+    ],
+    nations: [
+      {
+        id: 1,
+        name: 'England',
+        flag_as_data: {
+          viewBox: '0 0 252.39 168.26',
+          paths: [],
+        },
       },
     ],
   },
 };
 
-test('User is set as attribute.', () => {
+test('User', () => {
   const game = new GameAdapter(turnId, user, data);
   expect(game.user).toBe(user);
 });
 
-test('Territories available as attribute.', () => {
+test('Territory name', () => {
   const game = new GameAdapter(turnId, user, data);
-  expect(game.territories[0].name).toBe('ankara');
+  expect(game.territories[0].name).toBe('Ankara');
 });
 
-test("Territory's piece available as attribute.", () => {
+test('Territory abbreviation', () => {
   const game = new GameAdapter(turnId, user, data);
-  expect(game.territories[0].piece.x).toBe(1313);
+  expect(game.territories[0].abbreviation).toBe('Ank');
+});
+
+test('Territory id', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  expect(territory.id).toBe(1);
+});
+
+test('Territory piece', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  expect(territory.piece.x).toBe(1313);
+  expect(territory.piece.y).toBe(1120);
+});
+
+test('Territory dislodged piece', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  expect(territory.dislodgedPiece.x).toBe(1300.5);
+  expect(territory.dislodgedPiece.y).toBe(1107.5);
+});
+
+test('Territory supply center', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  expect(territory.supplyCenter.x).toBe(1271);
+  expect(territory.supplyCenter.y).toBe(1144);
+});
+
+test('Territory text', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  expect(territory.text.x).toBe(1368);
+  expect(territory.text.y).toBe(1115.5);
+});
+
+test('Territory type', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  expect(territory.type).toBe('coastal');
+});
+
+test('Territory map type', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  expect(territory.mapType).toBe('land');
+});
+
+test('Named coasts name', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const territory = game.territories[0];
+  const namedCoastNorth = territory.namedCoasts[0];
+  expect(namedCoastNorth.name).toBe('ankara north coast');
+  const namedCoastSouth = territory.namedCoasts[1];
+  expect(namedCoastSouth.name).toBe('ankara south coast');
 });

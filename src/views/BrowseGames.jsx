@@ -1,11 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import styled from '@emotion/styled';
+
+import { spacing } from '../variables';
 
 import GameFilters from '../components/GameFilters';
 import GameSummaryList from '../components/GameSummaryList';
 import Page from '../components/Page';
 import gameService from '../services/game';
 import authActions from '../store/actions/auth';
+
+const StyledDiv = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-row-gap: ${spacing[5]}px;
+  grid-column-gap: ${spacing[5]}px;
+`;
 
 class BrowseGames extends React.Component {
   constructor(props) {
@@ -57,8 +67,13 @@ class BrowseGames extends React.Component {
     const { choices, games, isLoaded } = this.state;
     return (
       <Page headingText={null} isLoaded={isLoaded}>
-        <GameFilters choices={choices} callback={this.getFilteredGames} />
-        <GameSummaryList games={games} />
+        <StyledDiv>
+          <div>
+            <GameFilters choices={choices} callback={this.getFilteredGames} />
+            <GameSummaryList games={games} />
+          </div>
+          <div>My active games</div>
+        </StyledDiv>
       </Page>
     );
   }
