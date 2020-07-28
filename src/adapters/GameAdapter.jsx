@@ -51,15 +51,7 @@ function getTerritoryData(data, mapData, turnData) {
       };
     }
 
-    const namedCoastData = [];
-    territory.named_coasts.forEach((namedCoast) => {
-      namedCoastData.push({
-        name: namedCoast.name,
-      });
-    });
-
-    combinedTerritoryData.push({
-      id: territory.id,
+    let combined = {
       abbreviation: mapDataItem.abbreviation,
       name: mapDataItem.name,
       path: mapDataItem.path,
@@ -71,13 +63,26 @@ function getTerritoryData(data, mapData, turnData) {
         x: mapDataItem.text_x,
         y: mapDataItem.text_y,
       },
-      namedCoasts: namedCoastData,
       mapType: mapDataItem.type,
-      type: territory.type,
-      controlledBy: territoryState.controlled_by,
-      piece: combinedPieceData,
-      dislodgedPiece: combinedDislodgedPieceData,
-    });
+    };
+    if (territory) {
+      const namedCoastData = [];
+      territory.named_coasts.forEach((namedCoast) => {
+        namedCoastData.push({
+          name: namedCoast.name,
+        });
+      });
+      combined = {
+        ...combined,
+        id: territory.id,
+        namedCoasts: namedCoastData,
+        type: territory.type,
+        controlledBy: territoryState.controlled_by,
+        piece: combinedPieceData,
+        dislodgedPiece: combinedDislodgedPieceData,
+      };
+    }
+    combinedTerritoryData.push(combined);
   });
   return combinedTerritoryData;
 }
@@ -89,7 +94,10 @@ function getNationData(data, turnData) {
 
   nationData.forEach((nation) => {
     const { id } = nation;
-    const nationState = getObjectByKey(id, nationStateData, 'nation');
+    // TODO unnest nation
+    const nationState = nationStateData.find((ns) => {
+      return ns.nation.id === id;
+    });
 
     combinedNationData.push({
       id,

@@ -5,6 +5,7 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import GameAdapter from '../adapters/GameAdapter';
 import Loading from '../components/Loading';
 import Map from '../components/Map';
 import PlayerStatus from '../components/PlayerStatus';
@@ -41,6 +42,7 @@ class Game extends React.Component {
     const currentTurnIndex = turns.findIndex(
       (obj) => obj.current_turn === true
     );
+    console.log(currentTurnIndex);
     const activeTurn = turns[currentTurnIndex];
     this.setState({ activeTurn });
     this.getPrivate(slug);
@@ -101,14 +103,16 @@ class Game extends React.Component {
       playerOrders,
       privateNationState,
     } = this.state;
-    const { game } = this.props;
+    const { game, user } = this.props;
     if (!isLoaded) {
       return <Loading />;
     }
+    const gameAdapter = new GameAdapter(activeTurn.id, user, game);
     return (
       <div>
         <Map
           game={game}
+          gameAdapter={gameAdapter}
           turn={activeTurn}
           playerOrders={playerOrders}
           privateNationState={privateNationState}

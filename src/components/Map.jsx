@@ -387,60 +387,73 @@ class Map extends React.Component {
     }
   }
 
-  renderTerritories(territory_data) {
-    const { turn } = this.props;
-    if (!turn) return null;
+  getTerritoryCallbacks(id, interacting, panning) {
+    const mouseOut = () => {
+      if (interacting) return;
+      this.setState({
+        hovering: null,
+        tooltip: null,
+      });
+    };
+    const mouseOver = () => {
+      if (interacting) return;
+      this.setState({
+        hovering: id,
+      });
+    };
+    const mouseUp = (e) => {
+      if (e.nativeEvent.which !== 1) return;
+      if (panning) return;
+      this.clickTerritory(id);
+    };
+    const contextMenu = (e) => {
+      e.nativeEvent.preventDefault();
+      this.setState({
+        tooltip: this.getTerritorySummary(id),
+      });
+    };
+    return { mouseOut, mouseOver, mouseUp, contextMenu };
+  }
+
+  static getTerritoryOrderState(territoryId, order) {
+    // TODO could this be written more elegantly?
+    const { aux, source, target } = order;
+    if (Map.getTerritoryIdFromSummary(source) === territoryId) {
+      return 'source';
+    }
+    if (Map.getTerritoryIdFromSummary(aux) === territoryId) {
+      return 'aux';
+    }
+    if (Map.getTerritoryIdFromSummary(target) === territoryId) {
+      return 'target';
+    }
+  }
+
+  renderTerritories(territories) {
     const territoriesList = [];
-    territory_data.forEach((data) => {
+    territories.forEach((territory) => {
       const { hovering, interacting, order, panning } = this.state;
-      const id = data.territory;
-      const territory = this.getTerritory(id);
-      const controlledBy = this.getTerritoryControlledBy(id);
-      const { aux, source, target } = order;
-      if (data && territory) {
+
+      if (territory && territory.type) {
+        const { id } = territory;
+        const callbacks = this.getTerritoryCallbacks(id, interacting, panning);
+        const territoryOrderState = Map.getTerritoryOrderState(
+          id,
+          order
+        );
         territoriesList.push(
           <Territory
-            key={data.id}
+            key={id}
             id={id}
-            data={data}
-            type={territory.type}
-            supplyCenter={territory.supply_center}
-            controlledBy={controlledBy}
+            territory={territory}
             panning={panning}
             hovering={hovering === id}
-            interacting={interacting}
-            isSource={Map.getTerritoryIdFromSummary(source) === id}
-            isAux={Map.getTerritoryIdFromSummary(aux) === id}
-            isTarget={Map.getTerritoryIdFromSummary(target) === id}
-            _mouseOver={() => {
-              if (interacting) return;
-              this.setState({
-                hovering: id,
-              });
-            }}
-            _mouseOut={() => {
-              if (interacting) return;
-              this.setState({
-                hovering: null,
-                tooltip: null,
-              });
-            }}
-            _mouseUp={(e) => {
-              if (e.nativeEvent.which !== 1) return;
-              if (panning) return;
-              this.clickTerritory(id);
-            }}
-            _contextMenu={(e) => {
-              e.nativeEvent.preventDefault();
-              this.setState({
-                tooltip: this.getTerritorySummary(id),
-              });
-            }}
+            territoryOrderState={territoryOrderState}
+            callbacks={callbacks}
           />
         );
       }
     });
-
     return <g transform="translate(-195, -170)">{territoriesList}</g>;
   }
 
@@ -532,11 +545,12 @@ class Map extends React.Component {
   }
 
   render() {
-    const { game, playerOrders, turn } = this.props;
+    const { game, gameAdapter, playerOrders, turn } = this.props;
     if (!turn) return null;
     const { order, interacting, panning, orderDialogueActive } = this.state;
     const mapData = game.variant.map_data[0];
     const { territory_data } = mapData;
+    const { territories } = gameAdapter;
 
     const renderOrderDialogue = () => {
       if (!orderDialogueActive) {
@@ -617,7 +631,7 @@ class Map extends React.Component {
             height={mapData.height}
             fill={colors.base}
           />
-          {this.renderTerritories(territory_data)}
+          {this.renderTerritories(territories)}
           {orderArrows}
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
