@@ -10,7 +10,7 @@ const flagSizes = {
 const StyledDiv = styled.div`
   width: ${(props) => flagSizes[props.size]}px;
   svg {
-    border-radius: ${sizes.borderRadius[1]}px;
+    border-radius: ${sizes.borderRadius[0]}px;
   }
 `;
 

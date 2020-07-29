@@ -5,10 +5,11 @@ import { Switch, Route, useLocation } from 'react-router-dom';
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
 import Error from './Error';
-import Game from './Game';
+import GameRouter from './GameRouter';
 import Login from './Login';
 import Register from './Register';
 import AlertList from '../components/AlertList';
+import Header from '../components/Header';
 import LoggedOutRoute from '../components/LoggedOutRoute';
 import PrivateRoute from '../components/PrivateRoute';
 import alertActions from '../store/actions/alerts';
@@ -23,12 +24,13 @@ const App = () => {
 
   return (
     <div>
+      <Header />
       <AlertList />
       <Switch>
         <LoggedOutRoute exact path="/login" component={Login} />
         <LoggedOutRoute exact path="/register" component={Register} />
         <PrivateRoute exact path="/create-game" component={CreateGame} />
-        <PrivateRoute exact path="/game/:slug" component={Game} />
+        <PrivateRoute exact path="/game/:slug" component={GameRouter} />
         <PrivateRoute exact path="/" component={BrowseGames} />
         <Route component={() => <Error text="Page not found" />} />
       </Switch>

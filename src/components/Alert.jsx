@@ -3,14 +3,14 @@ import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { lighten } from 'polished';
+import { darken, lighten } from 'polished';
 
-import { PageWrapper, IconButton } from '../styles';
+import { PageWrapper, BaseButton } from '../styles';
 import { colors, sizes, spacing, fontSizes } from '../variables';
 import alertActions from '../store/actions/alerts';
 
 const StyledListItem = styled.li`
-  background-color: ${(props) => lighten(0.4, colors[props.category])};
+  background: ${(props) => lighten(0.4, colors[props.category])};
   border-bottom: ${sizes.border}px solid
     ${(props) => lighten(0.2, colors[props.category])};
   position: relative;
@@ -31,16 +31,15 @@ const StyledDiv = styled(PageWrapper)`
   p {
     padding: ${spacing[2]}px 0;
   }
+`;
 
-  ${IconButton} {
-    color: ${(props) => colors[props.category]};
-    background-color: transparent;
-    border-color: transparent;
+const StyledCloseButton = styled(BaseButton)`
+  color: ${(props) => colors[props.category]};
+  min-width: ${sizes.input}px;
+  height: ${sizes.input}px;
 
-    &:hover {
-      color: white;
-      background-color: ${(props) => colors[props.category]};
-    }
+  &:hover {
+    color: ${(props) => darken(0.2, colors[props.category])};
   }
 `;
 
@@ -51,14 +50,15 @@ const Alert = (props) => {
     <StyledListItem category={category}>
       <StyledDiv category={category}>
         <p>{text}</p>
-        <IconButton
+        <StyledCloseButton
           type="button"
           onClick={() => {
             onClick(id);
           }}
+          category={category}
         >
           <FontAwesomeIcon icon={faTimes} />
-        </IconButton>
+        </StyledCloseButton>
       </StyledDiv>
     </StyledListItem>
   );

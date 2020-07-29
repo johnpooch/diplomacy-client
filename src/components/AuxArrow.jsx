@@ -49,7 +49,7 @@ const AuxArrow = (props) => {
           y1={y1}
           x2={x2 - offset * v.x}
           y2={y2 - offset * v.y}
-          markerEnd={`url(#arrow-support)`}
+          markerEnd="url(#arrow-support)"
           style={styles[type]}
         />
       </g>

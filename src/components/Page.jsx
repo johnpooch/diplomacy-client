@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import Header from './Header';
 import Heading from './Heading';
 import Loading from './Loading';
 import { PageWrapper } from '../styles';
@@ -24,12 +23,7 @@ const Page = (props) => {
     );
   };
 
-  return (
-    <StyledMain>
-      <Header />
-      {renderPageWrapper()}
-    </StyledMain>
-  );
+  return <StyledMain>{renderPageWrapper()}</StyledMain>;
 };
 
 export default Page;

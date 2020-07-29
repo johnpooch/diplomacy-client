@@ -22,7 +22,7 @@ const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background-color: ${colors.gray};
+  background: ${colors.gray};
   top: 0;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -81,6 +81,19 @@ class Map extends React.Component {
         piece_type: choice,
       },
     });
+  }
+
+  onClickConfirm() {
+    this.postOrder();
+  }
+
+  onClickCancelOrder(orderId) {
+    const { game, token, getPrivate } = this.props;
+    const { id: gameId } = game;
+    gameService.destroyOrder(token, gameId, orderId).then(() => {
+      getPrivate(gameId);
+    });
+    this.resetOrder();
   }
 
   getNation(id) {
@@ -206,6 +219,34 @@ class Map extends React.Component {
       return options;
     }
     return [];
+  }
+
+  getOrder(territoryId) {
+    const { playerOrders } = this.props;
+    return getObjectByKey(territoryId, playerOrders, 'source');
+  }
+
+  postOrder() {
+    // Hold - source
+    // Move - source, target, target_coast=None, via_convoy=False
+    // Support - source, aux, target
+    // Convoy - source, aux, target
+    // Retreat - source, target, target_coast=None
+    // Build - source, target_coast=None
+    // Disband - source
+    const { order } = this.state;
+    const { game, token, getPrivate } = this.props;
+    const { id: gameId } = game;
+    let { aux, source, target } = order;
+    const { type, piece_type } = order;
+    aux = Map.getTerritoryIdFromSummary(aux);
+    source = Map.getTerritoryIdFromSummary(source);
+    target = Map.getTerritoryIdFromSummary(target);
+    const data = { type, source, target, aux, piece_type };
+    gameService.createOrder(token, gameId, data).then(() => {
+      getPrivate(gameId);
+    });
+    this.resetOrder();
   }
 
   resetOrder() {
@@ -374,7 +415,10 @@ class Map extends React.Component {
           break;
         }
         if (!this.userCanOrder(id)) {
-          return;
+          this.setState({
+            tooltip: this.getTerritorySummary(id),
+          });
+          break;
         }
         this.setState({
           order: {
@@ -483,13 +527,23 @@ class Map extends React.Component {
           x={x}
           y={y}
           mustRetreat={mustRetreat}
+          userCanOrder={this.userCanOrder(state.territory)}
+          hasOrders={this.getOrder(state.territory) !== undefined}
         />
       );
     });
     return <g>{elements}</g>;
   }
 
-  renderOrders(orders, territory_data) {
+  renderOrders(territory_data) {
+    const { game, playerOrders, turn } = this.props;
+    if (!turn) return null;
+
+    let { orders } = turn;
+    if (turn === getCurrentTurn(game)) {
+      orders = playerOrders;
+    }
+
     const elements = [];
     orders.forEach((order) => {
       const { id, nation, source, target, aux, type } = order;
@@ -577,12 +631,6 @@ class Map extends React.Component {
       );
     };
 
-    let { orders } = turn;
-    if (turn === getCurrentTurn(game)) {
-      orders = playerOrders;
-    }
-    const orderArrows = this.renderOrders(orders, territory_data);
-
     return (
       <StyledDiv
         panning={panning}
@@ -632,7 +680,7 @@ class Map extends React.Component {
             fill={colors.base}
           />
           {this.renderTerritories(territories)}
-          {orderArrows}
+          {this.renderOrders(territory_data)}
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}

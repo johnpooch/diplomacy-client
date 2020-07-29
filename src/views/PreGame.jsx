@@ -14,9 +14,7 @@ const StyledP = styled.p`
 
 const PreGame = (props) => {
   const { game, isLoaded, toggleJoinGame, user } = props;
-  console.log(game);
   const { description } = game;
-  console.log(description);
   const players = game ? game.participants : [];
   const playerIds = players.map((p) => p.id);
   const userJoined = playerIds.includes(user.id);

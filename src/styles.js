@@ -38,60 +38,60 @@ export const BaseButton = styled.button`
   padding: 0;
   font-size: inherit;
   text-decoration: none;
-  background-color: transparent;
+  background: transparent;
+
+  &[disabled] {
+    opacity: 0;
+    cursor: initial;
+  }
 `;
 
 export const Button = styled(BaseButton)`
   color: white;
-  background-color: ${colors.base};
+  background: ${colors.base};
   border-radius: ${sizes.borderRadius[0]}px;
   padding: ${spacing[2]}px ${spacing[5]}px;
 
   &:hover {
-    background-color: ${colors.darkgray};
+    background: ${colors.darkgray};
     color: white;
   }
 `;
 
 export const SecondaryButton = styled(Button)`
-  background: white;
+  padding: ${spacing[1]}px ${spacing[2]}px;
+  font-size: ${fontSizes.sans[2]}px;
   color: ${colors.base};
+  background: rgba(255, 255, 255, 0.5);
   border: ${sizes.border}px solid ${colors.base};
 
   &:hover {
-    border-color: ${colors.darkgray};
     color: white;
+    background: ${colors.base};
   }
 `;
 
 export const TertiaryButton = styled(Button)`
   background: transparent;
   color: ${colors.darkgray};
+  font-size: ${fontSizes.sans[2]}px;
   padding: 0;
-  font-size: ${fontSizes.sans[1]}px;
 
   &:hover {
-    background-color: transparent;
+    background: transparent;
     color: ${colors.darkgray};
     text-decoration: underline;
   }
 `;
 
-export const IconButton = styled(BaseButton)`
+export const IconButton = styled(SecondaryButton)`
+  border-radius: 50%;
   font-size: inherit;
-  width: ${sizes.input}px;
+  min-width: ${sizes.input}px;
   height: ${sizes.input}px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${colors.base};
-  background-color: white;
-  border: ${sizes.border}px solid white;
-
-  &:hover {
-    color: white;
-    background-color: ${colors.base};
-  }
 `;
 
 // Forms

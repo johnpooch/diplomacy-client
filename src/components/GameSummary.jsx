@@ -34,7 +34,7 @@ const StyledListItem = styled.li`
 
   a {
     text-decoration: none;
-    color: ${colors.base};
+    color: inherit;
 
     &:hover .name {
       text-decoration: underline;
@@ -84,14 +84,12 @@ const GameSummary = (props) => {
 
   const date = new Date(createdAt);
   const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
-
   const userNationState = getUserNationState(currentTurn, user);
 
   let color = 'transparent';
   if (userNationState) {
     color = colors.nations[userNationState.nation.id];
   }
-
   return (
     <StyledLink to={`/game/${slug}`}>
       <StyledListItem key={id} color={color}>
