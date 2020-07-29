@@ -17,9 +17,9 @@ const StyledPath = styled.path`
   pointer-events: none;
 `;
 
-const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
-  const { order, x, y } = props;
-  const { nation } = order;
+const renderIcon = (order, faIcon, scale, shadowSize = 20) => {
+  const { nation, piece } = order;
+  const { x, y } = piece;
 
   const w = faIcon.icon[0];
   const h = faIcon.icon[1];
@@ -43,12 +43,12 @@ const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
 
 const BuildOrder = (props) => {
   const { order } = props;
-  const { piece_type: pieceType } = order;
+  const { pieceType } = order;
 
   if (pieceType === 'army') {
-    return renderIcon(props, faChessPawn, 0.06);
+    return renderIcon(order, faChessPawn, 0.06);
   }
-  return renderIcon(props, faAnchor, 0.05);
+  return renderIcon(order, faAnchor, 0.05);
 };
 
 export default BuildOrder;

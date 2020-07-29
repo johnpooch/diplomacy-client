@@ -5,13 +5,11 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
-import AuxArrow from './AuxArrow';
-import BuildOrder from './BuildOrder';
-import TargetArrow from './TargetArrow';
 import OrderDialogue from './OrderDialogue';
+import Orders from './Orders';
 import Piece from './Piece';
 import ScrollableSVG from './ScrollableSVG';
-import Territory from './Territory';
+import Territories from './Territories';
 import Tooltip from './Tooltip';
 import { getCurrentTurn, getObjectByKey } from '../utils';
 import { colors } from '../variables';
@@ -59,6 +57,8 @@ class Map extends React.Component {
     this.onClickPieceTypeChoice = this.onClickPieceTypeChoice.bind(this);
     this.onClickConfirm = this.onClickConfirm.bind(this);
     this.onClickCancelOrder = this.onClickCancelOrder.bind(this);
+    this.getTerritoryCallbacks = this.getTerritoryCallbacks.bind(this);
+    this.getTerritoryOrderState = this.getTerritoryOrderState.bind(this);
 
     this.PANNING_THRESHOLD = 5;
   }
@@ -431,7 +431,8 @@ class Map extends React.Component {
     }
   }
 
-  getTerritoryCallbacks(id, interacting, panning) {
+  getTerritoryCallbacks(id) {
+    const { interacting, panning } = this.state;
     const mouseOut = () => {
       if (interacting) return;
       this.setState({
@@ -459,46 +460,20 @@ class Map extends React.Component {
     return { mouseOut, mouseOver, mouseUp, contextMenu };
   }
 
-  static getTerritoryOrderState(territoryId, order) {
+  getTerritoryOrderState(id) {
     // TODO could this be written more elegantly?
+    const { order } = this.state;
     const { aux, source, target } = order;
-    if (Map.getTerritoryIdFromSummary(source) === territoryId) {
+    if (Map.getTerritoryIdFromSummary(source) === id) {
       return 'source';
     }
-    if (Map.getTerritoryIdFromSummary(aux) === territoryId) {
+    if (Map.getTerritoryIdFromSummary(aux) === id) {
       return 'aux';
     }
-    if (Map.getTerritoryIdFromSummary(target) === territoryId) {
+    if (Map.getTerritoryIdFromSummary(target) === id) {
       return 'target';
     }
-  }
-
-  renderTerritories(territories) {
-    const territoriesList = [];
-    territories.forEach((territory) => {
-      const { hovering, interacting, order, panning } = this.state;
-
-      if (territory && territory.type) {
-        const { id } = territory;
-        const callbacks = this.getTerritoryCallbacks(id, interacting, panning);
-        const territoryOrderState = Map.getTerritoryOrderState(
-          id,
-          order
-        );
-        territoriesList.push(
-          <Territory
-            key={id}
-            id={id}
-            territory={territory}
-            panning={panning}
-            hovering={hovering === id}
-            territoryOrderState={territoryOrderState}
-            callbacks={callbacks}
-          />
-        );
-      }
-    });
-    return <g transform="translate(-195, -170)">{territoriesList}</g>;
+    return null;
   }
 
   renderPieces(territory_data) {
@@ -535,63 +510,6 @@ class Map extends React.Component {
     return <g>{elements}</g>;
   }
 
-  renderOrders(territory_data) {
-    const { game, playerOrders, turn } = this.props;
-    if (!turn) return null;
-
-    let { orders } = turn;
-    if (turn === getCurrentTurn(game)) {
-      orders = playerOrders;
-    }
-
-    const elements = [];
-    orders.forEach((order) => {
-      const { id, nation, source, target, aux, type } = order;
-      const sourceData = getObjectByKey(source, territory_data, 'territory');
-      const { piece_x: x, piece_y: y } = sourceData;
-      if (type === 'build') {
-        elements.push(<BuildOrder key={id} order={order} x={x} y={y} />);
-      }
-      if (target) {
-        const { piece_x: x1, piece_y: y1 } = sourceData;
-        const targetData = getObjectByKey(target, territory_data, 'territory');
-        const { piece_x: x2, piece_y: y2 } = targetData;
-        elements.push(
-          <TargetArrow
-            key={`move-${id}`}
-            id={id}
-            type={type}
-            nation={nation}
-            x1={x1}
-            x2={x2}
-            y1={y1}
-            y2={y2}
-            offsetSize={26}
-          />
-        );
-      }
-      if (aux) {
-        const { piece_x: x1, piece_y: y1 } = sourceData;
-        const auxData = getObjectByKey(aux, territory_data, 'territory');
-        const { piece_x: x2, piece_y: y2 } = auxData;
-        elements.push(
-          <AuxArrow
-            key={`aux-${id}`}
-            id={id}
-            type={type}
-            nation={nation}
-            x1={x1}
-            x2={x2}
-            y1={y1}
-            y2={y2}
-            offsetSize={26}
-          />
-        );
-      }
-    });
-    return elements;
-  }
-
   renderTooltip() {
     const { tooltip, interacting } = this.state;
     if (!tooltip) return null;
@@ -599,9 +517,10 @@ class Map extends React.Component {
   }
 
   render() {
-    const { game, gameAdapter, playerOrders, turn } = this.props;
+    const { game, gameAdapter, turn } = this.props;
+    const { orders } = gameAdapter;
     if (!turn) return null;
-    const { order, interacting, panning, orderDialogueActive } = this.state;
+    const { hovering, order, interacting, panning, orderDialogueActive } = this.state;
     const mapData = game.variant.map_data[0];
     const { territory_data } = mapData;
     const { territories } = gameAdapter;
@@ -679,8 +598,14 @@ class Map extends React.Component {
             height={mapData.height}
             fill={colors.base}
           />
-          {this.renderTerritories(territories)}
-          {this.renderOrders(territory_data)}
+          <Territories
+            getCallbacks={this.getTerritoryCallbacks}
+            getTerritoryOrderState={this.getTerritoryOrderState}
+            hovering={hovering}
+            panning={panning}
+            territories={territories}
+          />
+          <Orders orders={orders} />
           {this.renderPieces(territory_data)}
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
