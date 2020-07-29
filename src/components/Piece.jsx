@@ -29,14 +29,27 @@ const getStrokeColor = (props) => {
   return 'transparent';
 };
 
-const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
-  const { nation, x, y, mustRetreat, userCanOrder, hasOrders } = props;
+const pieceIcons = {
+  army: faChessPawn,
+  fleet: faAnchor,
+};
 
+const pieceScales = {
+  army: 0.05,
+  fleet: 0.05,
+};
+
+const Piece = (props) => {
+  const { piece } = props;
+  if (!piece) return null;
+  const { nation, x, y, mustRetreat, type, userCanOrder, hasOrders } = piece;
+  const faIcon = pieceIcons[type];
+  const scale = pieceScales[type];
   const w = faIcon.icon[0];
   const h = faIcon.icon[1];
-
   const dx = x - (scale * w) / 2;
   const dy = y - (scale * h) / 2;
+  const shadowSize = 20;
 
   const color = lighten(0.2, colors.nations[nation]);
 
@@ -59,20 +72,6 @@ const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
       />
     </g>
   );
-};
-
-const Piece = (props) => {
-  const { type } = props;
-
-  if (type === 'army') {
-    return renderIcon(props, faChessPawn, 0.05);
-  }
-
-  if (type === 'fleet') {
-    return renderIcon(props, faAnchor, 0.05);
-  }
-
-  return null;
 };
 
 export default Piece;

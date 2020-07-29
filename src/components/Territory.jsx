@@ -52,7 +52,7 @@ const Territory = (props) => {
     panning,
     callbacks,
   } = props;
-  const { abbreviation, supplyCenter, text } = territory;
+  const { abbreviation, piece, supplyCenter, text } = territory;
   const { x: scx, y: scy } = supplyCenter;
 
   const color = getFillColor(territory);

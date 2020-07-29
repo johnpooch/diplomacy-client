@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import ArrowheadMarker from './ArrowheadMarker';
 import OrderDialogue from './OrderDialogue';
 import Orders from './Orders';
-import Piece from './Piece';
+import Pieces from './Pieces';
 import ScrollableSVG from './ScrollableSVG';
 import Territories from './Territories';
 import Tooltip from './Tooltip';
@@ -519,6 +519,9 @@ class Map extends React.Component {
   render() {
     const { game, gameAdapter, turn } = this.props;
     const { orders } = gameAdapter;
+    const pieces = gameAdapter.getPieces();
+    console.log('agghhh');
+    console.log(pieces);
     if (!turn) return null;
     const { hovering, order, interacting, panning, orderDialogueActive } = this.state;
     const mapData = game.variant.map_data[0];
@@ -606,7 +609,7 @@ class Map extends React.Component {
             territories={territories}
           />
           <Orders orders={orders} />
-          {this.renderPieces(territory_data)}
+          <Pieces pieces={pieces} />
         </ScrollableSVG>
         {this.renderTooltip(territory_data)}
         {renderOrderDialogue()}
