@@ -26,6 +26,19 @@ const data = {
           controlled_by: 7,
         },
       ],
+      orders: [
+        {
+          id: 1,
+          type: 'move',
+          nation: 1,
+          source: 1,
+          target: 42,
+          target_coast: null,
+          aux: null,
+          piece_type: null,
+          via_convoy: false,
+        },
+      ],
       piece_states: [
         {
           piece: 1,
@@ -49,7 +62,9 @@ const data = {
       nation_states: [
         {
           user: 7,
-          nation: 1,
+          nation: {
+            id: 1,
+          },
           surrendered: false,
           supply_delta: 0,
           build_territories: null,
@@ -201,4 +216,17 @@ test('Named coasts name', () => {
   expect(namedCoastNorth.name).toBe('ankara north coast');
   const namedCoastSouth = territory.namedCoasts[1];
   expect(namedCoastSouth.name).toBe('ankara south coast');
+});
+
+test('Orders', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const order = game.orders[0];
+  expect(order.type).toBe('move');
+});
+
+test('Order source', () => {
+  const game = new GameAdapter(turnId, user, data);
+  const order = game.orders[0];
+  expect(order.source.id).toBe(1);
+  expect(order.source.name).toBe('Ankara');
 });

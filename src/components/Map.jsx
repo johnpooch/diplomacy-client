@@ -308,11 +308,6 @@ class Map extends React.Component {
     this.resetOrder();
   }
 
-  getOrder(territoryId) {
-    const { playerOrders } = this.props;
-    return getObjectByKey(territoryId, playerOrders, 'source');
-  }
-
   userCanOrder(territoryId) {
     /* Determine whether a user can create an order for the given territory */
     const { user, turn, privateNationState, game } = this.props;
@@ -474,40 +469,6 @@ class Map extends React.Component {
       return 'target';
     }
     return null;
-  }
-
-  renderPieces(territory_data) {
-    const { turn } = this.props;
-    const { piece_states } = turn;
-    const elements = [];
-    piece_states.forEach((state) => {
-      const { must_retreat: mustRetreat } = state;
-      const piece = this.getPiece(state.piece);
-      const data = getObjectByKey(state.territory, territory_data, 'territory');
-
-      let x = null;
-      let y = null;
-      if (mustRetreat) {
-        x = data.dislodged_piece_x;
-        y = data.dislodged_piece_y;
-      } else {
-        x = data.piece_x;
-        y = data.piece_y;
-      }
-      elements.push(
-        <Piece
-          key={piece.id}
-          type={piece.type}
-          nation={piece.nation}
-          x={x}
-          y={y}
-          mustRetreat={mustRetreat}
-          userCanOrder={this.userCanOrder(state.territory)}
-          hasOrders={this.getOrder(state.territory) !== undefined}
-        />
-      );
-    });
-    return <g>{elements}</g>;
   }
 
   renderTooltip() {
