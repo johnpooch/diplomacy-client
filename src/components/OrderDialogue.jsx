@@ -144,7 +144,7 @@ export function renderOrderActions(props) {
 }
 
 const OrderDialogue = (props) => {
-  const { order, onClickCancel } = props;
+  const { game, order, onClickCancel } = props;
   const { source } = order;
 
   return (
@@ -154,7 +154,7 @@ const OrderDialogue = (props) => {
           <FontAwesomeIcon icon={faTimes} />
         </StyledCloseButton>
         <div className="territory-summary">
-          <TerritorySummary summary={source} />
+          <TerritorySummary territory={source} game={game} />
         </div>
         <div className="order-actions">{renderOrderActions(props)}</div>
       </StyledDiv>

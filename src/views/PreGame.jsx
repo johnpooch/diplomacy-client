@@ -13,9 +13,9 @@ const StyledP = styled.p`
 `;
 
 const PreGame = (props) => {
-  const { game, isLoaded, toggleJoinGame, user } = props;
-  const { description } = game;
-  const players = game ? game.participants : [];
+  const { gameData, isLoaded, toggleJoinGame, user } = props;
+  const { description } = gameData;
+  const players = gameData ? gameData.participants : [];
   const playerIds = players.map((p) => p.id);
   const userJoined = playerIds.includes(user.id);
 
@@ -26,7 +26,7 @@ const PreGame = (props) => {
   );
 
   return (
-    <Page headingText={game ? game.name : null} isLoaded={isLoaded}>
+    <Page headingText={gameData ? gameData.name : null} isLoaded={isLoaded}>
       <StyledP>{description}</StyledP>
       <h2>Players</h2>
       <PlayerList players={players} />

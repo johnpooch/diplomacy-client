@@ -52,13 +52,9 @@ const renderControlledBy = (controlledBy) => {
 };
 
 const TerritorySummary = (props) => {
-  const { summary } = props;
-  const {
-    territory,
-    territoryControlledBy,
-    piece,
-    pieceControlledBy,
-  } = summary;
+  const { game, territory } = props;
+  const { controlledBy, piece } = territory;
+  const territoryControlledBy = game.getNation(controlledBy);
 
   const elements = [];
 
@@ -71,6 +67,8 @@ const TerritorySummary = (props) => {
   );
 
   if (piece) {
+    const { nation } = piece;
+    const pieceControlledBy = game.getNation(nation);
     elements.push(
       <p key="piece">
         <StyledSpan className="type">{piece.type}</StyledSpan>

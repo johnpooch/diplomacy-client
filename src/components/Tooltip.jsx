@@ -14,10 +14,11 @@ const StyledDiv = styled.div`
 `;
 
 const Tooltip = (props) => {
-  const { summary } = props;
+  const { game, territory } = props;
+  if (!territory) return null;
   return (
     <StyledDiv>
-      <TerritorySummary summary={summary} />
+      <TerritorySummary game={game} territory={territory} />
     </StyledDiv>
   );
 };

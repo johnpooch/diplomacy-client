@@ -30,7 +30,7 @@ const OrderSummary = (props) => {
       <StyledP>
         <span className="action">{type}</span>
         <span className="piece">{pieceType}</span>
-        in <span className="source">{source.territory.name}</span>
+        in <span className="source">{source.name}</span>
       </StyledP>
     );
   }
@@ -40,7 +40,7 @@ const OrderSummary = (props) => {
       orderSummary = (
         <StyledP>
           <span className="piece">{source.piece.type}</span>
-          in <span className="source">{source.territory.name}</span>
+          in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
         </StyledP>
       );
@@ -51,9 +51,9 @@ const OrderSummary = (props) => {
       orderSummary = (
         <StyledP>
           <span className="piece">{source.piece.type}</span>
-          in <span className="source">{source.territory.name}</span>
+          in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
-          to <span className="target">{target.territory.name}</span>
+          to <span className="target">{target.name}</span>
         </StyledP>
       );
       break;
@@ -63,10 +63,10 @@ const OrderSummary = (props) => {
       orderSummary = (
         <StyledP>
           <span className="piece">{source.piece.type}</span>
-          in <span className="source">{source.territory.name}</span>
+          in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
-          <span className="aux">{aux.territory.name}</span>
-          to <span className="target">{target.territory.name}</span>
+          <span className="aux">{aux.name}</span>
+          to <span className="target">{target.name}</span>
         </StyledP>
       );
       break;

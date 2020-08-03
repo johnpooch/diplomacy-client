@@ -30,9 +30,9 @@ class GameRouter extends React.Component {
     const { logout, token } = this.props;
     gameService
       .getGame(token, slug)
-      .then((game) => {
+      .then((gameData) => {
         this.setState({
-          game,
+          gameData,
           isLoaded: true,
         });
       })
@@ -47,8 +47,8 @@ class GameRouter extends React.Component {
       });
   }
 
-  static getCurrentTurn(game) {
-    const { turns } = game;
+  static getCurrentTurn(gameData) {
+    const { turns } = gameData;
     for (let i = 0; i < turns.length; i += 1) {
       if (turns[i].current_turn === true) {
         return turns[i];
@@ -60,10 +60,10 @@ class GameRouter extends React.Component {
   toggleJoinGame() {
     this.setState({ isLoaded: false });
     const { user, token, onJoin, onLeave } = this.props;
-    const { game } = this.state;
-    const { name, slug } = game;
+    const { gameData } = this.state;
+    const { name, slug } = gameData;
 
-    const players = game ? game.participants : [];
+    const players = gameData ? gameData.participants : [];
     const playerIds = players.map((p) => p.id);
     const joining = !playerIds.includes(user.id);
 
@@ -75,19 +75,19 @@ class GameRouter extends React.Component {
   }
 
   render() {
-    const { isLoaded, game, playerOrders, privateNationState } = this.state;
+    const { isLoaded, gameData, playerOrders, privateNationState } = this.state;
     const { user } = this.props;
 
     if (!isLoaded) {
       return <Loading />;
     }
-    if (!game) return <Error text="Game not found" />;
+    if (!gameData) return <Error text="Game not found" />;
 
-    const { status } = game;
+    const { status } = gameData;
     if (status === 'active') {
       return (
         <Game
-          game={game}
+          gameData={gameData}
           playerOrders={playerOrders}
           privateNationState={privateNationState}
         />
@@ -95,7 +95,7 @@ class GameRouter extends React.Component {
     }
     return (
       <PreGame
-        game={game}
+        gameData={gameData}
         isLoaded={isLoaded}
         toggleJoinGame={this.toggleJoinGame}
         user={user}

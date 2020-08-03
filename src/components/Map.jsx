@@ -1,4 +1,3 @@
-/* eslint camelcase: [2, { "allow": ["territory_data", "piece_x", "piece_y", "piece_states", "piece_type"] }] */
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -11,7 +10,6 @@ import Pieces from './Pieces';
 import ScrollableSVG from './ScrollableSVG';
 import Territories from './Territories';
 import Tooltip from './Tooltip';
-import { getCurrentTurn, getObjectByKey } from '../utils';
 import { colors } from '../variables';
 
 import gameService from '../services/game';
@@ -36,7 +34,9 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
 
+    const { game } = props;
     this.state = {
+      game,
       interacting: false,
       panning: false,
       hovering: null,
@@ -78,7 +78,7 @@ class Map extends React.Component {
     this.setState({
       order: {
         ...order,
-        piece_type: choice,
+        pieceType: choice,
       },
     });
   }
@@ -89,95 +89,17 @@ class Map extends React.Component {
 
   onClickCancelOrder(orderId) {
     const { game, token, getPrivate } = this.props;
-    const { id: gameId } = game;
-    gameService.destroyOrder(token, gameId, orderId).then(() => {
-      getPrivate(gameId);
+    const { slug } = game;
+    gameService.destroyOrder(token, slug, orderId).then(() => {
+      getPrivate(slug);
     });
     this.resetOrder();
   }
 
-  getNation(id) {
-    const { game } = this.props;
-    const { nations } = game.variant;
-    return getObjectByKey(id, nations, 'id');
-  }
-
-  getUserNationState(userId) {
-    const { game } = this.props;
-    const currentTurn = getCurrentTurn(game);
-    return currentTurn.nation_states.find((nationState) => {
-      return nationState.user.id === userId;
-    });
-  }
-
-  getPiece(id) {
-    const { game } = this.props;
-    const { pieces } = game;
-    return getObjectByKey(id, pieces, 'id');
-  }
-
-  getPieceInTerritory(id) {
+  // TODO move to territory adapter
+  getOrderTypeChoices(territory) {
     const { turn } = this.props;
-    const pieceStates = turn.piece_states;
-    const pieceState = getObjectByKey(id, pieceStates, 'territory');
-    return pieceState ? this.getPiece(pieceState.piece) : null;
-  }
-
-  getDislodgedPieceInTerritory(id) {
-    const { turn } = this.props;
-    const pieceStates = turn.piece_states;
-    const dislodgedPieceState = pieceStates.find((pieceState) => {
-      return pieceState.territory === id && pieceState.must_retreat;
-    });
-    return dislodgedPieceState
-      ? this.getPiece(dislodgedPieceState.piece)
-      : null;
-  }
-
-  getPieceStateInTerritory(territoryId) {
-    const { turn } = this.props;
-    const pieceStates = turn.piece_states;
-    return getObjectByKey(territoryId, pieceStates, 'territory');
-  }
-
-  getTerritory(id) {
-    const { game } = this.props;
-    const { territories } = game.variant;
-    return getObjectByKey(id, territories, 'id');
-  }
-
-  getTerritoryState(id) {
-    const { turn } = this.props;
-    const territoryStates = turn.territory_states;
-    return getObjectByKey(id, territoryStates, 'territory');
-  }
-
-  getTerritoryControlledBy(id) {
-    const territoryState = this.getTerritoryState(id);
-    return territoryState ? this.getNation(territoryState.controlled_by) : null;
-  }
-
-  getTerritorySummary(id) {
-    const piece = this.getPieceInTerritory(id);
-    const territory = this.getTerritory(id);
-    const territoryControlledBy = this.getTerritoryControlledBy(id);
-    const pieceControlledBy = piece ? this.getNation(piece.nation) : null;
-    return {
-      territory,
-      piece,
-      territoryControlledBy,
-      pieceControlledBy,
-    };
-  }
-
-  static getTerritoryIdFromSummary(summary) {
-    if (summary) return summary.territory.id;
-    return null;
-  }
-
-  getOrderTypeChoices(source) {
-    const { turn } = this.props;
-    const { piece, territory } = source;
+    const { piece } = territory;
     const { type: territoryType } = territory;
     if (turn.phase === 'Order') {
       const options = ['hold', 'move', 'support'];
@@ -194,22 +116,9 @@ class Map extends React.Component {
     return ['build'];
   }
 
-  onClickConfirm() {
-    this.postOrder();
-  }
-
-  onClickCancelOrder(orderId) {
-    const { game, token, getPrivate } = this.props;
-    const { slug } = game;
-    gameService.destroyOrder(token, slug, orderId).then(() => {
-      getPrivate(slug);
-    });
-    this.resetOrder();
-  }
-
-  getPieceTypeChoices(source) {
+  // TODO move to territory adapter
+  getPieceTypeChoices(territory) {
     const { turn } = this.props;
-    const { territory } = source;
     const { type: territoryType } = territory;
     if (turn.phase === 'Build') {
       const options = ['army'];
@@ -219,11 +128,6 @@ class Map extends React.Component {
       return options;
     }
     return [];
-  }
-
-  getOrder(territoryId) {
-    const { playerOrders } = this.props;
-    return getObjectByKey(territoryId, playerOrders, 'source');
   }
 
   postOrder() {
@@ -236,15 +140,21 @@ class Map extends React.Component {
     // Disband - source
     const { order } = this.state;
     const { game, token, getPrivate } = this.props;
-    const { id: gameId } = game;
+    const { slug } = game;
     let { aux, source, target } = order;
-    const { type, piece_type } = order;
-    aux = Map.getTerritoryIdFromSummary(aux);
-    source = Map.getTerritoryIdFromSummary(source);
-    target = Map.getTerritoryIdFromSummary(target);
-    const data = { type, source, target, aux, piece_type };
-    gameService.createOrder(token, gameId, data).then(() => {
-      getPrivate(gameId);
+    const { type, pieceType } = order;
+    if (aux) {
+      aux = aux.id;
+    }
+    if (source) {
+      source = source.id;
+    }
+    if (target) {
+      target = target.id;
+    }
+    const data = { type, source, target, aux, pieceType };
+    gameService.createOrder(token, slug, data).then(() => {
+      getPrivate(slug);
     });
     this.resetOrder();
   }
@@ -285,91 +195,14 @@ class Map extends React.Component {
     }
   }
 
-  postOrder() {
-    // Hold - source
-    // Move - source, target, target_coast=None, via_convoy=False
-    // Support - source, aux, target
-    // Convoy - source, aux, target
-    // Retreat - source, target, target_coast=None
-    // Build - source, target_coast=None
-    // Disband - source
-    const { order } = this.state;
-    const { game, token, getPrivate } = this.props;
-    const { slug } = game;
-    let { aux, source, target } = order;
-    const { type, piece_type } = order;
-    aux = Map.getTerritoryIdFromSummary(aux);
-    source = Map.getTerritoryIdFromSummary(source);
-    target = Map.getTerritoryIdFromSummary(target);
-    const data = { type, source, target, aux, piece_type };
-    gameService.createOrder(token, slug, data).then(() => {
-      getPrivate(slug);
-    });
-    this.resetOrder();
-  }
-
-  userCanOrder(territoryId) {
-    /* Determine whether a user can create an order for the given territory */
-    const { user, turn, privateNationState, game } = this.props;
-    if (!user) {
-      return false;
-    }
-    const userNationState = this.getUserNationState(user.id);
-    if (!userNationState) {
-      // User is not controlling a nation in the game.
-      return false;
-    }
-    const currentTurn = getCurrentTurn(game);
-    if (currentTurn !== turn) {
-      // Cannot order if not looking at current turn
-      return false;
-    }
-
-    // Orders turn
-    if (currentTurn.phase === 'Order') {
-      const piece = this.getPieceInTerritory(territoryId);
-      if (!piece) {
-        return false;
-      }
-      const pieceBelongsToUser = piece.nation === userNationState.nation.id;
-      return pieceBelongsToUser;
-    }
-
-    // Retreat turn
-    if (currentTurn.phase === 'Retreat and Disband') {
-      const pieceState = this.getDislodgedPieceInTerritory(territoryId);
-      return Boolean(pieceState);
-    }
-
-    // Build turn
-    const piece = this.getPieceInTerritory(territoryId);
-    const {
-      num_orders_remaining: ordersRemaining,
-      supply_delta: supplyDelta,
-      build_territories: buildTerritories,
-    } = privateNationState;
-    if (piece) {
-      return false;
-    }
-    if (supplyDelta > 0) {
-      // player can build
-      if (!ordersRemaining) {
-        return Boolean(this.getOrder(territoryId));
-      }
-      return buildTerritories.includes(territoryId);
-    }
-    // player must disband
-    if (!piece) {
-      return false;
-    }
-    return false;
-  }
-
   clickTerritory(id) {
-    const { order } = this.state;
+    const { game, order } = this.state;
     const { aux, source, target, type } = order;
-    const summary = this.getTerritorySummary(id);
-    const sourceId = Map.getTerritoryIdFromSummary(source);
+    const territory = game.getTerritory(id);
+    if (!territory) {
+      // non-playable territory clicked
+      return;
+    }
     switch (type) {
       case 'retreat':
       case 'move':
@@ -377,7 +210,7 @@ class Map extends React.Component {
           this.setState({
             order: {
               ...order,
-              target: summary,
+              target: territory,
             },
           });
         }
@@ -389,7 +222,7 @@ class Map extends React.Component {
           this.setState({
             order: {
               ...order,
-              aux: summary,
+              aux: territory,
             },
           });
           break;
@@ -398,27 +231,29 @@ class Map extends React.Component {
           this.setState({
             order: {
               ...order,
-              target: summary,
+              target: territory,
             },
           });
         }
         break;
 
       default:
-        if (sourceId === id) {
-          this.resetOrder();
-          break;
+        if (source) {
+          if (source.id === id) {
+            this.resetOrder();
+            break;
+          }
         }
-        if (!this.userCanOrder(id)) {
+        if (!game.userCanOrder(territory)) {
           this.setState({
-            tooltip: this.getTerritorySummary(id),
+            tooltip: territory,
           });
           break;
         }
         this.setState({
           order: {
             ...order,
-            source: summary,
+            source: territory,
           },
           orderDialogueActive: true,
         });
@@ -428,6 +263,8 @@ class Map extends React.Component {
 
   getTerritoryCallbacks(id) {
     const { interacting, panning } = this.state;
+    const { game } = this.props;
+    const territory = game.getTerritory(id);
     const mouseOut = () => {
       if (interacting) return;
       this.setState({
@@ -449,7 +286,7 @@ class Map extends React.Component {
     const contextMenu = (e) => {
       e.nativeEvent.preventDefault();
       this.setState({
-        tooltip: this.getTerritorySummary(id),
+        tooltip: territory,
       });
     };
     return { mouseOut, mouseOver, mouseUp, contextMenu };
@@ -459,35 +296,32 @@ class Map extends React.Component {
     // TODO could this be written more elegantly?
     const { order } = this.state;
     const { aux, source, target } = order;
-    if (Map.getTerritoryIdFromSummary(source) === id) {
+    if (source && source.id === id) {
       return 'source';
     }
-    if (Map.getTerritoryIdFromSummary(aux) === id) {
+    if (aux && aux.id === id) {
       return 'aux';
     }
-    if (Map.getTerritoryIdFromSummary(target) === id) {
+    if (target && target.id === id) {
       return 'target';
     }
     return null;
   }
 
-  renderTooltip() {
-    const { tooltip, interacting } = this.state;
-    if (!tooltip) return null;
-    return <Tooltip summary={tooltip} interacting={interacting} />;
-  }
-
   render() {
-    const { game, gameAdapter, turn } = this.props;
-    const { orders } = gameAdapter;
-    const pieces = gameAdapter.getPieces();
-    console.log('agghhh');
-    console.log(pieces);
+    const { game, turn } = this.props;
+    const { mapData, orders } = game;
+    const pieces = game.getPieces();
     if (!turn) return null;
-    const { hovering, order, interacting, panning, orderDialogueActive } = this.state;
-    const mapData = game.variant.map_data[0];
-    const { territory_data } = mapData;
-    const { territories } = gameAdapter;
+    const {
+      hovering,
+      interacting,
+      order,
+      orderDialogueActive,
+      panning,
+      tooltip,
+    } = this.state;
+    const { territories } = game;
 
     const renderOrderDialogue = () => {
       if (!orderDialogueActive) {
@@ -496,9 +330,8 @@ class Map extends React.Component {
       const { source } = order;
       const orderTypeChoices = this.getOrderTypeChoices(source);
       const pieceTypeChoices = this.getPieceTypeChoices(source);
-      const { territory } = source;
-      const { id: territoryId } = territory;
-      const existingOrder = this.getOrder(territoryId);
+      const { id: territoryId } = source;
+      const existingOrder = game.getOrder(territoryId);
       return (
         <OrderDialogue
           onClickCancel={this.resetOrder}
@@ -509,6 +342,7 @@ class Map extends React.Component {
           orderTypeChoices={orderTypeChoices}
           pieceTypeChoices={pieceTypeChoices}
           order={order}
+          game={game}
           existingOrder={existingOrder}
         />
       );
@@ -572,7 +406,7 @@ class Map extends React.Component {
           <Orders orders={orders} />
           <Pieces pieces={pieces} />
         </ScrollableSVG>
-        {this.renderTooltip(territory_data)}
+        <Tooltip territory={tooltip} game={game} />
         {renderOrderDialogue()}
       </StyledDiv>
     );

@@ -24,14 +24,14 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const { game } = this.props;
-    const { turns } = game;
+    const { gameData } = this.props;
+    const { turns } = gameData;
     const currentTurnIndex = turns.findIndex(
       (obj) => obj.current_turn === true
     );
     const activeTurn = turns[currentTurnIndex];
     this.setState({ activeTurn });
-    const { slug } = game;
+    const { slug } = gameData;
     this.getPrivate(slug);
   }
 
@@ -63,8 +63,8 @@ class Game extends React.Component {
   }
 
   getTurn(id) {
-    const { game } = this.props;
-    const { turns } = game;
+    const { gameData } = this.props;
+    const { turns } = gameData;
     return Utils.getObjectByKey(id, turns, 'id');
   }
 
@@ -93,16 +93,15 @@ class Game extends React.Component {
       playerOrders,
       privateNationState,
     } = this.state;
-    const { game, user } = this.props;
+    const { gameData, user } = this.props;
     if (!isLoaded) {
       return <Loading />;
     }
-    const gameAdapter = new GameAdapter(activeTurn.id, user, game);
+    const game = new GameAdapter(activeTurn.id, user, gameData);
     return (
       <div>
         <Map
           game={game}
-          gameAdapter={gameAdapter}
           turn={activeTurn}
           playerOrders={playerOrders}
           privateNationState={privateNationState}

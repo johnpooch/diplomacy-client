@@ -37,7 +37,8 @@ export default class GameAdapter {
     this.turn = turnData;
     this.nextTurn = turnData.nextTurn;
     this.previousTurn = turnData.previousTurn;
-    this.currentTurn = turnData.currentTurn;
+    this.currentTurn = turnData.current_turn;
+    this.mapData = mapData;
 
     const nationData = getNationData(data, turnData);
     this.nations = nationData;
@@ -54,7 +55,6 @@ export default class GameAdapter {
     this.territories.forEach((territory) => {
       const { piece } = territory;
       if (piece) {
-        console.log('HERE')
         pieces.push(piece);
       }
     });
@@ -99,6 +99,7 @@ export default class GameAdapter {
     if (pieceState) {
       const piece = getObjectByKey(pieceState.piece, pieces, 'id');
       combinedPieceData = {
+        id: piece.id,
         type: piece.type,
         namedCoast: pieceState.named_coast,
         dislodged: pieceState.dislodged,
@@ -204,13 +205,14 @@ export default class GameAdapter {
     return getObjectByKey(id, orders, 'source');
   }
 
-  userCanOrder(id) {
-    /* Determine whether the user can create an order for the given territory */
+  userCanOrder(territory) {
+    /* Determine whether a user can create an order for the given territory */
+    const { piece } = territory;
+
     if (!this.user) {
       return false;
     }
-    const { id: userId } = this.user;
-    const userNation = this.getUserNation(userId);
+    const userNation = this.getUserNation(this.user.id);
     if (!userNation) {
       // User is not controlling a nation in the game.
       return false;
@@ -220,8 +222,6 @@ export default class GameAdapter {
       return false;
     }
 
-    const territory = this.getTerritory(id);
-    const { dislodgedPiece, piece } = territory;
     // Orders turn
     if (this.turn.phase === 'Order') {
       if (!piece) {
@@ -233,10 +233,10 @@ export default class GameAdapter {
 
     // Retreat turn
     if (this.turn.phase === 'Retreat and Disband') {
-      return Boolean(dislodgedPiece);
+      return Boolean(territory.dislodgedPiece);
     }
 
-    // Build turn
+    // // Build turn
     // const {
     //   num_orders_remaining: ordersRemaining,
     //   supply_delta: supplyDelta,
@@ -248,7 +248,7 @@ export default class GameAdapter {
     // if (supplyDelta > 0) {
     //   // player can build
     //   if (!ordersRemaining) {
-    //     return Boolean(this.getOrder(territoryId));
+    //     return Boolean(gameAdapter.getOrder(territoryId));
     //   }
     //   return buildTerritories.includes(territoryId);
     // }
@@ -259,9 +259,15 @@ export default class GameAdapter {
     return false;
   }
 
+  getNation(id) {
+    return this.nations.find((nation) => {
+      return nation.id === id;
+    });
+  }
+
   getUserNation(id) {
     return this.nations.find((nation) => {
-      return nation.user === id;
+      return nation.user.id === id;
     });
   }
 }
