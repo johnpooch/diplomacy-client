@@ -22,8 +22,7 @@ const StyledPath = styled.path`
   pointer-events: none;
 `;
 
-const getStrokeColor = (props) => {
-  const { mustRetreat, userCanOrder } = props;
+const getStrokeColor = (mustRetreat, userCanOrder) => {
   if (mustRetreat) return colors.error;
   if (userCanOrder) return 'white';
   return 'transparent';
@@ -59,7 +58,7 @@ const Piece = (props) => {
         r={shadowSize}
         cx={x}
         cy={y}
-        strokeColor={getStrokeColor(props)}
+        strokeColor={getStrokeColor(mustRetreat, userCanOrder)}
         mustRetreat={mustRetreat}
         userCanOrder={userCanOrder}
         hasOrders={hasOrders}

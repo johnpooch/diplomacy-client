@@ -4,6 +4,13 @@ import AuxArrow from './AuxArrow';
 import BuildOrder from './BuildOrder';
 import TargetArrow from './TargetArrow';
 
+const getSourceCoords = (source, type) => {
+  if (type === 'retreat') {
+    return [source.dislodgedx, source.dislodgedy];
+  }
+  return [source.x, source.y];
+};
+
 const Order = (props) => {
   const { order } = props;
   const { aux, id, nation, source, target, type } = order;
@@ -14,7 +21,7 @@ const Order = (props) => {
   }
 
   if (target) {
-    const { x: sx, y: sy } = source;
+    const [sx, sy] = getSourceCoords(source, type);
     const { x: tx, y: ty } = target;
     elements.push(
       <TargetArrow

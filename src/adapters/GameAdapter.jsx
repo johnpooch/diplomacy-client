@@ -26,7 +26,7 @@ function getNationData(data, turnData) {
 }
 
 export default class GameAdapter {
-  constructor(turnId, user, data) {
+  constructor(turnId, user, data, playerOrders) {
     const turnData = getObjectByKey(turnId, data.turns, 'id');
     const mapData = data.variant.map_data[0];
 
@@ -46,24 +46,31 @@ export default class GameAdapter {
     const territoryData = this.getTerritoryData(data, mapData, turnData);
     this.territories = territoryData;
 
-    const orderData = this.getOrderData(turnData);
-    this.orders = orderData;
+    let orderData = [];
+    if (this.currentTurn) {
+      orderData = playerOrders;
+    } else {
+      orderData = this.turn.orders;
+    }
+    this.orders = this.getOrderData(orderData);
   }
 
   getPieces() {
     const pieces = [];
     this.territories.forEach((territory) => {
-      const { piece } = territory;
+      const { dislodgedPiece, piece } = territory;
       if (piece) {
         pieces.push(piece);
+      }
+      if (dislodgedPiece) {
+        pieces.push(dislodgedPiece);
       }
     });
     return pieces;
   }
 
-  getOrderData(turn) {
+  getOrderData(orders) {
     const orderData = [];
-    const { orders } = turn;
     orders.forEach((order) => {
       const {
         id,
@@ -135,7 +142,7 @@ export default class GameAdapter {
         data.pieces
       );
 
-      let combinedDislodgedPieceData = {};
+      let combinedDislodgedPieceData = null;
       const dislodgedPieceState = turnData.piece_states.find((ps) => {
         return ps.territory === id && ps.must_retreat;
       });
@@ -146,6 +153,7 @@ export default class GameAdapter {
           'id'
         );
         combinedDislodgedPieceData = {
+          id: dislodgedPiece.id,
           type: dislodgedPiece.type,
           namedCoast: dislodgedPieceState.named_coast,
           dislodged: dislodgedPieceState.dislodged,
@@ -154,6 +162,9 @@ export default class GameAdapter {
           mustRetreat: dislodgedPieceState.must_retreat,
           x: mapDataItem.dislodged_piece_x,
           y: mapDataItem.dislodged_piece_y,
+          hasOrders: this.getOrder(id),
+          userCanOrder: this.userCanOrder(id),
+          nation: dislodgedPiece.nation,
         };
       }
 
@@ -173,6 +184,8 @@ export default class GameAdapter {
         },
         x: mapDataItem.piece_x,
         y: mapDataItem.piece_y,
+        dislodgedx: mapDataItem.dislodged_piece_x,
+        dislodgedy: mapDataItem.dislodged_piece_y,
       };
       if (territory) {
         const namedCoastData = [];

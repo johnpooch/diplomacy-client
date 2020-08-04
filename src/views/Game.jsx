@@ -97,7 +97,8 @@ class Game extends React.Component {
     if (!isLoaded) {
       return <Loading />;
     }
-    const game = new GameAdapter(activeTurn.id, user, gameData);
+    const { id } = activeTurn;
+    const game = new GameAdapter(id, user, gameData, playerOrders);
     return (
       <div>
         <Map
@@ -113,8 +114,8 @@ class Game extends React.Component {
           finalizeOrders={this.finalizeOrders}
           turn={activeTurn}
           isProcessing={isProcessing}
-          _setTurn={(id) => {
-            this.setTurn(id);
+          _setTurn={(_id) => {
+            this.setTurn(_id);
           }}
         />
       </div>

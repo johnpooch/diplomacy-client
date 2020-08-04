@@ -7,7 +7,6 @@ import { dateDisplayFormat, getUserNationState } from '../utils';
 import { colors, spacing, sizes } from '../variables';
 
 import GameStatus from './GameStatus';
-import MapPreview from './MapPreview';
 import PlayerCount from './PlayerCount';
 import ParticipantList from './ParticipantList';
 
@@ -29,7 +28,7 @@ const StyledListItem = styled.li`
   padding: 0 ${spacing[3]}px;
 
   display: grid;
-  grid-template-columns: 3fr 6fr 2fr;
+  grid-template-columns: 3fr 1fr;
   grid-column-gap: ${spacing[5]}px;
 
   a {
@@ -69,8 +68,7 @@ const StyledListItem = styled.li`
   }
 `;
 
-const GameSummary = (props) => {
-  const { game, user } = props;
+const GameSummary = ({ game, user }) => {
   const {
     created_at: createdAt,
     id,
@@ -93,9 +91,6 @@ const GameSummary = (props) => {
   return (
     <StyledLink to={`/game/${slug}`}>
       <StyledListItem key={id} color={color}>
-        <div className="game-preview">
-          <MapPreview size="small" turn={currentTurn} game={game} />
-        </div>
         <div>
           <article>
             <header>
