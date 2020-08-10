@@ -1,6 +1,6 @@
 import { flagConstants } from '../actions/actionTypes';
 
-function getFlags(state = {}, action) {
+function getFlags(state = null, action) {
   switch (action.type) {
     case flagConstants.FLAGS_REQUEST:
       return state;
