@@ -17,3 +17,9 @@ export const alertConstants = {
   CLEAR_ALL: 'ALERT_CLEAR_ALL',
   PROMOTE_PENDING: 'ALERT_PROMOTE_PENDING',
 };
+
+export const flagConstants = {
+  FLAGS_REQUEST: 'FLAGS_REQUEST',
+  FLAGS_SUCCESS: 'FLAGS_SUCCESS',
+  FLAGS_FAILURE: 'FLAGS_FAILURE',
+};

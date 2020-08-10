@@ -29,7 +29,7 @@ const ParticipantActive = (props) => {
     fontWeight = 'bold';
     color = colors.nations[nation.id];
   }
-  const { flag_as_data: flagData } = nation;
+  const { id: nationId } = nation;
   return (
     <StyledDiv
       className="participant-div"
@@ -37,7 +37,7 @@ const ParticipantActive = (props) => {
       color={color}
     >
       <span className="username">{username}</span>
-      <Flag flagData={flagData} size="small" />
+      <Flag nationId={nationId} size="small" />
     </StyledDiv>
   );
 };

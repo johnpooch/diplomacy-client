@@ -8,19 +8,25 @@ import Error from './Error';
 import GameRouter from './GameRouter';
 import Login from './Login';
 import Register from './Register';
+
 import AlertList from '../components/AlertList';
 import Header from '../components/Header';
 import LoggedOutRoute from '../components/LoggedOutRoute';
 import PrivateRoute from '../components/PrivateRoute';
+
 import alertActions from '../store/actions/alerts';
+import flagActions from '../store/actions/flags';
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+
   useEffect(() => {
     dispatch(alertActions.clearActive());
     dispatch(alertActions.promotePending());
   }, [location.pathname]);
+
+  dispatch(flagActions.getFlagsIfNeeded());
 
   return (
     <div>

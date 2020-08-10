@@ -19,6 +19,9 @@ export const RETRIEVEPRIVATENATIONSTATE = `${serviceURI}game/<game>/nation-state
 
 export const FINALIZEORDERSURL = `${serviceURI}game/finalize/<pk>`;
 
+// Flags
+export const LISTNATIONFLAGSURL = `${serviceURI}list-nation-flags`;
+
 // Auth
 export const LOGINURL = `${authURL}login`;
 export const REGISTERURL = `${authURL}register`;

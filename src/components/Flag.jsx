@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { sizes } from '../variables';
@@ -15,8 +16,8 @@ const StyledDiv = styled.div`
 `;
 
 const Flag = (props) => {
-  const { flagData, size } = props;
-  const { paths, viewBox } = flagData;
+  const { flags, nationId, size } = props;
+  const { paths, viewBox } = flags[nationId];
   const SVGPaths = [];
   paths.forEach((pathData) => {
     const { fill, path } = pathData;
@@ -31,4 +32,10 @@ const Flag = (props) => {
   );
 };
 
-export default Flag;
+const mapStateToProps = (state) => {
+  return {
+    flags: state.flags,
+  };
+};
+
+export default connect(mapStateToProps, null)(Flag);
