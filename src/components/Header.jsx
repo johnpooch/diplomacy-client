@@ -13,7 +13,7 @@ const StyledHeader = styled.header`
   right: 0;
   background: white;
   z-index: 1;
-  height: ${sizes.headerHeight * 2}px;
+  height: ${sizes.headerHeight}px;
   border-bottom: solid ${sizes.border}px ${colors.border};
 `;
 
