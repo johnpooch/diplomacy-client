@@ -19,13 +19,11 @@ const StyledHeader = styled.header`
 
 const StyledDiv = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-areas: 'a b c';
   align-items: center;
   height: 100%;
-  margin: 0 auto;
   padding: 0 ${spacing[6]}px;
-  max-width: ${sizes.maxWidth}px;
   white-space: nowrap;
 
   a {
