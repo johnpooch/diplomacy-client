@@ -27,9 +27,8 @@ const ParticipantActive = (props) => {
   let color = 'inherit';
   if (isCurrentUser) {
     fontWeight = 'bold';
-    color = colors.nations[nation.id];
+    color = colors.nations[nation];
   }
-  const { id: nationId } = nation;
   return (
     <StyledDiv
       className="participant-div"
@@ -37,7 +36,7 @@ const ParticipantActive = (props) => {
       color={color}
     >
       <span className="username">{username}</span>
-      <Flag nationId={nationId} size="small" />
+      <Flag nationId={nation} size="small" />
     </StyledDiv>
   );
 };

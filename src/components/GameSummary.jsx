@@ -86,7 +86,7 @@ const GameSummary = ({ game, user }) => {
 
   let color = 'transparent';
   if (userNationState) {
-    color = colors.nations[userNationState.nation.id];
+    color = colors.nations[userNationState.nation];
   }
   return (
     <StyledLink to={`/game/${slug}`}>
