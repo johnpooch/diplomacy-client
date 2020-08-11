@@ -7,6 +7,7 @@ import { darken } from 'polished';
 import OrderMessage from './OrderMessage';
 import OrderTypeSelector from './OrderTypeSelector';
 import OrderSummary from './OrderSummary';
+import OptionSelector from './OptionSelector';
 import TerritorySummary from './TerritorySummary';
 import { Button, BaseButton } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
@@ -88,12 +89,13 @@ export function renderOrderActions(props) {
     onClickCancelOrder,
     onClickOrderTypeChoice,
     onClickPieceTypeChoice,
+    onClickTargetCoastChoice,
     orderTypeChoices,
     pieceTypeChoices,
     order,
     existingOrder,
   } = props;
-  const { type, source, target, piece_type: pieceType } = order;
+  const { type, source, target, piece_type: pieceType, targetCoast } = order;
 
   const cancelOrder = () => {
     const { id } = existingOrder;
@@ -137,9 +139,26 @@ export function renderOrderActions(props) {
     case 'hold':
       return renderOrderConfirmation(order, onClickConfirm);
 
-    default:
-      if (!target) return <OrderMessage order={order} />;
+    default: {
+      if (!target) {
+        return <OrderMessage order={order} />;
+      }
+      const { namedCoasts } = target;
+      if (namedCoasts.length && !targetCoast) {
+        const choices = namedCoasts.map((namedCoast) => [
+          namedCoast.id,
+          namedCoast,
+          namedCoast.name,
+        ]);
+        return (
+          <OptionSelector
+            choices={choices}
+            onSelect={onClickTargetCoastChoice}
+          />
+        );
+      }
       return renderOrderConfirmation(order, onClickConfirm);
+    }
   }
 }
 

@@ -16,7 +16,11 @@ const Page = (props) => {
 
   const renderPageWrapper = () => {
     if (!isLoaded) {
-      return <PageWrapper><Loading /></PageWrapper>;
+      return (
+        <PageWrapper>
+          <Loading />
+        </PageWrapper>
+      );
     }
     return (
       <PageWrapper>

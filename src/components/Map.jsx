@@ -49,11 +49,13 @@ class Map extends React.Component {
         aux: null,
         source: null,
         target: null,
+        targetCoast: null,
       },
     };
     this.resetPan = this.resetPan.bind(this);
     this.resetOrder = this.resetOrder.bind(this);
     this.onClickOrderTypeChoice = this.onClickOrderTypeChoice.bind(this);
+    this.onClickTargetCoastChoice = this.onClickTargetCoastChoice.bind(this);
     this.onClickPieceTypeChoice = this.onClickPieceTypeChoice.bind(this);
     this.onClickConfirm = this.onClickConfirm.bind(this);
     this.onClickCancelOrder = this.onClickCancelOrder.bind(this);
@@ -79,6 +81,16 @@ class Map extends React.Component {
       order: {
         ...order,
         pieceType: choice,
+      },
+    });
+  }
+
+  onClickTargetCoastChoice(choice) {
+    const { order } = this.state;
+    this.setState({
+      order: {
+        ...order,
+        targetCoast: choice,
       },
     });
   }
@@ -128,47 +140,6 @@ class Map extends React.Component {
       return options;
     }
     return [];
-  }
-
-  postOrder() {
-    // Hold - source
-    // Move - source, target, target_coast=None, via_convoy=False
-    // Support - source, aux, target
-    // Convoy - source, aux, target
-    // Retreat - source, target, target_coast=None
-    // Build - source, target_coast=None
-    // Disband - source
-    const { order } = this.state;
-    const { game, token, getPrivate } = this.props;
-    const { slug } = game;
-    let { aux, source, target } = order;
-    const { type, pieceType } = order;
-    if (aux) {
-      aux = aux.id;
-    }
-    if (source) {
-      source = source.id;
-    }
-    if (target) {
-      target = target.id;
-    }
-    const data = { type, source, target, aux, pieceType };
-    gameService.createOrder(token, slug, data).then(() => {
-      getPrivate(slug);
-    });
-    this.resetOrder();
-  }
-
-  resetOrder() {
-    this.setState({
-      orderDialogueActive: false,
-      order: {
-        type: null,
-        aux: null,
-        source: null,
-        target: null,
-      },
-    });
   }
 
   resetPan() {
@@ -308,6 +279,57 @@ class Map extends React.Component {
     return null;
   }
 
+  resetOrder() {
+    this.setState({
+      orderDialogueActive: false,
+      order: {
+        type: null,
+        aux: null,
+        source: null,
+        target: null,
+      },
+    });
+  }
+
+  postOrder() {
+    // Hold - source
+    // Move - source, target, target_coast=None, via_convoy=False
+    // Support - source, aux, target
+    // Convoy - source, aux, target
+    // Retreat - source, target, target_coast=None
+    // Build - source, target_coast=None
+    // Disband - source
+    const { order } = this.state;
+    const { game, token, getPrivate } = this.props;
+    const { slug } = game;
+    let { aux, source, target, targetCoast } = order;
+    const { type, pieceType } = order;
+    if (aux) {
+      aux = aux.id;
+    }
+    if (source) {
+      source = source.id;
+    }
+    if (target) {
+      target = target.id;
+    }
+    if (targetCoast) {
+      targetCoast = targetCoast.id;
+    }
+    const data = {
+      type,
+      source,
+      target,
+      aux,
+      pieceType,
+      target_coast: targetCoast,
+    };
+    gameService.createOrder(token, slug, data).then(() => {
+      getPrivate(slug);
+    });
+    this.resetOrder();
+  }
+
   render() {
     const { game, turn } = this.props;
     const { mapData, orders } = game;
@@ -337,6 +359,7 @@ class Map extends React.Component {
           onClickCancel={this.resetOrder}
           onClickOrderTypeChoice={this.onClickOrderTypeChoice}
           onClickPieceTypeChoice={this.onClickPieceTypeChoice}
+          onClickTargetCoastChoice={this.onClickTargetCoastChoice}
           onClickConfirm={this.onClickConfirm}
           onClickCancelOrder={this.onClickCancelOrder}
           orderTypeChoices={orderTypeChoices}

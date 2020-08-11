@@ -89,7 +89,7 @@ export default class GameAdapter {
         nation,
         source: this.getTerritory(source),
         target: this.getTerritory(target),
-        targetCoast: this.getTerritory(targetCoast),
+        targetCoast: this.getNamedCoast(targetCoast),
         aux: this.getTerritory(aux),
         pieceType,
         viaConvoy,
@@ -127,13 +127,18 @@ export default class GameAdapter {
   getTerritoryData(data, mapData, turnData) {
     const territoryData = data.variant.territories;
     const territoryMapData = mapData.territory_data;
+    const namedCoastMapData = mapData.named_coast_data;
     const territoryStateData = turnData.territory_states;
     const combinedTerritoryData = [];
 
     territoryMapData.forEach((mapDataItem) => {
       const id = mapDataItem.territory;
       const territory = getObjectByKey(id, territoryData, 'id');
-      const territoryState = getObjectByKey(id, territoryStateData, 'territory');
+      const territoryState = getObjectByKey(
+        id,
+        territoryStateData,
+        'territory'
+      );
 
       const pieceData = this.getPieceData(
         id,
@@ -190,8 +195,16 @@ export default class GameAdapter {
       if (territory) {
         const namedCoastData = [];
         territory.named_coasts.forEach((namedCoast) => {
+          const namedCoastMapItem = getObjectByKey(
+            namedCoast.id,
+            namedCoastMapData,
+            'pk'
+          );
           namedCoastData.push({
+            id: namedCoast.id,
             name: namedCoast.name,
+            x: namedCoastMapItem.piece_x,
+            y: namedCoastMapItem.piece_y,
           });
         });
         combined = {
@@ -211,6 +224,20 @@ export default class GameAdapter {
 
   getTerritory(id) {
     return getObjectByKey(id, this.territories, 'id');
+  }
+
+  getNamedCoast(id) {
+    let namedCoast = null;
+    this.territories.forEach((territory) => {
+      if (territory.namedCoasts) {
+        territory.namedCoasts.forEach((coast) => {
+          if (coast.id === id) {
+            namedCoast = coast;
+          }
+        });
+      }
+    });
+    return namedCoast;
   }
 
   getOrder(id) {

@@ -21,7 +21,14 @@ const StyledP = styled.p`
 
 const OrderSummary = (props) => {
   const { order } = props;
-  const { aux, source, target, type, piece_type: pieceType } = order;
+  const {
+    aux,
+    source,
+    target,
+    type,
+    piece_type: pieceType,
+    targetCoast,
+  } = order;
 
   let orderSummary = null;
 
@@ -47,16 +54,21 @@ const OrderSummary = (props) => {
       break;
 
     case 'move':
-    case 'retreat':
+    case 'retreat': {
+      let { name } = target;
+      if (targetCoast) {
+        name = targetCoast.name;
+      }
       orderSummary = (
         <StyledP>
           <span className="piece">{source.piece.type}</span>
           in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
-          to <span className="target">{target.name}</span>
+          to <span className="target">{name}</span>
         </StyledP>
       );
       break;
+    }
 
     case 'convoy':
     case 'support':

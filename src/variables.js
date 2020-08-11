@@ -47,7 +47,7 @@ export const sizes = {
   border: 2,
   borderRadius: [6, 8, 16],
   maxWidth: 1260,
-  headerHeight: 52,
+  headerHeight: 80,
   statusBarHeight: 72,
   input: 44,
   line: 3,

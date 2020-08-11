@@ -30,19 +30,14 @@ const StyledDiv = styled.div`
 
   a {
     text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-      color: white;
-    }
   }
 `;
 
 const StyledNavLink = styled(NavLink)`
   color: ${colors.base};
   font-size: ${fontSizes.sans[2]}px;
-  font-weight: 600;
   text-decoration: none;
+  margin-right: ${spacing[3]}px;
   .nav {
     width: min-content;
   }
@@ -57,7 +52,6 @@ const StyledNavLink = styled(NavLink)`
     }
 
     &:not(:last-of-type) {
-      margin-right: ${spacing[3]}px;
     }
   }
 
@@ -80,16 +74,13 @@ function renderLoggedInHeader() {
   return (
     <StyledDiv>
       <nav className="nav">
-        <NavLink exact to="/">
-          Browse games
-        </NavLink>
-        <NavLink exact to="/create-game">
+        <StyledNavLink className="logo" exact to="/">
+          Diplomacy
+        </StyledNavLink>
+        <StyledNavLink exact to="/create-game">
           Create game
-        </NavLink>
+        </StyledNavLink>
       </nav>
-      <NavLink className="logo" exact to="/">
-        Diplomacy
-      </NavLink>
       <StyledUserAccount />
     </StyledDiv>
   );

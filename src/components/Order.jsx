@@ -11,9 +11,8 @@ const getSourceCoords = (source, type) => {
   return [source.x, source.y];
 };
 
-const Order = (props) => {
-  const { order } = props;
-  const { aux, id, nation, source, target, type } = order;
+const Order = ({ order }) => {
+  const { aux, id, nation, source, target, targetCoast, type } = order;
   const elements = [];
 
   if (type === 'build') {
@@ -22,7 +21,11 @@ const Order = (props) => {
 
   if (target) {
     const [sx, sy] = getSourceCoords(source, type);
-    const { x: tx, y: ty } = target;
+    let { x: tx, y: ty } = target;
+    if (targetCoast) {
+      tx = targetCoast.x;
+      ty = targetCoast.y;
+    }
     elements.push(
       <TargetArrow
         key={`move-${id}`}
