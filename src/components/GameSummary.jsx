@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { dateDisplayFormat, getUserNationState } from '../utils';
-import { colors, spacing, sizes } from '../variables';
+import { getUserNationState } from '../utils';
+import { colors, fontSizes, spacing, sizes } from '../variables';
 
 import GameStatus from './GameStatus';
 import PlayerCount from './PlayerCount';
@@ -31,6 +31,15 @@ const StyledListItem = styled.li`
   grid-template-columns: 3fr 1fr;
   grid-column-gap: ${spacing[5]}px;
 
+  .game-status {
+    margin-bottom: 0.5rem;
+  }
+  .secondary-text {
+    font-size: ${fontSizes.sans[2]}px;
+    color: ${colors.lightText};
+    line-height: 1.2rem;
+  }
+
   a {
     text-decoration: none;
     color: inherit;
@@ -41,7 +50,9 @@ const StyledListItem = styled.li`
   }
 
   header {
+    padding-bottom: ${spacing[2]}px;
     margin-bottom: ${spacing[2]}px;
+    border-bottom: 1px solid ${colors.lightLine};
   }
 
   p {
@@ -51,7 +62,6 @@ const StyledListItem = styled.li`
   }
 
   .name {
-    font-weight: 600;
   }
 
   .label {
@@ -70,7 +80,6 @@ const StyledListItem = styled.li`
 
 const GameSummary = ({ game, user }) => {
   const {
-    created_at: createdAt,
     id,
     slug,
     name,
@@ -80,8 +89,6 @@ const GameSummary = ({ game, user }) => {
     current_turn: currentTurn,
   } = game;
 
-  const date = new Date(createdAt);
-  const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
   const userNationState = getUserNationState(currentTurn, user);
 
   let color = 'transparent';
@@ -93,21 +100,15 @@ const GameSummary = ({ game, user }) => {
       <StyledListItem key={id} color={color}>
         <div>
           <article>
+            <p className="game-status secondary-text">
+              <GameStatus game={game} />
+            </p>
             <header>
               <span className="name">{name}</span>
             </header>
             <section>
-              <p className="description" style={{ fontStyle: 'italic' }}>
+              <p className="description secondary-text">
                 <span className="value">{description}</span>
-              </p>
-              <p className="game-status">
-                <GameStatus game={game} />
-              </p>
-              <p className="created">
-                <span className="label">Created</span>
-                <time className="value" dateTime={createdAt}>
-                  {dateString}
-                </time>
               </p>
               <p className="players" />
             </section>

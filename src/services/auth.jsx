@@ -44,10 +44,30 @@ function register(username, email, password) {
   return fetch(API.REGISTERURL, options).then(handleResponse);
 }
 
+function passwordReset(email) {
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  };
+  return fetch(API.PASSWORDRESET, options).then(handleResponse);
+}
+
+function passwordResetConfirm(password, token) {
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password, token }),
+  };
+  return fetch(API.PASSWORDRESETCONFIRM, options).then(handleResponse);
+}
+
 const authService = {
   login,
   logout,
   register,
+  passwordReset,
+  passwordResetConfirm,
 };
 
 export default authService;

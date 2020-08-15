@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-
 import { fontSizes } from '../variables';
 
 const StyledSpan = styled.span`
   text-transform: capitalize;
-  font-size: ${fontSizes.sans[2]}px;
+  font-size: ${fontSizes.sans[1]}px;
+  margin-bottom: 1rem;
 `;
 
 const GameStatus = (props) => {

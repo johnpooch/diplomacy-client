@@ -14,6 +14,8 @@ export const flagSizes = {
 export const colors = {
   white: '#ffffff',
   offwhite: '#fafafa',
+  lightText: '#717171',
+  lightLine: '#71717157',
   border: '#dbdbdb',
   base: '#222222',
   darkgray: '#777777',
