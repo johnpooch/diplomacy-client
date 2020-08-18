@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-import Page from '../components/Page';
 import authService from '../services/auth';
-import alertActions from '../store/actions/alerts';
+import * as alertActions from '../store/alerts';
+import FormContainer from './FormContainer';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
 const ResetPassword = ({ alert, location, history }) => {
@@ -36,9 +36,10 @@ const ResetPassword = ({ alert, location, history }) => {
   };
 
   return (
-    <Page headingText="Reset password" isLoaded>
-      <p>Enter your new password.</p>
+    <FormContainer>
       <GenericForm onSubmit={handleSubmit}>
+        <h1>Reset Password</h1>
+        <p>Enter your new password.</p>
         <label htmlFor="password">
           <FormLabelText>Password</FormLabelText>
           <input
@@ -56,7 +57,7 @@ const ResetPassword = ({ alert, location, history }) => {
           <Button type="submit">Reset password</Button>
         </p>
       </GenericForm>
-    </Page>
+    </FormContainer>
   );
 };
 

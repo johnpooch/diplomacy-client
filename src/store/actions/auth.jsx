@@ -2,7 +2,7 @@ import { push } from 'connected-react-router';
 
 import { authConstants } from './actionTypes';
 import authService from '../../services/auth';
-import alertActions from './alerts';
+import * as alertActions from '../alerts';
 
 function login(username, password) {
   return (dispatch) => {

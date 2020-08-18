@@ -7,7 +7,7 @@ import Error from './Error';
 import PreGame from './PreGame';
 import Game from './Game';
 import gameService from '../services/game';
-import alertActions from '../store/actions/alerts';
+import alertActions from '../store/alerts';
 import authActions from '../store/actions/auth';
 
 class GameRouter extends React.Component {

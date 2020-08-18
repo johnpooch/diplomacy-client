@@ -11,7 +11,7 @@ import {
   SecondaryButton,
 } from '../styles';
 import gameService from '../services/game';
-import alertActions from '../store/actions/alerts';
+import * as alertActions from '../store/alerts';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 class CreateGame extends Component {

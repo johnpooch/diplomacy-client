@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import Page from '../components/Page';
 import authService from '../services/auth';
-import alertActions from '../store/actions/alerts';
+import * as alertActions from '../store/alerts';
+import FormContainer from './FormContainer';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
 const ForgotPassword = (props) => {
@@ -32,12 +32,12 @@ const ForgotPassword = (props) => {
   };
 
   return (
-    <Page headingText="Reset password" isLoaded>
-      <p>
-        Enter your email and we&apos;ll send you a link to get back into your
-        account.
-      </p>
+    <FormContainer>
       <GenericForm onSubmit={handleSubmit}>
+        <p className="forgot-password-paragraph">
+          <strong>Forgotten your password?</strong> Enter your email and
+          we&apos;ll send you a link to get back into your account.
+        </p>
         <label htmlFor="email">
           <FormLabelText>Email</FormLabelText>
           <input
@@ -54,11 +54,12 @@ const ForgotPassword = (props) => {
         <p>
           <Button type="submit">Send reset link</Button>
         </p>
+        <hr />
         <p>
           Not a member? <Link to="/register">Create an account</Link>
         </p>
       </GenericForm>
-    </Page>
+    </FormContainer>
   );
 };
 
