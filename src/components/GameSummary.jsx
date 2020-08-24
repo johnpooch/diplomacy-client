@@ -129,7 +129,7 @@ const GameSummary = ({ game, user }) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user,
+    user: state.auth.user,
   };
 };
 

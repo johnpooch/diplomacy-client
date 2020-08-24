@@ -17,7 +17,7 @@ const StyledDiv = styled.div`
 
 const Flag = (props) => {
   const { flags, nationId, size } = props;
-  const { paths, viewBox } = flags[nationId];
+  const paths = flags[nationId];
   const SVGPaths = [];
   paths.forEach((pathData) => {
     const { fill, path } = pathData;
@@ -25,7 +25,7 @@ const Flag = (props) => {
   });
   return (
     <StyledDiv className="flag-div" size={size}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox={viewBox}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252.39 168.26">
         <g>{SVGPaths}</g>
       </svg>
     </StyledDiv>
@@ -34,7 +34,7 @@ const Flag = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    flags: state.flags,
+    flags: state.entities.flags.data,
   };
 };
 

@@ -125,8 +125,8 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user,
-    token: state.login.token,
+    user: state.auth.user,
+    token: state.auth.token,
   };
 };
 

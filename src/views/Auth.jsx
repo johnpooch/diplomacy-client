@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Switch, withRouter, Route } from 'react-router-dom';
 import styled from '@emotion/styled';
 
@@ -24,7 +25,13 @@ const Grid = styled.div`
   }
 `;
 
-const Auth = () => {
+const Auth = (props) => {
+  const { loggedIn, history } = props;
+
+  if (loggedIn) {
+    history.push('/');
+  }
+
   return (
     <Page isLoaded>
       <Grid>
@@ -42,4 +49,10 @@ const Auth = () => {
   );
 };
 
-export default withRouter(Auth);
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.auth.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, null)(withRouter(Auth));

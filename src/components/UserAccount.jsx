@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import Player from './Player';
 import { fontSizes, spacing } from '../variables';
 import { TertiaryButton } from '../styles';
-import authActions from '../store/actions/auth';
+import { logout } from '../store/auth';
 
 const StyledDiv = styled.div`
   display: grid;
@@ -18,13 +18,13 @@ const StyledDiv = styled.div`
   margin-left: auto;
 `;
 
-const renderLogOutButton = (logout) => {
+const renderLogOutButton = (onLogout) => {
   if (logout) {
     return (
       <TertiaryButton
         type="button"
-        onClick={logout}
-        onKeyPress={logout}
+        onClick={onLogout}
+        onKeyPress={onLogout}
         role="link"
         tabIndex={0}
       >
@@ -38,27 +38,27 @@ const renderLogOutButton = (logout) => {
 const UserAccount = (props) => {
   const { user, loggedIn } = props;
   if (!user || !loggedIn) return null;
-  const { logout } = props;
+  const { onLogout } = props;
   const { username } = user;
   if (!username) return null;
   return (
     <StyledDiv>
       <Player username={username} />
-      {renderLogOutButton(logout)}
+      {renderLogOutButton(onLogout)}
     </StyledDiv>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.login.loggedIn === true,
-    user: state.login.user,
+    loggedIn: state.auth.loggedIn === true,
+    user: state.auth.user,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(authActions.logout()),
+    onLogout: () => dispatch(logout()),
   };
 };
 

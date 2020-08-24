@@ -8,7 +8,7 @@ import GameFilters from '../components/GameFilters';
 import GameSummaryList from '../components/GameSummaryList';
 import Page from '../components/Page';
 import gameService from '../services/game';
-import authActions from '../store/actions/auth';
+import { logout } from '../store/auth';
 
 const StyledDiv = styled.div`
   display: grid;
@@ -33,7 +33,7 @@ class BrowseGames extends React.Component {
   }
 
   getGamesAndChoices() {
-    const { logout, token } = this.props;
+    const { onUnauthorized, token } = this.props;
     const fetchGames = gameService.getGames(token);
     const fetchChoices = gameService.getChoices();
     Promise.all([fetchGames, fetchChoices])
@@ -47,7 +47,7 @@ class BrowseGames extends React.Component {
       .catch((error) => {
         const { status } = error;
         if (status === 401) {
-          logout();
+          onUnauthorized();
         }
         this.setState({
           isLoaded: true,
@@ -81,13 +81,13 @@ class BrowseGames extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.login.token,
+    token: state.auth.token,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(authActions.logout()),
+    onUnauthorized: () => dispatch(logout()),
   };
 };
 

@@ -105,7 +105,7 @@ const Header = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.login.loggedIn,
+    loggedIn: state.auth.loggedIn,
   };
 };
 

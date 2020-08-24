@@ -41,7 +41,14 @@ function register(username, email, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, email, password }),
   };
-  return fetch(API.REGISTERURL, options).then(handleResponse);
+  return fetch(API.REGISTERURL, options)
+    .then(handleResponse)
+    .then((response) => {
+      const { user, token } = response;
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', JSON.stringify(token));
+      return response;
+    });
 }
 
 function passwordReset(email) {

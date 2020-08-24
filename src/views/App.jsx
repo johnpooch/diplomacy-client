@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Switch, Route, useLocation } from 'react-router-dom';
 
@@ -10,15 +10,16 @@ import Error from './Error';
 
 import AlertList from '../components/AlertList';
 import Header from '../components/Header';
-import LoggedOutRoute from '../components/LoggedOutRoute';
 import PrivateRoute from '../components/PrivateRoute';
 
 import { clearActive, promotePending } from '../store/alerts';
-import flagActions from '../store/actions/flags';
 
-import { LISTNATIONFLAGSURL } from '../api';
+import { loadFlags } from '../store/flags';
 
-const App = () => {
+const App = (props) => {
+  const { loggedIn } = props;
+  const ref = useRef();
+  ref.current = loggedIn;
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -27,16 +28,16 @@ const App = () => {
     dispatch(promotePending());
   }, [location.pathname]);
 
-  dispatch(flagActions.getFlagsIfNeeded());
-  dispatch({
-    type: 'API_CALL_START',
-    payload: {
-      url: LISTNATIONFLAGSURL,
-      method: 'GET',
-      onSuccess: 'FLAGS_RECEIVED',
-      onError: 'FLAGS_REQUEST_FAILED',
-    },
-  });
+  useEffect(() => {
+    console.log(ref);
+    if (loggedIn) {
+      console.log('LOGGED IN!');
+    } else {
+      console.log('LOGGED OUT!');
+    }
+  }, [loggedIn]);
+
+  dispatch(loadFlags());
 
   return (
     <div>
@@ -46,7 +47,7 @@ const App = () => {
         <PrivateRoute exact path="/create-game" component={CreateGame} />
         <PrivateRoute exact path="/game/:slug" component={GameRouter} />
         <PrivateRoute exact path="/" component={BrowseGames} />
-        <LoggedOutRoute path="/" component={Auth} />
+        <Route path="/" component={Auth} />
         <Route component={() => <Error text="Page not found" />} />
       </Switch>
     </div>
@@ -56,7 +57,7 @@ const App = () => {
 const mapStateToProps = (state) => {
   return {
     alerts: state.alerts,
-    loggedIn: state.login.loggedIn,
+    loggedIn: state.auth.loggedIn,
   };
 };
 

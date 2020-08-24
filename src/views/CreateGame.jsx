@@ -90,7 +90,7 @@ class CreateGame extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    token: state.login.token,
+    token: state.auth.token,
   };
 };
 

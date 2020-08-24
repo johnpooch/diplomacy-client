@@ -35,7 +35,7 @@ const ParticipantList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user,
+    user: state.auth.user,
   };
 };
 

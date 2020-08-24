@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import authActions from '../store/actions/auth';
+import { register } from '../store/auth';
 import FormContainer from './FormContainer';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
@@ -84,7 +84,7 @@ const RegisterForm = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (username, email, password) =>
-      dispatch(authActions.register(username, email, password)),
+      dispatch(register(username, email, password)),
   };
 };
 

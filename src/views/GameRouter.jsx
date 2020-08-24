@@ -7,8 +7,8 @@ import Error from './Error';
 import PreGame from './PreGame';
 import Game from './Game';
 import gameService from '../services/game';
-import alertActions from '../store/alerts';
-import authActions from '../store/actions/auth';
+import { add } from '../store/alerts';
+import { logout } from '../store/auth';
 
 class GameRouter extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class GameRouter extends React.Component {
   }
 
   getGame(slug) {
-    const { logout, token } = this.props;
+    const { onError, token } = this.props;
     gameService
       .getGame(token, slug)
       .then((gameData) => {
@@ -39,7 +39,7 @@ class GameRouter extends React.Component {
       .catch((error) => {
         const { status } = error;
         if (status === 401) {
-          logout();
+          onError();
         }
         this.setState({
           isLoaded: true,
@@ -106,8 +106,8 @@ class GameRouter extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user,
-    token: state.login.token,
+    user: state.auth.user,
+    token: state.auth.token,
   };
 };
 
@@ -115,19 +115,19 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onJoin: (name) =>
       dispatch(
-        alertActions.add({
+        add({
           message: `Joined "${name}"! The game will begin once all players have joined.`,
           category: 'success',
         })
       ),
     onLeave: (name) =>
       dispatch(
-        alertActions.add({
+        add({
           message: `You have left "${name}".`,
           category: 'success',
         })
       ),
-    logout: () => dispatch(authActions.logout()),
+    onError: () => dispatch(logout()),
   };
 };
 

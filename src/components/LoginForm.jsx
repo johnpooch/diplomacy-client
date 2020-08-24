@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import authActions from '../store/actions/auth';
+import { login } from '../store/auth';
 import FormContainer from './FormContainer';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
@@ -72,8 +72,7 @@ const LoginForm = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (username, password) =>
-      dispatch(authActions.login(username, password)),
+    onAuth: (username, password) => dispatch(login(username, password)),
   };
 };
 
