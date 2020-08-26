@@ -10,6 +10,7 @@ import Page from '../components/Page';
 import gameService from '../services/game';
 import { logout } from '../store/auth';
 import { gameActions } from '../store/games';
+import { variantActions } from '../store/variants';
 
 const StyledDiv = styled.div`
   display: grid;
@@ -30,8 +31,9 @@ class BrowseGames extends React.Component {
   }
 
   componentDidMount() {
-    const { loadGames, token } = this.props;
+    const { loadGames, loadVariants, token } = this.props;
     this.getGamesAndChoices();
+    loadVariants(token);
     loadGames(token);
   }
 
@@ -92,6 +94,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onUnauthorized: () => dispatch(logout()),
     loadGames: () => dispatch(gameActions.loadGames()),
+    loadVariants: () => dispatch(variantActions.loadVariants()),
   };
 };
 

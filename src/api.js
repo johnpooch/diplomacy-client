@@ -22,6 +22,9 @@ export const FINALIZEORDERSURL = `${serviceURI}game/finalize/<pk>`;
 // Flags
 export const LISTNATIONFLAGSURL = `${serviceURI}list-nation-flags`;
 
+// Variants
+export const LISTVARIANTS = `${serviceURI}variants`;
+
 // Password reset
 export const PASSWORDRESET = `${serviceURI}password_reset/`;
 export const PASSWORDRESETCONFIRM = `${serviceURI}password_reset/confirm/`;

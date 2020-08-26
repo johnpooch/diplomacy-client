@@ -21,10 +21,10 @@ export const gamesRequestFailed = () => ({
 const initialState = {
   byId: {},
   allIds: [],
+  loading: false,
 };
 
 const normalizeGame = (game) => {
-  console.log(game);
   const normalizedGame = game;
   normalizedGame.variant = game.variant.id;
   normalizedGame.participants = game.participants.map((p) => p.id);
