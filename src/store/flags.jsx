@@ -28,7 +28,7 @@ const flags = (state = initialState, action) => {
   switch (action.type) {
     case FLAGS_RECEIVED: {
       const { payload } = action;
-      return { ...state, data: payload };
+      return { loading: false, data: payload };
     }
     case FLAGS_REQUESTED:
       return { ...state, loading: true };

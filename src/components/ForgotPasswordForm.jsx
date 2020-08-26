@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
 import authService from '../services/auth';
-import * as alertActions from '../store/alerts';
+import { alertsAdd } from '../store/alerts';
 import FormContainer from './FormContainer';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
@@ -65,7 +65,7 @@ const ForgotPassword = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    alert: (alert) => dispatch(alertActions.add(alert)),
+    alert: (alert) => dispatch(alertsAdd(alert)),
   };
 };
 

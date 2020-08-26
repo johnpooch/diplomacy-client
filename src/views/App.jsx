@@ -12,30 +12,18 @@ import AlertList from '../components/AlertList';
 import Header from '../components/Header';
 import PrivateRoute from '../components/PrivateRoute';
 
-import { clearActive, promotePending } from '../store/alerts';
+import { alertsClearActive, alertsPromotePending } from '../store/alerts';
 
 import { loadFlags } from '../store/flags';
 
-const App = (props) => {
-  const { loggedIn } = props;
-  const ref = useRef();
-  ref.current = loggedIn;
+const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(clearActive());
-    dispatch(promotePending());
+    dispatch(alertsClearActive());
+    dispatch(alertsPromotePending());
   }, [location.pathname]);
-
-  useEffect(() => {
-    console.log(ref);
-    if (loggedIn) {
-      console.log('LOGGED IN!');
-    } else {
-      console.log('LOGGED OUT!');
-    }
-  }, [loggedIn]);
 
   dispatch(loadFlags());
 
