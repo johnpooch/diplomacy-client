@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { colors, spacing } from '../variables';
+import { getUserNation } from '../store/selectors';
 
 import Flag from './Flag';
 
@@ -18,16 +20,14 @@ const StyledDiv = styled.div`
 `;
 
 const ParticipantActive = (props) => {
-  const { currentUser, nationState } = props;
-  const { user, nation } = nationState;
-  const { id } = currentUser;
-  const { username } = user;
+  const { nation, participant, user } = props;
+  const { id, username } = participant;
   const isCurrentUser = user.id === id;
   let fontWeight = 'normal';
   let color = 'inherit';
   if (isCurrentUser) {
     fontWeight = 'bold';
-    color = colors.nations[nation];
+    color = colors.nations[nation.id];
   }
   return (
     <StyledDiv
@@ -36,9 +36,17 @@ const ParticipantActive = (props) => {
       color={color}
     >
       <span className="username">{username}</span>
-      <Flag nationId={nation} size="small" />
+      <Flag nationId={nation.id} size="small" />
     </StyledDiv>
   );
 };
 
-export default ParticipantActive;
+const mapStateToProps = (state, props) => {
+  const { game, participant } = props;
+  return {
+    nation: getUserNation(state, game, participant),
+    user: state.auth.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(ParticipantActive);

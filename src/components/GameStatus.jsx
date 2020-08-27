@@ -9,15 +9,14 @@ const StyledSpan = styled.span`
 `;
 
 const GameStatus = (props) => {
-  const { game } = props;
-  const { current_turn: currentTurn, status } = game;
+  const { status, turn } = props;
   let message = '';
-  if (!currentTurn) {
+  if (!turn) {
     if (status === 'pending') {
       message = 'Waiting for players to join.';
     }
   } else {
-    const { phase, season, year } = currentTurn;
+    const { phase, season, year } = turn;
     message = `${season} ${year} - ${phase}`;
   }
   return <StyledSpan>{message}</StyledSpan>;

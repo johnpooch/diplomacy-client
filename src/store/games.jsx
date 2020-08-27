@@ -57,10 +57,10 @@ const loadGames = (token) => {
       (payload) => {
         const { entities } = gameNormalizer(payload);
         const { games, nationStates, turns, users } = entities;
-        dispatch(gamesReceived(games));
         dispatch(nationStatesReceived(nationStates));
         dispatch(turnsReceived(turns));
         dispatch(usersReceived(users));
+        dispatch(gamesReceived(games));
       },
       () => {
         dispatch(gamesRequestFailed());

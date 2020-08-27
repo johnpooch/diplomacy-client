@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import ParticipantPending from './ParticipantPending';
 import ParticipantActive from './ParticipantActive';
 
+import { getParticipatingUsers } from '../store/selectors';
+
 const ParticipantList = (props) => {
-  const { game, turn, user: currentUser } = props;
+  const { game, participatingUsers } = props;
   const participantDivs = [];
-  const { participants } = game;
+  const { current_turn: turn } = game;
   if (!turn) {
-    participants.forEach((participant) => {
+    participatingUsers.forEach((participant) => {
       const { username } = participant;
       participantDivs.push(
         <ParticipantPending key={username} username={username} />
@@ -17,15 +19,12 @@ const ParticipantList = (props) => {
     });
     return <div>{participantDivs}</div>;
   }
-  const { nation_states: nationStates } = turn;
-  nationStates.forEach((nationState) => {
-    const { user } = nationState;
-    const { username } = user;
+  participatingUsers.forEach((participant) => {
     participantDivs.push(
       <ParticipantActive
-        key={username}
-        currentUser={currentUser}
-        nationState={nationState}
+        key={participant.id}
+        game={game}
+        participant={participant}
       />
     );
   });
@@ -33,9 +32,10 @@ const ParticipantList = (props) => {
   return <div>{participantDivs}</div>;
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  const { game } = props;
   return {
-    user: state.auth.user,
+    participatingUsers: getParticipatingUsers(state, game),
   };
 };
 

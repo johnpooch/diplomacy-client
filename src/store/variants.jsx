@@ -67,13 +67,13 @@ const loadVariants = (token) => {
           named_coasts: namedCoasts,
           named_coast_data: namedCoastData,
         } = entities;
-        dispatch(variantsReceived(variants));
         dispatch(territoriesReceived(territories));
         dispatch(nationsReceived(nations));
         dispatch(mapDataReceived(mapData));
         dispatch(territoryDataReceived(territoryData));
         dispatch(namedCoastsReceived(namedCoasts));
         dispatch(namedCoastDataReceived(namedCoastData));
+        dispatch(variantsReceived(variants));
       },
       () => {
         dispatch(variantsRequestFailed());

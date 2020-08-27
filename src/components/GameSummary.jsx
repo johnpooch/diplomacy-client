@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { getUserNationState } from '../utils';
 import { colors, fontSizes, spacing, sizes } from '../variables';
 
 import GameStatus from './GameStatus';
 import PlayerCount from './PlayerCount';
 import ParticipantList from './ParticipantList';
+import { getCurrentTurn, getUserNation } from '../store/selectors';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -78,22 +78,23 @@ const StyledListItem = styled.li`
   }
 `;
 
-const GameSummary = ({ game, user }) => {
+const GameSummary = (props) => {
+  const { game } = props;
   const {
     id,
     slug,
     name,
+    currentTurn,
     description,
     participants,
+    status,
+    userNation,
     num_players: numPlayers,
-    current_turn: currentTurn,
   } = game;
 
-  const userNationState = getUserNationState(currentTurn, user);
-
   let color = 'transparent';
-  if (userNationState) {
-    color = colors.nations[userNationState.nation];
+  if (userNation) {
+    color = colors.nations[userNation];
   }
   return (
     <StyledLink to={`/game/${slug}`}>
@@ -101,7 +102,7 @@ const GameSummary = ({ game, user }) => {
         <div>
           <article>
             <p className="game-status secondary-text">
-              <GameStatus game={game} />
+              <GameStatus status={status} turn={currentTurn} />
             </p>
             <header>
               <span className="name">{name}</span>
@@ -119,7 +120,7 @@ const GameSummary = ({ game, user }) => {
             numParticipants={participants.length}
             numPlayers={numPlayers}
           />
-          <ParticipantList game={game} turn={currentTurn} />
+          <ParticipantList game={game} />
         </div>
         <div />
       </StyledListItem>
@@ -127,9 +128,13 @@ const GameSummary = ({ game, user }) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  const { game } = props;
+  const { user } = state.auth;
   return {
-    user: state.auth.user,
+    user,
+    userNation: getUserNation(state, game, user),
+    currentTurn: getCurrentTurn(state, game),
   };
 };
 
