@@ -1,4 +1,8 @@
 import gameService from '../services/game';
+import gameNormalizer from './normalizers/gameNormalizer';
+import { nationStatesReceived } from './nationStates';
+import { turnsReceived } from './turns';
+import { usersReceived } from './users';
 
 const GAMES_RECEIVED = 'GAMES_RECEIVED';
 const GAMES_REQUESTED = 'GAMES_REQUESTED';
@@ -24,42 +28,13 @@ const initialState = {
   loading: false,
 };
 
-const normalizeGame = (game) => {
-  const normalizedGame = game;
-  normalizedGame.variant = game.variant.id;
-  normalizedGame.participants = game.participants.map((p) => p.id);
-  if (game.current_turn) {
-    normalizedGame.year = game.current_turn.year;
-    normalizedGame.season = game.current_turn.season;
-    normalizedGame.phase = game.current_turn.phase;
-    normalizedGame.userNations = game.current_turn.nation_states.map((ns) => [
-      ns.user.id,
-      ns.nation,
-    ]);
-    delete normalizedGame.current_turn;
-  } else {
-    normalizedGame.year = null;
-    normalizedGame.season = null;
-    normalizedGame.phase = null;
-    normalizedGame.userNations = [];
-    delete normalizedGame.current_turn;
-  }
-  return normalizedGame;
-};
-
 // Reducer
-const games = (state = initialState, action) => {
+const gamesReducer = (state = initialState, action) => {
   switch (action.type) {
     case GAMES_RECEIVED: {
       const { payload } = action;
-      const byId = {};
-      const allIds = [];
-      payload.forEach((game) => {
-        const { id } = game;
-        const normalizedGame = normalizeGame(game);
-        byId[id] = normalizedGame;
-        allIds.push(id);
-      });
+      const byId = payload;
+      const allIds = Object.values(payload).map((value) => value.id);
       return { loading: false, byId, allIds };
     }
     case GAMES_REQUESTED:
@@ -80,7 +55,12 @@ const loadGames = (token) => {
     dispatch(gamesRequested());
     gameService.getGames(token).then(
       (payload) => {
-        dispatch(gamesReceived(payload));
+        const { entities } = gameNormalizer(payload);
+        const { games, nationStates, turns, users } = entities;
+        dispatch(gamesReceived(games));
+        dispatch(nationStatesReceived(nationStates));
+        dispatch(turnsReceived(turns));
+        dispatch(usersReceived(users));
       },
       () => {
         dispatch(gamesRequestFailed());
@@ -93,4 +73,4 @@ export const gameActions = {
   loadGames,
 };
 
-export default games;
+export default gamesReducer;

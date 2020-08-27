@@ -23,5 +23,7 @@ const variant = new schema.Entity('variants', {
   map_data: [mapData],
 });
 
-const variantNormalizer = (variantData) => normalize(variantData, variant);
+const variantList = new schema.Array(variant);
+
+const variantNormalizer = (variantData) => normalize(variantData, variantList);
 export default variantNormalizer;

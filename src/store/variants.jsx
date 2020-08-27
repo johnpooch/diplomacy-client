@@ -1,5 +1,5 @@
 import variantService from '../services/variant';
-import variantNormalizer from './normailzers';
+import variantNormalizer from './normalizers/variantNormalizer';
 
 import { mapDataReceived } from './mapData';
 import { namedCoastsReceived } from './namedCoasts';
@@ -57,7 +57,7 @@ const loadVariants = (token) => {
     dispatch(variantsRequested());
     variantService.listVariants(token).then(
       (payload) => {
-        const { entities } = variantNormalizer(payload[0]);
+        const { entities } = variantNormalizer(payload);
         const {
           variants,
           nations,
