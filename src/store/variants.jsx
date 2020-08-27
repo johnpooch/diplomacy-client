@@ -1,11 +1,17 @@
 import variantService from '../services/variant';
+import variantNormalizer from './normailzers';
+
+import { mapDataReceived } from './mapData';
+import { namedCoastsReceived } from './namedCoasts';
+import { namedCoastDataReceived } from './namedCoastData';
+import { nationsReceived } from './nations';
 import { territoriesReceived } from './territories';
+import { territoryDataReceived } from './territoryData';
 
 const VARIANTS_RECEIVED = 'VARIANTS_RECEIVED';
 const VARIANTS_REQUESTED = 'VARIANTS_REQUESTED';
 const VARIANTS_REQUEST_FAILED = 'VARIANTS_REQUEST_FAILED';
 
-// Action creators
 export const variantsReceived = (payload) => ({
   type: VARIANTS_RECEIVED,
   payload,
@@ -25,38 +31,12 @@ const initialState = {
   loading: false,
 };
 
-const normalizeVariant = (variant) => {
-  const normalizedVariant = variant;
-  normalizedVariant.territories = normalizedVariant.territories.map(
-    (territory) => territory.id
-  );
-  normalizedVariant.nations = normalizedVariant.nations.map(
-    (nation) => nation.id
-  );
-  normalizedVariant.map_data = normalizedVariant.map_data.map((m) => {
-    const { id, width, height } = m;
-    return {
-      id,
-      width,
-      height,
-    };
-  });
-  return normalizedVariant;
-};
-
-// Reducer
-const variants = (state = initialState, action) => {
+const variantsReducer = (state = initialState, action) => {
   switch (action.type) {
     case VARIANTS_RECEIVED: {
       const { payload } = action;
-      const byId = {};
-      const allIds = [];
-      payload.forEach((variant) => {
-        const { id } = variant;
-        const normalizedVariant = normalizeVariant(variant);
-        byId[id] = normalizedVariant;
-        allIds.push(id);
-      });
+      const byId = payload;
+      const allIds = Object.values(payload).map((value) => value.id);
       return { loading: false, byId, allIds };
     }
     case VARIANTS_REQUESTED:
@@ -77,13 +57,23 @@ const loadVariants = (token) => {
     dispatch(variantsRequested());
     variantService.listVariants(token).then(
       (payload) => {
-        let territories = [];
-        payload.forEach((variant) => {
-          territories = [...territories, ...variant.territories];
-        });
-
-        dispatch(variantsReceived(payload));
+        const { entities } = variantNormalizer(payload[0]);
+        const {
+          variants,
+          nations,
+          territories,
+          map_data: mapData,
+          territory_data: territoryData,
+          named_coasts: namedCoasts,
+          named_coast_data: namedCoastData,
+        } = entities;
+        dispatch(variantsReceived(variants));
         dispatch(territoriesReceived(territories));
+        dispatch(nationsReceived(nations));
+        dispatch(mapDataReceived(mapData));
+        dispatch(territoryDataReceived(territoryData));
+        dispatch(namedCoastsReceived(namedCoasts));
+        dispatch(namedCoastDataReceived(namedCoastData));
       },
       () => {
         dispatch(variantsRequestFailed());
@@ -96,4 +86,4 @@ export const variantActions = {
   loadVariants,
 };
 
-export default variants;
+export default variantsReducer;

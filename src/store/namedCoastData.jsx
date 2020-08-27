@@ -1,7 +1,7 @@
-const TERRITORIES_RECEIVED = 'TERRITORIES_RECEIVED';
+const NAMED_COAST_DATA_RECEIVED = 'NAMED_COAST_DATA_RECEIVED';
 
-export const territoriesReceived = (payload) => ({
-  type: TERRITORIES_RECEIVED,
+export const namedCoastDataReceived = (payload) => ({
+  type: NAMED_COAST_DATA_RECEIVED,
   payload,
 });
 
@@ -11,9 +11,9 @@ const initialState = {
   loading: false,
 };
 
-const territoriesReducer = (state = initialState, action) => {
+const namedCoastDataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TERRITORIES_RECEIVED: {
+    case NAMED_COAST_DATA_RECEIVED: {
       const { payload } = action;
       const byId = payload;
       const allIds = Object.values(payload).map((value) => value.id);
@@ -24,4 +24,4 @@ const territoriesReducer = (state = initialState, action) => {
   }
 };
 
-export default territoriesReducer;
+export default namedCoastDataReducer;
