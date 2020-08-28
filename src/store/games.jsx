@@ -9,9 +9,9 @@ const GAMES_REQUESTED = 'GAMES_REQUESTED';
 const GAMES_REQUEST_FAILED = 'GAMES_REQUEST_FAILED';
 
 // Action creators
-export const gamesReceived = (payload) => ({
+export const gamesReceived = (games, order) => ({
   type: GAMES_RECEIVED,
-  payload,
+  payload: { games, order },
 });
 
 export const gamesRequested = () => ({
@@ -33,8 +33,9 @@ const gamesReducer = (state = initialState, action) => {
   switch (action.type) {
     case GAMES_RECEIVED: {
       const { payload } = action;
-      const byId = payload;
-      const allIds = Object.values(payload).map((value) => value.id);
+      const { games, order } = payload;
+      const byId = games;
+      const allIds = order;
       return { loading: false, byId, allIds };
     }
     case GAMES_REQUESTED:
@@ -55,12 +56,12 @@ const loadGames = (token) => {
     dispatch(gamesRequested());
     gameService.getGames(token).then(
       (payload) => {
-        const { entities } = gameNormalizer(payload);
+        const { entities, result: order } = gameNormalizer(payload);
         const { games, nationStates, turns, users } = entities;
         dispatch(nationStatesReceived(nationStates));
         dispatch(turnsReceived(turns));
         dispatch(usersReceived(users));
-        dispatch(gamesReceived(games));
+        dispatch(gamesReceived(games, order));
       },
       () => {
         dispatch(gamesRequestFailed());
