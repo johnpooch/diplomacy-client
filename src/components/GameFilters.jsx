@@ -37,6 +37,7 @@ const StyledDiv = styled.div`
 `;
 
 const StyledClosedSearch = styled.button`
+  cursor: pointer;
   background: ${colors.white};
   border: ${sizes.border / 2}px solid ${colors.border};
   padding: 0.5rem 1rem;
@@ -52,6 +53,7 @@ const StyledClose = styled.div`
   text-align: right;
   padding-bottom: ${spacing[2]}px;
   button {
+    cursor: pointer;
     background: ${colors.white};
     border: none;
   }
@@ -93,9 +95,9 @@ class GameFilters extends React.Component {
     this.setState({ filters });
   }
 
-  filter() {
+  filter(e) {
+    e.preventDefault();
     const { callback } = this.props;
-    console.log(callback);
     const { filters } = this.state;
     callback(filters);
   }

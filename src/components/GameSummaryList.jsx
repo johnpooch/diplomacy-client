@@ -14,9 +14,14 @@ const StyledList = styled.ol`
   grid-column-gap: ${spacing[5]}px;
 `;
 
+const StyledDiv = styled.div`
+  text-align: center;
+`;
+
 function GameSummaryList(props) {
   const { games, isLoaded } = props;
   if (!isLoaded) return <Loading />;
+  if (!games.length) return <StyledDiv>No games found!</StyledDiv>;
   const elements = [];
   games.forEach((game) => {
     elements.push(<GameSummary key={game.id} game={game} />);
@@ -24,13 +29,10 @@ function GameSummaryList(props) {
   return <StyledList>{elements}</StyledList>;
 }
 
-const mapStateToProps = (state, props) => {
-  const { games } = props;
+const mapStateToProps = (state) => {
   return {
     isLoaded: Boolean(
-      games.length &&
-        !state.entities.games.loading &&
-        state.entities.variants.allIds.length
+      !state.entities.games.loading && state.entities.variants.allIds.length
     ),
   };
 };

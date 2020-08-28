@@ -15,6 +15,7 @@ const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case USERS_RECEIVED: {
       const { payload } = action;
+      if (!payload) return initialState;
       const byId = payload;
       const allIds = Object.values(payload).map((value) => value.id);
       return { byId, allIds };

@@ -34,6 +34,7 @@ const gamesReducer = (state = initialState, action) => {
     case GAMES_RECEIVED: {
       const { payload } = action;
       const { games, order } = payload;
+      if (!games) return initialState;
       const byId = games;
       const allIds = order;
       return { loading: false, byId, allIds };

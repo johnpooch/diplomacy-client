@@ -44,7 +44,9 @@ const BrowseGames = (props) => {
   }, [location.pathname]);
 
   const filterGames = (filters) => {
-    loadGames(filters);
+    console.log('HERE');
+    console.log(filters);
+    loadGames(token, filters);
   };
 
   return (
