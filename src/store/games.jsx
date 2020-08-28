@@ -51,10 +51,10 @@ const gamesReducer = (state = initialState, action) => {
 };
 
 // Public actions
-const loadGames = (token) => {
+const loadGames = (token, filters = null) => {
   return (dispatch) => {
     dispatch(gamesRequested());
-    gameService.getGames(token).then(
+    gameService.getGames(token, filters).then(
       (payload) => {
         const { entities, result: order } = gameNormalizer(payload);
         const { games, nationStates, turns, users } = entities;

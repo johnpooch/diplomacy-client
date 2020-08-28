@@ -79,12 +79,11 @@ const StyledListItem = styled.li`
 `;
 
 const GameSummary = (props) => {
-  const { game } = props;
+  const { game, currentTurn } = props;
   const {
     id,
     slug,
     name,
-    currentTurn,
     description,
     participants,
     status,

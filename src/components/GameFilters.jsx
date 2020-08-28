@@ -1,19 +1,28 @@
 /* eslint camelcase: [2, { "allow": ["num_players", "nation_choice_mode", "order_deadline", "retreat_deadline", "build_deadline", "game_statuses"] }] */
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronDown,
+  faSearch,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
   GenericForm,
   FormLabelText,
+  Button,
   TertiaryButton,
   Grid,
   GridTemplate,
 } from '../styles';
 import { getOptions } from '../utils';
 import { colors, sizes, spacing } from '../variables';
+import { getVariants } from '../store/selectors';
 
 const StyledButton = styled(TertiaryButton)`
-  margin-bottom: ${spacing[3]}px;
+  margin: ${spacing[2]}px 0px;
 `;
 
 const StyledForm = styled(GenericForm)`
@@ -25,6 +34,27 @@ const StyledForm = styled(GenericForm)`
 
 const StyledDiv = styled.div`
   margin-top: ${spacing[4]}px;
+`;
+
+const StyledClosedSearch = styled.button`
+  background: ${colors.white};
+  border: ${sizes.border / 2}px solid ${colors.border};
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  svg {
+    &:not(:last-of-type) {
+      margin-right: ${spacing[1]}px;
+    }
+  }
+`;
+
+const StyledClose = styled.div`
+  text-align: right;
+  padding-bottom: ${spacing[2]}px;
+  button {
+    background: ${colors.white};
+    border: none;
+  }
 `;
 
 class GameFilters extends React.Component {
@@ -43,13 +73,16 @@ class GameFilters extends React.Component {
     };
 
     this.state = {
+      open: false,
       advancedOpen: false,
       filters,
     };
 
     this.emptyOptionString = '-------';
 
+    this.filter = this.filter.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
+    this.toggleOpen = this.toggleOpen.bind(this);
     this.clickAdvancedToggleButton = this.clickAdvancedToggleButton.bind(this);
   }
 
@@ -58,11 +91,11 @@ class GameFilters extends React.Component {
     const { filters } = this.state;
     filters[name] = value;
     this.setState({ filters });
-    this.filter();
   }
 
   filter() {
     const { callback } = this.props;
+    console.log(callback);
     const { filters } = this.state;
     callback(filters);
   }
@@ -111,9 +144,9 @@ class GameFilters extends React.Component {
   renderVariantFilter() {
     const { filters } = this.state;
     const { variant } = filters;
-    const { choices } = this.props;
-    const { variants } = choices;
-    const options = getOptions(variants);
+    const { variants } = this.props;
+    const variantChoices = variants.map((v) => [v.id, v.name]);
+    const options = getOptions(variantChoices);
     return this.renderSelectFilter(variant, 'variant', 'Variant', options);
   }
 
@@ -121,8 +154,8 @@ class GameFilters extends React.Component {
     const { filters } = this.state;
     const { status } = filters;
     const { choices } = this.props;
-    const { game_statuses } = choices;
-    const options = getOptions(game_statuses);
+    const { gameStatuses } = choices;
+    const options = getOptions(gameStatuses);
     return this.renderSelectFilter(status, 'status', 'Status', options);
   }
 
@@ -160,8 +193,8 @@ class GameFilters extends React.Component {
     const { filters } = this.state;
     const { nation_choice_mode } = filters;
     const { choices } = this.props;
-    const { nation_choice_modes } = choices;
-    const options = getOptions(nation_choice_modes);
+    const { nationChoiceModes } = choices;
+    const options = getOptions(nationChoiceModes);
     return this.renderSelectFilter(
       nation_choice_mode,
       'nation_choice_mode',
@@ -217,23 +250,56 @@ class GameFilters extends React.Component {
     );
   }
 
+  renderCloseButton() {
+    return (
+      <StyledClose>
+        <button type="button" onClick={this.toggleOpen}>
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
+      </StyledClose>
+    );
+  }
+
+  toggleOpen() {
+    const { open } = this.state;
+    this.setState({
+      open: !open,
+    });
+  }
+
   render() {
     const { choices } = this.props;
+    const { open } = this.state;
     if (!choices) return null;
+    if (!open) {
+      return (
+        <StyledClosedSearch type="button" onClick={this.toggleOpen}>
+          <FontAwesomeIcon icon={faSearch} />
+          <FontAwesomeIcon icon={faChevronDown} />
+        </StyledClosedSearch>
+      );
+    }
     return (
       <div>
-        {this.renderAdvancedToggleButton()}
-        <StyledForm
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
+        <StyledForm onSubmit={this.filter}>
+          {this.renderCloseButton()}
           {this.renderFilterFields()}
           {this.renderAdvancedFilterFields()}
+          <div>{this.renderAdvancedToggleButton()}</div>
+          <div>
+            <Button type="submit">Submit</Button>
+          </div>
         </StyledForm>
       </div>
     );
   }
 }
 
-export default GameFilters;
+const mapStateToProps = (state) => {
+  return {
+    choices: state.choices,
+    variants: getVariants(state),
+  };
+};
+
+export default connect(mapStateToProps, null)(GameFilters);

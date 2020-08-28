@@ -3,6 +3,7 @@ import { connectRouter } from 'connected-react-router';
 
 import auth from './auth';
 import alerts from './alerts';
+import choices from './choices';
 import entities from './entities';
 
 export default (history) =>
@@ -10,5 +11,6 @@ export default (history) =>
     router: connectRouter(history),
     auth,
     alerts,
+    choices,
     entities,
   });

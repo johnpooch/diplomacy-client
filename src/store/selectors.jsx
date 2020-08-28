@@ -4,6 +4,12 @@ export const getGames = (state) => {
   return games.allIds.map((id) => games.byId[id]);
 };
 
+export const getVariants = (state) => {
+  // Gets all variants as an ordered list
+  const { variants } = state.entities;
+  return variants.allIds.map((id) => variants.byId[id]);
+};
+
 export const getUserNation = (state, game, user) => {
   /* 
   Given a game and a user, gets the nation user is playing as in that game. 

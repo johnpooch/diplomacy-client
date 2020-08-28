@@ -1,7 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
+import Loading from './Loading';
 import GameSummary from './GameSummary';
+
 import { spacing } from '../variables';
 
 const StyledList = styled.ol`
@@ -12,8 +15,8 @@ const StyledList = styled.ol`
 `;
 
 function GameSummaryList(props) {
-  const { games } = props;
-  if (!games || !games.length) return null;
+  const { games, isLoaded } = props;
+  if (!isLoaded) return <Loading />;
   const elements = [];
   games.forEach((game) => {
     elements.push(<GameSummary key={game.id} game={game} />);
@@ -21,4 +24,15 @@ function GameSummaryList(props) {
   return <StyledList>{elements}</StyledList>;
 }
 
-export default GameSummaryList;
+const mapStateToProps = (state, props) => {
+  const { games } = props;
+  return {
+    isLoaded: Boolean(
+      games.length &&
+        !state.entities.games.loading &&
+        state.entities.variants.allIds.length
+    ),
+  };
+};
+
+export default connect(mapStateToProps, null)(GameSummaryList);

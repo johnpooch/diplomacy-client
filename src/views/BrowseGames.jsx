@@ -5,9 +5,12 @@ import styled from '@emotion/styled';
 import { spacing } from '../variables';
 
 import GameSummaryList from '../components/GameSummaryList';
+import GameFilters from '../components/GameFilters';
 import Page from '../components/Page';
+
 import { getGames } from '../store/selectors';
 import { logout } from '../store/auth';
+import { choiceActions } from '../store/choices';
 import { gameActions } from '../store/games';
 import { variantActions } from '../store/variants';
 
@@ -20,10 +23,10 @@ const StyledDiv = styled.div`
 
 const BrowseGames = (props) => {
   const {
-    loadVariants,
     loadGames,
+    loadChoices,
+    loadVariants,
     location,
-    loading,
     games,
     token,
     variants,
@@ -37,13 +40,18 @@ const BrowseGames = (props) => {
     if (!games.length) {
       loadGames(token);
     }
+    loadChoices();
   }, [location.pathname]);
 
+  const filterGames = (filters) => {
+    loadGames(filters);
+  };
+
   return (
-    <Page headingText={null} isLoaded={!loading}>
+    <Page headingText={null} isLoaded>
       <StyledDiv>
         <div>
-          {/* <GameFilters choices={choices} callback={this.getFilteredGames} /> */}
+          <GameFilters callback={filterGames} />
           <GameSummaryList games={games} />
         </div>
         <div>My active games</div>
@@ -53,10 +61,10 @@ const BrowseGames = (props) => {
 };
 
 const mapStateToProps = (state) => {
+  const games = getGames(state);
   return {
+    games,
     token: state.auth.token,
-    loading: state.entities.games.loading,
-    games: getGames(state),
     variants: state.entities.variants,
   };
 };
@@ -64,8 +72,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUnauthorized: () => dispatch(logout()),
-    loadGames: () => dispatch(gameActions.loadGames()),
+    loadGames: (token, filters) =>
+      dispatch(gameActions.loadGames(token, filters)),
     loadVariants: () => dispatch(variantActions.loadVariants()),
+    loadChoices: () => dispatch(choiceActions.loadChoices()),
   };
 };
 

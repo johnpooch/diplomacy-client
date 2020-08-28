@@ -9,12 +9,8 @@ const StyledDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
   pointer-events: none;
+  margin-top: 4rem;
 `;
 
 const StyledText = styled.span`
