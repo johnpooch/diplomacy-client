@@ -3,6 +3,7 @@ import gameNormalizer from './normalizers/gameNormalizer';
 import { nationStatesReceived } from './nationStates';
 import { turnsReceived } from './turns';
 import { usersReceived } from './users';
+import { logout } from './auth';
 
 const GAMES_RECEIVED = 'GAMES_RECEIVED';
 const GAMES_REQUESTED = 'GAMES_REQUESTED';
@@ -64,8 +65,11 @@ const loadGames = (token, filters = null) => {
         dispatch(usersReceived(users));
         dispatch(gamesReceived(games, order));
       },
-      () => {
+      (e) => {
         dispatch(gamesRequestFailed());
+        if (e.status === 401) {
+          dispatch(logout());
+        }
       }
     );
   };

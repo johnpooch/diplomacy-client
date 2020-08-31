@@ -289,7 +289,7 @@ class GameFilters extends React.Component {
           {this.renderAdvancedFilterFields()}
           <div>{this.renderAdvancedToggleButton()}</div>
           <div>
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Search</Button>
           </div>
         </StyledForm>
       </div>
