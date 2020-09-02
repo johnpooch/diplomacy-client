@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 
 import flags from './flags';
-import gameDetail from './gameDetail';
 import games from './games';
 import mapData from './mapData';
 import namedCoasts from './namedCoasts';
@@ -20,7 +19,6 @@ import variants from './variants';
 
 export default combineReducers({
   flags,
-  gameDetail,
   games,
   mapData,
   namedCoasts,

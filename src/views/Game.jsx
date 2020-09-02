@@ -6,7 +6,7 @@ import Loading from '../components/Loading';
 import Map from '../components/Map';
 import StatusBar from '../components/StatusBar';
 import gameService from '../services/game';
-import { gameDetailActions } from '../store/gameDetail';
+import { gameActions } from '../store/games';
 import * as Utils from '../utils';
 
 class Game extends React.Component {
@@ -24,15 +24,8 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const { gameData, loadGame, token } = this.props;
-    const { turns } = gameData;
-    const currentTurnIndex = turns.findIndex(
-      (obj) => obj.current_turn === true
-    );
-    const activeTurn = turns[currentTurnIndex];
-    this.setState({ activeTurn });
-    const { slug } = gameData;
-    this.getPrivate(slug);
+    const { game, loadGame, token } = this.props;
+    const { slug } = game;
     loadGame(token, slug);
   }
 
@@ -94,7 +87,7 @@ class Game extends React.Component {
       playerOrders,
       privateNationState,
     } = this.state;
-    const { gameData, user } = this.props;
+    const { game } = this.props;
     if (!isLoaded) {
       return <Loading />;
     }
@@ -133,7 +126,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadGame: (token, slug) =>
-      dispatch(gameDetailActions.loadGame(token, slug)),
+      dispatch(gameActions.gameDetailRequest(token, slug)),
   };
 };
 

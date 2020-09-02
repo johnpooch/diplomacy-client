@@ -1,4 +1,7 @@
 import {
+  GAME_DETAIL_FAILURE,
+  GAME_DETAIL_REQUEST,
+  GAME_DETAIL_SUCCESS,
   GAMES_REQUESTED,
   GAMES_RECEIVED,
   GAMES_REQUEST_FAILED,
@@ -9,18 +12,27 @@ import {
   LEAVE_GAME_SUCCESS,
   LEAVE_GAME_REQUEST_FAILED,
   gamesRequested,
+  gameDetailSuccess,
   normalizedGamesReceived,
 } from '../games';
-import { alertsAdd } from '../alerts';
-import { ALLGAMESURL, JOINGAMEURL } from '../../api';
+import { alertsAdd, alertsClearAll } from '../alerts';
+import { ALLGAMESURL, JOINGAMEURL, GAMESTATEURL } from '../../api';
 import { apiRequest } from '../api';
 
 import gameListNormalizer from '../normalizers/gameListNormalizer';
+import gameDetailNormalizer from '../normalizers/gameDetailNormalizer';
 import { nationStatesReceived } from '../nationStates';
+import { ordersReceived } from '../orders';
+import { pieceStatesReceived } from '../pieceStates';
+import { piecesReceived } from '../pieces';
+import { territoryStatesReceived } from '../territoryStates';
 import { turnsReceived } from '../turns';
 import { usersReceived } from '../users';
 
 const loadGamesFlow = ({ dispatch }) => (next) => (action) => {
+  /*
+  Dispatch API request when games list is requested.
+  */
   next(action);
 
   if (action.type === GAMES_REQUESTED) {
@@ -43,7 +55,31 @@ const loadGamesFlow = ({ dispatch }) => (next) => (action) => {
   }
 };
 
+const loadGameDetailFlow = ({ dispatch }) => (next) => (action) => {
+  /*
+  Dispatch API request when a game detail is requested.
+  */
+  next(action);
+
+  if (action.type === GAME_DETAIL_REQUEST) {
+    const { token, slug } = action.payload;
+    const url = GAMESTATEURL.replace('<game>', slug);
+    const apiAction = apiRequest(
+      'GET',
+      url,
+      token,
+      action.payload,
+      GAME_DETAIL_SUCCESS,
+      GAME_DETAIL_FAILURE
+    );
+    dispatch(apiAction);
+  }
+};
+
 const normalizeGames = ({ dispatch }) => (next) => (action) => {
+  /*
+  When games list is received, normalize data and dispatch actions for each entity.
+  */
   next(action);
 
   if (action.type === GAMES_RECEIVED) {
@@ -56,85 +92,113 @@ const normalizeGames = ({ dispatch }) => (next) => (action) => {
   }
 };
 
-const joinGameFlow = ({ dispatch }) => (next) => (action) => {
+const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
+  /*
+  When a game detail is received, normalize data and dispatch actions for each entity.
+  */
+
+  if (action.type === GAME_DETAIL_SUCCESS) {
+    const { entities } = gameDetailNormalizer(action.payload);
+    const {
+      game,
+      nationStates,
+      orders,
+      pieces,
+      pieceStates,
+      territoryStates,
+      turns,
+    } = entities;
+    dispatch(piecesReceived(pieces));
+    dispatch(turnsReceived(turns));
+    dispatch(nationStatesReceived(nationStates));
+    dispatch(territoryStatesReceived(territoryStates));
+    dispatch(pieceStatesReceived(pieceStates));
+    dispatch(ordersReceived(orders));
+    next({ type: GAME_DETAIL_SUCCESS, payload: game });
+  } else {
+    next(action);
+  }
+};
+
+const joinLeaveGameFlow = ({ dispatch }) => (next) => (action) => {
+  /*
+  When a player attempts to join or leave a game, dispatch an API request.
+  */
   next(action);
 
-  if (action.type === JOIN_GAME_REQUESTED) {
+  if ([LEAVE_GAME_REQUESTED, JOIN_GAME_REQUESTED].includes(action.type)) {
     const { token, slug } = action.payload;
     const url = JOINGAMEURL.replace('<game>', slug);
+
+    const successFailActions =
+      action.type === JOIN_GAME_REQUESTED
+        ? [JOIN_GAME_SUCCESS, JOIN_GAME_REQUEST_FAILED]
+        : [LEAVE_GAME_SUCCESS, LEAVE_GAME_REQUEST_FAILED];
 
     const apiAction = apiRequest(
       'PATCH',
       url,
       token,
       action.payload,
-      JOIN_GAME_SUCCESS,
-      JOIN_GAME_REQUEST_FAILED
+      ...successFailActions
     );
     dispatch(apiAction);
   }
 };
 
-const leaveGameFlow = ({ dispatch }) => (next) => (action) => {
+const postJoinLeaveFlow = ({ dispatch, getState }) => (next) => (action) => {
+  /*
+  Once the user has successfully joined or left a game, show a success message
+  and reload the games.
+  */
   next(action);
 
-  if (action.type === LEAVE_GAME_REQUESTED) {
-    console.log('HERE');
-    const { token, slug } = action.payload;
-    const url = JOINGAMEURL.replace('<game>', slug);
-
-    const apiAction = apiRequest(
-      'PATCH',
-      url,
-      token,
-      action.payload,
-      LEAVE_GAME_SUCCESS,
-      LEAVE_GAME_REQUEST_FAILED
-    );
-    dispatch(apiAction);
-  }
-};
-
-const gameJoinedFlow = ({ dispatch, getState }) => (next) => (action) => {
-  next(action);
-
-  if (action.type === JOIN_GAME_SUCCESS) {
-    const state = getState();
-    console.log(action.payload);
-    const { token } = state.auth;
-    const name = 'SOME GAME';
-    dispatch(
-      alertsAdd({
-        message: `Joined "${name}"! The game will begin once all players have joined.`,
-        category: 'success',
-      })
-    );
-    dispatch(gamesRequested(token));
-  }
-};
-
-const gameLeftFlow = ({ dispatch, getState }) => (next) => (action) => {
-  next(action);
-
-  if (action.type === LEAVE_GAME_SUCCESS) {
+  if ([LEAVE_GAME_SUCCESS, JOIN_GAME_SUCCESS].includes(action.type)) {
     const state = getState();
     const { token } = state.auth;
     const { name } = action.payload;
+    const message =
+      action.type === JOIN_GAME_SUCCESS
+        ? `Joined "${name}"! The game will begin once all players have joined.`
+        : `Left ${name}.`;
+
+    dispatch(alertsClearAll());
     dispatch(
       alertsAdd({
-        message: `Left "${name}".`,
+        message,
         category: 'success',
       })
     );
     dispatch(gamesRequested(token));
+  }
+};
+
+const failedJoinLeaveFlow = ({ dispatch }) => (next) => (action) => {
+  /*
+  If the user failed to join or leave a game, show an error message.
+  */
+  next(action);
+
+  if (
+    [LEAVE_GAME_REQUEST_FAILED, JOIN_GAME_REQUEST_FAILED].includes(action.type)
+  ) {
+    const { statusText } = action.payload;
+    dispatch(alertsClearAll());
+    dispatch(
+      alertsAdd({
+        message: statusText,
+        category: 'error',
+      })
+    );
   }
 };
 
 export default [
-  joinGameFlow,
-  leaveGameFlow,
+  joinLeaveGameFlow,
+  failedJoinLeaveFlow,
+  postJoinLeaveFlow,
   loadGamesFlow,
-  gameJoinedFlow,
-  gameLeftFlow,
+  loadGameDetailFlow,
   normalizeGames,
+  normalizeGameDetail,
 ];

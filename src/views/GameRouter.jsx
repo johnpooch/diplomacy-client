@@ -20,13 +20,7 @@ const GameRouter = (props) => {
 
   const { status } = game;
   if (status === 'active') {
-    // return (
-    //   <Game
-    //     gameData={gameData}
-    //     playerOrders={playerOrders}
-    //     privateNationState={privateNationState}
-    //   />
-    // );
+    return <Game game={game} />;
   }
   return <PreGame game={game} user={user} />;
 };
