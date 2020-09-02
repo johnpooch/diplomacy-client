@@ -1,5 +1,7 @@
-import { createAction } from '@reduxjs/toolkit';
+export const API_REQUEST = '[api] API Request';
 
-export const apiCallStart = createAction('api/apiCallStart');
-export const apiCallSuccess = createAction('api/apiCallSuccess');
-export const apiCallFailed = createAction('api/apiCallFailed');
+export const apiRequest = (method, url, token, body, onSuccess, onError) => ({
+  type: API_REQUEST,
+  payload: body,
+  meta: { method, url, token, onSuccess, onError },
+});

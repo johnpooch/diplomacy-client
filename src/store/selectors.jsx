@@ -4,6 +4,14 @@ export const getGames = (state) => {
   return games.allIds.map((id) => games.byId[id]);
 };
 
+export const getGame = (state, slug) => {
+  /*
+  Gets a game from the store by the given slug.
+  */
+  const { games } = state.entities;
+  return Object.values(games.byId).find((g) => g.slug === slug);
+};
+
 export const getVariants = (state) => {
   // Gets all variants as an ordered list
   const { variants } = state.entities;
@@ -43,6 +51,7 @@ export const getCurrentTurn = (state, game) => {
   /* 
   Gets the current turn of a game.
   */
+  if (!game) return null;
   const { current_turn: turn } = game;
   const { turns } = state.entities;
   return turns.byId[turn];

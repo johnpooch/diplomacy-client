@@ -11,7 +11,7 @@ import Page from '../components/Page';
 import { getGames } from '../store/selectors';
 import { logout } from '../store/auth';
 import { choiceActions } from '../store/choices';
-import { gameActions } from '../store/games';
+import { gamesRequested } from '../store/games';
 import { variantActions } from '../store/variants';
 
 const StyledDiv = styled.div`
@@ -37,15 +37,11 @@ const BrowseGames = (props) => {
       loadVariants(token);
     }
     // TODO add some sort of logic to determine when to load games again
-    if (!games.length) {
-      loadGames(token);
-    }
+    loadGames(token);
     loadChoices();
   }, [location.pathname]);
 
   const filterGames = (filters) => {
-    console.log('HERE');
-    console.log(filters);
     loadGames(token, filters);
   };
 
@@ -74,8 +70,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUnauthorized: () => dispatch(logout()),
-    loadGames: (token, filters) =>
-      dispatch(gameActions.loadGames(token, filters)),
+    loadGames: (token, filters) => dispatch(gamesRequested(token, filters)),
     loadVariants: () => dispatch(variantActions.loadVariants()),
     loadChoices: () => dispatch(choiceActions.loadChoices()),
   };

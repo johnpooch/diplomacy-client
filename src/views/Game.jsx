@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import GameAdapter from '../adapters/GameAdapter';
 import Loading from '../components/Loading';
 import Map from '../components/Map';
 import StatusBar from '../components/StatusBar';
 import gameService from '../services/game';
+import { gameDetailActions } from '../store/gameDetail';
 import * as Utils from '../utils';
 
 class Game extends React.Component {
@@ -24,7 +24,7 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
-    const { gameData } = this.props;
+    const { gameData, loadGame, token } = this.props;
     const { turns } = gameData;
     const currentTurnIndex = turns.findIndex(
       (obj) => obj.current_turn === true
@@ -33,6 +33,7 @@ class Game extends React.Component {
     this.setState({ activeTurn });
     const { slug } = gameData;
     this.getPrivate(slug);
+    loadGame(token, slug);
   }
 
   getPrivate(slug) {
@@ -98,7 +99,6 @@ class Game extends React.Component {
       return <Loading />;
     }
     const { id } = activeTurn;
-    const game = new GameAdapter(id, user, gameData, playerOrders);
     return (
       <div>
         <Map
@@ -130,4 +130,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withRouter(Game));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadGame: (token, slug) =>
+      dispatch(gameDetailActions.loadGame(token, slug)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

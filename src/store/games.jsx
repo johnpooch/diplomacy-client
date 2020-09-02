@@ -1,26 +1,72 @@
-import gameService from '../services/game';
-import gameNormalizer from './normalizers/gameNormalizer';
-import { nationStatesReceived } from './nationStates';
-import { turnsReceived } from './turns';
-import { usersReceived } from './users';
-import { logout } from './auth';
+export const GAMES_RECEIVED = '[games] Games received';
+export const GAMES_REQUESTED = '[games] Games requested';
+export const GAMES_REQUEST_FAILED = '[games] Games request failed';
+export const NORMALIZED_GAMES_RECEIVED = '[games] Normalized games received';
 
-const GAMES_RECEIVED = 'GAMES_RECEIVED';
-const GAMES_REQUESTED = 'GAMES_REQUESTED';
-const GAMES_REQUEST_FAILED = 'GAMES_REQUEST_FAILED';
+export const JOIN_GAME_REQUESTED = '[games] Join game requested';
+export const JOIN_GAME_SUCCESS = '[games] Join game success';
+export const JOIN_GAME_REQUEST_FAILED = '[games] Join game request failed';
+
+export const LEAVE_GAME_REQUESTED = '[games] Leave game requested';
+export const LEAVE_GAME_SUCCESS = '[games] Leave game success';
+export const LEAVE_GAME_REQUEST_FAILED = '[games] Leave game request failed';
 
 // Action creators
-export const gamesReceived = (games, order) => ({
+export const gamesReceived = (payload) => ({
   type: GAMES_RECEIVED,
-  payload: { games, order },
+  payload,
 });
 
-export const gamesRequested = () => ({
+export const gamesRequested = (token, filters = null) => ({
   type: GAMES_REQUESTED,
+  payload: {
+    token,
+    filters,
+  },
 });
 
 export const gamesRequestFailed = () => ({
   type: GAMES_REQUEST_FAILED,
+});
+
+export const normalizedGamesReceived = (games, order) => ({
+  type: NORMALIZED_GAMES_RECEIVED,
+  payload: {
+    games,
+    order,
+  },
+});
+
+const joinGame = (token, slug) => ({
+  type: JOIN_GAME_REQUESTED,
+  payload: {
+    token,
+    slug,
+  },
+});
+
+export const joinGameSuccess = () => ({
+  type: JOIN_GAME_SUCCESS,
+});
+
+export const joinGameRequestFailed = () => ({
+  type: JOIN_GAME_REQUEST_FAILED,
+});
+
+const leaveGame = (token, slug) => ({
+  type: LEAVE_GAME_REQUESTED,
+  payload: {
+    token,
+    slug,
+  },
+});
+
+export const leaveGameSuccess = () => ({
+  type: LEAVE_GAME_SUCCESS,
+});
+
+export const leaveGameRequestFailed = () => ({
+  type: LEAVE_GAME_REQUEST_FAILED,
 });
 
 const initialState = {
@@ -32,7 +78,7 @@ const initialState = {
 // Reducer
 const gamesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GAMES_RECEIVED: {
+    case NORMALIZED_GAMES_RECEIVED: {
       const { payload } = action;
       const { games, order } = payload;
       if (!games) return initialState;
@@ -47,36 +93,20 @@ const gamesReducer = (state = initialState, action) => {
         ...state,
         loading: false,
       };
+    case JOIN_GAME_REQUESTED:
+    case LEAVE_GAME_REQUESTED:
+      return {
+        ...state,
+        loading: true,
+      };
     default:
       return state;
   }
 };
 
-// Public actions
-const loadGames = (token, filters = null) => {
-  return (dispatch) => {
-    dispatch(gamesRequested());
-    gameService.getGames(token, filters).then(
-      (payload) => {
-        const { entities, result: order } = gameNormalizer(payload);
-        const { games, nationStates, turns, users } = entities;
-        dispatch(nationStatesReceived(nationStates));
-        dispatch(turnsReceived(turns));
-        dispatch(usersReceived(users));
-        dispatch(gamesReceived(games, order));
-      },
-      (e) => {
-        dispatch(gamesRequestFailed());
-        if (e.status === 401) {
-          dispatch(logout());
-        }
-      }
-    );
-  };
-};
+export default gamesReducer;
 
 export const gameActions = {
-  loadGames,
+  joinGame,
+  leaveGame,
 };
-
-export default gamesReducer;

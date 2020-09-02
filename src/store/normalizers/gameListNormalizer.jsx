@@ -17,5 +17,5 @@ const game = new schema.Entity('games', {
 
 const gameList = new schema.Array(game);
 
-const gameNormalizer = (gameData) => normalize(gameData, gameList);
-export default gameNormalizer;
+const gameListNormalizer = (gameData) => normalize(gameData, gameList);
+export default gameListNormalizer;
