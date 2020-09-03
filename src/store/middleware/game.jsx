@@ -94,9 +94,9 @@ const normalizeGames = ({ dispatch }) => (next) => (action) => {
 
 const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
   /*
-  When a game detail is received, normalize data and dispatch actions for each entity.
+  When a game detail is received, normalize data into entities and dispatch
+  actions for each entity.
   */
-
   if (action.type === GAME_DETAIL_SUCCESS) {
     const { entities } = gameDetailNormalizer(action.payload);
     const {
@@ -148,27 +148,13 @@ const joinLeaveGameFlow = ({ dispatch }) => (next) => (action) => {
 
 const postJoinLeaveFlow = ({ dispatch, getState }) => (next) => (action) => {
   /*
-  Once the user has successfully joined or left a game, show a success message
-  and reload the games.
+  Once the user has successfully joined or left a game, reload the games.
   */
   next(action);
 
   if ([LEAVE_GAME_SUCCESS, JOIN_GAME_SUCCESS].includes(action.type)) {
     const state = getState();
     const { token } = state.auth;
-    const { name } = action.payload;
-    const message =
-      action.type === JOIN_GAME_SUCCESS
-        ? `Joined "${name}"! The game will begin once all players have joined.`
-        : `Left ${name}.`;
-
-    dispatch(alertsClearAll());
-    dispatch(
-      alertsAdd({
-        message,
-        category: 'success',
-      })
-    );
     dispatch(gamesRequested(token));
   }
 };

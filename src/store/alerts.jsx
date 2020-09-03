@@ -1,3 +1,5 @@
+import { JOIN_GAME_SUCCESS, LEAVE_GAME_SUCCESS } from './games';
+
 const ALERTS_ADD = 'ALERTS_ADD';
 const ALERTS_CLEAR = 'ALERTS_CLEAR';
 const ALERTS_CLEAR_ACTIVE = 'ALERTS_CLEAR_ACTIVE';
@@ -59,6 +61,18 @@ const alerts = (state = [], action) => {
         newState.push(newObj);
       });
       return newState;
+    }
+    case JOIN_GAME_SUCCESS: {
+      // Clear existing messages and add success message
+      const { name } = action.payload;
+      const message = `Joined "${name}"! The game will begin once all players have joined.`;
+      return [{ message, category: 'success', id: nextId }];
+    }
+    case LEAVE_GAME_SUCCESS: {
+      // Clear existing messages and add success message
+      const { name } = action.payload;
+      const message = `Left "${name}".`;
+      return [{ message, category: 'success', id: nextId }];
     }
     default:
       return state;
