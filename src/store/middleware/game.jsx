@@ -1,18 +1,6 @@
 import {
-  GAME_DETAIL_FAILURE,
-  GAME_DETAIL_REQUEST,
-  GAME_DETAIL_SUCCESS,
-  GAMES_REQUESTED,
-  GAMES_RECEIVED,
-  GAMES_REQUEST_FAILED,
-  JOIN_GAME_REQUESTED,
-  JOIN_GAME_SUCCESS,
-  JOIN_GAME_REQUEST_FAILED,
-  LEAVE_GAME_REQUESTED,
-  LEAVE_GAME_SUCCESS,
-  LEAVE_GAME_REQUEST_FAILED,
+  gamesConstants,
   gamesRequested,
-  gameDetailSuccess,
   normalizedGamesReceived,
 } from '../games';
 import { alertsAdd, alertsClearAll } from '../alerts';
@@ -35,7 +23,7 @@ const loadGamesFlow = ({ dispatch }) => (next) => (action) => {
   */
   next(action);
 
-  if (action.type === GAMES_REQUESTED) {
+  if (action.type === gamesConstants.GAMES_REQUESTED) {
     const { token, filters } = action.payload;
     let url = ALLGAMESURL;
     if (filters) {
@@ -48,8 +36,8 @@ const loadGamesFlow = ({ dispatch }) => (next) => (action) => {
       url,
       token,
       action.payload,
-      GAMES_RECEIVED,
-      GAMES_REQUEST_FAILED
+      gamesConstants.GAMES_RECEIVED,
+      gamesConstants.GAMES_REQUEST_FAILED
     );
     dispatch(apiAction);
   }
@@ -61,7 +49,7 @@ const loadGameDetailFlow = ({ dispatch }) => (next) => (action) => {
   */
   next(action);
 
-  if (action.type === GAME_DETAIL_REQUEST) {
+  if (action.type === gamesConstants.GAME_DETAIL_REQUEST) {
     const { token, slug } = action.payload;
     const url = GAMESTATEURL.replace('<game>', slug);
     const apiAction = apiRequest(
@@ -69,8 +57,8 @@ const loadGameDetailFlow = ({ dispatch }) => (next) => (action) => {
       url,
       token,
       action.payload,
-      GAME_DETAIL_SUCCESS,
-      GAME_DETAIL_FAILURE
+      gamesConstants.GAME_DETAIL_SUCCESS,
+      gamesConstants.GAME_DETAIL_FAILURE
     );
     dispatch(apiAction);
   }
@@ -82,7 +70,7 @@ const normalizeGames = ({ dispatch }) => (next) => (action) => {
   */
   next(action);
 
-  if (action.type === GAMES_RECEIVED) {
+  if (action.type === gamesConstants.GAMES_RECEIVED) {
     const { entities, result: order } = gameListNormalizer(action.payload);
     const { games, nationStates, turns, users } = entities;
     dispatch(nationStatesReceived(nationStates));
@@ -97,7 +85,7 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
   When a game detail is received, normalize data into entities and dispatch
   actions for each entity.
   */
-  if (action.type === GAME_DETAIL_SUCCESS) {
+  if (action.type === gamesConstants.GAME_DETAIL_SUCCESS) {
     const { entities } = gameDetailNormalizer(action.payload);
     const {
       game,
@@ -114,7 +102,7 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
     dispatch(territoryStatesReceived(territoryStates));
     dispatch(pieceStatesReceived(pieceStates));
     dispatch(ordersReceived(orders));
-    next({ type: GAME_DETAIL_SUCCESS, payload: game });
+    next({ type: gamesConstants.GAME_DETAIL_SUCCESS, payload: game });
   } else {
     next(action);
   }
@@ -126,14 +114,25 @@ const joinLeaveGameFlow = ({ dispatch }) => (next) => (action) => {
   */
   next(action);
 
-  if ([LEAVE_GAME_REQUESTED, JOIN_GAME_REQUESTED].includes(action.type)) {
+  if (
+    [
+      gamesConstants.LEAVE_GAME_REQUESTED,
+      gamesConstants.JOIN_GAME_REQUESTED,
+    ].includes(action.type)
+  ) {
     const { token, slug } = action.payload;
     const url = JOINGAMEURL.replace('<game>', slug);
 
     const successFailActions =
-      action.type === JOIN_GAME_REQUESTED
-        ? [JOIN_GAME_SUCCESS, JOIN_GAME_REQUEST_FAILED]
-        : [LEAVE_GAME_SUCCESS, LEAVE_GAME_REQUEST_FAILED];
+      action.type === gamesConstants.JOIN_GAME_REQUESTED
+        ? [
+            gamesConstants.JOIN_GAME_SUCCESS,
+            gamesConstants.JOIN_GAME_REQUEST_FAILED,
+          ]
+        : [
+            gamesConstants.LEAVE_GAME_SUCCESS,
+            gamesConstants.LEAVE_GAME_REQUEST_FAILED,
+          ];
 
     const apiAction = apiRequest(
       'PATCH',
@@ -152,7 +151,12 @@ const postJoinLeaveFlow = ({ dispatch, getState }) => (next) => (action) => {
   */
   next(action);
 
-  if ([LEAVE_GAME_SUCCESS, JOIN_GAME_SUCCESS].includes(action.type)) {
+  if (
+    [
+      gamesConstants.LEAVE_GAME_SUCCESS,
+      gamesConstants.JOIN_GAME_SUCCESS,
+    ].includes(action.type)
+  ) {
     const state = getState();
     const { token } = state.auth;
     dispatch(gamesRequested(token));
@@ -166,7 +170,10 @@ const failedJoinLeaveFlow = ({ dispatch }) => (next) => (action) => {
   next(action);
 
   if (
-    [LEAVE_GAME_REQUEST_FAILED, JOIN_GAME_REQUEST_FAILED].includes(action.type)
+    [
+      gamesConstants.LEAVE_GAME_REQUEST_FAILED,
+      gamesConstants.JOIN_GAME_REQUEST_FAILED,
+    ].includes(action.type)
   ) {
     const { statusText } = action.payload;
     dispatch(alertsClearAll());

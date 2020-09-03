@@ -9,7 +9,6 @@ import GameFilters from '../components/GameFilters';
 import Page from '../components/Page';
 
 import { getGames } from '../store/selectors';
-import { logout } from '../store/auth';
 import { choiceActions } from '../store/choices';
 import { gamesRequested } from '../store/games';
 import { variantActions } from '../store/variants';
@@ -69,7 +68,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUnauthorized: () => dispatch(logout()),
     loadGames: (token, filters) => dispatch(gamesRequested(token, filters)),
     loadVariants: () => dispatch(variantActions.loadVariants()),
     loadChoices: () => dispatch(choiceActions.loadChoices()),
