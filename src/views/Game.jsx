@@ -6,33 +6,41 @@ import Loading from '../components/Loading';
 import Map from '../components/Map';
 import StatusBar from '../components/StatusBar';
 import { gameActions } from '../store/games';
-import { getCurrentTurn, getGame } from '../store/selectors';
+import { nationStateActions } from '../store/nationStates';
+import { getCurrentTurn, getGame, getUserNation } from '../store/selectors';
 
 const Game = (props) => {
-  const { currentTurn, game, isLoaded, loadGame, slug, token } = props;
+  const {
+    currentTurn,
+    finalizeOrders,
+    game,
+    isLoaded,
+    loadGame,
+    getPrivateNationState,
+    slug,
+    token,
+    userNation,
+  } = props;
 
   const [activeTurn, setActiveTurn] = useState(currentTurn);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     loadGame(token, slug);
+    if (userNation) getPrivateNationState(token, slug);
   }, []);
 
   if (!isLoaded) {
     return <Loading />;
   }
+
   return (
     <div>
-      <Map
-        game={game}
-        turn={activeTurn}
-        playerOrders={playerOrders}
-        privateNationState={privateNationState}
-        getPrivate={this.getPrivate}
-      />
+      <Map game={game} turn={activeTurn} />
       <StatusBar
         game={game}
-        privateNationState={privateNationState}
-        finalizeOrders={this.finalizeOrders}
+        userNation={userNation}
+        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         turn={activeTurn}
         isProcessing={isProcessing}
         _setTurn={(_id) => {
@@ -46,12 +54,15 @@ const Game = (props) => {
 const mapStateToProps = (state, props) => {
   const { slug } = props;
   const game = getGame(state, slug);
+  const { user } = state.auth;
   const currentTurn = getCurrentTurn(state, game);
+  const userNation = getUserNation(state, currentTurn, user);
   return {
     currentTurn,
     game,
     isLoaded: game.detailLoaded,
-    user: state.auth.user,
+    user,
+    userNation,
     token: state.auth.token,
   };
 };
@@ -60,6 +71,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadGame: (token, slug) =>
       dispatch(gameActions.gameDetailRequest(token, slug)),
+    getPrivateNationState: (token, slug) =>
+      dispatch(nationStateActions.privateNationStateRequested(token, slug)),
+    finalizeOrders: (token, nationStateId) => {
+      dispatch(gameActions.finalizeOrdersRequest(token, nationStateId));
+    },
   };
 };
 

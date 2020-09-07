@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import styled from '@emotion/styled';
@@ -13,6 +13,13 @@ import Tooltip from './Tooltip';
 import { colors } from '../variables';
 
 import gameService from '../services/game';
+import {
+  getMapData,
+  getOrders,
+  getPieces,
+  getTerritories,
+  getTurn,
+} from '../store/selectors';
 
 const StyledDiv = styled.div`
   position: absolute;
@@ -30,7 +37,86 @@ const StyledDiv = styled.div`
   }
 `;
 
-class Map extends React.Component {
+const Map = (props) => {
+  const { mapData, orders, pieces, territories } = props;
+
+  const [panning, setPanning] = useState(false);
+  const [interacting, setInteracting] = useState(false);
+  const [order, setOrder] = useState({
+    type: null,
+    aux: null,
+    source: null,
+    target: null,
+    targetCoast: null,
+  });
+
+  const getTerritoryCallbacks = (id) => {
+    const territory = territories.find((t) => t.id === id);
+    const mouseOut = () => {
+      if (interacting) return;
+      // this.setState({
+      //   hovering: null,
+      //   tooltip: null,
+      // });
+    };
+    const mouseOver = () => {
+      if (interacting) return;
+      // this.setState({
+      //   hovering: id,
+      // });
+    };
+    const mouseUp = (e) => {
+      if (e.nativeEvent.which !== 1) return;
+      if (panning) return;
+      // this.clickTerritory(id);
+    };
+    const contextMenu = (e) => {
+      e.nativeEvent.preventDefault();
+      // this.setState({
+      //   tooltip: territory,
+      // });
+    };
+    return { mouseOut, mouseOver, mouseUp, contextMenu };
+  };
+
+  const getTerritoryOrderState = (id) => {
+    // TODO could this be written more elegantly?
+    const { aux, source, target } = order;
+    if (source && source.id === id) {
+      return 'source';
+    }
+    if (aux && aux.id === id) {
+      return 'aux';
+    }
+    if (target && target.id === id) {
+      return 'target';
+    }
+    return null;
+  };
+
+  return (
+    <div>
+      <ScrollableSVG
+        viewBoxWidth={mapData.width}
+        viewBoxHeight={mapData.height}
+        interacting={interacting}
+        panning={panning}
+      >
+        <Territories
+          getCallbacks={getTerritoryCallbacks}
+          getTerritoryOrderState={getTerritoryOrderState}
+          hovering={false}
+          panning={panning}
+          territories={territories}
+        />
+        <Orders orders={orders} />
+        <Pieces pieces={pieces} />
+      </ScrollableSVG>
+    </div>
+  );
+};
+
+class Snap extends React.Component {
   constructor(props) {
     super(props);
 
@@ -100,10 +186,10 @@ class Map extends React.Component {
   }
 
   onClickCancelOrder(orderId) {
-    const { game, token, getPrivate } = this.props;
+    const { game, token } = this.props;
     const { slug } = game;
     gameService.destroyOrder(token, slug, orderId).then(() => {
-      getPrivate(slug);
+      // dispatch to get orders for this turn.
     });
     this.resetOrder();
   }
@@ -300,7 +386,7 @@ class Map extends React.Component {
     // Build - source, target_coast=None
     // Disband - source
     const { order } = this.state;
-    const { game, token, getPrivate } = this.props;
+    const { game, token } = this.props;
     const { slug } = game;
     let { aux, source, target, targetCoast } = order;
     const { type, pieceType } = order;
@@ -325,7 +411,7 @@ class Map extends React.Component {
       target_coast: targetCoast,
     };
     gameService.createOrder(token, slug, data).then(() => {
-      getPrivate(slug);
+      // dispatch to get orders for this turn.
     });
     this.resetOrder();
   }
@@ -436,10 +522,21 @@ class Map extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  // Reload turn from store to ensure up to date
+  const { game } = props;
+  const turn = getTurn(state, props.turn.id);
+  const orders = getOrders(state, turn);
+  const pieces = getPieces(state, turn);
+  const mapData = getMapData(state, game.variant);
+  const territories = getTerritories(state, turn);
   return {
     user: state.auth.user,
     token: state.auth.token,
+    mapData,
+    orders,
+    pieces,
+    territories,
   };
 };
 

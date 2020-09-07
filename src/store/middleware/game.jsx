@@ -3,19 +3,70 @@ import {
   gamesRequested,
   normalizedGamesReceived,
 } from '../games';
+import { nationStateConstants, nationStatesReceived } from '../nationStates';
 import { alertsAdd, alertsClearAll } from '../alerts';
-import { ALLGAMESURL, JOINGAMEURL, GAMESTATEURL } from '../../api';
+import {
+  ALLGAMESURL,
+  JOINGAMEURL,
+  GAMESTATEURL,
+  FINALIZEORDERSURL,
+} from '../../api';
+import * as API from '../../api';
 import { apiRequest } from '../api';
 
 import gameListNormalizer from '../normalizers/gameListNormalizer';
 import gameDetailNormalizer from '../normalizers/gameDetailNormalizer';
-import { nationStatesReceived } from '../nationStates';
+
 import { ordersReceived } from '../orders';
 import { pieceStatesReceived } from '../pieceStates';
 import { piecesReceived } from '../pieces';
 import { territoryStatesReceived } from '../territoryStates';
 import { turnsReceived } from '../turns';
 import { usersReceived } from '../users';
+
+const toggleOrdersFinalizedFlow = ({ dispatch }) => (next) => (action) => {
+  /*
+  Dispatch API request when finalize orders is requested.
+  */
+  next(action);
+
+  if (action.type === gamesConstants.FINALIZE_ORDERS_REQUEST) {
+    const { id, token } = action.payload;
+    const url = FINALIZEORDERSURL;
+
+    const apiAction = apiRequest(
+      'GET',
+      url,
+      token,
+      { id },
+      gamesConstants.FINALIZE_ORDERS_SUCCESS,
+      gamesConstants.FINALIZE_ORDERS_FAILURE
+    );
+    dispatch(apiAction);
+  }
+};
+
+const getPrivateNationStateFlow = ({ dispatch }) => (next) => (action) => {
+  /*
+  Dispatch API request when private nation state is requested.
+  */
+  next(action);
+
+  if (action.type === nationStateConstants.PRIVATE_NATION_STATE_REQUEST) {
+    const { slug, token } = action.payload;
+    const url = API.RETRIEVEPRIVATENATIONSTATE.replace('<game>', slug);
+
+    const apiAction = apiRequest(
+      'GET',
+      url,
+      token,
+      { slug },
+      nationStateConstants.PRIVATE_NATION_STATE_SUCCESS,
+      nationStateConstants.PRIVATE_NATION_STATE_FAILURE
+    );
+    dispatch(apiAction);
+  }
+};
 
 const loadGamesFlow = ({ dispatch }) => (next) => (action) => {
   /*
@@ -189,9 +240,11 @@ const failedJoinLeaveFlow = ({ dispatch }) => (next) => (action) => {
 export default [
   joinLeaveGameFlow,
   failedJoinLeaveFlow,
+  toggleOrdersFinalizedFlow,
   postJoinLeaveFlow,
   loadGamesFlow,
   loadGameDetailFlow,
   normalizeGames,
   normalizeGameDetail,
+  getPrivateNationStateFlow,
 ];

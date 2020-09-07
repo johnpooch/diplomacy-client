@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
@@ -21,24 +21,7 @@ const StyledDiv = styled.div`
 `;
 
 const BrowseGames = (props) => {
-  const {
-    loadGames,
-    loadChoices,
-    loadVariants,
-    location,
-    games,
-    token,
-    variants,
-  } = props;
-
-  useEffect(() => {
-    if (!variants.allIds.length) {
-      loadVariants(token);
-    }
-    // TODO add some sort of logic to determine when to load games again
-    loadGames(token);
-    loadChoices();
-  }, [location.pathname]);
+  const { loadGames, games, token } = props;
 
   const filterGames = (filters) => {
     loadGames(token, filters);

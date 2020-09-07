@@ -34,11 +34,11 @@ const StyledTerritory = styled.g`
 `;
 
 const getFillColor = (territory) => {
-  const { controlledBy, type } = territory;
+  const { controlled_by, type } = territory;
   if (type === 'sea') return colors.sea;
-  if (controlledBy) {
-    if (controlledBy !== null && controlledBy in colors.nations) {
-      return colors.nations[controlledBy];
+  if (controlled_by) {
+    if (controlled_by !== null && controlled_by in colors.nations) {
+      return colors.nations[controlled_by];
     }
   }
   return colors.land;
@@ -52,8 +52,12 @@ const Territory = (props) => {
     panning,
     callbacks,
   } = props;
-  const { abbreviation, supplyCenter, text } = territory;
-  const { x: scx, y: scy } = supplyCenter;
+  const {
+    abbreviation,
+    supply_center_x: x,
+    supply_center_y: y,
+    text,
+  } = territory;
 
   const color = getFillColor(territory);
 
@@ -70,7 +74,7 @@ const Territory = (props) => {
         callbacks={callbacks}
       />
       <TerritoryText text={text} abbreviation={abbreviation} />
-      <SupplyCenter x={scx} y={scy} />
+      <SupplyCenter x={x} y={y} />
     </StyledTerritory>
   );
 };

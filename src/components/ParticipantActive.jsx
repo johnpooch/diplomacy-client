@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { colors, spacing } from '../variables';
-import { getUserNation } from '../store/selectors';
+import { getCurrentTurn, getUserNation } from '../store/selectors';
 
 import Flag from './Flag';
 
@@ -43,8 +43,9 @@ const ParticipantActive = (props) => {
 
 const mapStateToProps = (state, props) => {
   const { game, participant } = props;
+  const turn = getCurrentTurn(state, game);
   return {
-    nation: getUserNation(state, game, participant),
+    nation: getUserNation(state, turn, participant),
     user: state.auth.user,
   };
 };

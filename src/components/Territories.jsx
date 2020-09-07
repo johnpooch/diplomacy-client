@@ -12,13 +12,13 @@ const Territories = (props) => {
   } = props;
   const elements = [];
   territories.forEach((territory) => {
-    const { id, mapId } = territory;
+    const { id, mapDataId } = territory;
     const callbacks = getCallbacks(id);
     const territoryOrderState = getTerritoryOrderState(id);
     elements.push(
       <Territory
         callbacks={callbacks}
-        key={mapId}
+        key={mapDataId}
         hovering={hovering === id}
         panning={panning}
         territory={territory}

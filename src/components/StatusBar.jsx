@@ -48,44 +48,45 @@ const StyledPlayingAs = styled.span`
 `;
 
 const StatusBar = (props) => {
-  const { game, privateNationState, finalizeOrders, turn, _setTurn } = props;
-  let ordersRemainingMessage = null;
-  let orderType = null;
+  const { finalizeOrders, game, turn, userNation, _setTurn } = props;
+  const ordersRemainingMessage = null;
+  const orderType = null;
 
-  const {
-    id,
-    nation,
-    num_orders_remaining: ordersRemaining,
-    num_builds: numBuilds,
-    num_disbands: numDisbands,
-    orders_finalized: ordersFinalized,
-  } = privateNationState;
+  // const {
+  //   id,
+  //   nation,
+  //   num_orders_remaining: ordersRemaining,
+  //   num_builds: numBuilds,
+  //   num_disbands: numDisbands,
+  //   orders_finalized: ordersFinalized,
+  // } = privateNationState;
 
-  const remainingText = 'remaining';
+  // const remainingText = 'remaining';
 
-  // Format ordersRemainingMessage
-  if (ordersFinalized) {
-    ordersRemainingMessage = 'Orders finalized';
-  } else if (numBuilds) {
-    orderType = ordersRemaining === 1 ? 'build' : 'builds';
-    ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
-  } else if (numDisbands) {
-    orderType = ordersRemaining === 1 ? 'disband' : 'disbands';
-    ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
-  } else {
-    orderType = ordersRemaining === 1 ? 'order' : 'orders';
-    ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
-  }
+  // // Format ordersRemainingMessage
+  // if (ordersFinalized) {
+  //   ordersRemainingMessage = 'Orders finalized';
+  // } else if (numBuilds) {
+  //   orderType = ordersRemaining === 1 ? 'build' : 'builds';
+  //   ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
+  // } else if (numDisbands) {
+  //   orderType = ordersRemaining === 1 ? 'disband' : 'disbands';
+  //   ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
+  // } else {
+  //   orderType = ordersRemaining === 1 ? 'order' : 'orders';
+  //   ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
+  // }
 
   const onClickToggleFinalize = () => {
     const { slug } = game;
     finalizeOrders(id, slug);
   };
+  const ordersFinalized = false;
 
   const verb = ordersFinalized ? 'Un-finalize' : 'Finalize';
 
   const renderPlayingAs = () => {
-    if (!privateNationState.id) {
+    if (!userNation) {
       return (
         <div className="playing-as">
           You are not participating in this game.
@@ -94,8 +95,11 @@ const StatusBar = (props) => {
     }
 
     return (
-      <StyledPlayingAs className="playing-as" color={colors.nations[nation.id]}>
-        Playing as <span className="name">{nation.name}</span>
+      <StyledPlayingAs
+        className="playing-as"
+        color={colors.nations[userNation.id]}
+      >
+        Playing as <span className="name">{userNation.name}</span>
       </StyledPlayingAs>
     );
   };
@@ -107,12 +111,12 @@ const StatusBar = (props) => {
   };
 
   const renderOrders = () => {
-    if (!privateNationState.id) return '';
+    if (!userNation) return '';
     return (
       <div className="orders">
         {renderProcessing()}
         <span className="orders-remaining">{ordersRemainingMessage}</span>
-        <SecondaryButton type="submit" onClick={onClickToggleFinalize}>
+        <SecondaryButton type="submit" onClick={() => finalizeOrders}>
           {verb} orders
         </SecondaryButton>
       </div>

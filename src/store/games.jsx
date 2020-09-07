@@ -1,3 +1,7 @@
+const FINALIZE_ORDERS_REQUEST = '[games] Finalize orders request';
+const FINALIZE_ORDERS_SUCCESS = '[games] Finalize orders success';
+const FINALIZE_ORDERS_FAILURE = '[games] Finalize orders failure';
+
 const GAME_DETAIL_REQUEST = '[games] Game detail requested';
 const GAME_DETAIL_SUCCESS = '[games] Game detail received';
 const GAME_DETAIL_FAILURE = '[games] Game detail request failed';
@@ -17,6 +21,9 @@ const LEAVE_GAME_SUCCESS = '[games] Leave game success';
 const LEAVE_GAME_REQUEST_FAILED = '[games] Leave game request failed';
 
 export const gamesConstants = {
+  FINALIZE_ORDERS_REQUEST,
+  FINALIZE_ORDERS_SUCCESS,
+  FINALIZE_ORDERS_FAILURE,
   GAME_DETAIL_REQUEST,
   GAME_DETAIL_SUCCESS,
   GAME_DETAIL_FAILURE,
@@ -33,6 +40,14 @@ export const gamesConstants = {
 };
 
 // Action creators
+export const finalizeOrdersRequest = (token, id) => ({
+  type: FINALIZE_ORDERS_SUCCESS,
+  payload: {
+    token,
+    id,
+  },
+});
+
 export const gameDetailRequest = (token, slug) => ({
   type: GAME_DETAIL_REQUEST,
   payload: {
@@ -200,4 +215,5 @@ export const gameActions = {
   joinGame,
   leaveGame,
   gameDetailRequest,
+  finalizeOrdersRequest,
 };

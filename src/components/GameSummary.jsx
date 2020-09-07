@@ -130,10 +130,11 @@ const GameSummary = (props) => {
 const mapStateToProps = (state, props) => {
   const { game } = props;
   const { user } = state.auth;
+  const currentTurn = getCurrentTurn(state, game);
   return {
     user,
-    userNation: getUserNation(state, game, user),
-    currentTurn: getCurrentTurn(state, game),
+    userNation: getUserNation(state, currentTurn, user),
+    currentTurn,
   };
 };
 
