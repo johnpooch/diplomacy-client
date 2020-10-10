@@ -59,9 +59,11 @@ const OrderSummary = (props) => {
       if (targetCoast) {
         name = targetCoast.name;
       }
+      // TODO fix piece type
+      const pieceType = 'Army';
       orderSummary = (
         <StyledP>
-          <span className="piece">{source.piece.type}</span>
+          <span className="piece">{pieceType}</span>
           in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
           to <span className="target">{name}</span>

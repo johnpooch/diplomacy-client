@@ -19,6 +19,7 @@ import {
   getPieces,
   getTerritories,
   getTurn,
+  getUserNation,
 } from '../store/selectors';
 
 const StyledDiv = styled.div`
@@ -38,43 +39,86 @@ const StyledDiv = styled.div`
 `;
 
 const Map = (props) => {
-  const { mapData, orders, pieces, territories } = props;
+  const {
+    game,
+    mapData,
+    nation,
+    orders,
+    pieces,
+    territories,
+    token,
+    turn,
+  } = props;
 
-  const [panning, setPanning] = useState(false);
-  const [interacting, setInteracting] = useState(false);
-  const [order, setOrder] = useState({
+  const PANNING_THRESHOLD = 5;
+  const initialOrderState = {
     type: null,
     aux: null,
     source: null,
     target: null,
     targetCoast: null,
-  });
+  };
+
+  const [panning, setPanning] = useState(false);
+  const [interacting, setInteracting] = useState(false);
+  const [tooltip, setTooltip] = useState(null);
+  const [hovering, setHovering] = useState(null);
+  const [clickPos, setClickPos] = useState(null);
+  const [mousePos, setMousePos] = useState(null);
+  const [order, setOrder] = useState(initialOrderState);
+
+  const clickTerritory = (id) => {
+    const { aux, source, target, type } = order;
+    const territory = territories.find((t) => t.id === id && t.territory);
+    if (!territory) {
+      // non-playable territory clicked
+      return;
+    }
+    switch (type) {
+      case 'retreat':
+      case 'move':
+        if (!target) setOrder({ ...order, target: territory });
+        break;
+      case 'support':
+      case 'convoy':
+        if (!aux) {
+          setOrder({ ...order, aux: territory });
+          break;
+        }
+        if (!target) {
+          setOrder({ ...order, target: territory });
+          break;
+        }
+        break;
+      default:
+        if (source) {
+          if (source.id === id) {
+            setOrder(initialOrderState);
+            break;
+          }
+        }
+        setOrder({ ...order, source: territory });
+        break;
+    }
+  };
 
   const getTerritoryCallbacks = (id) => {
     const territory = territories.find((t) => t.id === id);
     const mouseOut = () => {
       if (interacting) return;
-      // this.setState({
-      //   hovering: null,
-      //   tooltip: null,
-      // });
+      setHovering(null);
+      setTooltip(null);
     };
     const mouseOver = () => {
-      if (interacting) return;
-      // this.setState({
-      //   hovering: id,
-      // });
+      if (!interacting) setHovering(id);
     };
     const mouseUp = (e) => {
       if (e.nativeEvent.which !== 1) return;
-      if (panning) return;
-      // this.clickTerritory(id);
+      if (!panning) clickTerritory(id);
     };
     const contextMenu = (e) => {
       e.nativeEvent.preventDefault();
-      // this.setState({
-      //   tooltip: territory,
-      // });
+      setTooltip(territory);
     };
     return { mouseOut, mouseOver, mouseUp, contextMenu };
   };
@@ -94,8 +138,124 @@ const Map = (props) => {
     return null;
   };
 
+  const checkPanDistance = () => {
+    if (!clickPos || !mousePos) return;
+
+    const { x: x1, y: y1 } = clickPos;
+    const { x: x2, y: y2 } = mousePos;
+    const d = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+
+    if (d > PANNING_THRESHOLD) {
+      setPanning(true);
+    }
+  };
+
+  const onMouseDown = (e) => {
+    if (e.nativeEvent.which !== 1) return;
+    setInteracting(true);
+    setPanning(false);
+    setTooltip(null);
+    setClickPos({
+      x: e.nativeEvent.clientX,
+      y: e.nativeEvent.clientY,
+    });
+  };
+
+  const onMouseMove = (e) => {
+    if (interacting && !panning) {
+      setClickPos({
+        x: e.nativeEvent.clientX,
+        y: e.nativeEvent.clientY,
+      });
+      checkPanDistance();
+    }
+  };
+
+  const resetPan = () => {
+    setInteracting(false);
+    setPanning(false);
+    setClickPos(null);
+    setMousePos(null);
+  };
+
+  const updateOrderState = (key, value) => {
+    setOrder({ ...order, [key]: value });
+  };
+
+  const orderTypeChoices = (() => {
+    const { source } = order;
+    if (!source) return null;
+    const piece = pieces.find((p) => p.territory === source.id);
+    if (!piece) return null;
+    const { type: territoryType } = source;
+    // TODO use constants
+    if (turn.phase === 'Order') {
+      const options = ['hold', 'move', 'support'];
+      const { type: pieceType } = piece;
+      if (pieceType === 'fleet' && territoryType === 'sea') {
+        options.push('convoy');
+      }
+      return options;
+    }
+    if (turn.phase === 'Retreat and Disband') {
+      const options = ['retreat', 'disband'];
+      return options;
+    }
+    return ['build'];
+  })();
+
+  const pieceTypeChoices = (() => {
+    const { source } = order;
+    if (source && turn.phase === 'Build')
+      return source.type === 'coastal' ? ['army', 'fleet'] : ['army'];
+    return null;
+  })();
+
+  const onClickOrderTypeChoice = (type) => {
+    setOrder({
+      ...order,
+      type,
+    });
+  };
+
+  const postOrder = () => {
+    const { slug } = game;
+    let { aux, source, target, targetCoast } = order;
+    const { type, pieceType } = order;
+    if (aux) {
+      aux = aux.id;
+    }
+    if (source) {
+      source = source.id;
+    }
+    if (target) {
+      target = target.id;
+    }
+    if (targetCoast) {
+      targetCoast = targetCoast.id;
+    }
+    const data = {
+      type,
+      source,
+      target,
+      aux,
+      pieceType,
+      target_coast: targetCoast,
+    };
+    gameService.createOrder(token, slug, data).then(() => {
+      // dispatch to get orders for this turn.
+    });
+    setOrder(initialOrderState);
+  };
+
   return (
-    <div>
+    <StyledDiv
+      panning={panning}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={resetPan}
+      onMouseLeave={resetPan}
+    >
       <ScrollableSVG
         viewBoxWidth={mapData.width}
         viewBoxHeight={mapData.height}
@@ -105,14 +265,25 @@ const Map = (props) => {
         <Territories
           getCallbacks={getTerritoryCallbacks}
           getTerritoryOrderState={getTerritoryOrderState}
-          hovering={false}
+          hovering={hovering}
           panning={panning}
           territories={territories}
         />
         <Orders orders={orders} />
         <Pieces pieces={pieces} />
       </ScrollableSVG>
-    </div>
+      <Tooltip territory={tooltip} />
+      <OrderDialogue
+        onClickCancel={() => setOrder(initialOrderState)}
+        onClickConfirm={postOrder}
+        onClickOrderTypeChoice={onClickOrderTypeChoice}
+        updateOrderState={updateOrderState}
+        orderTypeChoices={orderTypeChoices}
+        pieceTypeChoices={pieceTypeChoices}
+        nation={nation}
+        order={order}
+      />
+    </StyledDiv>
   );
 };
 
@@ -523,20 +694,23 @@ class Snap extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  // Reload turn from store to ensure up to date
   const { game } = props;
+  const { token, user } = state.auth;
   const turn = getTurn(state, props.turn.id);
   const orders = getOrders(state, turn);
   const pieces = getPieces(state, turn);
   const mapData = getMapData(state, game.variant);
+  const nation = getUserNation(state, turn, user);
   const territories = getTerritories(state, turn);
   return {
-    user: state.auth.user,
-    token: state.auth.token,
     mapData,
+    nation,
     orders,
     pieces,
     territories,
+    token,
+    turn,
+    user,
   };
 };
 

@@ -48,7 +48,14 @@ const StyledPlayingAs = styled.span`
 `;
 
 const StatusBar = (props) => {
-  const { finalizeOrders, game, turn, userNation, _setTurn } = props;
+  const {
+    finalizeOrders,
+    game,
+    isProcessing,
+    turn,
+    userNation,
+    _setTurn,
+  } = props;
   const ordersRemainingMessage = null;
   const orderType = null;
 
@@ -77,10 +84,6 @@ const StatusBar = (props) => {
   //   ordersRemainingMessage = `${ordersRemaining} ${orderType} ${remainingText}`;
   // }
 
-  const onClickToggleFinalize = () => {
-    const { slug } = game;
-    finalizeOrders(id, slug);
-  };
   const ordersFinalized = false;
 
   const verb = ordersFinalized ? 'Un-finalize' : 'Finalize';
@@ -104,17 +107,11 @@ const StatusBar = (props) => {
     );
   };
 
-  const renderProcessing = () => {
-    const { isProcessing } = props;
-    if (!isProcessing) return null;
-    return <Spinner size={24} color="white" />;
-  };
-
   const renderOrders = () => {
     if (!userNation) return '';
     return (
       <div className="orders">
-        {renderProcessing()}
+        {isProcessing && <Spinner size={24} color="white" />}
         <span className="orders-remaining">{ordersRemainingMessage}</span>
         <SecondaryButton type="submit" onClick={() => finalizeOrders}>
           {verb} orders

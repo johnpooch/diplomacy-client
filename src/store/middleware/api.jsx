@@ -28,6 +28,7 @@ const api = ({ dispatch }) => (next) => (action) => {
         dispatch({ type: onSuccess, payload: data });
       })
       .catch((error) => {
+        console.log(error);
         // Dispatch onError action
         dispatch({ type: onError, payload: error });
 

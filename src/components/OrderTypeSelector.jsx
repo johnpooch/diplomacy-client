@@ -9,6 +9,7 @@ const StyledButton = styled(Button)`
 
 const OrderTypeSelector = (props) => {
   const { choices, onClickChoice } = props;
+  console.log(onClickChoice);
 
   const buttons = [];
   choices.forEach((choice) => {

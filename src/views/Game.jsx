@@ -15,6 +15,7 @@ const Game = (props) => {
     finalizeOrders,
     game,
     isLoaded,
+    isProcessing,
     loadGame,
     getPrivateNationState,
     slug,
@@ -23,7 +24,6 @@ const Game = (props) => {
   } = props;
 
   const [activeTurn, setActiveTurn] = useState(currentTurn);
-  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     loadGame(token, slug);
@@ -61,6 +61,7 @@ const mapStateToProps = (state, props) => {
     currentTurn,
     game,
     isLoaded: game.detailLoaded,
+    isProcessing: state.entities.nationStates.loading,
     user,
     userNation,
     token: state.auth.token,

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 import { colors, fontSizes, sizes, spacing } from '../variables';
+import { nationStateConstants } from '../store/nationStates';
 
 const StyledDiv = styled.div`
   pointer-events: none;
@@ -29,53 +30,39 @@ const StyledSpan = styled.span`
   }
 `;
 
-const renderSupplyCenter = (territory) => {
-  if (!territory.supply_center) return null;
-  return (
-    <StyledSpan className="supply">
-      <FontAwesomeIcon icon={faStar} />
-    </StyledSpan>
-  );
-};
-
-const renderControlledBy = (controlledBy) => {
-  if (controlledBy) {
-    const { id } = controlledBy;
-    const color = colors.nations[id];
-    return (
-      <StyledSpan className="nation" color={color}>
-        ({controlledBy.name})
-      </StyledSpan>
-    );
-  }
-  return null;
-};
-
-const TerritorySummary = (props) => {
-  const { game, territory } = props;
-  const { controlledBy, piece } = territory;
-  const territoryControlledBy = game.getNation(controlledBy);
-
+const TerritorySummary = ({ nation, territory }) => {
+  const {
+    controlled_by: controlledBy,
+    supply_center: supplyCenter,
+    name,
+  } = territory;
+  const color = colors.nations[controlledBy];
   const elements = [];
 
   elements.push(
     <p key="territory">
-      <StyledSpan className="name">{territory.name}</StyledSpan>
-      {renderSupplyCenter(territory)}
-      {renderControlledBy(territoryControlledBy)}
+      <StyledSpan className="name">{name}</StyledSpan>
+      {supplyCenter ? (
+        <StyledSpan className="supply">
+          <FontAwesomeIcon icon={faStar} />
+        </StyledSpan>
+      ) : null}
+      <StyledSpan className="nation" color={color}>
+        ({nation.name})
+      </StyledSpan>
     </p>
   );
 
-  if (piece) {
-    const { nation } = piece;
-    const pieceControlledBy = game.getNation(nation);
-    elements.push(
-      <p key="piece">
-        <StyledSpan className="type">{piece.type}</StyledSpan>
-        {renderControlledBy(pieceControlledBy)}
-      </p>
-    );
-  }
+  // if (piece) {
+  //   const { nation } = piece;
+  //   const pieceControlledBy = game.getNation(nation);
+  //   elements.push(
+  //     <p key="piece">
+  //       <StyledSpan className="type">{piece.type}</StyledSpan>
+  //       {renderControlledBy(pieceControlledBy)}
+  //     </p>
+  //   );
+  // }
 
   return <StyledDiv>{elements}</StyledDiv>;
 };

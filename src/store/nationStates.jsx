@@ -37,16 +37,27 @@ const initialState = {
 const nationStatesReducer = createReducer(initialState, {
   [NATION_STATES_RECEIVED]: (state, action) => {
     const { payload } = action;
-    if (!payload) return initialState;
-    const byId = payload;
+    if (!payload) return state;
+    const byId = { ...state };
+    Object.keys(payload).forEach((k) => {
+      const initialValue = byId[k];
+      byId[k] = { ...initialValue, ...payload[k] };
+    });
+
     const allIds = Object.values(payload).map((value) => value.id);
     return { byId, allIds };
   },
+  [PRIVATE_NATION_STATE_REQUEST]: (state, action) => {
+    return { ...state, loading: true };
+  },
   [PRIVATE_NATION_STATE_SUCCESS]: (state, action) => {
+    const updatedState = state;
     const { payload } = action;
     const { id } = payload;
     const nationState = state.byId[id];
-    state.byId[id] = { ...nationState, ...payload };
+    updatedState.byId[id] = { ...nationState, ...payload };
+    updatedState.loading = false;
+    return updatedState;
   },
 });
 

@@ -143,7 +143,7 @@ export function renderOrderActions(props) {
       if (!target) {
         return <OrderMessage order={order} />;
       }
-      const { namedCoasts } = target;
+      const { named_coasts: namedCoasts } = target;
       if (namedCoasts.length && !targetCoast) {
         const choices = namedCoasts.map((namedCoast) => [
           namedCoast.id,
@@ -163,8 +163,9 @@ export function renderOrderActions(props) {
 }
 
 const OrderDialogue = (props) => {
-  const { game, order, onClickCancel } = props;
+  const { nation, order, onClickCancel } = props;
   const { source } = order;
+  if (!(source && nation)) return null;
 
   return (
     <StyledWrapper>
@@ -172,9 +173,7 @@ const OrderDialogue = (props) => {
         <StyledCloseButton onClick={onClickCancel}>
           <FontAwesomeIcon icon={faTimes} />
         </StyledCloseButton>
-        <div className="territory-summary">
-          <TerritorySummary territory={source} game={game} />
-        </div>
+        <TerritorySummary nation={nation} territory={source} />
         <div className="order-actions">{renderOrderActions(props)}</div>
       </StyledDiv>
     </StyledWrapper>
