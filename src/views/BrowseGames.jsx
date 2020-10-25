@@ -24,6 +24,7 @@ const StyledDiv = styled.div`
 
 const BrowseGames = (props) => {
   const {
+    choices,
     getGames,
     games,
     isLoaded,
@@ -44,7 +45,7 @@ const BrowseGames = (props) => {
     <Page headingText={null} isLoaded>
       <StyledDiv>
         <div>
-          <GameFilters callback={filterGames} />
+          <GameFilters callback={filterGames} choices={choices} />
           <GameSummaryList games={games} isLoaded={isLoaded} />
         </div>
         <div>My active games</div>
@@ -61,6 +62,7 @@ const mapStateToProps = (state, { location }) => {
   }
   const isLoaded = browseGamesLoaded;
   return {
+    choices: state.choices,
     games,
     isLoaded,
     location,

@@ -5,11 +5,10 @@ import { withRouter } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Map from '../components/Map';
 import StatusBar from '../components/StatusBar';
-import { gameActions } from '../store/games';
+import { gameActions, gameSelectors } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { variantActions } from '../store/variants';
-import { getGame } from '../store/selectors';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
 
 const Game = (props) => {
@@ -66,7 +65,7 @@ const Game = (props) => {
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
   const { token, user } = state.auth;
-  let game = getGame(state, slug);
+  let game = gameSelectors.selectBySlug(state, slug);
   const gameDetailInStore = game && game.detailLoaded;
   game = gameDetailInStore
     ? getDenormalizedGameDetail(state, game.id, user)

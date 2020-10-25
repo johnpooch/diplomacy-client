@@ -1,6 +1,5 @@
 /* eslint camelcase: [2, { "allow": ["num_players", "nation_choice_mode", "order_deadline", "retreat_deadline", "build_deadline", "game_statuses"] }] */
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -19,7 +18,6 @@ import {
 } from '../styles';
 import { colors, sizes, spacing } from '../variables';
 import useForm from '../hooks/useForm';
-import { getVariants } from '../store/selectors';
 import Select from './Select';
 
 const StyledButton = styled(TertiaryButton)`
@@ -195,11 +193,4 @@ const GameFilters = ({ callback, choices }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    choices: state.choices,
-    variants: getVariants(state),
-  };
-};
-
-export default connect(mapStateToProps, null)(GameFilters);
+export default GameFilters;
