@@ -1,9 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { colors, spacing } from '../variables';
-import { getCurrentTurn, getUserNation } from '../store/selectors';
 
 import Flag from './Flag';
 
@@ -19,10 +17,8 @@ const StyledDiv = styled.div`
   }
 `;
 
-const ParticipantActive = (props) => {
-  const { nation, participant, user } = props;
-  const { id, username } = participant;
-  const isCurrentUser = user.id === id;
+const ParticipantActive = ({ participant }) => {
+  const { isCurrentUser, username, nation } = participant;
   let fontWeight = 'normal';
   let color = 'inherit';
   if (isCurrentUser) {
@@ -41,13 +37,4 @@ const ParticipantActive = (props) => {
   );
 };
 
-const mapStateToProps = (state, props) => {
-  const { game, participant } = props;
-  const turn = getCurrentTurn(state, game);
-  return {
-    nation: getUserNation(state, turn, participant),
-    user: state.auth.user,
-  };
-};
-
-export default connect(mapStateToProps, null)(ParticipantActive);
+export default ParticipantActive;

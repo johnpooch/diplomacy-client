@@ -1,27 +1,41 @@
-const TERRITORY_DATA_RECEIVED = 'TERRITORY_DATA_RECEIVED';
+/* eslint-disable no-param-reassign */
 
-export const territoryDataReceived = (payload) => ({
-  type: TERRITORY_DATA_RECEIVED,
-  payload,
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+
+import { mapDataSelectors } from './mapData';
+
+const territoryDataAdapter = createEntityAdapter();
+
+const territoryDataSlice = createSlice({
+  name: 'territory_data',
+  initialState: territoryDataAdapter.getInitialState(),
+  reducers: {
+    territoryDataReceived: territoryDataAdapter.setAll,
+  },
 });
 
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
+export const territoryDataActions = {
+  ...territoryDataSlice.actions,
 };
 
-const territoryDataReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case TERRITORY_DATA_RECEIVED: {
-      const { payload } = action;
-      const byId = payload;
-      const allIds = Object.values(payload).map((value) => value.id);
-      return { byId, allIds };
-    }
-    default:
-      return state;
-  }
+const adapterSelectors = territoryDataAdapter.getSelectors(
+  (state) => state.entities.territoryData
+);
+
+const selectByVariantId = createSelector(
+  mapDataSelectors.selectByVariantId,
+  adapterSelectors.selectAll,
+  (mapData, territoryData) =>
+    territoryData.filter((t) => mapData[0].territory_data.includes(t.id))
+);
+
+export const territoryDataSelectors = {
+  ...adapterSelectors,
+  selectByVariantId,
 };
 
-export default territoryDataReducer;
+export default territoryDataSlice.reducer;

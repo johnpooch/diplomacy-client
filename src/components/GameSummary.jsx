@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
@@ -8,7 +7,6 @@ import { colors, fontSizes, spacing, sizes } from '../variables';
 import GameStatus from './GameStatus';
 import PlayerCount from './PlayerCount';
 import ParticipantList from './ParticipantList';
-import { getCurrentTurn, getUserNation } from '../store/selectors';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -93,10 +91,11 @@ const GameSummary = (props) => {
 
   let color = 'transparent';
   if (userNation) {
-    color = colors.nations[userNation];
+    color = colors.nations[userNation.id];
   }
+  const link = status === 'active' ? `/game/${slug}` : `/pre-game/${slug}`;
   return (
-    <StyledLink to={`/game/${slug}`}>
+    <StyledLink to={link}>
       <StyledListItem key={id} color={color}>
         <div>
           <article>
@@ -127,15 +126,4 @@ const GameSummary = (props) => {
   );
 };
 
-const mapStateToProps = (state, props) => {
-  const { game } = props;
-  const { user } = state.auth;
-  const currentTurn = getCurrentTurn(state, game);
-  return {
-    user,
-    userNation: getUserNation(state, currentTurn, user),
-    currentTurn,
-  };
-};
-
-export default connect(mapStateToProps, null)(GameSummary);
+export default GameSummary;

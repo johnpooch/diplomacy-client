@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import Loading from './Loading';
@@ -18,23 +17,13 @@ const StyledDiv = styled.div`
   text-align: center;
 `;
 
-function GameSummaryList(props) {
-  const { games, isLoaded } = props;
+function GameSummaryList({ games, isLoaded }) {
   if (!isLoaded) return <Loading />;
   if (!games.length) return <StyledDiv>No games found!</StyledDiv>;
-  const elements = [];
-  games.forEach((game) => {
-    elements.push(<GameSummary key={game.id} game={game} />);
+  const elements = games.map((game) => {
+    return <GameSummary key={game.id} game={game} />;
   });
   return <StyledList>{elements}</StyledList>;
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoaded: Boolean(
-      !state.entities.games.loading && state.entities.variants.allIds.length
-    ),
-  };
-};
-
-export default connect(mapStateToProps, null)(GameSummaryList);
+export default GameSummaryList;

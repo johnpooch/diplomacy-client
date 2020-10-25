@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
@@ -8,10 +8,12 @@ import GameSummaryList from '../components/GameSummaryList';
 import GameFilters from '../components/GameFilters';
 import Page from '../components/Page';
 
-import { getGames } from '../store/selectors';
 import { choiceActions } from '../store/choices';
-import { gamesRequested } from '../store/games';
 import { variantActions } from '../store/variants';
+
+import { getDenormalizedGamesList } from '../store/denormalizers';
+import { gameActions } from '../store/games';
+import { flagActions } from '../store/flags';
 
 const StyledDiv = styled.div`
   display: grid;
@@ -21,10 +23,21 @@ const StyledDiv = styled.div`
 `;
 
 const BrowseGames = (props) => {
-  const { loadGames, games, token } = props;
+  const {
+    getGames,
+    games,
+    isLoaded,
+    location,
+    prepareBrowseGames,
+    token,
+  } = props;
+
+  useEffect(() => {
+    prepareBrowseGames(token);
+  }, [location.pathname]);
 
   const filterGames = (filters) => {
-    loadGames(token, filters);
+    getGames(token, filters);
   };
 
   return (
@@ -32,7 +45,7 @@ const BrowseGames = (props) => {
       <StyledDiv>
         <div>
           <GameFilters callback={filterGames} />
-          <GameSummaryList games={games} />
+          <GameSummaryList games={games} isLoaded={isLoaded} />
         </div>
         <div>My active games</div>
       </StyledDiv>
@@ -40,21 +53,32 @@ const BrowseGames = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const games = getGames(state);
+const mapStateToProps = (state, { location }) => {
+  const { browseGamesLoaded } = state.entities.games;
+  let games = null;
+  if (browseGamesLoaded) {
+    games = getDenormalizedGamesList(state);
+  }
+  const isLoaded = browseGamesLoaded;
   return {
     games,
+    isLoaded,
+    location,
     token: state.auth.token,
-    variants: state.entities.variants,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    loadGames: (token, filters) => dispatch(gamesRequested(token, filters)),
-    loadVariants: () => dispatch(variantActions.loadVariants()),
-    loadChoices: () => dispatch(choiceActions.loadChoices()),
+  const prepareBrowseGames = (token) => {
+    dispatch(variantActions.getVariants({ token }));
+    dispatch(gameActions.getGames({ token }));
+    dispatch(flagActions.getFlags());
+    dispatch(choiceActions.getChoices());
   };
+  const getGames = (token, filters) =>
+    dispatch(gameActions.getGames({ token, filters }));
+
+  return { getGames, prepareBrowseGames };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BrowseGames);

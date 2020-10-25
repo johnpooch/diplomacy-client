@@ -1,15 +1,27 @@
-export const getGames = (state) => {
-  // Gets all games as an ordered list
-  const { games } = state.entities;
-  return games.allIds.map((id) => games.byId[id]);
-};
-
 export const getGame = (state, slug) => {
   /*
   Gets a game from the store by the given slug.
   */
   const { games } = state.entities;
-  return Object.values(games.byId).find((g) => g.slug === slug);
+  return Object.values(games.entities).find((g) => g.slug === slug);
+};
+
+const getGameFromTurn = (state, turn) => {
+  const { games } = state.entities;
+  return Object.values(games.entities).find((g) => {
+    if (g.turns) {
+      return g.turns.includes(turn.id);
+    }
+    return false;
+  });
+};
+
+export const getGameById = (state, id) => {
+  /*
+  Gets a game from the store by the given slug.
+  */
+  const { games } = state.entities;
+  return games.entities[id];
 };
 
 export const getVariant = (state, id) => {
@@ -17,13 +29,13 @@ export const getVariant = (state, id) => {
   Gets a variant from the store by the given id.
   */
   const { variants } = state.entities;
-  return variants.byId[id];
+  return variants.entities[id];
 };
 
 export const getVariants = (state) => {
   // Gets all variants as an ordered list
   const { variants } = state.entities;
-  return variants.allIds.map((id) => variants.byId[id]);
+  return variants.ids.map((id) => variants.entities[id]);
 };
 
 export const getUserNation = (state, turn, user) => {
@@ -35,11 +47,11 @@ export const getUserNation = (state, turn, user) => {
   */
   const { nations, nationStates } = state.entities;
   if (!turn) return null;
-  const nationState = Object.values(nationStates.byId).find(
+  const nationState = Object.values(nationStates.entities).find(
     (ns) => ns.user === user.id && turn.nation_states.includes(ns.id)
   );
   if (!nationState) return null;
-  const nation = nations.byId[nationState.nation];
+  const nation = nations.entities[nationState.nation];
   return {
     ...nation,
     nationStateId: nationState.id,
@@ -57,28 +69,10 @@ export const getParticipatingUsers = (state, game) => {
   return participatingUsers;
 };
 
-export const getTurn = (state, turnId) => {
-  /*
-  Get the turn based on the given id. Useful for getting the up to
-  date state of the turn.
-  */
-  const { turns } = state.entities;
-  return Object.values(turns.byId).find((t) => t.id === turnId);
-};
-export const getCurrentTurn = (state, game) => {
-  /* 
-  Gets the current turn of a game.
-  */
-  if (!game) return null;
-  const { current_turn: turn } = game;
-  const { turns } = state.entities;
-  return turns.byId[turn];
-};
-
 export const getMapData = (state, variantId) => {
   const { mapData, variants } = state.entities;
-  const variant = variants.byId[variantId];
-  return mapData.byId[variant.map_data[0]];
+  const variant = variants.entities[variantId];
+  return mapData.entities[variant.map_data[0]];
 };
 
 export const getPieces = (state, turn) => {
@@ -92,24 +86,21 @@ export const getPieces = (state, turn) => {
 
   // TODO determine if the piece can be ordered by the user
   // TODO determine if the piece has orders
-  const {
-    games,
-    namedCoastData,
-    pieces,
-    pieceStates,
-    territoryData,
-  } = state.entities;
-  const game = Object.values(games.byId).find((g) => g.turns.includes(turn.id));
-  const gamePieces = pieces.data.filter((p) => game.pieces.includes(p.id));
+  const { namedCoastData, pieces, pieceStates, territoryData } = state.entities;
+
+  const game = getGameFromTurn(state, turn);
+  const gamePieces = Object.values(pieces.entities).filter((p) =>
+    game.pieces.includes(p.id)
+  );
   const mapData = getMapData(state, game.variant);
-  const turnPieceStates = pieceStates.data.filter((p) =>
+  const turnPieceStates = Object.values(pieceStates.entities).filter((p) =>
     turn.piece_states.includes(p.id)
   );
-  const variantTerritoryData = Object.values(territoryData.byId).filter((td) =>
-    mapData.territory_data.includes(td.id)
-  );
+  const variantTerritoryData = Object.values(
+    territoryData.entities
+  ).filter((td) => mapData.territory_data.includes(td.id));
   const variantNamedCoastData = Object.values(
-    namedCoastData.byId
+    namedCoastData.entities
   ).filter((ncd) => mapData.named_coast_data.includes(ncd.id));
   const mergedPieces = [];
   turnPieceStates.forEach((pieceState) => {
@@ -149,37 +140,51 @@ export const getPieces = (state, turn) => {
 
 export const getOrders = (state, turn) => {
   const { orders } = state.entities;
-  return orders.data.filter((o) => turn.orders.includes(o.id));
+  return Object.values(orders.entities).filter((o) =>
+    turn.orders.includes(o.id)
+  );
 };
 
 export const getTerritories = (state, turn) => {
   /* 
   Gets the territories for the given turn. Merges the territory, territoryState,
-  and territoryData entities into a single object.
+  and territoryData entities into a single object. Also appends whether the use
+  can order the given territory.
   */
   const { games, territories, territoryData, territoryStates } = state.entities;
-  const game = Object.values(games.byId).find((g) => g.turns.includes(turn.id));
+  const game = getGameFromTurn(state, turn);
   const mapData = getMapData(state, game.variant);
   const variant = getVariant(state, game.variant);
-  const variantTerritories = Object.values(territories.byId).filter((t) =>
+  const variantTerritories = Object.values(territories.entities).filter((t) =>
     variant.territories.includes(t.id)
   );
-  const turnTerritoryStates = territoryStates.data.filter((t) =>
-    turn.territory_states.includes(t.id)
-  );
-  const variantTerritoryData = Object.values(territoryData.byId).filter((td) =>
-    mapData.territory_data.includes(td.id)
-  );
+  const turnTerritoryStates = Object.values(
+    territoryStates.entities
+  ).filter((t) => turn.territory_states.includes(t.id));
+  const variantTerritoryData = Object.values(
+    territoryData.entities
+  ).filter((td) => mapData.territory_data.includes(td.id));
   const mergedTerritories = [];
+  const pieces = getPieces(state, turn);
   variantTerritoryData.forEach((territoryDataItem) => {
     const territory = variantTerritories.find(
       (t) => t.id === territoryDataItem.territory
     );
     if (territory) {
+      const piece =
+        pieces.find((p) => {
+          return p.territory === territory.id && !p.must_retreat;
+        }) || null;
+      const dislodgedPiece =
+        pieces.find((p) => {
+          return p.territory === territory.id && p.must_retreat;
+        }) || null;
       const territoryState = turnTerritoryStates.find(
         (ts) => ts.territory === territory.id
       );
       mergedTerritories.push({
+        piece,
+        dislodgedPiece,
         ...territoryDataItem,
         ...territoryState,
         ...territory,

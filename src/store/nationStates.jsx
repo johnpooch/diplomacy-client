@@ -1,68 +1,71 @@
-import { createReducer } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
 
-const NATION_STATES_RECEIVED = 'NATION_STATES_RECEIVED';
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 
-const PRIVATE_NATION_STATE_REQUEST =
-  '[nation states] Private nation state requested';
-const PRIVATE_NATION_STATE_SUCCESS =
-  '[nation states] Private nation state success';
-const PRIVATE_NATION_STATE_FAILURE =
-  '[nation states] Private nation state failure';
+import { turnSelectors } from './turns';
+import { apiRequest, getOptions } from './api';
+import * as API from '../api';
 
-export const nationStateConstants = {
-  PRIVATE_NATION_STATE_REQUEST,
-  PRIVATE_NATION_STATE_SUCCESS,
-  PRIVATE_NATION_STATE_FAILURE,
-};
+const finalizeOrders = createAsyncThunk(
+  'games/finalizeOrdersStatus',
+  async ({ token, id }, thunkApi) => {
+    const url = API.FINALIZEORDERSURL.replace('<pk>', id);
+    const options = getOptions(token, 'PATCH', { id });
+    return apiRequest(url, options, thunkApi);
+  }
+);
 
-export const nationStatesReceived = (payload) => ({
-  type: NATION_STATES_RECEIVED,
-  payload,
-});
+const nationStateAdapter = createEntityAdapter();
 
-export const privateNationStateRequested = (token, slug) => ({
-  type: PRIVATE_NATION_STATE_REQUEST,
-  payload: {
-    token,
-    slug,
+const nationStateSlice = createSlice({
+  name: 'nationStates',
+  initialState: nationStateAdapter.getInitialState(),
+  reducers: {
+    nationStatesReceived: nationStateAdapter.upsertMany,
   },
-});
-
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
-};
-
-const nationStatesReducer = createReducer(initialState, {
-  [NATION_STATES_RECEIVED]: (state, action) => {
-    const { payload } = action;
-    if (!payload) return state;
-    const byId = { ...state };
-    Object.keys(payload).forEach((k) => {
-      const initialValue = byId[k];
-      byId[k] = { ...initialValue, ...payload[k] };
-    });
-
-    const allIds = Object.values(payload).map((value) => value.id);
-    return { byId, allIds };
-  },
-  [PRIVATE_NATION_STATE_REQUEST]: (state, action) => {
-    return { ...state, loading: true };
-  },
-  [PRIVATE_NATION_STATE_SUCCESS]: (state, action) => {
-    const updatedState = state;
-    const { payload } = action;
-    const { id } = payload;
-    const nationState = state.byId[id];
-    updatedState.byId[id] = { ...nationState, ...payload };
-    updatedState.loading = false;
-    return updatedState;
+  extraReducers: {
+    [finalizeOrders.pending]: (state, { meta }) => {
+      const { id } = meta.arg;
+      const changes = { loading: true };
+      nationStateAdapter.updateOne(state, { id, changes });
+    },
+    [finalizeOrders.fulfilled]: (state, { payload }) => {
+      const { id, ...nationState } = payload;
+      const changes = { ...nationState, loading: false };
+      nationStateAdapter.updateOne(state, { id, changes });
+    },
+    [finalizeOrders.rejected]: (state, { meta }) => {
+      const { id } = meta.arg;
+      const changes = { loading: false };
+      nationStateAdapter.updateOne(state, { id, changes });
+    },
   },
 });
 
 export const nationStateActions = {
-  privateNationStateRequested,
+  ...nationStateSlice.actions,
+  finalizeOrders,
 };
 
-export default nationStatesReducer;
+const adapterSelectors = nationStateAdapter.getSelectors(
+  (state) => state.entities.nationStates
+);
+
+const selectByTurnId = createSelector(
+  turnSelectors.selectById,
+  adapterSelectors.selectAll,
+  (turn, nationStates) =>
+    nationStates.filter((n) => turn.nation_states.includes(n.id))
+);
+
+export const nationStateSelectors = {
+  ...adapterSelectors,
+  selectByTurnId,
+};
+
+export default nationStateSlice.reducer;

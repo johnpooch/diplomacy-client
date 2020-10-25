@@ -19,7 +19,9 @@ const Territories = (props) => {
       <Territory
         callbacks={callbacks}
         key={mapDataId}
-        hovering={hovering === id}
+        // If hovering is null do not highlight non-playable
+        // territories
+        hovering={hovering === id && id}
         panning={panning}
         territory={territory}
         territoryOrderState={territoryOrderState}

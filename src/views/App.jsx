@@ -1,50 +1,27 @@
 import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { Switch, Route, useLocation } from 'react-router-dom';
 
 import Auth from './Auth';
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
-import GameRouter from './GameRouter';
 import Error from './Error';
+import Game from './Game';
+import PreGame from './PreGame';
 
 import AlertList from '../components/AlertList';
 import Header from '../components/Header';
 import PrivateRoute from '../components/PrivateRoute';
 
-import { alertsClearActive, alertsPromotePending } from '../store/alerts';
-import { loadFlags } from '../store/flags';
-import { choiceActions } from '../store/choices';
-import { gamesRequested } from '../store/games';
-import { variantActions } from '../store/variants';
+import { alertActions } from '../store/alerts';
 
 const App = (props) => {
-  const {
-    loadVariants,
-    loadGames,
-    loadChoices,
-    loggedIn,
-    token,
-    variants,
-  } = props;
-  const dispatch = useDispatch();
+  const { clearAndPromoteAlerts } = props;
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(alertsClearActive());
-    dispatch(alertsPromotePending());
-
-    if (loggedIn) {
-      if (!variants.allIds.length) {
-        loadVariants(token);
-      }
-      // TODO add some sort of logic to determine when to load games again
-      loadGames(token);
-      loadChoices();
-    }
+    clearAndPromoteAlerts();
   }, [location.pathname]);
-
-  dispatch(loadFlags());
 
   return (
     <div>
@@ -52,7 +29,8 @@ const App = (props) => {
       <AlertList />
       <Switch>
         <PrivateRoute exact path="/create-game" component={CreateGame} />
-        <PrivateRoute exact path="/game/:slug" component={GameRouter} />
+        <PrivateRoute exact path="/pre-game/:slug" component={PreGame} />
+        <PrivateRoute exact path="/game/:slug" component={Game} />
         <PrivateRoute exact path="/" component={BrowseGames} />
         <Route path="/" component={Auth} />
         <Route component={() => <Error text="Page not found" />} />
@@ -61,21 +39,12 @@ const App = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    alerts: state.alerts,
-    loggedIn: state.auth.loggedIn,
-    token: state.auth.token,
-    variants: state.entities.variants,
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
-  return {
-    loadGames: (token, filters) => dispatch(gamesRequested(token, filters)),
-    loadVariants: () => dispatch(variantActions.loadVariants()),
-    loadChoices: () => dispatch(choiceActions.loadChoices()),
+  const clearAndPromoteAlerts = () => {
+    dispatch(alertActions.alertsClearActive());
+    dispatch(alertActions.alertsPromotePending());
   };
+  return { clearAndPromoteAlerts };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

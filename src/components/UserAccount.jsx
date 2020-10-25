@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import Player from './Player';
 import { fontSizes, spacing } from '../variables';
 import { TertiaryButton } from '../styles';
-import { logout } from '../store/auth';
+import { authActions } from '../store/auth';
 
 const StyledDiv = styled.div`
   display: grid;
@@ -19,20 +19,17 @@ const StyledDiv = styled.div`
 `;
 
 const renderLogOutButton = (onLogout) => {
-  if (logout) {
-    return (
-      <TertiaryButton
-        type="button"
-        onClick={onLogout}
-        onKeyPress={onLogout}
-        role="link"
-        tabIndex={0}
-      >
-        Log out
-      </TertiaryButton>
-    );
-  }
-  return null;
+  return (
+    <TertiaryButton
+      type="button"
+      onClick={onLogout}
+      onKeyPress={onLogout}
+      role="link"
+      tabIndex={0}
+    >
+      Log out
+    </TertiaryButton>
+  );
 };
 
 const UserAccount = (props) => {
@@ -44,7 +41,7 @@ const UserAccount = (props) => {
   return (
     <StyledDiv>
       <Player username={username} />
-      {renderLogOutButton(onLogout)}
+      {loggedIn ? renderLogOutButton(onLogout) : null}
     </StyledDiv>
   );
 };
@@ -58,7 +55,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLogout: () => dispatch(logout()),
+    onLogout: () => dispatch(authActions.logout()),
   };
 };
 

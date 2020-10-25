@@ -1,133 +1,34 @@
-import {
-  gamesConstants,
-  gamesRequested,
-  normalizedGamesReceived,
-} from '../games';
-import { nationStateConstants, nationStatesReceived } from '../nationStates';
-import { alertsAdd, alertsClearAll } from '../alerts';
-import {
-  ALLGAMESURL,
-  JOINGAMEURL,
-  GAMESTATEURL,
-  FINALIZEORDERSURL,
-} from '../../api';
-import * as API from '../../api';
-import { apiRequest } from '../api';
+import { gameActions } from '../games';
 
 import gameListNormalizer from '../normalizers/gameListNormalizer';
 import gameDetailNormalizer from '../normalizers/gameDetailNormalizer';
 
-import { ordersReceived } from '../orders';
-import { pieceStatesReceived } from '../pieceStates';
-import { piecesReceived } from '../pieces';
-import { territoryStatesReceived } from '../territoryStates';
-import { turnsReceived } from '../turns';
-import { usersReceived } from '../users';
-
-const toggleOrdersFinalizedFlow = ({ dispatch }) => (next) => (action) => {
-  /*
-  Dispatch API request when finalize orders is requested.
-  */
-  next(action);
-
-  if (action.type === gamesConstants.FINALIZE_ORDERS_REQUEST) {
-    const { id, token } = action.payload;
-    const url = FINALIZEORDERSURL;
-
-    const apiAction = apiRequest(
-      'GET',
-      url,
-      token,
-      { id },
-      gamesConstants.FINALIZE_ORDERS_SUCCESS,
-      gamesConstants.FINALIZE_ORDERS_FAILURE
-    );
-    dispatch(apiAction);
-  }
-};
-
-const getPrivateNationStateFlow = ({ dispatch }) => (next) => (action) => {
-  /*
-  Dispatch API request when private nation state is requested.
-  */
-  next(action);
-
-  if (action.type === nationStateConstants.PRIVATE_NATION_STATE_REQUEST) {
-    const { slug, token } = action.payload;
-    const url = API.RETRIEVEPRIVATENATIONSTATE.replace('<game>', slug);
-
-    const apiAction = apiRequest(
-      'GET',
-      url,
-      token,
-      { slug },
-      nationStateConstants.PRIVATE_NATION_STATE_SUCCESS,
-      nationStateConstants.PRIVATE_NATION_STATE_FAILURE
-    );
-    dispatch(apiAction);
-  }
-};
-
-const loadGamesFlow = ({ dispatch }) => (next) => (action) => {
-  /*
-  Dispatch API request when games list is requested.
-  */
-  next(action);
-
-  if (action.type === gamesConstants.GAMES_REQUESTED) {
-    const { token, filters } = action.payload;
-    let url = ALLGAMESURL;
-    if (filters) {
-      const queryParams = new URLSearchParams(filters).toString();
-      url = url.concat(`?${queryParams}`);
-    }
-
-    const apiAction = apiRequest(
-      'GET',
-      url,
-      token,
-      action.payload,
-      gamesConstants.GAMES_RECEIVED,
-      gamesConstants.GAMES_REQUEST_FAILED
-    );
-    dispatch(apiAction);
-  }
-};
-
-const loadGameDetailFlow = ({ dispatch }) => (next) => (action) => {
-  /*
-  Dispatch API request when a game detail is requested.
-  */
-  next(action);
-
-  if (action.type === gamesConstants.GAME_DETAIL_REQUEST) {
-    const { token, slug } = action.payload;
-    const url = GAMESTATEURL.replace('<game>', slug);
-    const apiAction = apiRequest(
-      'GET',
-      url,
-      token,
-      action.payload,
-      gamesConstants.GAME_DETAIL_SUCCESS,
-      gamesConstants.GAME_DETAIL_FAILURE
-    );
-    dispatch(apiAction);
-  }
-};
+import { nationStateActions } from '../nationStates';
+import { orderActions } from '../orders';
+import { pieceActions } from '../pieces';
+import { pieceStateActions } from '../pieceStates';
+import { territoryStateActions } from '../territoryStates';
+import { turnActions } from '../turns';
+import { userActions } from '../users';
 
 const normalizeGames = ({ dispatch }) => (next) => (action) => {
   /*
   When games list is received, normalize data and dispatch actions for each entity.
   */
-  next(action);
 
-  if (action.type === gamesConstants.GAMES_RECEIVED) {
-    const { entities, result: order } = gameListNormalizer(action.payload);
+  if (action.type === gameActions.getGames.fulfilled.type) {
+    const { entities } = gameListNormalizer(action.payload);
     const { games, nationStates, turns, users } = entities;
-    dispatch(nationStatesReceived(nationStates));
-    dispatch(turnsReceived(turns));
-    dispatch(usersReceived(users));
-    next(normalizedGamesReceived(games, order));
+
+    // Note, if no games were returned, entities is an empty objects, in which
+    // case we pass an empty list to each reducer.
+    dispatch(nationStateActions.nationStatesReceived(nationStates || []));
+    dispatch(turnActions.turnsReceived(turns || []));
+    dispatch(userActions.usersReceived(users || []));
+    dispatch(gameActions.normalizedGamesReceived(games || []));
+    next(action);
+  } else {
+    next(action);
   }
 };
 
@@ -136,7 +37,7 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
   When a game detail is received, normalize data into entities and dispatch
   actions for each entity.
   */
-  if (action.type === gamesConstants.GAME_DETAIL_SUCCESS) {
+  if (action.type === gameActions.getGameDetail.fulfilled.type) {
     const { entities } = gameDetailNormalizer(action.payload);
     const {
       game,
@@ -147,104 +48,19 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
       territoryStates,
       turns,
     } = entities;
-    dispatch(piecesReceived(pieces));
-    dispatch(turnsReceived(turns));
-    dispatch(nationStatesReceived(nationStates));
-    dispatch(territoryStatesReceived(territoryStates));
-    dispatch(pieceStatesReceived(pieceStates));
-    dispatch(ordersReceived(orders));
-    next({ type: gamesConstants.GAME_DETAIL_SUCCESS, payload: game });
+    dispatch(pieceActions.piecesReceived(pieces));
+    dispatch(turnActions.turnDetailsReceived(turns));
+    dispatch(nationStateActions.nationStatesReceived(nationStates));
+    dispatch(territoryStateActions.territoryStatesReceived(territoryStates));
+    dispatch(pieceStateActions.pieceStatesReceived(pieceStates));
+    dispatch(orderActions.ordersReceived(orders || []));
+    next({
+      type: gameActions.getGameDetail.fulfilled.type,
+      payload: Object.values(game)[0],
+    });
   } else {
     next(action);
   }
 };
 
-const joinLeaveGameFlow = ({ dispatch }) => (next) => (action) => {
-  /*
-  When a player attempts to join or leave a game, dispatch an API request.
-  */
-  next(action);
-
-  if (
-    [
-      gamesConstants.LEAVE_GAME_REQUESTED,
-      gamesConstants.JOIN_GAME_REQUESTED,
-    ].includes(action.type)
-  ) {
-    const { token, slug } = action.payload;
-    const url = JOINGAMEURL.replace('<game>', slug);
-
-    const successFailActions =
-      action.type === gamesConstants.JOIN_GAME_REQUESTED
-        ? [
-            gamesConstants.JOIN_GAME_SUCCESS,
-            gamesConstants.JOIN_GAME_REQUEST_FAILED,
-          ]
-        : [
-            gamesConstants.LEAVE_GAME_SUCCESS,
-            gamesConstants.LEAVE_GAME_REQUEST_FAILED,
-          ];
-
-    const apiAction = apiRequest(
-      'PATCH',
-      url,
-      token,
-      action.payload,
-      ...successFailActions
-    );
-    dispatch(apiAction);
-  }
-};
-
-const postJoinLeaveFlow = ({ dispatch, getState }) => (next) => (action) => {
-  /*
-  Once the user has successfully joined or left a game, reload the games.
-  */
-  next(action);
-
-  if (
-    [
-      gamesConstants.LEAVE_GAME_SUCCESS,
-      gamesConstants.JOIN_GAME_SUCCESS,
-    ].includes(action.type)
-  ) {
-    const state = getState();
-    const { token } = state.auth;
-    dispatch(gamesRequested(token));
-  }
-};
-
-const failedJoinLeaveFlow = ({ dispatch }) => (next) => (action) => {
-  /*
-  If the user failed to join or leave a game, show an error message.
-  */
-  next(action);
-
-  if (
-    [
-      gamesConstants.LEAVE_GAME_REQUEST_FAILED,
-      gamesConstants.JOIN_GAME_REQUEST_FAILED,
-    ].includes(action.type)
-  ) {
-    const { statusText } = action.payload;
-    dispatch(alertsClearAll());
-    dispatch(
-      alertsAdd({
-        message: statusText,
-        category: 'error',
-      })
-    );
-  }
-};
-
-export default [
-  joinLeaveGameFlow,
-  failedJoinLeaveFlow,
-  toggleOrdersFinalizedFlow,
-  postJoinLeaveFlow,
-  loadGamesFlow,
-  loadGameDetailFlow,
-  normalizeGames,
-  normalizeGameDetail,
-  getPrivateNationStateFlow,
-];
+export default [normalizeGames, normalizeGameDetail];

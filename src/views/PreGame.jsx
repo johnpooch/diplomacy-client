@@ -8,8 +8,9 @@ import Page from '../components/Page';
 import PlayerList from '../components/PlayerList';
 import { spacing } from '../variables';
 
+import { alertActions } from '../store/alerts';
 import { gameActions } from '../store/games';
-import { getParticipatingUsers } from '../store/selectors';
+import { getDenormalizedPreGame } from '../store/denormalizers';
 
 const StyledP = styled.p`
   margin: ${spacing[4]}px 0;
@@ -17,12 +18,9 @@ const StyledP = styled.p`
 `;
 
 const PreGame = (props) => {
-  const { game, participants, joinGame, leaveGame, token, user } = props;
-  const { description } = game;
-  const participantIds = participants.map((p) => p.id);
-  const userJoined = participantIds.includes(user.id);
+  const { game, joinGame, leaveGame, token } = props;
+  const { description, participants, userJoined } = game;
 
-  // TODO these should be in child components
   const onClickJoin = (e) => {
     e.preventDefault();
     joinGame(token, game.slug);
@@ -49,18 +47,29 @@ const PreGame = (props) => {
   );
 };
 
-const mapStateToProps = (state, { game }) => {
-  const participants = getParticipatingUsers(state, game);
-  return {
-    token: state.auth.token,
-    participants,
-  };
+const mapStateToProps = (state, { match }) => {
+  const { slug } = match.params;
+  const game = getDenormalizedPreGame(state, slug);
+  return { game, token: state.auth.token };
 };
 
 const mapDispatchToProps = (dispatch) => {
+  const category = 'success';
   return {
-    joinGame: (token, slug) => dispatch(gameActions.joinGame(token, slug)),
-    leaveGame: (token, slug) => dispatch(gameActions.leaveGame(token, slug)),
+    joinGame: (token, slug) =>
+      dispatch(gameActions.joinGame({ token, slug })).then(({ payload }) => {
+        const { name } = payload;
+        const message = `You have joined ${name}!`;
+        dispatch(gameActions.getGames({ token }));
+        dispatch(alertActions.alertsAdd({ message, category }));
+      }),
+    leaveGame: (token, slug) =>
+      dispatch(gameActions.leaveGame({ token, slug })).then(({ payload }) => {
+        const { name } = payload;
+        const message = `You have left ${name}.`;
+        dispatch(gameActions.getGames({ token }));
+        dispatch(alertActions.alertsAdd({ message, category }));
+      }),
   };
 };
 

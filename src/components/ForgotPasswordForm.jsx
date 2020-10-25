@@ -1,34 +1,22 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import authService from '../services/auth';
-import { alertsAdd } from '../store/alerts';
+import FieldError from './FieldError';
 import FormContainer from './FormContainer';
+import NonFieldErrors from './NonFieldErrors';
+import useForm from '../hooks/useForm';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
-const ForgotPassword = (props) => {
-  const [email, setEmail] = useState('');
+const ForgotPassword = ({ onAuth }) => {
+  const [{ email }, handleChange] = useForm({ email: '' });
 
-  const handleChange = (e) => {
-    const input = e.target.value;
-    setEmail(input);
-  };
+  const [errors, setErrors] = useState({
+    nonFieldErrors: [],
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { alert, history } = props;
-    authService.passwordReset(email).then(
-      () => {
-        const successMessage = `Thanks! Please check ${email} for a link to reset your password.`;
-        history.push('/');
-        alert({ message: successMessage, category: 'success' });
-      },
-      (error) => {
-        history.push('/');
-        alert({ message: error.message, category: 'error' });
-      }
-    );
+    onAuth(setErrors, email);
   };
 
   return (
@@ -50,7 +38,9 @@ const ForgotPassword = (props) => {
             onChange={handleChange}
             required
           />
+          <FieldError error={errors.email} />
         </label>
+        <NonFieldErrors errors={errors.non_field_errors} />
         <p>
           <Button type="submit">Send reset link</Button>
         </p>
@@ -63,10 +53,4 @@ const ForgotPassword = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    alert: (alert) => dispatch(alertsAdd(alert)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(withRouter(ForgotPassword));
+export default withRouter(ForgotPassword);

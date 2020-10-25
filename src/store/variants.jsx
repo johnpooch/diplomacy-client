@@ -1,89 +1,48 @@
-import variantService from '../services/variant';
-import variantNormalizer from './normalizers/variantNormalizer';
+/* eslint-disable no-param-reassign */
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from '@reduxjs/toolkit';
 
-import { mapDataReceived } from './mapData';
-import { namedCoastsReceived } from './namedCoasts';
-import { namedCoastDataReceived } from './namedCoastData';
-import { nationsReceived } from './nations';
-import { territoriesReceived } from './territories';
-import { territoryDataReceived } from './territoryData';
+import * as API from '../api';
+import { apiRequest, getOptions } from './api';
 
-const VARIANTS_RECEIVED = 'VARIANTS_RECEIVED';
-const VARIANTS_REQUESTED = 'VARIANTS_REQUESTED';
-const VARIANTS_REQUEST_FAILED = 'VARIANTS_REQUEST_FAILED';
-
-export const variantsReceived = (payload) => ({
-  type: VARIANTS_RECEIVED,
-  payload,
-});
-
-export const variantsRequested = () => ({
-  type: VARIANTS_REQUESTED,
-});
-
-export const variantsRequestFailed = () => ({
-  type: VARIANTS_REQUEST_FAILED,
-});
-
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
-};
-
-const variantsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case VARIANTS_RECEIVED: {
-      const { payload } = action;
-      const byId = payload;
-      const allIds = Object.values(payload).map((value) => value.id);
-      return { loading: false, byId, allIds };
-    }
-    case VARIANTS_REQUESTED:
-      return { ...state, loading: true };
-    case VARIANTS_REQUEST_FAILED:
-      return {
-        ...state,
-        loading: false,
-      };
-    default:
-      return state;
+const getVariants = createAsyncThunk(
+  'variants/getVariants',
+  async ({ token }, thunkApi) => {
+    const url = API.LISTVARIANTS;
+    const options = getOptions(token);
+    return apiRequest(url, options, thunkApi);
   }
-};
+);
 
-// Public actions
-const loadVariants = (token) => {
-  return (dispatch) => {
-    dispatch(variantsRequested());
-    variantService.listVariants(token).then(
-      (payload) => {
-        const { entities } = variantNormalizer(payload);
-        const {
-          variants,
-          nations,
-          territories,
-          map_data: mapData,
-          territory_data: territoryData,
-          named_coasts: namedCoasts,
-          named_coast_data: namedCoastData,
-        } = entities;
-        dispatch(territoriesReceived(territories));
-        dispatch(nationsReceived(nations));
-        dispatch(mapDataReceived(mapData));
-        dispatch(territoryDataReceived(territoryData));
-        dispatch(namedCoastsReceived(namedCoasts));
-        dispatch(namedCoastDataReceived(namedCoastData));
-        dispatch(variantsReceived(variants));
-      },
-      () => {
-        dispatch(variantsRequestFailed());
-      }
-    );
-  };
-};
+const variantAdapter = createEntityAdapter();
+
+const variantSlice = createSlice({
+  name: 'variants',
+  initialState: variantAdapter.getInitialState({ loading: false }),
+  extraReducers: {
+    [getVariants.fulfilled]: (state, action) => {
+      variantAdapter.setAll(state, action);
+      state.loading = false;
+    },
+    [getVariants.pending]: (state) => {
+      state.loading = true;
+    },
+    [getVariants.rejected]: (state) => {
+      state.loading = false;
+    },
+  },
+});
 
 export const variantActions = {
-  loadVariants,
+  ...variantSlice.actions,
+  getVariants,
 };
 
-export default variantsReducer;
+export const variantSelectors = {
+  ...variantAdapter.getSelectors((state) => state.entities.variants),
+};
+
+export default variantSlice.reducer;

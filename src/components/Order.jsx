@@ -4,13 +4,6 @@ import AuxArrow from './AuxArrow';
 import BuildOrder from './BuildOrder';
 import TargetArrow from './TargetArrow';
 
-const getSourceCoords = (source, type) => {
-  if (type === 'retreat') {
-    return [source.dislodgedx, source.dislodgedy];
-  }
-  return [source.x, source.y];
-};
-
 const Order = ({ order }) => {
   const { aux, id, nation, source, target, targetCoast, type } = order;
   const elements = [];
@@ -19,12 +12,20 @@ const Order = ({ order }) => {
     return <BuildOrder key={id} order={order} />;
   }
 
+  let [sx, sy] = [null, null];
+  if (order.type === 'retreat') {
+    sx = source.dislodged_piece_x;
+    sy = source.dislodged_piece_y;
+  } else {
+    sx = source.piece_x;
+    sy = source.piece_y;
+  }
+
   if (target) {
-    const [sx, sy] = getSourceCoords(source, type);
-    let { x: tx, y: ty } = target;
+    let { piece_x: tx, piece_y: ty } = target;
     if (targetCoast) {
-      tx = targetCoast.x;
-      ty = targetCoast.y;
+      tx = targetCoast.piece_x;
+      ty = targetCoast.piece_y;
     }
     elements.push(
       <TargetArrow
@@ -32,15 +33,15 @@ const Order = ({ order }) => {
         id={id}
         type={type}
         nation={nation}
-        x1={sx}
+        x1={source.piece_x}
         x2={tx}
-        y1={sy}
+        y1={source.piece_y}
         y2={ty}
         offsetSize={26}
       />
     );
     if (aux) {
-      const { x: ax, y: ay } = aux;
+      const { piece_x: ax, piece_y: ay } = aux;
       elements.push(
         <AuxArrow
           key={`aux-${id}`}

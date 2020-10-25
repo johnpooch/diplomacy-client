@@ -36,8 +36,8 @@ const TurnStatus = (props) => {
   const { turn, _click } = props;
   const { previous_turn: previousTurn, next_turn: nextTurn } = turn;
 
-  const renderPrevious = () => {
-    return (
+  return (
+    <StyledDiv>
       <IconButton
         className="previous"
         disabled={previousTurn === null}
@@ -49,11 +49,15 @@ const TurnStatus = (props) => {
       >
         <FontAwesomeIcon icon={faArrowLeft} />
       </IconButton>
-    );
-  };
-
-  const renderNext = () => {
-    return (
+      <div className="active-turn">
+        <div>
+          <span className="season">{turn.season}</span>
+          <span className="year">{turn.year}</span>
+        </div>
+        <div>
+          <span className="phase">{turn.phase}</span>
+        </div>
+      </div>
       <IconButton
         className="next"
         disabled={nextTurn === null}
@@ -65,22 +69,6 @@ const TurnStatus = (props) => {
       >
         <FontAwesomeIcon icon={faArrowRight} />
       </IconButton>
-    );
-  };
-
-  return (
-    <StyledDiv>
-      {renderPrevious()}
-      <div className="active-turn">
-        <div>
-          <span className="season">{turn.season}</span>
-          <span className="year">{turn.year}</span>
-        </div>
-        <div>
-          <span className="phase">{turn.phase}</span>
-        </div>
-      </div>
-      {renderNext()}
     </StyledDiv>
   );
 };

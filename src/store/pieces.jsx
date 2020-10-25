@@ -1,25 +1,40 @@
-const PIECES_RECEIVED = 'PIECES_RECEIVED';
+/* eslint-disable no-param-reassign */
 
-export const piecesReceived = (payload) => ({
-  type: PIECES_RECEIVED,
-  payload,
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+
+import { gameSelectors } from './games';
+
+const pieceAdapter = createEntityAdapter();
+
+const pieceSlice = createSlice({
+  name: 'territory_states',
+  initialState: pieceAdapter.getInitialState(),
+  reducers: {
+    piecesReceived: pieceAdapter.setAll,
+  },
 });
 
-const initialState = {
-  data: [],
+export const pieceActions = {
+  ...pieceSlice.actions,
 };
 
-const piecesReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case PIECES_RECEIVED: {
-      const { payload } = action;
-      if (!payload) return initialState;
-      const data = Object.values(payload);
-      return { data };
-    }
-    default:
-      return state;
-  }
+const adapterSelectors = pieceAdapter.getSelectors(
+  (state) => state.entities.pieces
+);
+
+const selectByGameId = createSelector(
+  gameSelectors.selectById,
+  adapterSelectors.selectAll,
+  (game, pieces) => pieces.filter((p) => game.pieces.includes(p.id))
+);
+
+export const pieceSelectors = {
+  ...adapterSelectors,
+  selectByGameId,
 };
 
-export default piecesReducer;
+export default pieceSlice.reducer;

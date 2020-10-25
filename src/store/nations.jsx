@@ -1,27 +1,40 @@
-const NATIONS_RECEIVED = 'NATIONS_RECEIVED';
+/* eslint-disable no-param-reassign */
 
-export const nationsReceived = (payload) => ({
-  type: NATIONS_RECEIVED,
-  payload,
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+
+import { variantSelectors } from './variants';
+
+const nationAdapter = createEntityAdapter();
+
+const nationSlice = createSlice({
+  name: 'nations',
+  initialState: nationAdapter.getInitialState(),
+  reducers: {
+    nationsReceived: nationAdapter.upsertMany,
+  },
 });
 
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
+export const nationActions = {
+  ...nationSlice.actions,
 };
 
-const nationsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case NATIONS_RECEIVED: {
-      const { payload } = action;
-      const byId = payload;
-      const allIds = Object.values(payload).map((value) => value.id);
-      return { byId, allIds };
-    }
-    default:
-      return state;
-  }
+const adapterSelectors = nationAdapter.getSelectors(
+  (state) => state.entities.nations
+);
+
+const selectByVariantId = createSelector(
+  variantSelectors.selectById,
+  adapterSelectors.selectAll,
+  (variant, nations) => nations.filter((n) => variant.nations.includes(n.id))
+);
+
+export const nationSelectors = {
+  ...adapterSelectors,
+  selectByVariantId,
 };
 
-export default nationsReducer;
+export default nationSlice.reducer;

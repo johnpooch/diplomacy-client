@@ -1,38 +1,27 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import authService from '../services/auth';
-import * as alertActions from '../store/alerts';
+import FieldError from './FieldError';
 import FormContainer from './FormContainer';
+import NonFieldErrors from './NonFieldErrors';
+import useForm from '../hooks/useForm';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
-const ResetPassword = ({ alert, location, history }) => {
-  const [password, setPassword] = useState('');
+const ResetPassword = ({ history, location, onAuth }) => {
+  const [{ password }, handleChange] = useForm({ password: '' });
+
+  const [errors, setErrors] = useState({
+    nonFieldErrors: [],
+  });
 
   const token = new URLSearchParams(location.search).get('token');
   if (!token) {
     history.push('/');
   }
 
-  const handleChange = (e) => {
-    const input = e.target.value;
-    setPassword(input);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    authService.passwordResetConfirm(password, token).then(
-      () => {
-        const successMessage = 'Password updated!';
-        history.push('/');
-        alert({ message: successMessage, category: 'success' });
-      },
-      (error) => {
-        history.push('/');
-        alert({ message: error.message, category: 'error' });
-      }
-    );
+    onAuth(setErrors, token, password);
   };
 
   return (
@@ -52,19 +41,15 @@ const ResetPassword = ({ alert, location, history }) => {
             onChange={handleChange}
             required
           />
+          <FieldError error={errors.password} />
         </label>
         <p>
           <Button type="submit">Reset password</Button>
         </p>
+        <NonFieldErrors errors={errors.non_field_errors} />
       </GenericForm>
     </FormContainer>
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    alert: (alert) => dispatch(alertActions.add(alert)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(withRouter(ResetPassword));
+export default withRouter(ResetPassword);

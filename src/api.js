@@ -13,7 +13,7 @@ export const JOINGAMEURL = `${serviceURI}game/<game>/join`;
 
 export const CREATEORDERURL = `${serviceURI}game/<game>/order`;
 export const DESTROYORDERURL = `${serviceURI}game/<game>/order/<pk>`;
-export const LISTORDERSURL = `${serviceURI}game/<game>/orders`;
+export const LISTORDERSURL = `${serviceURI}game/<pk>/orders`;
 
 export const RETRIEVEPRIVATENATIONSTATE = `${serviceURI}game/<game>/nation-state`;
 

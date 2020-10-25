@@ -1,15 +1,5 @@
 import React from 'react';
 
-export function getOptions(choices) {
-  return choices.map((c) => {
-    return (
-      <option key={c[0]} value={c[0]}>
-        {c[1]}
-      </option>
-    );
-  });
-}
-
 export function getObjectByKey(pk, objs, key = 'pk') {
   const id = parseInt(pk, 10);
   return objs.find((obj) => {
@@ -43,18 +33,54 @@ export class Vector {
   }
 }
 
-export const getUserNationState = (turn, user) => {
-  if (!turn) {
-    return null;
-  }
-  const { nation_states: nationStates } = turn;
-  let userNationState = null;
-  for (let i = 0; i < nationStates.length; i += 1) {
-    const nationState = nationStates[i];
-    if (nationState.user.id === user.id) {
-      userNationState = nationState;
+// Order utils
+
+const getOrderAttrToUpdate = (order) => {
+  /* Given the state of the order, determine which attribute should be updated
+   * with the next click. */
+  const { source, type, target, aux } = order;
+  let attr = 'source';
+  if (source && !type) return 'type';
+  switch (type) {
+    case 'retreat':
+    case 'move':
+      if (!target) attr = 'target';
       break;
-    }
+    case 'support':
+    case 'convoy':
+      if (!aux) return 'aux';
+      if (!target) return 'target';
+      break;
+    default:
+      attr = 'source';
   }
-  return userNationState;
+  return attr;
+};
+
+const userCanOrder = (turn, territory) => {
+  /* Determine whether a user can create an order for the given territory */
+  const { current_turn: currentTurn, userNation } = turn;
+  if (!(userNation && currentTurn)) return false;
+
+  // Orders turn
+  if (turn.phase === 'Order') {
+    return territory.piece && territory.piece.nation === userNation.id;
+  }
+
+  // Retreat turn
+  if (turn.phase === 'Retreat and Disband') {
+    return (
+      territory.dislodgedPiece &&
+      territory.dislodgedPiece.nation === userNation.id
+    );
+  }
+
+  // Build turn
+  // TODO handle disband and build
+  return false;
+};
+
+export const orderUtils = {
+  getOrderAttrToUpdate,
+  userCanOrder,
 };

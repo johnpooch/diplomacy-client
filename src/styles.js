@@ -41,7 +41,7 @@ export const BaseButton = styled.button`
   background: transparent;
 
   &[disabled] {
-    opacity: 0;
+    opacity: 0.5;
     cursor: initial;
   }
 `;
@@ -92,6 +92,11 @@ export const IconButton = styled(SecondaryButton)`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &[disabled] {
+    opacity: 0;
+    cursor: initial;
+  }
 `;
 
 // Forms
@@ -131,6 +136,14 @@ export const GenericForm = styled.form`
   p {
     display: block;
     margin: ${spacing[4]}px 0;
+  }
+  .non-field-errors {
+    color: ${colors.error};
+    text-align: left;
+  }
+  .field-error {
+    color: ${colors.error};
+    margin-top: 0.5rem;
   }
 `;
 

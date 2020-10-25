@@ -7,7 +7,7 @@ import { darken, lighten } from 'polished';
 
 import { PageWrapper, BaseButton } from '../styles';
 import { colors, sizes, spacing, fontSizes } from '../variables';
-import { alertsClear } from '../store/alerts';
+import { alertActions } from '../store/alerts';
 
 const StyledListItem = styled.li`
   background: ${(props) => lighten(0.4, colors[props.category])};
@@ -66,7 +66,7 @@ const Alert = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onClick: (id) => dispatch(alertsClear(id)),
+    onClick: (id) => dispatch(alertActions.alertsClear(id)),
   };
 };
 

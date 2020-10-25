@@ -6,6 +6,7 @@ import { colors, fontSizes } from '../variables';
 import SupplyCenter from './SupplyCenter';
 import TerritoryPath from './TerritoryPath';
 import TerritoryText from './TerritoryText';
+import Piece from './Piece';
 
 const StyledTerritory = styled.g`
   cursor: ${(props) => (props.panning ? 'all-scroll' : 'pointer')};
@@ -54,9 +55,13 @@ const Territory = (props) => {
   } = props;
   const {
     abbreviation,
-    supply_center_x: x,
-    supply_center_y: y,
-    text,
+    supply_center_x: scx,
+    supply_center_y: scy,
+    text_x: tx,
+    text_y: ty,
+    piece,
+    dislodgedPiece,
+    name,
   } = territory;
 
   const color = getFillColor(territory);
@@ -73,8 +78,10 @@ const Territory = (props) => {
         territoryOrderState={territoryOrderState}
         callbacks={callbacks}
       />
-      <TerritoryText text={text} abbreviation={abbreviation} />
-      <SupplyCenter x={x} y={y} />
+      <TerritoryText name={name} abbreviation={abbreviation} x={tx} y={ty} />
+      <SupplyCenter x={scx} y={scy} />
+      {piece ? <Piece piece={piece} /> : null}
+      {dislodgedPiece ? <Piece piece={dislodgedPiece} /> : null}
     </StyledTerritory>
   );
 };

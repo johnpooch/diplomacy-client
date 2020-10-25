@@ -1,5 +1,5 @@
 /* eslint camelcase: [2, { "allow": ["num_players", "nation_choice_mode", "order_deadline", "retreat_deadline", "build_deadline", "game_statuses"] }] */
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,9 +17,10 @@ import {
   Grid,
   GridTemplate,
 } from '../styles';
-import { getOptions } from '../utils';
 import { colors, sizes, spacing } from '../variables';
+import useForm from '../hooks/useForm';
 import { getVariants } from '../store/selectors';
+import Select from './Select';
 
 const StyledButton = styled(TertiaryButton)`
   margin: ${spacing[2]}px 0px;
@@ -59,243 +60,140 @@ const StyledClose = styled.div`
   }
 `;
 
-class GameFilters extends React.Component {
-  constructor(props) {
-    super(props);
+const GameFilters = ({ callback, choices }) => {
+  const [values, handleChange] = useForm({
+    search: '',
+    variant: '',
+    status: '',
+    num_players: '',
+    nation_choice_mode: '',
+    order_deadline: '',
+    retreat_deadline: '',
+    build_deadline: '',
+  });
+  const [open, setOpen] = useState(false);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
-    const filters = {
-      search: '',
-      variant: '',
-      status: '',
-      num_players: '',
-      nation_choice_mode: '',
-      order_deadline: '',
-      retreat_deadline: '',
-      build_deadline: '',
-    };
+  const advancedOpenText = `${
+    advancedOpen ? '− Hide' : '+ Show'
+  } advanced filters`;
 
-    this.state = {
-      open: false,
-      advancedOpen: false,
-      filters,
-    };
-
-    this.emptyOptionString = '-------';
-
-    this.filter = this.filter.bind(this);
-    this.changeFilter = this.changeFilter.bind(this);
-    this.toggleOpen = this.toggleOpen.bind(this);
-    this.clickAdvancedToggleButton = this.clickAdvancedToggleButton.bind(this);
-  }
-
-  changeFilter(event) {
-    const { name, value } = event.target;
-    const { filters } = this.state;
-    filters[name] = value;
-    this.setState({ filters });
-  }
-
-  filter(e) {
+  const filter = (e) => {
     e.preventDefault();
-    const { callback } = this.props;
-    const { filters } = this.state;
-    callback(filters);
-  }
+    callback(values);
+  };
 
-  clickAdvancedToggleButton() {
-    const { advancedOpen } = this.state;
-    this.setState({
-      advancedOpen: !advancedOpen,
-    });
-  }
-
-  renderEmptyOption() {
-    return <option value="">{this.emptyOptionString}</option>;
-  }
-
-  renderSelectFilter(val, id, label, options) {
+  if (!choices) return null;
+  if (!open) {
     return (
-      <label htmlFor={id}>
-        <FormLabelText>{label}</FormLabelText>
-        <select id={id} name={id} value={val} onChange={this.changeFilter}>
-          {this.renderEmptyOption()}
-          {options}
-        </select>
-      </label>
+      <StyledClosedSearch type="button" onClick={() => setOpen(!open)}>
+        <FontAwesomeIcon icon={faSearch} />
+        <FontAwesomeIcon icon={faChevronDown} />
+      </StyledClosedSearch>
     );
   }
 
-  renderSearchFilter() {
-    const { filters } = this.state;
-    const { search } = filters;
-    return (
-      <label htmlFor="search">
-        <FormLabelText>Search</FormLabelText>
-        <input
-          id="search"
-          name="search"
-          type="search"
-          value={search}
-          onChange={this.changeFilter}
-          placeholder="Search by game name"
+  const advancedOptions = (
+    <StyledDiv>
+      <Grid columns={4}>
+        <Select
+          name="nation_choice_mode"
+          label="Nation choice mode"
+          value={values.nation_choice_mode}
+          onChange={handleChange}
+          options={choices.nation_choice_modes}
         />
-      </label>
-    );
-  }
-
-  renderVariantFilter() {
-    const { filters } = this.state;
-    const { variant } = filters;
-    const { variants } = this.props;
-    const variantChoices = variants.map((v) => [v.id, v.name]);
-    const options = getOptions(variantChoices);
-    return this.renderSelectFilter(variant, 'variant', 'Variant', options);
-  }
-
-  renderStatusFilter() {
-    const { filters } = this.state;
-    const { status } = filters;
-    const { choices } = this.props;
-    const { gameStatuses } = choices;
-    const options = getOptions(gameStatuses);
-    return this.renderSelectFilter(status, 'status', 'Status', options);
-  }
-
-  renderNumPlayersFilter() {
-    const { filters } = this.state;
-    const { num_players } = filters;
-    return (
-      <label htmlFor="num_players">
-        <FormLabelText>Players</FormLabelText>
-        <input
-          id="num_players"
-          name="num_players"
-          type="number"
-          value={num_players}
-          onChange={this.changeFilter}
-          min={1}
-          max={7}
+        <Select
+          name="order_deadline"
+          label="Order deadline"
+          value={values.order_deadline}
+          onChange={handleChange}
+          options={choices.deadlines}
         />
-      </label>
-    );
-  }
+        <Select
+          name="retreat_deadline"
+          label="Retreat deadline"
+          value={values.retreat_deadline}
+          onChange={handleChange}
+          options={choices.deadlines}
+        />
+        <Select
+          name="build_deadline"
+          label="Build deadline"
+          value={values.build_deadline}
+          onChange={handleChange}
+          options={choices.deadlines}
+        />
+      </Grid>
+    </StyledDiv>
+  );
 
-  renderFilterFields() {
-    return (
-      <GridTemplate templateColumns="3fr 1fr 2fr 2fr">
-        {this.renderSearchFilter()}
-        {this.renderNumPlayersFilter()}
-        {this.renderVariantFilter()}
-        {this.renderStatusFilter()}
-      </GridTemplate>
-    );
-  }
+  return (
+    <div>
+      <StyledForm onSubmit={filter}>
+        <StyledClose>
+          <button type="button" onClick={() => setOpen(!open)}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </StyledClose>
+        <GridTemplate templateColumns="3fr 1fr 2fr 2fr">
+          <label htmlFor="search">
+            <FormLabelText>Search</FormLabelText>
+            <input
+              id="search"
+              name="search"
+              type="search"
+              value={values.search}
+              onChange={handleChange}
+              placeholder="Search by game name"
+            />
+          </label>
+          <label htmlFor="num_players">
+            <FormLabelText>Players</FormLabelText>
+            <input
+              id="num_players"
+              name="num_players"
+              type="number"
+              value={values.num_players}
+              onChange={handleChange}
+              min={1}
+              max={7}
+            />
+          </label>
+          <Select
+            name="variant"
+            label="Variant"
+            value={values.variant}
+            onChange={handleChange}
+            options={choices.variants}
+          />
+          <Select
+            name="status"
+            label="Status"
+            value={values.status}
+            onChange={handleChange}
+            options={choices.game_statuses}
+          />
+        </GridTemplate>
+        {advancedOpen ? advancedOptions : null}
+        <div>
+          <StyledButton
+            type="button"
+            onClick={() => {
+              setAdvancedOpen(!advancedOpen);
+            }}
+          >
+            {advancedOpenText}
+          </StyledButton>
+        </div>
 
-  renderNationChoiceModeFilter() {
-    const { filters } = this.state;
-    const { nation_choice_mode } = filters;
-    const { choices } = this.props;
-    const { nationChoiceModes } = choices;
-    const options = getOptions(nationChoiceModes);
-    return this.renderSelectFilter(
-      nation_choice_mode,
-      'nation_choice_mode',
-      'Nation choice mode',
-      options
-    );
-  }
-
-  renderDeadlineFilter(val, id, label) {
-    const { choices } = this.props;
-    const { deadlines } = choices;
-    const options = getOptions(deadlines);
-    return this.renderSelectFilter(val, id, label, options);
-  }
-
-  renderAdvancedFilterFields() {
-    const { advancedOpen } = this.state;
-    if (!advancedOpen) return null;
-
-    const { order_deadline, retreat_deadline, build_deadline } = this.state;
-
-    return (
-      <StyledDiv>
-        <Grid columns={4}>
-          {this.renderNationChoiceModeFilter()}
-          {this.renderDeadlineFilter(
-            order_deadline,
-            'order_deadline',
-            'Order deadline'
-          )}
-          {this.renderDeadlineFilter(
-            retreat_deadline,
-            'retreat_deadline',
-            'Retreat deadline'
-          )}
-          {this.renderDeadlineFilter(
-            build_deadline,
-            'build_deadline',
-            'Build deadline'
-          )}
-        </Grid>
-      </StyledDiv>
-    );
-  }
-
-  renderAdvancedToggleButton() {
-    const { advancedOpen } = this.state;
-    const text = `${advancedOpen ? '− Hide' : '+ Show'} advanced filters`;
-    return (
-      <StyledButton type="button" onClick={this.clickAdvancedToggleButton}>
-        {text}
-      </StyledButton>
-    );
-  }
-
-  renderCloseButton() {
-    return (
-      <StyledClose>
-        <button type="button" onClick={this.toggleOpen}>
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-      </StyledClose>
-    );
-  }
-
-  toggleOpen() {
-    const { open } = this.state;
-    this.setState({
-      open: !open,
-    });
-  }
-
-  render() {
-    const { choices } = this.props;
-    const { open } = this.state;
-    if (!choices) return null;
-    if (!open) {
-      return (
-        <StyledClosedSearch type="button" onClick={this.toggleOpen}>
-          <FontAwesomeIcon icon={faSearch} />
-          <FontAwesomeIcon icon={faChevronDown} />
-        </StyledClosedSearch>
-      );
-    }
-    return (
-      <div>
-        <StyledForm onSubmit={this.filter}>
-          {this.renderCloseButton()}
-          {this.renderFilterFields()}
-          {this.renderAdvancedFilterFields()}
-          <div>{this.renderAdvancedToggleButton()}</div>
-          <div>
-            <Button type="submit">Search</Button>
-          </div>
-        </StyledForm>
-      </div>
-    );
-  }
-}
+        <div>
+          <Button type="submit">Search</Button>
+        </div>
+      </StyledForm>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {

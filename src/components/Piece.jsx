@@ -34,8 +34,8 @@ const pieceIcons = {
 };
 
 const pieceScales = {
-  army: 0.05,
-  fleet: 0.05,
+  army: 0.07,
+  fleet: 0.07,
 };
 
 const Piece = (props) => {
@@ -46,29 +46,25 @@ const Piece = (props) => {
   const scale = pieceScales[type];
   const w = faIcon.icon[0];
   const h = faIcon.icon[1];
-  const dx = x - (scale * w) / 2;
-  const dy = y - (scale * h) / 2;
+  const dx = x - (scale * w) / 2 + 195;
+  const dy = y - (scale * h) / 2 + 170;
   const shadowSize = 20;
 
   const color = lighten(0.2, colors.nations[nation]);
 
   return (
-    <g>
+    <g transform={`translate(${dx}, ${dy}) scale(${scale})`}>
       <StyledCircle
         r={shadowSize}
-        cx={x}
-        cy={y}
+        cx={dx}
+        cy={dy}
         strokeColor={getStrokeColor(mustRetreat, userCanOrder)}
         mustRetreat={mustRetreat}
         userCanOrder={userCanOrder}
         hasOrders={hasOrders}
       />
       ;
-      <StyledPath
-        d={faIcon.icon[4]}
-        color={color}
-        transform={`translate(${dx}, ${dy}) scale(${scale})`}
-      />
+      <StyledPath d={faIcon.icon[4]} color={color} />
     </g>
   );
 };

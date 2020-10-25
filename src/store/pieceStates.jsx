@@ -1,25 +1,41 @@
-const PIECE_STATES_RECEIVED = 'PIECE_STATES_RECEIVED';
+/* eslint-disable no-param-reassign */
 
-export const pieceStatesReceived = (payload) => ({
-  type: PIECE_STATES_RECEIVED,
-  payload,
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+
+import { turnSelectors } from './turns';
+
+const pieceStateAdapter = createEntityAdapter();
+
+const pieceStateSlice = createSlice({
+  name: 'territory_states',
+  initialState: pieceStateAdapter.getInitialState(),
+  reducers: {
+    pieceStatesReceived: pieceStateAdapter.setAll,
+  },
 });
 
-const initialState = {
-  data: [],
+export const pieceStateActions = {
+  ...pieceStateSlice.actions,
 };
 
-const pieceStatesReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case PIECE_STATES_RECEIVED: {
-      const { payload } = action;
-      if (!payload) return initialState;
-      const data = Object.values(payload);
-      return { data };
-    }
-    default:
-      return state;
-  }
+const adapterSelectors = pieceStateAdapter.getSelectors(
+  (state) => state.entities.pieceStates
+);
+
+const selectByTurnId = createSelector(
+  turnSelectors.selectById,
+  adapterSelectors.selectAll,
+  (turn, pieceStates) =>
+    pieceStates.filter((p) => turn.piece_states.includes(p.id))
+);
+
+export const pieceStateSelectors = {
+  ...adapterSelectors,
+  selectByTurnId,
 };
 
-export default pieceStatesReducer;
+export default pieceStateSlice.reducer;

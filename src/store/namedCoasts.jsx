@@ -1,27 +1,23 @@
-const NAMED_COASTS_RECEIVED = 'NAMED_COASTS_RECEIVED';
+/* eslint-disable no-param-reassign */
 
-export const namedCoastsReceived = (payload) => ({
-  type: NAMED_COASTS_RECEIVED,
-  payload,
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+
+const namedCoastAdapter = createEntityAdapter();
+
+const namedCoastSlice = createSlice({
+  name: 'named_coasts',
+  initialState: namedCoastAdapter.getInitialState(),
+  reducers: {
+    namedCoastsReceived: namedCoastAdapter.setAll,
+  },
 });
 
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
+export const namedCoastActions = {
+  ...namedCoastSlice.actions,
 };
 
-const namedCoastsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case NAMED_COASTS_RECEIVED: {
-      const { payload } = action;
-      const byId = payload;
-      const allIds = Object.values(payload).map((value) => value.id);
-      return { byId, allIds };
-    }
-    default:
-      return state;
-  }
-};
+export const namedCoastSelectors = namedCoastAdapter.getSelectors(
+  (state) => state.entities.namedCoasts
+);
 
-export default namedCoastsReducer;
+export default namedCoastSlice.reducer;

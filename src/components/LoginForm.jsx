@@ -1,29 +1,27 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import { login } from '../store/auth';
+import useForm from '../hooks/useForm';
+import FieldError from './FieldError';
 import FormContainer from './FormContainer';
+import NonFieldErrors from './NonFieldErrors';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
 const LoginForm = (props) => {
-  const [{ username, password }, setState] = useState({
+  const [{ username, password }, handleChange] = useForm({
     username: '',
     password: '',
   });
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
-  };
+  const [errors, setErrors] = useState({
+    nonFieldErrors: [],
+  });
+
+  const { onAuth } = props;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { onAuth } = props;
-    onAuth(username, password);
+    onAuth(setErrors, username, password);
   };
 
   return (
@@ -41,6 +39,7 @@ const LoginForm = (props) => {
             onChange={handleChange}
             required
           />
+          <FieldError error={errors.username} />
         </label>
         <label htmlFor="password">
           <FormLabelText>Password</FormLabelText>
@@ -54,10 +53,12 @@ const LoginForm = (props) => {
             onChange={handleChange}
             required
           />
+          <FieldError error={errors.password} />
         </label>
         <p>
           <Button type="submit">Log in</Button>
         </p>
+        <NonFieldErrors errors={errors.non_field_errors} />
         <p className="forgot-password-link">
           <Link to="/forgot-password">Forgot password?</Link>
         </p>
@@ -70,10 +71,4 @@ const LoginForm = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAuth: (username, password) => dispatch(login(username, password)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(withRouter(LoginForm));
+export default withRouter(LoginForm);

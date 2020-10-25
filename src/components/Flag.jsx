@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 
 import { sizes } from '../variables';
 
+import { flagSelectors } from '../store/flags';
+
 const flagSizes = {
   small: 30,
 };
@@ -17,7 +19,7 @@ const StyledDiv = styled.div`
 
 const Flag = (props) => {
   const { flags, nationId, size } = props;
-  const paths = flags[nationId];
+  const paths = flags[nationId].flag_as_data;
   const SVGPaths = [];
   paths.forEach((pathData) => {
     const { fill, path } = pathData;
@@ -34,7 +36,7 @@ const Flag = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    flags: state.entities.flags.data,
+    flags: flagSelectors.selectEntities(state),
   };
 };
 

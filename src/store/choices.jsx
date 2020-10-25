@@ -1,68 +1,49 @@
-import gameService from '../services/game';
+/* eslint-disable no-param-reassign */
 
-const CHOICES_RECEIVED = 'CHOICES_RECEIVED';
-const CHOICES_REQUESTED = 'CHOICES_REQUESTED';
-const CHOICES_REQUEST_FAILED = 'CHOICES_REQUEST_FAILED';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-// Action creators
-export const choicesReceived = (payload) => ({
-  type: CHOICES_RECEIVED,
-  payload,
-});
+import * as API from '../api';
+import { apiRequest, getOptions } from './api';
 
-export const choicesRequested = () => ({
-  type: CHOICES_REQUESTED,
-});
-
-export const choicesRequestFailed = () => ({
-  type: CHOICES_REQUEST_FAILED,
-});
-
-const initialState = {
-  loading: false,
-};
-
-// Reducer
-const choices = (state = initialState, action) => {
-  switch (action.type) {
-    case CHOICES_RECEIVED: {
-      const { payload } = action;
-      return {
-        loading: false,
-        gameStatuses: payload.game_statuses,
-        nationChoiceModes: payload.nation_choice_modes,
-        deadlines: payload.deadlines,
-      };
-    }
-    case CHOICES_REQUESTED:
-      return { ...state, loading: true };
-    case CHOICES_REQUEST_FAILED:
-      return {
-        ...state,
-        loading: false,
-      };
-    default:
-      return state;
+const getChoices = createAsyncThunk(
+  'choices/getChoicesStatus',
+  async (_, thunkApi) => {
+    const url = API.GAMEFILTERCHOICESURL;
+    const options = getOptions();
+    return apiRequest(url, options, thunkApi);
   }
-};
+);
 
-// Public actions
-const loadChoices = () => {
-  return (dispatch) => {
-    dispatch(choicesRequested());
-    gameService.getChoices().then(
-      (payload) => {
-        dispatch(choicesReceived(payload));
-      },
-      () => {
-        dispatch(choicesRequestFailed());
-      }
-    );
-  };
-};
+const initialState = { loading: false };
+
+const choicesSlice = createSlice({
+  name: 'choices',
+  initialState,
+  reducers: {
+    authLogout: () => {
+      return {
+        loggedIn: false,
+        user: {},
+        token: null,
+      };
+    },
+  },
+  extraReducers: {
+    [getChoices.pending]: (state) => {
+      state.loading = true;
+    },
+    [getChoices.fulfilled]: (_, { payload }) => {
+      return { loading: false, ...payload };
+    },
+    [getChoices.rejected]: (state) => {
+      state.loading = false;
+    },
+  },
+});
 
 export const choiceActions = {
-  loadChoices,
+  ...choicesSlice.actions,
+  getChoices,
 };
 
-export default choices;
+export default choicesSlice.reducer;

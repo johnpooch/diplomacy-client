@@ -2,8 +2,7 @@ import React from 'react';
 
 import Order from './Order';
 
-const Orders = (props) => {
-  const { orders } = props;
+const Orders = ({ orders }) => {
   const elements = [];
   orders.forEach((order) => {
     const { id } = order;

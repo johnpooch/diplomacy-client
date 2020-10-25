@@ -1,27 +1,38 @@
-const MAP_DATA_RECEIVED = 'MAP_DATA_RECEIVED';
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 
-export const mapDataReceived = (payload) => ({
-  type: MAP_DATA_RECEIVED,
-  payload,
+import { variantSelectors } from './variants';
+
+const mapDataAdapter = createEntityAdapter();
+
+const mapDataSlice = createSlice({
+  name: 'map_data',
+  initialState: mapDataAdapter.getInitialState(),
+  reducers: {
+    mapDataReceived: mapDataAdapter.setAll,
+  },
 });
 
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
+export default mapDataSlice.reducer;
+
+const adapterSelectors = mapDataAdapter.getSelectors(
+  (state) => state.entities.mapData
+);
+
+const selectByVariantId = createSelector(
+  variantSelectors.selectById,
+  adapterSelectors.selectAll,
+  (variant, mapData) => mapData.filter((t) => variant.map_data.includes(t.id))
+);
+
+export const mapDataSelectors = {
+  ...adapterSelectors,
+  selectByVariantId,
 };
 
-const mapDataReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case MAP_DATA_RECEIVED: {
-      const { payload } = action;
-      const byId = payload;
-      const allIds = Object.values(payload).map((value) => value.id);
-      return { byId, allIds };
-    }
-    default:
-      return state;
-  }
+export const mapDataActions = {
+  ...mapDataSlice.actions,
 };
-
-export default mapDataReducer;

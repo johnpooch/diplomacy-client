@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Alert from './Alert';
+import { alertSelectors } from '../store/alerts';
 
 const AlertList = (props) => {
   const { alerts } = props;
@@ -24,7 +25,7 @@ const AlertList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    alerts: state.alerts,
+    alerts: alertSelectors.selectAll(state),
   };
 };
 

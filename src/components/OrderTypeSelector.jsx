@@ -8,13 +8,16 @@ const StyledButton = styled(Button)`
 `;
 
 const OrderTypeSelector = (props) => {
-  const { choices, onClickChoice } = props;
-  console.log(onClickChoice);
+  const { name, choices, onClickChoice } = props;
 
   const buttons = [];
   choices.forEach((choice) => {
     buttons.push(
-      <StyledButton key={choice} onClick={() => onClickChoice(choice)}>
+      <StyledButton
+        name={name}
+        key={choice}
+        onClick={() => onClickChoice(name, choice)}
+      >
         {choice}
       </StyledButton>
     );

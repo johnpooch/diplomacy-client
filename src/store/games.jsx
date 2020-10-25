@@ -1,219 +1,132 @@
-const FINALIZE_ORDERS_REQUEST = '[games] Finalize orders request';
-const FINALIZE_ORDERS_SUCCESS = '[games] Finalize orders success';
-const FINALIZE_ORDERS_FAILURE = '[games] Finalize orders failure';
+/* eslint-disable no-param-reassign */
 
-const GAME_DETAIL_REQUEST = '[games] Game detail requested';
-const GAME_DETAIL_SUCCESS = '[games] Game detail received';
-const GAME_DETAIL_FAILURE = '[games] Game detail request failed';
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from '@reduxjs/toolkit';
 
-const GAMES_RECEIVED = '[games] Games received';
-const GAMES_REQUESTED = '[games] Games requested';
-const GAMES_REQUEST_FAILED = '[games] Games request failed';
+import * as API from '../api';
+import { apiRequest, getOptions } from './api';
 
-const NORMALIZED_GAMES_RECEIVED = '[games] Normalized games received';
+const createGame = createAsyncThunk(
+  'games/createGameStatus',
+  async ({ token, data }, thunkApi) => {
+    const url = API.CREATEGAMEURL;
+    const options = getOptions(token, 'POST', data);
+    return apiRequest(url, options, thunkApi);
+  }
+);
 
-const JOIN_GAME_REQUESTED = '[games] Join game requested';
-const JOIN_GAME_SUCCESS = '[games] Join game success';
-const JOIN_GAME_REQUEST_FAILED = '[games] Join game request failed';
+const joinGame = createAsyncThunk(
+  'games/joinGameStatus',
+  async ({ token, slug }, thunkApi) => {
+    const url = API.JOINGAMEURL.replace('<game>', slug);
+    const options = getOptions(token, 'PATCH');
+    return apiRequest(url, options, thunkApi);
+  }
+);
 
-const LEAVE_GAME_REQUESTED = '[games] Leave game requested';
-const LEAVE_GAME_SUCCESS = '[games] Leave game success';
-const LEAVE_GAME_REQUEST_FAILED = '[games] Leave game request failed';
+const leaveGame = createAsyncThunk(
+  'games/joinGameStatus',
+  async ({ token, slug }, thunkApi) => {
+    const url = API.JOINGAMEURL.replace('<game>', slug);
+    const options = getOptions(token, 'PATCH');
+    return apiRequest(url, options, thunkApi);
+  }
+);
 
-export const gamesConstants = {
-  FINALIZE_ORDERS_REQUEST,
-  FINALIZE_ORDERS_SUCCESS,
-  FINALIZE_ORDERS_FAILURE,
-  GAME_DETAIL_REQUEST,
-  GAME_DETAIL_SUCCESS,
-  GAME_DETAIL_FAILURE,
-  GAMES_RECEIVED,
-  GAMES_REQUESTED,
-  GAMES_REQUEST_FAILED,
-  NORMALIZED_GAMES_RECEIVED,
-  JOIN_GAME_REQUESTED,
-  JOIN_GAME_SUCCESS,
-  JOIN_GAME_REQUEST_FAILED,
-  LEAVE_GAME_REQUESTED,
-  LEAVE_GAME_SUCCESS,
-  LEAVE_GAME_REQUEST_FAILED,
+const getGameDetail = createAsyncThunk(
+  'games/getGameDetailStatus',
+  async ({ token, slug }, thunkApi) => {
+    const url = API.GAMESTATEURL.replace('<game>', slug);
+    const options = getOptions(token);
+    return apiRequest(url, options, thunkApi);
+  }
+);
+
+const getGames = createAsyncThunk(
+  'games/getGamesStatus',
+  async ({ token, filters }, thunkApi) => {
+    let url = API.ALLGAMESURL;
+    if (filters) {
+      const queryParams = new URLSearchParams(filters).toString();
+      url = url.concat(`?${queryParams}`);
+    }
+    const options = getOptions(token);
+    return apiRequest(url, options, thunkApi);
+  }
+);
+
+const gameAdapter = createEntityAdapter({
+  // Sort games by created_at
+  sortComparer: (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
+});
+
+const setLoading = (state, loading) => {
+  state.loading = loading;
 };
 
-// Action creators
-export const finalizeOrdersRequest = (token, id) => ({
-  type: FINALIZE_ORDERS_SUCCESS,
-  payload: {
-    token,
-    id,
+const gameSlice = createSlice({
+  name: 'games',
+  initialState: gameAdapter.getInitialState({
+    loading: false,
+    browseGamesLoaded: false,
+  }),
+  reducers: {
+    normalizedGamesReceived: (state, action) => {
+      gameAdapter.setAll(state, action.payload);
+      state.loading = false;
+    },
   },
-});
-
-export const gameDetailRequest = (token, slug) => ({
-  type: GAME_DETAIL_REQUEST,
-  payload: {
-    token,
-    slug,
-  },
-});
-
-export const gameDetailSuccess = (payload) => ({
-  type: GAME_DETAIL_SUCCESS,
-  payload,
-});
-
-export const gamesReceived = (payload) => ({
-  type: GAMES_RECEIVED,
-  payload,
-});
-
-export const gamesRequested = (token, filters = null) => ({
-  type: GAMES_REQUESTED,
-  payload: {
-    token,
-    filters,
-  },
-});
-
-export const gamesRequestFailed = () => ({
-  type: GAMES_REQUEST_FAILED,
-});
-
-export const normalizedGamesReceived = (games, order) => ({
-  type: NORMALIZED_GAMES_RECEIVED,
-  payload: {
-    games,
-    order,
-  },
-});
-
-const joinGame = (token, slug) => ({
-  type: JOIN_GAME_REQUESTED,
-  payload: {
-    token,
-    slug,
-  },
-});
-
-export const joinGameSuccess = (payload) => ({
-  type: JOIN_GAME_SUCCESS,
-  payload,
-});
-
-export const joinGameRequestFailed = (payload) => ({
-  type: JOIN_GAME_REQUEST_FAILED,
-  payload,
-});
-
-const leaveGame = (token, slug) => ({
-  type: LEAVE_GAME_REQUESTED,
-  payload: {
-    token,
-    slug,
-  },
-});
-
-export const leaveGameSuccess = (payload) => ({
-  type: LEAVE_GAME_SUCCESS,
-  payload,
-});
-
-export const leaveGameRequestFailed = () => ({
-  type: LEAVE_GAME_REQUEST_FAILED,
-});
-
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
-};
-
-// Reducer
-const gamesReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case GAME_DETAIL_REQUEST: {
-      // set this game to be loading
-      const { slug } = action.payload;
-      const gamesList = Object.values(state.byId);
-      const game = gamesList.find((obj) => {
+  extraReducers: {
+    [getGameDetail.pending]: (state, action) => {
+      const { slug } = action.meta.arg;
+      const existingGame = Object.values(state.entities).find((obj) => {
         return obj.slug === slug;
       });
-      const newState = { ...state };
-      const newById = { ...state.byId };
-      newById[game.id] = {
-        ...game,
-        loading: true,
-      };
-      newState.byId = newById;
-      return newState;
-    }
-    // TODO clear up logic here
-    case GAME_DETAIL_SUCCESS: {
-      // Add data to store and set to loaded
-      const gameDetail = Object.values(action.payload)[0];
-      const newState = { ...state };
-      const newById = { ...state.byId };
-      const originalGame = newById[gameDetail.id];
-      const newGame = {
-        ...originalGame,
-        ...gameDetail,
-        loading: false,
-        detailLoaded: true,
-      };
-      newById[gameDetail.id] = newGame;
-      newState.byId = newById;
-      return newState;
-    }
-    case GAME_DETAIL_FAILURE:
-      // TODO need to work out what happens here
-      return {
-        ...state,
-        loading: false,
-      };
-    case NORMALIZED_GAMES_RECEIVED: {
-      const { payload } = action;
-      const { games, order } = payload;
-      if (!games) return initialState;
-      // Set each game's detailLoaded and loading to false
-      Object.values(games).map((game) => {
-        const newProps = {
-          detailLoaded: false,
-          loading: false,
-        };
-        return Object.assign(game, newProps);
-      });
-      const byId = games;
-      const allIds = order;
-      return { loading: false, byId, allIds };
-    }
-    case GAMES_REQUESTED:
-      return { ...state, loading: true };
-    case GAMES_REQUEST_FAILED:
-      return {
-        ...state,
-        loading: false,
-      };
-    case JOIN_GAME_REQUESTED:
-    case LEAVE_GAME_REQUESTED:
-      return {
-        ...state,
-        loading: true,
-      };
-    case JOIN_GAME_REQUEST_FAILED:
-    case LEAVE_GAME_REQUEST_FAILED:
-      return {
-        ...state,
-        loading: false,
-      };
-    default:
-      return state;
-  }
+      const changes = { loading: true, detailLoaded: false };
+      if (existingGame) {
+        gameAdapter.updateOne(state, { id: existingGame.id, changes });
+      }
+    },
+    [getGameDetail.fulfilled]: (state, { payload }) => {
+      const changes = { ...payload, loading: false, detailLoaded: true };
+      gameAdapter.upsertOne(state, changes);
+    },
+    [getGames.pending]: (state) => {
+      state.loading = true;
+      state.browseGamesLoaded = false;
+    },
+    [getGames.fulfilled]: (state) => {
+      state.loading = false;
+      state.browseGamesLoaded = true;
+    },
+    [getGameDetail.rejected]: (state) => setLoading(state, false),
+  },
+});
+
+export default gameSlice.reducer;
+
+const adapterSelectors = gameAdapter.getSelectors(
+  (state) => state.entities.games
+);
+
+const selectBySlug = (state, slug) => {
+  const allGames = adapterSelectors.selectAll(state);
+  return allGames.find((g) => g.slug === slug);
 };
 
-export default gamesReducer;
+export const gameSelectors = {
+  ...adapterSelectors,
+  selectBySlug,
+};
 
 export const gameActions = {
+  ...gameSlice.actions,
+  createGame,
+  getGameDetail,
+  getGames,
   joinGame,
   leaveGame,
-  gameDetailRequest,
-  finalizeOrdersRequest,
 };

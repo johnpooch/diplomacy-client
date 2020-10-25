@@ -46,7 +46,7 @@ const OrderSummary = (props) => {
     case 'hold':
       orderSummary = (
         <StyledP>
-          <span className="piece">{source.piece.type}</span>
+          <span className="piece">{pieceType}</span>
           in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
         </StyledP>
@@ -76,7 +76,7 @@ const OrderSummary = (props) => {
     case 'support':
       orderSummary = (
         <StyledP>
-          <span className="piece">{source.piece.type}</span>
+          <span className="piece">{pieceType}</span>
           in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
           <span className="aux">{aux.name}</span>

@@ -7,7 +7,6 @@ import { darken } from 'polished';
 import OrderMessage from './OrderMessage';
 import OrderTypeSelector from './OrderTypeSelector';
 import OrderSummary from './OrderSummary';
-import OptionSelector from './OptionSelector';
 import TerritorySummary from './TerritorySummary';
 import { Button, BaseButton } from '../styles';
 import { colors, fontSizes, sizes, spacing } from '../variables';
@@ -86,39 +85,20 @@ export function renderOrderActions(props) {
   /* Gets the appropriate sub component based on the state of the order. */
   const {
     onClickConfirm,
-    onClickCancelOrder,
-    onClickOrderTypeChoice,
-    onClickPieceTypeChoice,
-    onClickTargetCoastChoice,
+    updateOrderState,
     orderTypeChoices,
     pieceTypeChoices,
     order,
-    existingOrder,
   } = props;
-  const { type, source, target, piece_type: pieceType, targetCoast } = order;
-
-  const cancelOrder = () => {
-    const { id } = existingOrder;
-    return onClickCancelOrder(id);
-  };
-
-  if (existingOrder) {
-    const choices = ['cancel order'];
-    return (
-      <OrderTypeSelector
-        summary={source}
-        choices={choices}
-        onClickChoice={cancelOrder}
-      />
-    );
-  }
+  const { type, source, target, piece_type: pieceType } = order;
 
   if (!type) {
     return (
       <OrderTypeSelector
+        name="type"
         summary={source}
         choices={orderTypeChoices}
-        onClickChoice={onClickOrderTypeChoice}
+        onClickChoice={updateOrderState}
       />
     );
   }
@@ -128,9 +108,10 @@ export function renderOrderActions(props) {
       if (!pieceType) {
         return (
           <OrderTypeSelector
+            name="piece_type"
             summary={source}
             choices={pieceTypeChoices}
-            onClickChoice={onClickPieceTypeChoice}
+            onClickChoice={updateOrderState}
           />
         );
       }
@@ -143,20 +124,20 @@ export function renderOrderActions(props) {
       if (!target) {
         return <OrderMessage order={order} />;
       }
-      const { named_coasts: namedCoasts } = target;
-      if (namedCoasts.length && !targetCoast) {
-        const choices = namedCoasts.map((namedCoast) => [
-          namedCoast.id,
-          namedCoast,
-          namedCoast.name,
-        ]);
-        return (
-          <OptionSelector
-            choices={choices}
-            onSelect={onClickTargetCoastChoice}
-          />
-        );
-      }
+      // const { named_coasts: namedCoasts } = target;
+      // if (namedCoasts.length && !targetCoast) {
+      //   const choices = namedCoasts.map((namedCoast) => [
+      //     namedCoast.id,
+      //     namedCoast,
+      //     namedCoast.name,
+      //   ]);
+      //   return (
+      //     <OptionSelector
+      //       choices={choices}
+      //       onSelect={onClickChoice('named_coast')}
+      //     />
+      //   );
+      // }
       return renderOrderConfirmation(order, onClickConfirm);
     }
   }
@@ -165,6 +146,7 @@ export function renderOrderActions(props) {
 const OrderDialogue = (props) => {
   const { nation, order, onClickCancel } = props;
   const { source } = order;
+
   if (!(source && nation)) return null;
 
   return (

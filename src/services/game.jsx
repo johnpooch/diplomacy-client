@@ -71,7 +71,7 @@ function getCreateGameForm() {
   return fetch(API.CREATEGAMEURL, options).then(handleResponse);
 }
 
-function create(token, data) {
+function createGame(token, data) {
   const headers = getHeaders(token);
   const options = {
     method: 'POST',
@@ -115,7 +115,7 @@ const gameService = {
   getGames,
   getChoices,
   getCreateGameForm,
-  create,
+  createGame,
   createOrder,
   destroyOrder,
   joinGame,

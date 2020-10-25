@@ -1,64 +1,46 @@
-import flagService from '../services/flag';
+/* eslint-disable no-param-reassign */
 
-const FLAGS_RECEIVED = 'FLAGS_RECEIVED';
-const FLAGS_REQUESTED = 'FLAGS_REQUESTED';
-const FLAGS_REQUEST_FAILED = 'FLAGS_REQUEST_FAILED';
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from '@reduxjs/toolkit';
 
-// Action creators
-export const flagsReceived = (payload) => ({
-  type: FLAGS_RECEIVED,
-  payload,
-});
+import { apiRequest, getOptions } from './api';
+import * as API from '../api';
 
-export const flagsRequested = () => ({
-  type: FLAGS_REQUESTED,
-});
-
-export const flagsRequestFailed = () => ({
-  type: FLAGS_REQUEST_FAILED,
-});
-
-const initialState = {
-  data: {},
-  loading: false,
-};
-
-// Reducer
-const flags = (state = initialState, action) => {
-  switch (action.type) {
-    case FLAGS_RECEIVED: {
-      const { payload } = action;
-      return { loading: false, data: payload };
-    }
-    case FLAGS_REQUESTED:
-      return { ...state, loading: true };
-    case FLAGS_REQUEST_FAILED:
-      return {
-        ...state,
-        loading: false,
-      };
-    default:
-      return state;
+const getFlags = createAsyncThunk(
+  'flags/getFlagsStatus',
+  async (_, thunkApi) => {
+    const url = API.LISTNATIONFLAGSURL;
+    const options = getOptions();
+    return apiRequest(url, options, thunkApi);
   }
-};
+);
 
-// Public actions
-export const loadFlags = () => {
-  return (dispatch) => {
-    dispatch(flagsRequested());
-    flagService.listFlags().then(
-      (data) => {
-        const payload = {};
-        data.forEach((item) => {
-          payload[item.id] = item.flag_as_data;
-        });
-        dispatch(flagsReceived(payload));
-      },
-      () => {
-        dispatch(flagsRequestFailed());
-      }
-    );
-  };
-};
+const flagAdapter = createEntityAdapter();
 
-export default flags;
+const flagSlice = createSlice({
+  name: 'flags',
+  initialState: flagAdapter.getInitialState({ loading: false }),
+  extraReducers: {
+    [getFlags.fulfilled]: (state, action) => {
+      flagAdapter.upsertMany(state, action);
+      state.loading = false;
+    },
+    [getFlags.pending]: (state) => {
+      state.loading = true;
+    },
+    [getFlags.rejected]: (state) => {
+      state.loading = false;
+    },
+  },
+});
+
+export const flagActions = { getFlags };
+
+export const flagSelectors = flagAdapter.getSelectors(
+  (state) => state.entities.flags
+);
+
+export default flagSlice.reducer;

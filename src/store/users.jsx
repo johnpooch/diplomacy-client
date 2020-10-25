@@ -1,28 +1,40 @@
-const USERS_RECEIVED = 'USERS_RECEIVED';
+/* eslint-disable no-param-reassign */
 
-export const usersReceived = (payload) => ({
-  type: USERS_RECEIVED,
-  payload,
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+
+import { gameSelectors } from './games';
+
+const userAdapter = createEntityAdapter();
+
+const userSlice = createSlice({
+  name: 'users',
+  initialState: userAdapter.getInitialState(),
+  reducers: {
+    usersReceived: userAdapter.setAll,
+  },
 });
 
-const initialState = {
-  byId: {},
-  allIds: [],
-  loading: false,
+export const userActions = {
+  ...userSlice.actions,
 };
 
-const usersReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case USERS_RECEIVED: {
-      const { payload } = action;
-      if (!payload) return initialState;
-      const byId = payload;
-      const allIds = Object.values(payload).map((value) => value.id);
-      return { byId, allIds };
-    }
-    default:
-      return state;
-  }
+const adapterSelectors = userAdapter.getSelectors(
+  (state) => state.entities.users
+);
+
+const selectByGameId = createSelector(
+  gameSelectors.selectById,
+  adapterSelectors.selectAll,
+  (game, users) => users.filter((t) => game.users.includes(t.id))
+);
+
+export const userSelectors = {
+  ...adapterSelectors,
+  selectByGameId,
 };
 
-export default usersReducer;
+export default userSlice.reducer;

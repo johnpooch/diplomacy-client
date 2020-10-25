@@ -1,30 +1,28 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import { register } from '../store/auth';
+import FieldError from './FieldError';
 import FormContainer from './FormContainer';
+import NonFieldErrors from './NonFieldErrors';
+import useForm from '../hooks/useForm';
 import { GenericForm, FormLabelText, Button } from '../styles';
 
 const RegisterForm = (props) => {
-  const [{ email, username, password }, setState] = useState({
+  const [{ email, username, password }, handleChange] = useForm({
     email: '',
     username: '',
     password: '',
   });
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
-  };
+  const [errors, setErrors] = useState({
+    nonFieldErrors: [],
+  });
+
+  const { onAuth } = props;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { onAuth } = props;
-    onAuth(username, email, password);
+    onAuth(setErrors, username, email, password);
   };
 
   return (
@@ -42,6 +40,7 @@ const RegisterForm = (props) => {
             onChange={handleChange}
             required
           />
+          <FieldError error={errors.email} />
         </label>
         <label htmlFor="username">
           <FormLabelText>Username</FormLabelText>
@@ -55,6 +54,7 @@ const RegisterForm = (props) => {
             onChange={handleChange}
             required
           />
+          <FieldError error={errors.username} />
         </label>
         <label htmlFor="password">
           <FormLabelText>Password</FormLabelText>
@@ -68,10 +68,12 @@ const RegisterForm = (props) => {
             onChange={handleChange}
             required
           />
+          <FieldError error={errors.password} />
         </label>
         <p>
           <Button type="submit">Register</Button>
         </p>
+        <NonFieldErrors errors={errors.non_field_errors} />
         <hr />
         <p>
           Already have an account? <Link to="/login">Log in</Link>
@@ -81,11 +83,4 @@ const RegisterForm = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAuth: (username, email, password) =>
-      dispatch(register(username, email, password)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(withRouter(RegisterForm));
+export default withRouter(RegisterForm);

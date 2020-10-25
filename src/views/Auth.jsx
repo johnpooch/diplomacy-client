@@ -9,6 +9,8 @@ import ForgotPasswordForm from '../components/ForgotPasswordForm';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import ResetPasswordForm from '../components/ResetPasswordForm';
+import { alertActions } from '../store/alerts';
+import { authActions } from '../store/auth';
 import { spacing } from '../variables';
 
 const Grid = styled.div`
@@ -26,7 +28,14 @@ const Grid = styled.div`
 `;
 
 const Auth = (props) => {
-  const { loggedIn, history } = props;
+  const {
+    forgotPassword,
+    history,
+    loggedIn,
+    login,
+    register,
+    resetPassword,
+  } = props;
 
   if (loggedIn) {
     history.push('/');
@@ -37,16 +46,81 @@ const Auth = (props) => {
       <Grid>
         <div />
         <Switch>
-          <Route exact path="/" component={LoginForm} />
-          <Route exact path="/login" component={LoginForm} />
-          <Route exact path="/register" component={RegisterForm} />
-          <Route exact path="/forgot-password" component={ForgotPasswordForm} />
-          <Route exact path="/reset-password" component={ResetPasswordForm} />
+          <Route exact path="/" render={() => <LoginForm onAuth={login} />} />
+          <Route
+            exact
+            path="/login"
+            render={() => <LoginForm onAuth={login} />}
+          />
+          <Route
+            exact
+            path="/register"
+            render={() => <RegisterForm onAuth={register} />}
+          />
+          <Route
+            exact
+            path="/forgot-password"
+            render={() => <ForgotPasswordForm onAuth={forgotPassword} />}
+          />
+          <Route
+            exact
+            path="/reset-password"
+            render={() => <ResetPasswordForm onAuth={resetPassword} />}
+          />
           <Route component={() => <Error text="Page not found" />} />
         </Switch>
       </Grid>
     </Page>
   );
+};
+
+const mapDispatchToProps = (dispatch, { history }) => {
+  const category = 'success';
+  const pending = true;
+  return {
+    forgotPassword: (setErrors, email) =>
+      dispatch(authActions.forgotPassword({ email })).then(
+        ({ error, payload }) => {
+          const message = `Thanks! Please check ${email} for a link to reset your password.`;
+          if (error) {
+            setErrors(payload);
+          } else {
+            dispatch(alertActions.alertsAdd({ message, category, pending }));
+            history.push('/login');
+          }
+        }
+      ),
+    login: (setErrors, username, password) =>
+      dispatch(authActions.login({ username, password })).then(
+        ({ payload }) => {
+          setErrors(payload);
+        }
+      ),
+    register: (setErrors, username, email, password) =>
+      dispatch(authActions.register({ username, email, password })).then(
+        ({ error, payload }) => {
+          const message = 'Account created! Log in to continue.';
+          if (error) {
+            setErrors(payload);
+          } else {
+            dispatch(alertActions.alertsAdd({ message, category, pending }));
+            history.push('/login');
+          }
+        }
+      ),
+    resetPassword: (setErrors, token, password) =>
+      dispatch(authActions.resetPassword({ token, password })).then(
+        ({ error, payload }) => {
+          const message = 'Password updated!';
+          if (error) {
+            setErrors(payload);
+          } else {
+            dispatch(alertActions.alertsAdd({ message, category, pending }));
+            history.push('/login');
+          }
+        }
+      ),
+  };
 };
 
 const mapStateToProps = (state) => {
@@ -55,4 +129,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withRouter(Auth));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Auth));
