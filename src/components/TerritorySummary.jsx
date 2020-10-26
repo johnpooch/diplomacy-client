@@ -53,17 +53,6 @@ const TerritorySummary = ({ nation, territory }) => {
     </p>
   );
 
-  // if (piece) {
-  //   const { nation } = piece;
-  //   const pieceControlledBy = game.getNation(nation);
-  //   elements.push(
-  //     <p key="piece">
-  //       <StyledSpan className="type">{piece.type}</StyledSpan>
-  //       {renderControlledBy(pieceControlledBy)}
-  //     </p>
-  //   );
-  // }
-
   return <StyledDiv>{elements}</StyledDiv>;
 };
 
