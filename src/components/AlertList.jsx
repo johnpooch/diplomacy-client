@@ -1,11 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import Alert from './Alert';
-import { alertSelectors } from '../store/alerts';
 
 const AlertList = (props) => {
-  const { alerts } = props;
+  const { alerts, onClick } = props;
   if (!alerts || !alerts.length) return null;
   const elements = [];
   alerts.forEach((alert) => {
@@ -16,6 +14,7 @@ const AlertList = (props) => {
           id={alert.id}
           text={alert.message}
           category={alert.category}
+          onClick={onClick}
         />
       );
     }
@@ -23,10 +22,4 @@ const AlertList = (props) => {
   return <ul>{elements}</ul>;
 };
 
-const mapStateToProps = (state) => {
-  return {
-    alerts: alertSelectors.selectAll(state),
-  };
-};
-
-export default connect(mapStateToProps, null)(AlertList);
+export default AlertList;

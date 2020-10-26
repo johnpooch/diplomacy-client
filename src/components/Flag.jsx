@@ -1,10 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { sizes } from '../variables';
-
-import { flagSelectors } from '../store/flags';
 
 const flagSizes = {
   small: 30,
@@ -18,8 +15,8 @@ const StyledDiv = styled.div`
 `;
 
 const Flag = (props) => {
-  const { flags, nationId, size } = props;
-  const paths = flags[nationId].flag_as_data;
+  const { nation, size } = props;
+  const paths = nation.flag_as_data;
   const SVGPaths = [];
   paths.forEach((pathData) => {
     const { fill, path } = pathData;
@@ -34,10 +31,4 @@ const Flag = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    flags: flagSelectors.selectEntities(state),
-  };
-};
-
-export default connect(mapStateToProps, null)(Flag);
+export default Flag;

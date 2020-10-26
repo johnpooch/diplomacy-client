@@ -32,7 +32,7 @@ const ParticipantActive = ({ participant }) => {
       color={color}
     >
       <span className="username">{username}</span>
-      <Flag nationId={nation.id} size="small" />
+      <Flag nation={nation} size="small" />
     </StyledDiv>
   );
 };

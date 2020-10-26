@@ -13,10 +13,19 @@ import AlertList from '../components/AlertList';
 import Header from '../components/Header';
 import PrivateRoute from '../components/PrivateRoute';
 
-import { alertActions } from '../store/alerts';
+import { authActions } from '../store/auth';
+import { alertActions, alertSelectors } from '../store/alerts';
 
 const App = (props) => {
-  const { clearAndPromoteAlerts } = props;
+  const {
+    alerts,
+    alertsClear,
+    clearAndPromoteAlerts,
+    loggedIn,
+    logout,
+    user,
+  } = props;
+
   const location = useLocation();
 
   useEffect(() => {
@@ -25,13 +34,33 @@ const App = (props) => {
 
   return (
     <div>
-      <Header />
-      <AlertList />
+      <Header loggedIn={loggedIn} onLogout={logout} user={user} />
+      <AlertList alerts={alerts} onClick={alertsClear} />
       <Switch>
-        <PrivateRoute exact path="/create-game" component={CreateGame} />
-        <PrivateRoute exact path="/pre-game/:slug" component={PreGame} />
-        <PrivateRoute exact path="/game/:slug" component={Game} />
-        <PrivateRoute exact path="/" component={BrowseGames} />
+        <PrivateRoute
+          exact
+          path="/create-game"
+          component={CreateGame}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          exact
+          path="/pre-game/:slug"
+          component={PreGame}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          exact
+          path="/game/:slug"
+          component={Game}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          exact
+          path="/"
+          component={BrowseGames}
+          loggedIn={loggedIn}
+        />
         <Route path="/" component={Auth} />
         <Route component={() => <Error text="Page not found" />} />
       </Switch>
@@ -39,12 +68,31 @@ const App = (props) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  const { loggedIn, user } = state.auth;
+  return {
+    alerts: alertSelectors.selectAll(state),
+    loggedIn,
+    user,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
+  const alertsClear = (id) => {
+    dispatch(alertActions.alertsClear(id));
+  };
   const clearAndPromoteAlerts = () => {
     dispatch(alertActions.alertsClearActive());
     dispatch(alertActions.alertsPromotePending());
   };
-  return { clearAndPromoteAlerts };
+  const logout = () => {
+    dispatch(authActions.logout());
+  };
+  return {
+    alertsClear,
+    clearAndPromoteAlerts,
+    logout,
+  };
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 import UserAccount from './UserAccount';
 import { colors, fontSizes, sizes, spacing } from '../variables';
@@ -68,34 +67,39 @@ const StyledUserAccount = styled(UserAccount)`
   display: none;
 `;
 
-function renderLoggedInHeader() {
-  return (
-    <StyledDiv>
-      <nav className="nav">
-        <StyledNavLink className="logo" exact to="/">
-          Diplomacy
-        </StyledNavLink>
-        <StyledNavLink exact to="/create-game">
-          Create game
-        </StyledNavLink>
-      </nav>
-      <StyledUserAccount />
-    </StyledDiv>
-  );
-}
-
-function renderLoggedOutHeader() {
-  return (
-    <StyledDiv>
-      <NavLink className="logo" exact to="/">
-        Diplomacy
-      </NavLink>
-    </StyledDiv>
-  );
-}
-
 const Header = (props) => {
-  const { loggedIn } = props;
+  const { loggedIn, onLogout, user } = props;
+
+  const renderLoggedInHeader = () => {
+    return (
+      <StyledDiv>
+        <nav className="nav">
+          <StyledNavLink className="logo" exact to="/">
+            Diplomacy
+          </StyledNavLink>
+          <StyledNavLink exact to="/create-game">
+            Create game
+          </StyledNavLink>
+        </nav>
+        <StyledUserAccount
+          user={user}
+          loggedIn={loggedIn}
+          onLogout={onLogout}
+        />
+      </StyledDiv>
+    );
+  };
+
+  const renderLoggedOutHeader = () => {
+    return (
+      <StyledDiv>
+        <NavLink className="logo" exact to="/">
+          Diplomacy
+        </NavLink>
+      </StyledDiv>
+    );
+  };
+
   return (
     <StyledHeader>
       {loggedIn ? renderLoggedInHeader() : renderLoggedOutHeader()}
@@ -103,10 +107,4 @@ const Header = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.auth.loggedIn,
-  };
-};
-
-export default connect(mapStateToProps, null)(Header);
+export default Header;

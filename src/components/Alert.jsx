@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { darken, lighten } from 'polished';
 
 import { PageWrapper, BaseButton } from '../styles';
 import { colors, sizes, spacing, fontSizes } from '../variables';
-import { alertActions } from '../store/alerts';
 
 const StyledListItem = styled.li`
   background: ${(props) => lighten(0.4, colors[props.category])};
@@ -64,10 +62,4 @@ const Alert = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onClick: (id) => dispatch(alertActions.alertsClear(id)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Alert);
+export default Alert;
