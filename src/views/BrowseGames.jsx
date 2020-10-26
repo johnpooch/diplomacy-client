@@ -13,7 +13,6 @@ import { variantActions } from '../store/variants';
 
 import { getDenormalizedGamesList } from '../store/denormalizers';
 import { gameActions } from '../store/games';
-import { flagActions } from '../store/flags';
 
 const StyledDiv = styled.div`
   display: grid;
@@ -74,7 +73,6 @@ const mapDispatchToProps = (dispatch) => {
   const prepareBrowseGames = (token) => {
     dispatch(variantActions.getVariants({ token }));
     dispatch(gameActions.getGames({ token }));
-    dispatch(flagActions.getFlags());
     dispatch(choiceActions.getChoices());
   };
   const getGames = (token, filters) =>
