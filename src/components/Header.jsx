@@ -69,6 +69,7 @@ const StyledUserAccount = styled(UserAccount)`
 
 const Header = (props) => {
   const { loggedIn, onLogout, user } = props;
+
   const renderLoggedInHeader = () => {
     return (
       <StyledDiv>
