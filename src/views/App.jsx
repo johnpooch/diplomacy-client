@@ -1,35 +1,67 @@
 import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { Switch, Route, useLocation } from 'react-router-dom';
 
+import Auth from './Auth';
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
 import Error from './Error';
 import Game from './Game';
-import Login from './Login';
-import Register from './Register';
-import AlertList from '../components/AlertList';
-import LoggedOutRoute from '../components/LoggedOutRoute';
-import PrivateRoute from '../components/PrivateRoute';
-import alertActions from '../store/actions/alerts';
+import PreGame from './PreGame';
 
-const App = () => {
-  const dispatch = useDispatch();
+import AlertList from '../components/AlertList';
+import Header from '../components/Header';
+import PrivateRoute from '../components/PrivateRoute';
+
+import { authActions } from '../store/auth';
+import { alertActions, alertSelectors } from '../store/alerts';
+
+const App = (props) => {
+  const {
+    alerts,
+    alertsClear,
+    clearAndPromoteAlerts,
+    loggedIn,
+    logout,
+    user,
+  } = props;
+
   const location = useLocation();
+
   useEffect(() => {
-    dispatch(alertActions.clearActive());
-    dispatch(alertActions.promotePending());
+    clearAndPromoteAlerts();
   }, [location.pathname]);
 
   return (
     <div>
-      <AlertList />
+      <Header loggedIn={loggedIn} onLogout={logout} user={user} />
+      <AlertList alerts={alerts} onClick={alertsClear} />
       <Switch>
-        <LoggedOutRoute exact path="/login" component={Login} />
-        <LoggedOutRoute exact path="/register" component={Register} />
-        <PrivateRoute exact path="/create-game" component={CreateGame} />
-        <PrivateRoute exact path="/game/:id" component={Game} />
-        <PrivateRoute exact path="/" component={BrowseGames} />
+        <PrivateRoute
+          exact
+          path="/create-game"
+          component={CreateGame}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          exact
+          path="/pre-game/:slug"
+          component={PreGame}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          exact
+          path="/game/:slug"
+          component={Game}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          exact
+          path="/"
+          component={BrowseGames}
+          loggedIn={loggedIn}
+        />
+        <Route path="/" component={Auth} />
         <Route component={() => <Error text="Page not found" />} />
       </Switch>
     </div>
@@ -37,10 +69,30 @@ const App = () => {
 };
 
 const mapStateToProps = (state) => {
+  const { loggedIn, user } = state.auth;
   return {
-    alerts: state.alerts,
-    loggedIn: state.login.loggedIn,
+    alerts: alertSelectors.selectAll(state),
+    loggedIn,
+    user,
   };
 };
 
-export default connect(mapStateToProps, null)(App);
+const mapDispatchToProps = (dispatch) => {
+  const alertsClear = (id) => {
+    dispatch(alertActions.alertsClear(id));
+  };
+  const clearAndPromoteAlerts = () => {
+    dispatch(alertActions.alertsClearActive());
+    dispatch(alertActions.alertsPromotePending());
+  };
+  const logout = () => {
+    dispatch(authActions.logout());
+  };
+  return {
+    alertsClear,
+    clearAndPromoteAlerts,
+    logout,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

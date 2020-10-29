@@ -1,26 +1,18 @@
-import { createBrowserHistory } from 'history';
-import { createStore, compose, applyMiddleware } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { routerMiddleware } from 'connected-react-router';
 
-import createRootReducer from './reducers/rootReducer';
+import reducer from './reducer';
+import gameMiddleware from './middleware/game';
+import variantMiddleware from './middleware/variant';
 
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-export const history = createBrowserHistory();
-
-export default function configureStore(preloadedState) {
-  const store = createStore(
-    createRootReducer(history),
-    preloadedState,
-    composeEnhancer(
-      applyMiddleware(
-        routerMiddleware(history),
-        thunkMiddleware,
-        createLogger()
-      )
-    )
-  );
-  return store;
+export default function (history) {
+  return configureStore({
+    reducer: reducer(history),
+    middleware: [
+      routerMiddleware(history), // for dispatching history actions
+      ...getDefaultMiddleware(),
+      ...gameMiddleware,
+      ...variantMiddleware,
+    ],
+  });
 }

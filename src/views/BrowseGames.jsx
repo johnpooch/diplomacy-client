@@ -1,70 +1,84 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import styled from '@emotion/styled';
 
-import GameFilters from '../components/GameFilters';
+import { spacing } from '../variables';
+
 import GameSummaryList from '../components/GameSummaryList';
+import GameFilters from '../components/GameFilters';
 import Page from '../components/Page';
-import gameService from '../services/game';
 
-class BrowseGames extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      games: null,
-      choices: null,
-      isLoaded: false,
-    };
-    this.getFilteredGames = this.getFilteredGames.bind(this);
+import { choiceActions } from '../store/choices';
+import { variantActions } from '../store/variants';
+
+import { getDenormalizedGamesList } from '../store/denormalizers';
+import { gameActions } from '../store/games';
+
+const StyledDiv = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-row-gap: ${spacing[5]}px;
+  grid-column-gap: ${spacing[5]}px;
+`;
+
+const BrowseGames = (props) => {
+  const {
+    choices,
+    getGames,
+    games,
+    isLoaded,
+    location,
+    prepareBrowseGames,
+    token,
+  } = props;
+
+  useEffect(() => {
+    prepareBrowseGames(token);
+  }, [location.pathname]);
+
+  const filterGames = (filters) => {
+    getGames(token, filters);
+  };
+
+  return (
+    <Page headingText={null} isLoaded>
+      <StyledDiv>
+        <div>
+          <GameFilters callback={filterGames} choices={choices} />
+          <GameSummaryList games={games} isLoaded={isLoaded} />
+        </div>
+        <div>My active games</div>
+      </StyledDiv>
+    </Page>
+  );
+};
+
+const mapStateToProps = (state, { location }) => {
+  const { browseGamesLoaded } = state.entities.games;
+  let games = null;
+  if (browseGamesLoaded) {
+    games = getDenormalizedGamesList(state);
   }
+  const isLoaded = browseGamesLoaded;
+  return {
+    choices: state.choices,
+    games,
+    isLoaded,
+    location,
+    token: state.auth.token,
+  };
+};
 
-  componentDidMount() {
-    this.getGamesAndChoices();
-  }
+const mapDispatchToProps = (dispatch) => {
+  const prepareBrowseGames = (token) => {
+    dispatch(variantActions.getVariants({ token }));
+    dispatch(gameActions.getGames({ token }));
+    dispatch(choiceActions.getChoices());
+  };
+  const getGames = (token, filters) =>
+    dispatch(gameActions.getGames({ token, filters }));
 
-  getGamesAndChoices() {
-    const fetchGames = gameService.get();
-    const fetchChoices = gameService.getChoices();
-    Promise.all([fetchGames, fetchChoices])
-      .then(([games, choices]) => {
-        this.setState({
-          games,
-          choices,
-          isLoaded: true,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          isLoaded: true,
-        });
-      });
-  }
+  return { getGames, prepareBrowseGames };
+};
 
-  getFilteredGames(filters) {
-    gameService.get(filters).then((json) => {
-      const games = json.length ? json.slice() : [];
-      this.setState({ games, isLoaded: true });
-    });
-  }
-
-  getHeadingText() {
-    const { games } = this.state;
-    let text = 'No games available';
-    if (games && games.length === 1) {
-      text = '1 game available';
-    } else if (games && games.length > 1) {
-      text = `${games.length} games available`;
-    }
-    return text;
-  }
-
-  render() {
-    const { choices, games, isLoaded } = this.state;
-    return (
-      <Page headingText={this.getHeadingText()} isLoaded={isLoaded}>
-        <GameFilters choices={choices} callback={this.getFilteredGames} />
-        <GameSummaryList games={games} />
-      </Page>
-    );
-  }
-}
-
-export default BrowseGames;
+export default connect(mapStateToProps, mapDispatchToProps)(BrowseGames);

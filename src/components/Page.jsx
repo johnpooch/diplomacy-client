@@ -1,15 +1,27 @@
 import React from 'react';
+import styled from '@emotion/styled';
 
-import Header from './Header';
-import Heading from './Heading';
 import Loading from './Loading';
+import Heading from './Heading';
 import { PageWrapper } from '../styles';
+import { colors } from '../variables';
+
+const StyledMain = styled.main`
+  background: ${colors.offwhite};
+  min-height: 100vh;
+`;
 
 const Page = (props) => {
   const { children, headingText, isLoaded } = props;
 
   const renderPageWrapper = () => {
-    if (!isLoaded) return <Loading />;
+    if (!isLoaded) {
+      return (
+        <PageWrapper>
+          <Loading />
+        </PageWrapper>
+      );
+    }
     return (
       <PageWrapper>
         {headingText ? <Heading text={headingText} /> : null}
@@ -18,12 +30,7 @@ const Page = (props) => {
     );
   };
 
-  return (
-    <main>
-      <Header />
-      {renderPageWrapper()}
-    </main>
-  );
+  return <StyledMain>{renderPageWrapper()}</StyledMain>;
 };
 
 export default Page;

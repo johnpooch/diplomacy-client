@@ -8,7 +8,26 @@ export const USERGAMESURL = `${serviceURI}games/mygames`;
 export const CREATEGAMEURL = `${serviceURI}games/create`;
 
 // Game
-export const GAMESTATEURL = `${serviceURI}game/<int:game>`;
+export const GAMESTATEURL = `${serviceURI}game/<game>`;
+export const JOINGAMEURL = `${serviceURI}game/<game>/join`;
+
+export const CREATEORDERURL = `${serviceURI}game/<game>/order`;
+export const DESTROYORDERURL = `${serviceURI}game/<game>/order/<pk>`;
+export const LISTORDERSURL = `${serviceURI}game/<pk>/orders`;
+
+export const RETRIEVEPRIVATENATIONSTATE = `${serviceURI}game/<game>/nation-state`;
+
+export const FINALIZEORDERSURL = `${serviceURI}game/finalize/<pk>`;
+
+// Flags
+export const LISTNATIONFLAGSURL = `${serviceURI}list-nation-flags`;
+
+// Variants
+export const LISTVARIANTS = `${serviceURI}variants`;
+
+// Password reset
+export const PASSWORDRESET = `${serviceURI}password_reset/`;
+export const PASSWORDRESETCONFIRM = `${serviceURI}password_reset/confirm/`;
 
 // Auth
 export const LOGINURL = `${authURL}login`;

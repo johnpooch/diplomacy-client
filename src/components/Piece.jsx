@@ -6,7 +6,12 @@ import { lighten } from 'polished';
 import { colors } from '../variables';
 
 const StyledCircle = styled.circle`
-  fill: rgba(0, 0, 0, 0.2);
+  fill: ${(props) =>
+    props.userCanOrder && !props.hasOrders ? 'white' : 'rgba(0, 0, 0, 0.25)'};
+  stroke: ${(props) => props.strokeColor};
+  stroke-width: 4px;
+  stroke-dasharray: ${(props) => (props.mustRetreat ? '2, 12' : 'none')};
+  stroke-linecap: round;
   pointer-events: none;
 `;
 
@@ -17,41 +22,51 @@ const StyledPath = styled.path`
   pointer-events: none;
 `;
 
-const renderIcon = (props, faIcon, scale, shadowSize = 20) => {
-  const { nation, x, y } = props;
+const getStrokeColor = (mustRetreat, userCanOrder) => {
+  if (mustRetreat) return colors.error;
+  if (userCanOrder) return 'white';
+  return 'transparent';
+};
 
+const pieceIcons = {
+  army: faChessPawn,
+  fleet: faAnchor,
+};
+
+const pieceScales = {
+  army: 0.07,
+  fleet: 0.07,
+};
+
+const Piece = (props) => {
+  const { piece } = props;
+  if (!piece) return null;
+  const { nation, x, y, mustRetreat, type, userCanOrder, hasOrders } = piece;
+  const faIcon = pieceIcons[type];
+  const scale = pieceScales[type];
   const w = faIcon.icon[0];
   const h = faIcon.icon[1];
-
-  const dx = x - (scale * w) / 2;
-  const dy = y - (scale * h) / 2;
+  const dx = x - (scale * w) / 2 + 195;
+  const dy = y - (scale * h) / 2 + 170;
+  const shadowSize = 20;
 
   const color = lighten(0.2, colors.nations[nation]);
 
   return (
-    <g>
-      <StyledCircle r={shadowSize} cx={x} cy={y} />;
-      <StyledPath
-        d={faIcon.icon[4]}
-        color={color}
-        transform={`translate(${dx}, ${dy}) scale(${scale})`}
+    <g transform={`translate(${dx}, ${dy}) scale(${scale})`}>
+      <StyledCircle
+        r={shadowSize}
+        cx={dx}
+        cy={dy}
+        strokeColor={getStrokeColor(mustRetreat, userCanOrder)}
+        mustRetreat={mustRetreat}
+        userCanOrder={userCanOrder}
+        hasOrders={hasOrders}
       />
+      ;
+      <StyledPath d={faIcon.icon[4]} color={color} />
     </g>
   );
-};
-
-const Piece = (props) => {
-  const { type } = props;
-
-  if (type === 'army') {
-    return renderIcon(props, faChessPawn, 0.06);
-  }
-
-  if (type === 'fleet') {
-    return renderIcon(props, faAnchor, 0.05);
-  }
-
-  return null;
 };
 
 export default Piece;

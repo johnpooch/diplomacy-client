@@ -1,15 +1,46 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { dateDisplayFormat } from '../utils';
-import { colors, spacing } from '../variables';
+import { colors, fontSizes, spacing, sizes } from '../variables';
+
+import GameStatus from './GameStatus';
+import PlayerCount from './PlayerCount';
+import ParticipantList from './ParticipantList';
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  background: ${colors.white};
+  padding: ${spacing[2]}px;
+  border: solid 1px ${colors.border};
+  border-radius: ${sizes[0]}px;
+
+  &:hover .name {
+    text-decoration: underline;
+`;
 
 const StyledListItem = styled.li`
+  border-left: ${sizes.line}px solid transparent;
+  border-color: ${(props) => props.color};
+  padding: 0 ${spacing[3]}px;
+
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-column-gap: ${spacing[5]}px;
+
+  .game-status {
+    margin-bottom: 0.5rem;
+  }
+  .secondary-text {
+    font-size: ${fontSizes.sans[2]}px;
+    color: ${colors.lightText};
+    line-height: 1.2rem;
+  }
+
   a {
     text-decoration: none;
-    color: ${colors.base};
+    color: inherit;
 
     &:hover .name {
       text-decoration: underline;
@@ -17,7 +48,9 @@ const StyledListItem = styled.li`
   }
 
   header {
+    padding-bottom: ${spacing[2]}px;
     margin-bottom: ${spacing[2]}px;
+    border-bottom: 1px solid ${colors.lightLine};
   }
 
   p {
@@ -27,7 +60,6 @@ const StyledListItem = styled.li`
   }
 
   .name {
-    font-weight: 600;
   }
 
   .label {
@@ -38,45 +70,60 @@ const StyledListItem = styled.li`
     }
   }
 
-  .value {
-    text-transform: capitalize;
+  .player-count {
+    margin-bottom: ${spacing[2]}px;
+    text-align: right;
   }
 `;
 
-class GameSummary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const GameSummary = (props) => {
+  const { game, currentTurn } = props;
+  const {
+    id,
+    slug,
+    name,
+    description,
+    participants,
+    status,
+    userNation,
+    num_players: numPlayers,
+  } = game;
 
-  render() {
-    const { createdAt, id, name, status } = this.props;
-    const date = new Date(createdAt);
-    const dateString = date.toLocaleDateString('en-GB', dateDisplayFormat);
-    return (
-      <StyledListItem key={id}>
-        <Link to={`/game/${id}`}>
+  let color = 'transparent';
+  if (userNation) {
+    color = colors.nations[userNation.id];
+  }
+  const link = status === 'active' ? `/game/${slug}` : `/pre-game/${slug}`;
+  return (
+    <StyledLink to={link}>
+      <StyledListItem key={id} color={color}>
+        <div>
           <article>
+            <p className="game-status secondary-text">
+              <GameStatus status={status} turn={currentTurn} />
+            </p>
             <header>
               <span className="name">{name}</span>
             </header>
             <section>
-              <p className="created-at">
-                <span className="label">Created</span>
-                <time className="value" dateTime={createdAt}>
-                  {dateString}
-                </time>
+              <p className="description secondary-text">
+                <span className="value">{description}</span>
               </p>
-              <p className="status">
-                <span className="label">Status</span>
-                <span className="value">{status}</span>
-              </p>
+              <p className="players" />
             </section>
           </article>
-        </Link>
+        </div>
+        <div>
+          <PlayerCount
+            numParticipants={participants.length}
+            numPlayers={numPlayers}
+          />
+          <ParticipantList game={game} />
+        </div>
+        <div />
       </StyledListItem>
-    );
-  }
-}
+    </StyledLink>
+  );
+};
 
-export default connect(null, null)(GameSummary);
+export default GameSummary;

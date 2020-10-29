@@ -1,78 +1,97 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Error from './Error';
-import JoinGame from './JoinGame';
-import PlayGame from './PlayGame';
-import * as API from '../api';
+import Loading from '../components/Loading';
+import Map from '../components/Map';
+import StatusBar from '../components/StatusBar';
+import { gameActions, gameSelectors } from '../store/games';
+import { nationStateActions } from '../store/nationStates';
+import { orderActions } from '../store/orders';
+import { variantActions } from '../store/variants';
+import { getDenormalizedGameDetail } from '../store/denormalizers';
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props);
+const Game = (props) => {
+  /* Game board view. Calls the API to grab the detail data for the given game.
+   * The view loads until the game detail data is in the store. */
 
-    this.state = {
-      isLoaded: false,
-    };
+  const {
+    createOrder,
+    finalizeOrders,
+    game,
+    location,
+    prepareGameDetail,
+    slug,
+    token,
+  } = props;
+
+  const [activeTurnId, setActiveTurn] = useState();
+
+  useEffect(() => {
+    prepareGameDetail(token, slug);
+  }, [location.pathname]);
+
+  if (!game) return <Loading />;
+
+  // Set the active turn to the current turn on initial load
+  let turn = null;
+  if (!activeTurnId) {
+    turn = game.turns.find((t) => t.current_turn === true);
+    setActiveTurn(turn.id);
+  } else {
+    turn = game.turns.find((t) => t.id === activeTurnId);
   }
 
-  componentDidMount() {
-    const { match } = this.props;
-    this.getGame(match.params.id);
-  }
+  const { userNation } = turn;
 
-  // TODO move to service
-  getGame(id) {
-    const { headers } = this.props;
-    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);
-    fetch(GAMESTATEURL, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
+  const createOrderCallback = (data) => {
+    createOrder(token, slug, data);
+  };
+
+  return (
+    <div>
+      <Map game={game} turn={turn} createOrder={createOrderCallback} />
+      <StatusBar
+        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
+        turn={turn}
+        _setTurn={(_id) => {
+          setActiveTurn(_id);
+        }}
+      />
+    </div>
+  );
+};
+
+const mapStateToProps = (state, { match }) => {
+  const { slug } = match.params;
+  const { token, user } = state.auth;
+  let game = gameSelectors.selectBySlug(state, slug);
+  const gameDetailInStore = game && game.detailLoaded;
+  game = gameDetailInStore
+    ? getDenormalizedGameDetail(state, game.id, user)
+    : null;
+  return { game, slug, token };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const prepareGameDetail = (token, slug) => {
+    dispatch(variantActions.getVariants({ token })).then(() => {
+      dispatch(gameActions.getGameDetail({ token, slug })).then(
+        ({ payload }) => {
+          const { id } = payload.turns.find((t) => t.current_turn === true);
+          dispatch(orderActions.listOrders({ token, id }));
         }
-        return null;
-      })
-      .then((json) => {
-        const game = json;
-        this.setState({
-          game,
-          isLoaded: true,
-        });
-      })
-      .catch(() => {
-        this.setState({
-          isLoaded: true,
-        });
-      });
-  }
+      );
+    });
+  };
+  const finalizeOrders = (token, id) => {
+    dispatch(nationStateActions.finalizeOrders({ token, id }));
+  };
+  const createOrder = (token, slug, data) => {
+    dispatch(orderActions.createOrder({ token, slug, data }));
+  };
 
-  static getCurrentTurn(game) {
-    const { turns } = game;
-    for (let i = 0; i < turns.length; i += 1) {
-      if (turns[i].current_turn === true) {
-        return turns[i];
-      }
-    }
-    return null;
-  }
+  return { createOrder, finalizeOrders, prepareGameDetail };
+};
 
-  render() {
-    const { isLoaded, game } = this.state;
-
-    if (isLoaded) {
-      if (!game) return <Error text="Game not found" />;
-
-      const { status } = game;
-      if (status === 'active') {
-        // TODO handle already joined
-        return <PlayGame game={game} />;
-      }
-    }
-
-    return <JoinGame game={game} isLoaded={isLoaded} />;
-  }
-}
-
-export default withRouter(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

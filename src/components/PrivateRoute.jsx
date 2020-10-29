@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => {
@@ -14,10 +13,4 @@ const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.login.loggedIn,
-  };
-};
-
-export default connect(mapStateToProps, null)(PrivateRoute);
+export default PrivateRoute;
