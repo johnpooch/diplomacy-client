@@ -1,3 +1,5 @@
+import { OrderTypes, Phases, PieceTypes } from './base';
+
 export const initialOrderState = {
   aux: null,
   source: null,
@@ -7,10 +9,13 @@ export const initialOrderState = {
 };
 
 export class Order {
-  constructor(orderForm, turn, setOrder) {
+  /* Wrapper class for the order form. Provides methods for updating the state
+   * of the order form. */
+
+  constructor(orderForm, turn, setOrderForm) {
     this.orderForm = orderForm;
     this.turn = turn;
-    this.setOrder = setOrder;
+    this.setOrderForm = setOrderForm;
 
     const { aux, source, target, targetCoast, type } = orderForm;
     const { territories, userNation } = turn;
@@ -29,14 +34,23 @@ export class Order {
   }
 
   clickTerritory(territory) {
+    /* Determine whether clicking the territory is valid. If valid, update the
+     * order form */
     if (!territory.id) return;
     if (!this.source && !this.userCanOrder(territory)) return;
+    if (
+      [OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(this.type) &&
+      !this.aux &&
+      territory.id === this.source.id
+    )
+      return;
+    if (this.source && !this.target && territory.id === this.source.id) return;
     const attr = this.getOrderAttrToUpdate();
-    this.setOrder({ ...this.orderForm, [attr]: territory.id });
+    this.setOrderForm({ ...this.orderForm, [attr]: territory.id });
   }
 
   clickOrderTypeChoice(_, type) {
-    this.setOrder({ ...this.orderForm, type });
+    this.setOrderForm({ ...this.orderForm, type });
   }
 
   getOrderAttrToUpdate() {
@@ -45,12 +59,12 @@ export class Order {
     let attr = 'source';
     if (this.source && !this.type) return 'type';
     switch (this.type) {
-      case 'retreat':
-      case 'move':
+      case OrderTypes.RETREAT:
+      case OrderTypes.MOVE:
         if (!this.target) attr = 'target';
         break;
-      case 'support':
-      case 'convoy':
+      case OrderTypes.SUPPORT:
+      case OrderTypes.CONVOY:
         if (!this.aux) return 'aux';
         if (!this.target) return 'target';
         break;
@@ -65,12 +79,12 @@ export class Order {
     if (!(this.userNation && this.currentTurn)) return false;
 
     // Orders turn
-    if (this.turn.phase === 'Order') {
+    if (this.turn.phase === Phases.ORDER) {
       return territory.piece && territory.piece.nation === this.userNation.id;
     }
 
     // Retreat turn
-    if (this.turn.phase === 'Retreat and Disband') {
+    if (this.turn.phase === Phases.RETREAT) {
       return (
         territory.dislodgedPiece &&
         territory.dislodgedPiece.nation === this.userNation.id
@@ -100,32 +114,38 @@ export class Order {
   }
 
   getOrderTypeChoices() {
+    /* Given the current turn phase and the piece being ordered, determine
+     * which order types are available to the piece. */
     if (!this.source) return null;
     if (!this.source.piece) return null;
     const { type: territoryType } = this.source;
-    // TODO use constants
-    if (this.turn.phase === 'Order') {
-      const options = ['hold', 'move', 'support'];
+    if (this.turn.phase === Phases.ORDER) {
+      const options = [OrderTypes.HOLD, OrderTypes.MOVE, OrderTypes.SUPPORT];
       const { type: pieceType } = this.source.piece;
-      if (pieceType === 'fleet' && territoryType === 'sea') {
-        options.push('convoy');
+      if (pieceType === PieceTypes.FLEET && territoryType === 'sea') {
+        options.push(OrderTypes.CONVOY);
       }
       return options;
     }
-    if (this.turn.phase === 'Retreat and Disband') {
-      const options = ['retreat', 'disband'];
+    if (this.turn.phase === Phases.RETREAT) {
+      const options = [OrderTypes.RETREAT, OrderTypes.DISBAND];
       return options;
     }
-    return ['build'];
+    return [OrderTypes.BUILD];
   }
 
   getPieceTypeChoices() {
-    if (this.source && this.turn.phase === 'Build')
-      return this.source.type === 'coastal' ? ['army', 'fleet'] : ['army'];
+    /* If the turn is a build phase, determine which piece types can be build
+     * by the source territory */
+    if (this.source && this.turn.phase === Phases.BUILD)
+      return this.source.type === 'coastal'
+        ? [PieceTypes.ARMY, PieceTypes.FLEET]
+        : [PieceTypes.ARMY];
     return null;
   }
 
   reset() {
-    this.setOrder(initialOrderState);
+    /* Set the order form to its initial state. */
+    this.setOrderForm(initialOrderState);
   }
 }
