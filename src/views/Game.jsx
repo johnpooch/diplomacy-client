@@ -10,6 +10,7 @@ import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { variantActions } from '../store/variants';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
+import { initialOrderState, Order } from '../game/order';
 
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
@@ -25,6 +26,7 @@ const Game = (props) => {
     token,
   } = props;
 
+  const [orderForm, setOrderForm] = useState(initialOrderState);
   const [activeTurnId, setActiveTurn] = useState();
 
   useEffect(() => {
@@ -32,25 +34,28 @@ const Game = (props) => {
   }, [location.pathname]);
 
   if (!game) return <Loading />;
+  const currentTurn = game.turns.find((t) => t.current_turn === true);
 
   // Set the active turn to the current turn on initial load
   let turn = null;
   if (!activeTurnId) {
-    turn = game.turns.find((t) => t.current_turn === true);
+    turn = currentTurn;
     setActiveTurn(turn.id);
   } else {
     turn = game.turns.find((t) => t.id === activeTurnId);
   }
 
   const { userNation } = turn;
+  const order = new Order(orderForm, currentTurn, setOrderForm);
 
-  const createOrderCallback = (data) => {
-    createOrder(token, slug, data);
+  const postOrder = () => {
+    createOrder(token, slug, orderForm);
+    order.reset();
   };
 
   return (
     <div>
-      <Map game={game} turn={turn} createOrder={createOrderCallback} />
+      <Map game={game} order={order} turn={turn} postOrder={postOrder} />
       <StatusBar
         finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         turn={turn}

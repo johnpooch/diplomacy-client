@@ -46,25 +46,21 @@ const getFillColor = (territory) => {
 };
 
 const Territory = (props) => {
-  const {
-    territory,
-    hovering,
-    territoryOrderState,
-    panning,
-    callbacks,
-  } = props;
+  const { territory, hovering, order, panning, callbacks } = props;
   const {
     abbreviation,
+    dislodgedPiece,
+    id,
+    name,
+    piece,
     supply_center_x: scx,
     supply_center_y: scy,
     text_x: tx,
     text_y: ty,
-    piece,
-    dislodgedPiece,
-    name,
   } = territory;
 
   const color = getFillColor(territory);
+  const territoryOrderState = order.getTerritoryOrderState(id);
 
   return (
     <StyledTerritory
