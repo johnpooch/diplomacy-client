@@ -1,18 +1,18 @@
 /* eslint-disable no-param-reassign */
 
 import { gameSelectors } from './games';
-import { mapDataSelectors } from './mapData';
 import { nationSelectors } from './nations';
 import { nationStateSelectors } from './nationStates';
 import { orderSelectors } from './orders';
 import { pieceSelectors } from './pieces';
 import { pieceStateSelectors } from './pieceStates';
-import { territoryDataSelectors } from './territoryData';
 import { territorySelectors } from './territories';
 import { territoryStateSelectors } from './territoryStates';
 import { turnSelectors } from './turns';
 import { userSelectors } from './users';
 import { variantSelectors } from './variants';
+
+import territoryData from '../data/standard/territories.json';
 
 const mergePieces = (pieces, pieceStates) => {
   return pieceStates.map((ps) => {
@@ -21,28 +21,26 @@ const mergePieces = (pieces, pieceStates) => {
   });
 };
 
-const mergeTerritories = (territoryData, territories, territoryStates) => {
-  return territoryData.map((td) => {
-    const mapDataId = td.id;
+const mergeTerritories = (tds, territories, territoryStates) => {
+  return tds.map((td) => {
     let playable = false;
-    const territory = territories.find((t) => t.id === td.territory);
+    const territory = territories.find((t) => t.uid === td.territory_uid);
 
     // If territory not found this is a non-playable territory
-    if (!territory) return { ...td, mapDataId, playable, id: null };
+    if (!territory) return { ...td, playable, id: null };
 
     // Join territoryData, territoryState, and territory
     playable = true;
     const territoryState = territoryStates.find(
       (ts) => ts.territory === territory.id
     );
-    return { ...td, ...territoryState, ...territory, mapDataId, playable };
+    return { ...td, ...territoryState, ...territory, playable };
   });
 };
 
 const getDenormalizedTerritories = (s, game, turn) => {
   const { variant } = game;
   const territories = territorySelectors.selectByVariantId(s, variant);
-  const territoryData = territoryDataSelectors.selectByVariantId(s, variant);
   const territoryStates = territoryStateSelectors.selectByTurnId(s, turn.id);
   const pieces = pieceSelectors.selectByGameId(s, game.id);
   const pieceStates = pieceStateSelectors.selectByTurnId(s, turn.id);
@@ -114,8 +112,7 @@ export const getDenormalizedGameDetail = (state, id, user) => {
   };
   const game = gameSelectors.selectById(state, id);
   const variant = variantSelectors.selectById(state, game.variant);
-  const mapData = mapDataSelectors.selectByVariantId(state, game.variant)[0];
-  denormalizedGame.variant = { ...variant, mapData };
+  denormalizedGame.variant = variant;
 
   game.turns.forEach((turnId) => {
     const turn = turnSelectors.selectById(state, turnId, user);
