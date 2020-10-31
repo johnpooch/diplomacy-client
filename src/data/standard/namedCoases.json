@@ -1,0 +1,68 @@
+[
+    {
+        "named_coast_map_data_id": 1,
+        "named_coast_uid": "standard-bulgaria-east-coast",
+        "abbreviation": "EC",
+        "text_x": 1021.7999877929688,
+        "text_y": 1109.0999755859375,
+        "piece_x": 1127.0,
+        "piece_y": 1067.0,
+        "dislodged_piece_x": 1114.5,
+        "dislodged_piece_y": 1054.5
+    },
+    {
+        "named_coast_map_data_id": 2,
+        "named_coast_uid": "standard-bulgaria-south-coast",
+        "abbreviation": "SC",
+        "text_x": 1021.7999877929688,
+        "text_y": 1109.0999755859375,
+        "piece_x": 1070.0,
+        "piece_y": 1140.0,
+        "dislodged_piece_x": 1057.5,
+        "dislodged_piece_y": 1127.5
+    },
+    {
+        "named_coast_map_data_id": 3,
+        "named_coast_uid": "standard-spain-north-coast",
+        "abbreviation": "NC",
+        "text_x": 302.29998779296875,
+        "text_y": 1119.699951171875,
+        "piece_x": 289.0,
+        "piece_y": 965.0,
+        "dislodged_piece_x": 276.5,
+        "dislodged_piece_y": 952.5
+    },
+    {
+        "named_coast_map_data_id": 4,
+        "named_coast_uid": "standard-spain-south-coast",
+        "abbreviation": "SC",
+        "text_x": 302.29998779296875,
+        "text_y": 1119.699951171875,
+        "piece_x": 291.0,
+        "piece_y": 1166.0,
+        "dislodged_piece_x": 278.5,
+        "dislodged_piece_y": 1153.5
+    },
+    {
+        "named_coast_map_data_id": 5,
+        "named_coast_uid": "standard-st-petersburg-north-coast",
+        "abbreviation": "NC",
+        "text_x": 302.29998779296875,
+        "text_y": 1119.699951171875,
+        "piece_x": 1218.0,
+        "piece_y": 222.0,
+        "dislodged_piece_x": 1205.5,
+        "dislodged_piece_y": 209.5
+    },
+    {
+        "named_coast_map_data_id": 6,
+        "named_coast_uid": "standard-st-petersburg-south-coast",
+        "abbreviation": "SC",
+        "text_x": 302.29998779296875,
+        "text_y": 1119.699951171875,
+        "piece_x": 1066.0,
+        "piece_y": 487.0,
+        "dislodged_piece_x": 1053.5,
+        "dislodged_piece_y": 474.5
+    }
+]
