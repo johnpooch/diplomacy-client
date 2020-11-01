@@ -3,15 +3,7 @@ import styled from '@emotion/styled';
 
 import { variables } from '../variables';
 
-const GenericForm = styled.form`
-  background: ${variables.colors.white};
-  border-radius: ${variables.sizes.borderRadius[2]}px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
-  font-size: ${variables.fontSizes.sans[1]}px;
-  max-width: 100%;
-  padding: 0 1rem;
-  width: 300px;
-
+const StyledForm = styled.form`
   input,
   select,
   textarea {
@@ -61,9 +53,22 @@ const GenericForm = styled.form`
   }
 `;
 
-const Form = (props) => {
+export const Form = (props) => {
   const { children, onSubmit } = props;
-  return <GenericForm onSubmit={onSubmit}>{children}</GenericForm>;
+  return <StyledForm onSubmit={onSubmit}>{children}</StyledForm>;
 };
 
-export default Form;
+const StyledFormWrapper = styled.div`
+  background: ${variables.colors.white};
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
+  font-size: ${variables.fontSizes.sans[1]}px;
+  max-width: 100%;
+  min-width: 300px;
+  padding: 0 ${variables.spacing[3]}px;
+  border-radius: ${variables.sizes.borderRadius[2]}px;
+`;
+
+export const FormWrapper = (props) => {
+  const { children } = props;
+  return <StyledFormWrapper>{children}</StyledFormWrapper>;
+};
