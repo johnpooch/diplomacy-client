@@ -56,7 +56,7 @@ const GameFilters = ({ callback, choices }) => {
   const filters = (
     <Form onSubmit={filter}>
       <GridTemplate
-        templateColumns="3fr 1fr 2fr 2fr"
+        templateColumns="2fr 1fr 1fr 1fr"
         css={{ marginTop: `${variables.spacing[4]}px` }}
       >
         <label htmlFor="search">

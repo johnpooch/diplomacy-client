@@ -1,15 +1,8 @@
 import styled from '@emotion/styled';
 
-import { sizes, spacing } from './variables';
+import { spacing } from './variables';
 
 // Layout
-
-export const PageWrapper = styled.div`
-  padding: ${spacing[6]}px;
-  max-width: ${sizes.maxWidth}px;
-  margin: 0 auto;
-`;
-
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>

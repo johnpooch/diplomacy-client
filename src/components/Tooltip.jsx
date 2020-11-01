@@ -6,7 +6,7 @@ import { colors, sizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`
   position: fixed;
-  top: ${spacing[3] + sizes.headerHeight}px;
+  top: ${spacing[3] + sizes.navigationHeight}px;
   left: ${spacing[3]}px;
   padding: ${spacing[3]}px;
   background: ${colors.base};

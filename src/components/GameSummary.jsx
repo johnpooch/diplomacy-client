@@ -13,11 +13,12 @@ const StyledLink = styled(Link)`
   color: inherit;
   background: ${colors.white};
   padding: ${spacing[2]}px;
-  border: solid 1px ${colors.border};
+  border: solid 1px ${colors.darkgray};
   border-radius: ${sizes[0]}px;
 
   &:hover .name {
     text-decoration: underline;
+  }
 `;
 
 const StyledListItem = styled.li`
@@ -34,7 +35,7 @@ const StyledListItem = styled.li`
   }
   .secondary-text {
     font-size: ${fontSizes.sans[2]}px;
-    color: ${colors.lightText};
+    color: ${colors.darkgray};
     line-height: 1.2rem;
   }
 
@@ -50,7 +51,7 @@ const StyledListItem = styled.li`
   header {
     padding-bottom: ${spacing[2]}px;
     margin-bottom: ${spacing[2]}px;
-    border-bottom: 1px solid ${colors.lightLine};
+    border-bottom: 1px solid ${colors.darkgray};
   }
 
   p {

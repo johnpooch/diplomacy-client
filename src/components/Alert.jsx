@@ -1,22 +1,20 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { darken, lighten } from 'polished';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { BaseButton } from './Button';
 import { colors, sizes, spacing, fontSizes } from '../variables';
-import { PageWrapper } from '../styles';
 
 const StyledListItem = styled.li`
   background: ${(props) => lighten(0.4, colors[props.category])};
   border-bottom: ${sizes.border}px solid
     ${(props) => lighten(0.2, colors[props.category])};
   position: relative;
-  z-index: 1;
 `;
 
-const StyledDiv = styled(PageWrapper)`
+const StyledDiv = styled.div`
   padding-top: 0;
   padding-bottom: 0;
   display: grid;

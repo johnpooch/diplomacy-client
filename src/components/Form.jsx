@@ -7,30 +7,33 @@ const StyledForm = styled.form`
   input,
   select,
   textarea {
-    margin: 0;
-    border: 0;
-    padding: 0;
-    display: block;
-    line-height: 1;
-    background: ${variables.colors.offwhite};
-    border: ${variables.sizes.border}px solid ${variables.colors.border};
     border-radius: ${variables.sizes.borderRadius[0]}px;
-    padding: ${variables.spacing[2]}px;
-    width: 100%;
+    border: ${variables.sizes.border}px solid ${variables.colors.darkgray};
+    display: block;
+    font-family: ${variables.fontFamilies.sans};
     font-size: inherit;
+    line-height: 1;
+    margin: 0;
+    width: 100%;
+  }
+
+  input,
+  textarea {
     min-height: ${variables.sizes.input}px;
+    padding: ${variables.spacing[2]}px;
 
     &::placeholder {
       color: ${variables.colors.darkgray};
     }
   }
 
-  button {
-    width: 100%;
-  }
-
   select {
     height: ${variables.sizes.input}px;
+    padding: 0 ${variables.spacing[2]}px;
+  }
+
+  button {
+    width: 100%;
   }
 
   textarea {
@@ -64,7 +67,7 @@ const StyledFormWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
   font-size: ${variables.fontSizes.sans[1]}px;
   max-width: 100%;
-  padding: 0 ${variables.spacing[3]}px;
+  padding: 0 ${variables.spacing[4]}px;
   width: 300px;
 `;
 
