@@ -41,7 +41,7 @@ const BrowseGames = (props) => {
   };
 
   return (
-    <Page headingText={null} isLoaded>
+    <Page isLoaded>
       <StyledDiv>
         <div>
           <GameFilters callback={filterGames} choices={choices} />

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import FieldError from './FieldError';
-import FormContainer from './FormContainer';
-import NonFieldErrors from './NonFieldErrors';
+import FieldError from '../components/FieldError';
+import Form from '../components/Form';
+import NonFieldErrors from '../components/NonFieldErrors';
+import Page from '../components/Page';
 import useForm from '../hooks/useForm';
-import { GenericForm, FormLabelText, Button } from '../styles';
+import { FormLabel, Button } from '../styles';
 
 const ResetPassword = ({ history, location, onAuth }) => {
   const [{ password }, handleChange] = useForm({ password: '' });
@@ -15,9 +16,7 @@ const ResetPassword = ({ history, location, onAuth }) => {
   });
 
   const token = new URLSearchParams(location.search).get('token');
-  if (!token) {
-    history.push('/');
-  }
+  if (!token) history.push('/');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,12 +24,12 @@ const ResetPassword = ({ history, location, onAuth }) => {
   };
 
   return (
-    <FormContainer>
-      <GenericForm onSubmit={handleSubmit}>
-        <h1>Reset Password</h1>
+    <Page title="Reset Password" centered>
+      <Form onSubmit={handleSubmit}>
         <p>Enter your new password.</p>
+
         <label htmlFor="password">
-          <FormLabelText>Password</FormLabelText>
+          <FormLabel>Password</FormLabel>
           <input
             type="password"
             id="password"
@@ -43,12 +42,12 @@ const ResetPassword = ({ history, location, onAuth }) => {
           />
           <FieldError error={errors.password} />
         </label>
-        <p>
-          <Button type="submit">Reset password</Button>
-        </p>
+
+        <Button type="submit">Reset password</Button>
+
         <NonFieldErrors errors={errors.non_field_errors} />
-      </GenericForm>
-    </FormContainer>
+      </Form>
+    </Page>
   );
 };
 

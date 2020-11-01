@@ -38,7 +38,7 @@ const PreGame = (props) => {
   );
 
   return (
-    <Page headingText={game ? game.name : null} isLoaded>
+    <Page title={game ? game.name : null}>
       <StyledP>{description}</StyledP>
       <h2>Players</h2>
       <PlayerList players={participants} />

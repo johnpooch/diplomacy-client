@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
-import FieldError from './FieldError';
-import FormContainer from './FormContainer';
-import NonFieldErrors from './NonFieldErrors';
+import FieldError from '../components/FieldError';
+import Form from '../components/Form';
+import NonFieldErrors from '../components/NonFieldErrors';
+import Page from '../components/Page';
 import useForm from '../hooks/useForm';
-import { GenericForm, FormLabelText, Button } from '../styles';
+import { FormLabel, Button } from '../styles';
 
 const ForgotPassword = ({ onAuth }) => {
   const [{ email }, handleChange] = useForm({ email: '' });
@@ -20,14 +21,15 @@ const ForgotPassword = ({ onAuth }) => {
   };
 
   return (
-    <FormContainer>
-      <GenericForm onSubmit={handleSubmit}>
-        <p className="forgot-password-paragraph">
-          <strong>Forgotten your password?</strong> Enter your email and
-          we&apos;ll send you a link to get back into your account.
+    <Page title="Forgot password" centered>
+      <Form onSubmit={handleSubmit}>
+        <p>
+          Enter your email and we&apos;ll send you a link to get back into your
+          account.
         </p>
+
         <label htmlFor="email">
-          <FormLabelText>Email</FormLabelText>
+          <FormLabel>Email</FormLabel>
           <input
             type="text"
             id="email"
@@ -40,16 +42,22 @@ const ForgotPassword = ({ onAuth }) => {
           />
           <FieldError error={errors.email} />
         </label>
+
         <NonFieldErrors errors={errors.non_field_errors} />
-        <p>
-          <Button type="submit">Send reset link</Button>
-        </p>
+
+        <Button type="submit">Send reset link</Button>
+
         <hr />
+
         <p>
-          Not a member? <Link to="/register">Create an account</Link>
+          Remebered your password? <Link to="/login">Log in</Link>
         </p>
-      </GenericForm>
-    </FormContainer>
+
+        <p>
+          Not a member yet? <Link to="/register">Create an account</Link>
+        </p>
+      </Form>
+    </Page>
   );
 };
 

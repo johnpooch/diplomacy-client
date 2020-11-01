@@ -100,54 +100,7 @@ export const IconButton = styled(SecondaryButton)`
 `;
 
 // Forms
-export const GenericForm = styled.form`
-  font-size: ${fontSizes.sans[1]}px;
-
-  input,
-  select,
-  textarea {
-    margin: 0;
-    border: 0;
-    padding: 0;
-    display: block;
-    line-height: 1;
-    background: ${colors.offwhite};
-    border: ${sizes.border}px solid ${colors.border};
-    border-radius: ${sizes.borderRadius[0]}px;
-    padding: ${spacing[2]}px;
-    width: 100%;
-    font-size: inherit;
-    min-height: ${sizes.input}px;
-
-    &::placeholder {
-      color: ${colors.darkgray};
-    }
-  }
-
-  select {
-    height: ${sizes.input}px;
-  }
-
-  textarea {
-    resize: vertical;
-  }
-
-  label,
-  p {
-    display: block;
-    margin: ${spacing[4]}px 0;
-  }
-  .non-field-errors {
-    color: ${colors.error};
-    text-align: left;
-  }
-  .field-error {
-    color: ${colors.error};
-    margin-top: 0.5rem;
-  }
-`;
-
-export const FormLabelText = styled.span`
+export const FormLabel = styled.span`
   display: block;
   font-size: ${fontSizes.sans[1]}px;
   line-height: 1;

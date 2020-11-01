@@ -9,8 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
-  GenericForm,
-  FormLabelText,
+  FormLabel,
   Button,
   TertiaryButton,
   Grid,
@@ -19,12 +18,13 @@ import {
 import { colors, sizes, spacing } from '../variables';
 import useForm from '../hooks/useForm';
 import Select from './Select';
+import Form from './Form';
 
 const StyledButton = styled(TertiaryButton)`
   margin: ${spacing[2]}px 0px;
 `;
 
-const StyledForm = styled(GenericForm)`
+const StyledForm = styled(Form)`
   margin-bottom: ${spacing[6]}px;
   border-bottom: ${sizes.border}px solid ${colors.border};
   padding: ${spacing[4]}px;
@@ -136,7 +136,7 @@ const GameFilters = ({ callback, choices }) => {
         </StyledClose>
         <GridTemplate templateColumns="3fr 1fr 2fr 2fr">
           <label htmlFor="search">
-            <FormLabelText>Search</FormLabelText>
+            <FormLabel>Search</FormLabel>
             <input
               id="search"
               name="search"
@@ -147,7 +147,7 @@ const GameFilters = ({ callback, choices }) => {
             />
           </label>
           <label htmlFor="num_players">
-            <FormLabelText>Players</FormLabelText>
+            <FormLabel>Players</FormLabel>
             <input
               id="num_players"
               name="num_players"

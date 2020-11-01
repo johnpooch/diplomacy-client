@@ -67,11 +67,11 @@ const StyledUserAccount = styled(UserAccount)`
   display: none;
 `;
 
-const Header = (props) => {
-  const { loggedIn, onLogout, user } = props;
+const Navigation = (props) => {
+  const { onLogout, user } = props;
 
-  const renderLoggedInHeader = () => {
-    return (
+  return (
+    <StyledHeader>
       <StyledDiv>
         <nav className="nav">
           <StyledNavLink className="logo" exact to="/">
@@ -81,30 +81,10 @@ const Header = (props) => {
             Create game
           </StyledNavLink>
         </nav>
-        <StyledUserAccount
-          user={user}
-          loggedIn={loggedIn}
-          onLogout={onLogout}
-        />
+        <StyledUserAccount user={user} onLogout={onLogout} />
       </StyledDiv>
-    );
-  };
-
-  const renderLoggedOutHeader = () => {
-    return (
-      <StyledDiv>
-        <NavLink className="logo" exact to="/">
-          Diplomacy
-        </NavLink>
-      </StyledDiv>
-    );
-  };
-
-  return (
-    <StyledHeader>
-      {loggedIn ? renderLoggedInHeader() : renderLoggedOutHeader()}
     </StyledHeader>
   );
 };
 
-export default Header;
+export default Navigation;

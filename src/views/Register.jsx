@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
+import FieldError from '../components/FieldError';
+import Form from '../components/Form';
+import NonFieldErrors from '../components/NonFieldErrors';
+import Page from '../components/Page';
 import useForm from '../hooks/useForm';
-import FieldError from './FieldError';
-import FormContainer from './FormContainer';
-import NonFieldErrors from './NonFieldErrors';
-import { GenericForm, FormLabelText, Button } from '../styles';
+import { FormLabel, Button } from '../styles';
 
-const LoginForm = (props) => {
-  const [{ username, password }, handleChange] = useForm({
+const Register = (props) => {
+  const [{ email, username, password }, handleChange] = useForm({
+    email: '',
     username: '',
     password: '',
   });
@@ -21,14 +23,29 @@ const LoginForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAuth(setErrors, username, password);
+    onAuth(setErrors, username, email, password);
   };
 
   return (
-    <FormContainer>
-      <GenericForm onSubmit={handleSubmit}>
+    <Page title="Register" centered>
+      <Form onSubmit={handleSubmit}>
+        <label htmlFor="email">
+          <FormLabel>Email address</FormLabel>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email address"
+            autoComplete="email"
+            value={email}
+            onChange={handleChange}
+            required
+          />
+          <FieldError error={errors.email} />
+        </label>
+
         <label htmlFor="username">
-          <FormLabelText>Username</FormLabelText>
+          <FormLabel>Username</FormLabel>
           <input
             type="text"
             id="username"
@@ -41,8 +58,9 @@ const LoginForm = (props) => {
           />
           <FieldError error={errors.username} />
         </label>
+
         <label htmlFor="password">
-          <FormLabelText>Password</FormLabelText>
+          <FormLabel>Password</FormLabel>
           <input
             type="password"
             id="password"
@@ -55,20 +73,23 @@ const LoginForm = (props) => {
           />
           <FieldError error={errors.password} />
         </label>
-        <p>
-          <Button type="submit">Log in</Button>
-        </p>
+
+        <Button type="submit">Register</Button>
+
         <NonFieldErrors errors={errors.non_field_errors} />
-        <p className="forgot-password-link">
-          <Link to="/forgot-password">Forgot password?</Link>
-        </p>
+
         <hr />
-        <p>
-          Not a member? <Link to="/register">Create an account</Link>
+
+        <p className="forgot-password-link">
+          Forgotten password? <Link to="/forgot-password">Reset password</Link>
         </p>
-      </GenericForm>
-    </FormContainer>
+
+        <p>
+          Already have an account? <Link to="/login">Log in</Link>
+        </p>
+      </Form>
+    </Page>
   );
 };
 
-export default withRouter(LoginForm);
+export default withRouter(Register);

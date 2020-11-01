@@ -4,13 +4,8 @@ import { withRouter, NavLink } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import Page from '../components/Page';
-import {
-  Button,
-  FormLabelText,
-  GenericForm,
-  GridTemplate,
-  SecondaryButton,
-} from '../styles';
+import Form from '../components/Form';
+import { Button, FormLabel, GridTemplate, SecondaryButton } from '../styles';
 import { alertActions } from '../store/alerts';
 import { gameActions } from '../store/games';
 
@@ -31,10 +26,10 @@ const CreateGame = (props) => {
   };
 
   return (
-    <Page headingText="Create game" isLoaded>
-      <GenericForm onSubmit={handleSubmit}>
+    <Page title="Create game">
+      <Form onSubmit={handleSubmit}>
         <label htmlFor="name">
-          <FormLabelText>Name</FormLabelText>
+          <FormLabel>Name</FormLabel>
           <input
             type="text"
             id="name"
@@ -47,7 +42,7 @@ const CreateGame = (props) => {
           />
         </label>
         <label htmlFor="description">
-          <FormLabelText>Description</FormLabelText>
+          <FormLabel>Description</FormLabel>
           <input
             type="text"
             id="description"
@@ -64,7 +59,7 @@ const CreateGame = (props) => {
           <Button type="submit">Create game</Button>
           <NavLinkButton to="/">Cancel</NavLinkButton>
         </GridTemplate>
-      </GenericForm>
+      </Form>
     </Page>
   );
 };

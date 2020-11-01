@@ -1,16 +1,3 @@
-export const fontFamilies = {
-  sans:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
-};
-
-export const fontSizes = {
-  sans: [9, 13, 15, 19, 36],
-};
-
-export const flagSizes = {
-  small: 40,
-};
-
 export const colors = {
   white: '#ffffff',
   offwhite: '#fafafa',
@@ -42,6 +29,19 @@ export const colors = {
   success: '#508e59',
 };
 
+export const flagSizes = {
+  small: 40,
+};
+
+export const fontFamilies = {
+  sans:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+};
+
+export const fontSizes = {
+  sans: [9, 13, 15, 19, 36],
+};
+
 export const spacing = [4, 8, 12, 16, 24, 32, 44, 60];
 
 export const sizes = {
@@ -54,4 +54,13 @@ export const sizes = {
   input: 44,
   line: 3,
   button: 160,
+};
+
+export const variables = {
+  colors,
+  flagSizes,
+  fontFamilies,
+  fontSizes,
+  sizes,
+  spacing,
 };
