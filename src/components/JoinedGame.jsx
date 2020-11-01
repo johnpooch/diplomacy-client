@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from '@emotion/styled';
 
-import { Button, GridTemplate, SecondaryButton } from '../styles';
+import { Button, SecondaryButton } from './Button';
+import { GridTemplate } from '../styles';
 import { spacing } from '../variables';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);

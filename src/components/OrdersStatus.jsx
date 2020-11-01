@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SecondaryButton } from '../styles';
+import { SecondaryButton } from './Button';
 
 const OrdersStatus = ({ finalizeOrders, userNation }) => {
   if (!userNation) return null;

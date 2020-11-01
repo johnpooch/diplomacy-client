@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import FieldError from '../components/FieldError';
-import Form from '../components/Form';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
-import { FormLabel, Button } from '../styles';
+import { Button } from '../components/Button';
+import { Form, FormLabel, FormWrapper } from '../components/Form';
 
 const ResetPassword = ({ history, location, onAuth }) => {
   const [{ password }, handleChange] = useForm({ password: '' });
@@ -25,28 +25,30 @@ const ResetPassword = ({ history, location, onAuth }) => {
 
   return (
     <Page title="Reset Password" centered>
-      <Form onSubmit={handleSubmit}>
-        <p>Enter your new password.</p>
+      <FormWrapper>
+        <Form onSubmit={handleSubmit}>
+          <p>Enter your new password.</p>
 
-        <label htmlFor="password">
-          <FormLabel>Password</FormLabel>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            autoComplete="password"
-            value={password}
-            onChange={handleChange}
-            required
-          />
-          <FieldError error={errors.password} />
-        </label>
+          <label htmlFor="password">
+            <FormLabel>Password</FormLabel>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              autoComplete="password"
+              value={password}
+              onChange={handleChange}
+              required
+            />
+            <FieldError error={errors.password} />
+          </label>
 
-        <Button type="submit">Reset password</Button>
+          <Button type="submit">Reset password</Button>
 
-        <NonFieldErrors errors={errors.non_field_errors} />
-      </Form>
+          <NonFieldErrors errors={errors.non_field_errors} />
+        </Form>
+      </FormWrapper>
     </Page>
   );
 };

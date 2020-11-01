@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { darken, lighten } from 'polished';
 
-import { PageWrapper, BaseButton } from '../styles';
+import { BaseButton } from './Button';
 import { colors, sizes, spacing, fontSizes } from '../variables';
+import { PageWrapper } from '../styles';
 
 const StyledListItem = styled.li`
   background: ${(props) => lighten(0.4, colors[props.category])};

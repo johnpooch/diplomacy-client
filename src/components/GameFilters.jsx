@@ -1,26 +1,27 @@
 /** @jsx jsx */
 /* eslint camelcase: [2, { "allow": ["num_players", "nation_choice_mode", "order_deadline", "retreat_deadline", "build_deadline", "game_statuses"] }] */
-import { jsx } from '@emotion/core';
-import React, { useState } from 'react';
-import styled from '@emotion/styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown,
   faChevronUp,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { jsx } from '@emotion/core';
+import { useState } from 'react';
+import styled from '@emotion/styled';
 
 import Select from './Select';
 import useForm from '../hooks/useForm';
-import {
-  FormLabel,
-  Button,
-  SecondaryButton,
-  Grid,
-  GridTemplate,
-} from '../styles';
+import { Button, SecondaryButton } from './Button';
+import { Form, FormLabel } from './Form';
+import { GridTemplate } from '../styles';
 import { variables } from '../variables';
-import { Form } from './Form';
+
+const StyledWrapper = styled.div`
+  margin-bottom: ${variables.spacing[5]}px;
+  padding-bottom: ${variables.spacing[5]}px;
+  border-bottom: ${variables.sizes.border}px solid ${variables.colors.darkgray};
+`;
 
 const GameFilters = ({ callback, choices }) => {
   const [values, handleChange] = useForm({
@@ -46,7 +47,7 @@ const GameFilters = ({ callback, choices }) => {
     <SecondaryButton type="button" onClick={() => setOpen(!open)}>
       <FontAwesomeIcon
         icon={faSearch}
-        css={{ marginRight: `${variables.spacing[0]}px` }}
+        css={{ marginRight: `${variables.spacing[1]}px` }}
       />
       <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
     </SecondaryButton>
@@ -131,10 +132,10 @@ const GameFilters = ({ callback, choices }) => {
   );
 
   return (
-    <div css={{ marginBottom: `${variables.spacing[4]}px` }}>
+    <StyledWrapper>
       {toggleButton}
       {open ? filters : null}
-    </div>
+    </StyledWrapper>
   );
 };
 

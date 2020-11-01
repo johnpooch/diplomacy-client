@@ -5,8 +5,8 @@ import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
-import { Form, FormWrapper } from '../components/Form';
-import { FormLabel, Button } from '../styles';
+import { Button } from '../components/Button';
+import { Form, FormLabel, FormWrapper } from '../components/Form';
 
 const LoginForm = (props) => {
   const [{ username, password }, handleChange] = useForm({

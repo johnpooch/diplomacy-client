@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import { IconButton } from '../styles';
+import { IconButton } from './Button';
 import { fontSizes, spacing } from '../variables';
 
 const StyledDiv = styled.div`

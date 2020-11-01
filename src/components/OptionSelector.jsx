@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Button } from '../styles';
+import { Button } from './Button';
 
 const StyledButton = styled(Button)`
   text-transform: capitalize;

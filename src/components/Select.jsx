@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormLabel } from '../styles';
+import { FormLabel } from './Form';
 
 const DipSelect = (props) => {
   const { name, label, value, onChange, options } = props;

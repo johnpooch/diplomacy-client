@@ -30,7 +30,7 @@ export const colors = {
 };
 
 export const flagSizes = {
-  small: 40,
+  small: 30,
 };
 
 export const fontFamilies = {

@@ -4,8 +4,9 @@ import { withRouter, NavLink } from 'react-router-dom';
 
 import useForm from '../hooks/useForm';
 import Page from '../components/Page';
-import Form from '../components/Form';
-import { Button, FormLabel, GridTemplate, SecondaryButton } from '../styles';
+import { Button, SecondaryButton } from '../components/Button';
+import { Form, FormLabel } from '../components/Form';
+import { GridTemplate } from '../styles';
 import { alertActions } from '../store/alerts';
 import { gameActions } from '../store/games';
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { Button, GridTemplate, SecondaryButton } from '../styles';
+import { Button, SecondaryButton } from './Button';
+import { GridTemplate } from '../styles';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
