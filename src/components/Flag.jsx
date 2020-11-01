@@ -9,17 +9,11 @@ const StyledDiv = styled.div`
 
 const Flag = (props) => {
   const { nation, size } = props;
-  const paths = nation.flag_as_data;
-  const SVGPaths = [];
-  paths.forEach((pathData) => {
-    const { fill, path } = pathData;
-    SVGPaths.push(<path key={`${path}_${fill}`} fill={fill} d={path} />);
-  });
+  const name = nation.name.replace(' ', '-').toLowerCase();
+  const flagPath = `/src/data/standard/flags/${name}.svg`;
   return (
     <StyledDiv className="flag-div" size={size}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252.39 168.26">
-        <g>{SVGPaths}</g>
-      </svg>
+      <img src={flagPath} alt={`${nation.name} flag`} />
     </StyledDiv>
   );
 };
