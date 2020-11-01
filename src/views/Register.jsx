@@ -27,7 +27,7 @@ const Register = (props) => {
   };
 
   return (
-    <Page title="Register" centered>
+    <Page title="Register">
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <label htmlFor="email">

@@ -11,6 +11,7 @@ export default css`
     margin: 0;
     font-family: ${variables.fontFamilies.sans};
     color: ${variables.colors.base};
+    background: ${variables.colors.gray};
   }
 
   ul,

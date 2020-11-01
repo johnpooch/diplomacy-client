@@ -9,7 +9,7 @@ const NavLinkButton = SecondaryButton.withComponent(NavLink);
 const JoinGame = (props) => {
   const { onClickJoin } = props;
   return (
-    <GridTemplate templateColumns="auto auto 1fr">
+    <GridTemplate templateColumns="2fr 1fr">
       <form onSubmit={onClickJoin}>
         <Button type="submit">Join game</Button>
       </form>

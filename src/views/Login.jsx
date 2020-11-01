@@ -26,7 +26,7 @@ const LoginForm = (props) => {
   };
 
   return (
-    <Page title="Log in" centered>
+    <Page title="Log in">
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <label htmlFor="username">

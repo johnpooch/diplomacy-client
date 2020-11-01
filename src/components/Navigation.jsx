@@ -7,15 +7,15 @@ import { variables } from '../variables';
 import { SecondaryButton } from './Button';
 
 const Header = styled.header`
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
+  align-items: center;
   background: white;
   border-bottom: solid ${variables.sizes.border}px ${variables.colors.darkgray};
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  align-items: center;
+  left: 0;
+  position: sticky;
+  right: 0;
+  top: 0;
 
   nav {
     display: grid;

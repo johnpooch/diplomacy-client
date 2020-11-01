@@ -21,7 +21,7 @@ const ForgotPassword = ({ onAuth }) => {
   };
 
   return (
-    <Page title="Forgot password" centered>
+    <Page title="Forgot password">
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <p>

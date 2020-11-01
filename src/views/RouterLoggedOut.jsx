@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch, withRouter, Route } from 'react-router-dom';
+import { Switch, withRouter, Route, Redirect } from 'react-router-dom';
 
-import Error from './Error';
 import ForgotPassword from './ForgotPassword';
 import Login from './Login';
 import Register from './Register';
@@ -12,7 +11,6 @@ import { authActions } from '../store/auth';
 
 const RouterLoggedOut = (props) => {
   const { forgotPassword, login, register, resetPassword } = props;
-
   return (
     <Switch>
       <Route
@@ -35,7 +33,7 @@ const RouterLoggedOut = (props) => {
         path="/reset-password"
         component={() => <ResetPassword onAuth={resetPassword} />}
       />
-      <Route component={() => <Error text="Page not found" />} />
+      <Redirect to="/" />
     </Switch>
   );
 };

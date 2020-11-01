@@ -18,9 +18,10 @@ import { GridTemplate } from '../styles';
 import { variables } from '../variables';
 
 const StyledWrapper = styled.div`
+  border-bottom: ${variables.sizes.border}px solid ${variables.colors.darkgray};
   margin-bottom: ${variables.spacing[5]}px;
   padding-bottom: ${variables.spacing[5]}px;
-  border-bottom: ${variables.sizes.border}px solid ${variables.colors.darkgray};
+  width: 100%;
 `;
 
 const GameFilters = ({ callback, choices }) => {
@@ -44,7 +45,11 @@ const GameFilters = ({ callback, choices }) => {
   if (!choices) return null;
 
   const toggleButton = (
-    <SecondaryButton type="button" onClick={() => setOpen(!open)}>
+    <SecondaryButton
+      type="button"
+      onClick={() => setOpen(!open)}
+      css={{ display: 'block' }}
+    >
       <FontAwesomeIcon
         icon={faSearch}
         css={{ marginRight: `${variables.spacing[1]}px` }}
@@ -57,7 +62,7 @@ const GameFilters = ({ callback, choices }) => {
     <Form onSubmit={filter}>
       <GridTemplate
         templateColumns="2fr 1fr 1fr 1fr"
-        css={{ marginTop: `${variables.spacing[4]}px` }}
+        css={{ paddingTop: `${variables.spacing[4]}px` }}
       >
         <label htmlFor="search">
           <FormLabel>Search</FormLabel>

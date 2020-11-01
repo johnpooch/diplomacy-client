@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 import { variables } from '../variables';
 
 const StyledForm = styled.form`
+  display: block;
+
   input,
   select,
   textarea {
@@ -54,6 +56,14 @@ const StyledForm = styled.form`
   .non-field-errors {
     color: ${variables.colors.error};
   }
+
+  > *:first-child {
+    margin-top: 0;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 export const Form = (props) => {
@@ -67,8 +77,8 @@ const StyledFormWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
   font-size: ${variables.fontSizes.sans[1]}px;
   max-width: 100%;
-  padding: 0 ${variables.spacing[4]}px;
   width: 300px;
+  padding: ${variables.spacing[4]}px;
 `;
 
 export const FormWrapper = (props) => {

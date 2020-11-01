@@ -24,7 +24,7 @@ const ResetPassword = ({ history, location, onAuth }) => {
   };
 
   return (
-    <Page title="Reset Password" centered>
+    <Page title="Reset Password">
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <p>Enter your new password.</p>
