@@ -77,7 +77,7 @@ const StyledFormWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
   font-size: ${variables.fontSizes.sans[1]}px;
   max-width: 100%;
-  width: 300px;
+  width: 350px;
   padding: ${variables.spacing[4]}px;
 `;
 
