@@ -110,19 +110,15 @@ const Map = (props) => {
       onMouseLeave={resetPan}
     >
       <ScrollableSVG
-        viewBoxWidth={mapData.width}
-        viewBoxHeight={mapData.height}
+        viewBoxWidth={1835}
+        viewBoxHeight={1360}
         interacting={interacting}
         panning={panning}
       >
         <defs>
           <ArrowheadMarker id="arrow-move" fill="white" width={3} height={3} />
         </defs>
-        <rect
-          width={mapData.width}
-          height={mapData.height}
-          fill={colors.base}
-        />
+        <rect width={1835} height={1360} fill={colors.base} />
         <Territories
           getCallbacks={getTerritoryCallbacks}
           hovering={hovering}
