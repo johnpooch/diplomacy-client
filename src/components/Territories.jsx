@@ -3,28 +3,21 @@ import React from 'react';
 import Territory from './Territory';
 
 const Territories = (props) => {
-  const {
-    getCallbacks,
-    getTerritoryOrderState,
-    hovering,
-    panning,
-    territories,
-  } = props;
+  const { getCallbacks, order, hovering, panning, territories } = props;
   const elements = [];
   territories.forEach((territory) => {
-    const { id, mapDataId } = territory;
+    const { id, territory_map_data_id } = territory;
     const callbacks = getCallbacks(id);
-    const territoryOrderState = getTerritoryOrderState(id);
     elements.push(
       <Territory
         callbacks={callbacks}
-        key={mapDataId}
+        key={territory_map_data_id}
         // If hovering is null do not highlight non-playable
         // territories
         hovering={hovering === id && id}
+        order={order}
         panning={panning}
         territory={territory}
-        territoryOrderState={territoryOrderState}
       />
     );
   });

@@ -83,13 +83,7 @@ function renderOrderConfirmation(order, callback) {
 // This function is exported for patching in test
 export function renderOrderActions(props) {
   /* Gets the appropriate sub component based on the state of the order. */
-  const {
-    onClickConfirm,
-    updateOrderState,
-    orderTypeChoices,
-    pieceTypeChoices,
-    order,
-  } = props;
+  const { onClickConfirm, order } = props;
   const { type, source, target, piece_type: pieceType } = order;
 
   if (!type) {
@@ -97,8 +91,8 @@ export function renderOrderActions(props) {
       <OrderTypeSelector
         name="type"
         summary={source}
-        choices={orderTypeChoices}
-        onClickChoice={updateOrderState}
+        choices={order.getOrderTypeChoices()}
+        onClickChoice={order.clickOrderTypeChoice}
       />
     );
   }
@@ -144,7 +138,7 @@ export function renderOrderActions(props) {
 }
 
 const OrderDialogue = (props) => {
-  const { nation, order, onClickCancel } = props;
+  const { nation, order } = props;
   const { source } = order;
 
   if (!(source && nation)) return null;
@@ -152,7 +146,7 @@ const OrderDialogue = (props) => {
   return (
     <StyledWrapper>
       <StyledDiv>
-        <StyledCloseButton onClick={onClickCancel}>
+        <StyledCloseButton onClick={order.reset}>
           <FontAwesomeIcon icon={faTimes} />
         </StyledCloseButton>
         <TerritorySummary nation={nation} territory={source} />
