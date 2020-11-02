@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import slugify from 'slugify';
 
 import { sizes } from '../variables';
 
@@ -16,8 +17,7 @@ const StyledDiv = styled.div`
 
 const Flag = (props) => {
   const { nation, size } = props;
-  const name = nation.name.replace(' ', '-').toLowerCase();
-  const flagPath = `/src/data/standard/flags/${name}.svg`;
+  const flagPath = `/src/data/standard/flags/${slugify(nation.name)}.svg`;
   return (
     <StyledDiv className="flag-div" size={size}>
       <img src={flagPath} alt={`${nation.name} flag`} />
