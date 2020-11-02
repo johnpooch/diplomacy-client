@@ -8,6 +8,7 @@ import CreateGame from './CreateGame';
 import Error from './Error';
 import Game from './Game';
 import PreGame from './PreGame';
+import Sandbox from './Sandbox';
 
 import AlertList from '../components/AlertList';
 import Header from '../components/Header';
@@ -53,6 +54,12 @@ const App = (props) => {
           exact
           path="/game/:slug"
           component={Game}
+          loggedIn={loggedIn}
+        />
+        <PrivateRoute
+          exact
+          path="/sandbox"
+          component={Sandbox}
           loggedIn={loggedIn}
         />
         <PrivateRoute

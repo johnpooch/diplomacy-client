@@ -101,7 +101,10 @@ const getDenormalizedTurn = (state, game, turn, user) => {
   const territories = getDenormalizedTerritories(state, game, turn);
   const nations = getDenormalizedNations(state, game, turn.id);
   const orders = getDenormalizedOrders(state, turn, territories);
-  const userNation = nations.find((n) => n.user === user.id) || null;
+  let userNation = null;
+  if (user) {
+    userNation = nations.find((n) => n.user === user.id) || null;
+  }
   const newTurn = { ...turn, territories, nations, orders, userNation };
   return newTurn;
 };

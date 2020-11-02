@@ -1,0 +1,808 @@
+{
+    "id": "SANDBOX",
+    "name": "Sandbox",
+    "turns": [
+        {
+            "id": "SANDBOX",
+            "next_turn": null,
+            "previous_turn": null,
+            "current_turn": true,
+            "year": 1901,
+            "season": "spring",
+            "phase": "Order",
+            "territory_states": [
+                {
+                    "id": "SANDBOX-1",
+                    "territory": 1,
+                    "controlled_by": null
+                },
+                {
+                    "id": "SANDBOX-2",
+                    "territory": 2,
+                    "controlled_by": null
+                },
+                {
+                    "id": "SANDBOX-3",
+                    "territory": 3,
+                    "controlled_by": null
+                },
+                {
+                    "id": "SANDBOX-4",
+                    "territory": 4,
+                    "controlled_by": null
+                },
+                {
+                    "id": "SANDBOX-5",
+                    "territory": 5,
+                    "controlled_by": null
+                },
+                {
+                    "id": 6,
+                    "territory": 6,
+                    "controlled_by": null
+                },
+                {
+                    "id": 7,
+                    "territory": 7,
+                    "controlled_by": null
+                },
+                {
+                    "id": 8,
+                    "territory": 8,
+                    "controlled_by": null
+                },
+                {
+                    "id": 9,
+                    "territory": 9,
+                    "controlled_by": null
+                },
+                {
+                    "id": 10,
+                    "territory": 10,
+                    "controlled_by": null
+                },
+                {
+                    "id": 11,
+                    "territory": 11,
+                    "controlled_by": null
+                },
+                {
+                    "id": 12,
+                    "territory": 12,
+                    "controlled_by": null
+                },
+                {
+                    "id": 13,
+                    "territory": 13,
+                    "controlled_by": null
+                },
+                {
+                    "id": 14,
+                    "territory": 14,
+                    "controlled_by": null
+                },
+                {
+                    "id": 15,
+                    "territory": 15,
+                    "controlled_by": null
+                },
+                {
+                    "id": 16,
+                    "territory": 16,
+                    "controlled_by": null
+                },
+                {
+                    "id": 17,
+                    "territory": 17,
+                    "controlled_by": null
+                },
+                {
+                    "id": 18,
+                    "territory": 18,
+                    "controlled_by": null
+                },
+                {
+                    "id": 19,
+                    "territory": 19,
+                    "controlled_by": null
+                },
+                {
+                    "id": 20,
+                    "territory": 20,
+                    "controlled_by": null
+                },
+                {
+                    "id": 21,
+                    "territory": 21,
+                    "controlled_by": 7
+                },
+                {
+                    "id": 22,
+                    "territory": 22,
+                    "controlled_by": 5
+                },
+                {
+                    "id": 23,
+                    "territory": 23,
+                    "controlled_by": 7
+                },
+                {
+                    "id": 24,
+                    "territory": 24,
+                    "controlled_by": 3
+                },
+                {
+                    "id": 25,
+                    "territory": 25,
+                    "controlled_by": null
+                },
+                {
+                    "id": 26,
+                    "territory": 26,
+                    "controlled_by": 2
+                },
+                {
+                    "id": 27,
+                    "territory": 27,
+                    "controlled_by": 1
+                },
+                {
+                    "id": 28,
+                    "territory": 28,
+                    "controlled_by": 7
+                },
+                {
+                    "id": 29,
+                    "territory": 29,
+                    "controlled_by": null
+                },
+                {
+                    "id": 30,
+                    "territory": 30,
+                    "controlled_by": 1
+                },
+                {
+                    "id": 31,
+                    "territory": 31,
+                    "controlled_by": null
+                },
+                {
+                    "id": 32,
+                    "territory": 32,
+                    "controlled_by": 2
+                },
+                {
+                    "id": 33,
+                    "territory": 33,
+                    "controlled_by": null
+                },
+                {
+                    "id": 34,
+                    "territory": 34,
+                    "controlled_by": null
+                },
+                {
+                    "id": 35,
+                    "territory": 35,
+                    "controlled_by": 3
+                },
+                {
+                    "id": 36,
+                    "territory": 36,
+                    "controlled_by": 1
+                },
+                {
+                    "id": 37,
+                    "territory": 37,
+                    "controlled_by": 6
+                },
+                {
+                    "id": 38,
+                    "territory": 38,
+                    "controlled_by": 1
+                },
+                {
+                    "id": 39,
+                    "territory": 39,
+                    "controlled_by": 2
+                },
+                {
+                    "id": 40,
+                    "territory": 40,
+                    "controlled_by": null
+                },
+                {
+                    "id": 41,
+                    "territory": 41,
+                    "controlled_by": 5
+                },
+                {
+                    "id": 42,
+                    "territory": 42,
+                    "controlled_by": null
+                },
+                {
+                    "id": 43,
+                    "territory": 43,
+                    "controlled_by": 2
+                },
+                {
+                    "id": 44,
+                    "territory": 44,
+                    "controlled_by": 5
+                },
+                {
+                    "id": 45,
+                    "territory": 45,
+                    "controlled_by": null
+                },
+                {
+                    "id": 46,
+                    "territory": 46,
+                    "controlled_by": 5
+                },
+                {
+                    "id": 47,
+                    "territory": 47,
+                    "controlled_by": null
+                },
+                {
+                    "id": 48,
+                    "territory": 48,
+                    "controlled_by": 3
+                },
+                {
+                    "id": 49,
+                    "territory": 49,
+                    "controlled_by": 6
+                },
+                {
+                    "id": 50,
+                    "territory": 50,
+                    "controlled_by": 7
+                },
+                {
+                    "id": 51,
+                    "territory": 51,
+                    "controlled_by": null
+                },
+                {
+                    "id": 52,
+                    "territory": 52,
+                    "controlled_by": 7
+                },
+                {
+                    "id": 53,
+                    "territory": 53,
+                    "controlled_by": 4
+                },
+                {
+                    "id": 54,
+                    "territory": 54,
+                    "controlled_by": null
+                },
+                {
+                    "id": 55,
+                    "territory": 55,
+                    "controlled_by": 5
+                },
+                {
+                    "id": 56,
+                    "territory": 56,
+                    "controlled_by": 5
+                },
+                {
+                    "id": 57,
+                    "territory": 57,
+                    "controlled_by": 1
+                },
+                {
+                    "id": 58,
+                    "territory": 58,
+                    "controlled_by": 1
+                },
+                {
+                    "id": 59,
+                    "territory": 59,
+                    "controlled_by": 4
+                },
+                {
+                    "id": 60,
+                    "territory": 60,
+                    "controlled_by": 4
+                },
+                {
+                    "id": 61,
+                    "territory": 61,
+                    "controlled_by": 2
+                },
+                {
+                    "id": 62,
+                    "territory": 62,
+                    "controlled_by": 4
+                },
+                {
+                    "id": 63,
+                    "territory": 63,
+                    "controlled_by": 6
+                },
+                {
+                    "id": 64,
+                    "territory": 64,
+                    "controlled_by": 3
+                },
+                {
+                    "id": 65,
+                    "territory": 65,
+                    "controlled_by": 2
+                },
+                {
+                    "id": 66,
+                    "territory": 66,
+                    "controlled_by": 3
+                },
+                {
+                    "id": 67,
+                    "territory": 67,
+                    "controlled_by": null
+                },
+                {
+                    "id": 68,
+                    "territory": 68,
+                    "controlled_by": 3
+                },
+                {
+                    "id": 69,
+                    "territory": 69,
+                    "controlled_by": 4
+                },
+                {
+                    "id": 70,
+                    "territory": 70,
+                    "controlled_by": 6
+                },
+                {
+                    "id": 71,
+                    "territory": 71,
+                    "controlled_by": 4
+                },
+                {
+                    "id": 72,
+                    "territory": 72,
+                    "controlled_by": 6
+                },
+                {
+                    "id": 73,
+                    "territory": 73,
+                    "controlled_by": null
+                },
+                {
+                    "id": 74,
+                    "territory": 74,
+                    "controlled_by": null
+                },
+                {
+                    "id": 75,
+                    "territory": 75,
+                    "controlled_by": 6
+                }
+            ],
+            "piece_states": [
+                {
+                    "id": 1,
+                    "piece": 1,
+                    "territory": 21,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 2,
+                    "piece": 2,
+                    "territory": 24,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 3,
+                    "piece": 3,
+                    "territory": 26,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 4,
+                    "piece": 4,
+                    "territory": 28,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 5,
+                    "piece": 5,
+                    "territory": 30,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 6,
+                    "piece": 6,
+                    "territory": 35,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 7,
+                    "piece": 7,
+                    "territory": 36,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 8,
+                    "piece": 8,
+                    "territory": 38,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 9,
+                    "piece": 9,
+                    "territory": 39,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 10,
+                    "piece": 10,
+                    "territory": 41,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 11,
+                    "piece": 11,
+                    "territory": 46,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 12,
+                    "piece": 12,
+                    "territory": 49,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 13,
+                    "piece": 13,
+                    "territory": 50,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 14,
+                    "piece": 14,
+                    "territory": 53,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 15,
+                    "piece": 15,
+                    "territory": 56,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 16,
+                    "piece": 16,
+                    "territory": 60,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 17,
+                    "piece": 17,
+                    "territory": 63,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 18,
+                    "piece": 18,
+                    "territory": 64,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 19,
+                    "piece": 19,
+                    "territory": 65,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 20,
+                    "piece": 20,
+                    "territory": 71,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 21,
+                    "piece": 21,
+                    "territory": 72,
+                    "named_coast": null,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                },
+                {
+                    "id": 22,
+                    "piece": 22,
+                    "territory": 75,
+                    "named_coast": 6,
+                    "dislodged": false,
+                    "dislodged_by": null,
+                    "attacker_territory": null,
+                    "must_retreat": false
+                }
+            ],
+            "nation_states": [
+                {
+                    "id": 1,
+                    "user": 7,
+                    "nation": 1,
+                    "orders_finalized": null,
+                    "num_orders_remaining": null,
+                    "surrendered": false,
+                    "supply_delta": 0,
+                    "num_builds": 0,
+                    "num_disbands": 0
+                },
+                {
+                    "id": 2,
+                    "user": 1,
+                    "nation": 2,
+                    "orders_finalized": null,
+                    "num_orders_remaining": null,
+                    "surrendered": false,
+                    "supply_delta": 0,
+                    "num_builds": 0,
+                    "num_disbands": 0
+                },
+                {
+                    "id": 3,
+                    "user": 2,
+                    "nation": 3,
+                    "orders_finalized": null,
+                    "num_orders_remaining": null,
+                    "surrendered": false,
+                    "supply_delta": 0,
+                    "num_builds": 0,
+                    "num_disbands": 0
+                },
+                {
+                    "id": 4,
+                    "user": 3,
+                    "nation": 4,
+                    "orders_finalized": null,
+                    "num_orders_remaining": null,
+                    "surrendered": false,
+                    "supply_delta": 0,
+                    "num_builds": 0,
+                    "num_disbands": 0
+                },
+                {
+                    "id": 5,
+                    "user": 4,
+                    "nation": 5,
+                    "orders_finalized": null,
+                    "num_orders_remaining": null,
+                    "surrendered": false,
+                    "supply_delta": 0,
+                    "num_builds": 0,
+                    "num_disbands": 0
+                },
+                {
+                    "id": 6,
+                    "user": 5,
+                    "nation": 6,
+                    "orders_finalized": null,
+                    "num_orders_remaining": null,
+                    "surrendered": false,
+                    "supply_delta": 0,
+                    "num_builds": 0,
+                    "num_disbands": 0
+                },
+                {
+                    "id": 7,
+                    "user": 6,
+                    "nation": 7,
+                    "orders_finalized": null,
+                    "num_orders_remaining": null,
+                    "surrendered": false,
+                    "supply_delta": 0,
+                    "num_builds": 0,
+                    "num_disbands": 0
+                }
+            ],
+            "orders": []
+        }
+    ],
+    "variant": 1,
+    "pieces": [
+        {
+            "id": 1,
+            "type": "fleet",
+            "nation": 7
+        },
+        {
+            "id": 2,
+            "type": "army",
+            "nation": 3
+        },
+        {
+            "id": 3,
+            "type": "fleet",
+            "nation": 2
+        },
+        {
+            "id": 4,
+            "type": "army",
+            "nation": 7
+        },
+        {
+            "id": 5,
+            "type": "fleet",
+            "nation": 1
+        },
+        {
+            "id": 6,
+            "type": "fleet",
+            "nation": 3
+        },
+        {
+            "id": 7,
+            "type": "fleet",
+            "nation": 1
+        },
+        {
+            "id": 8,
+            "type": "army",
+            "nation": 1
+        },
+        {
+            "id": 9,
+            "type": "army",
+            "nation": 2
+        },
+        {
+            "id": 10,
+            "type": "fleet",
+            "nation": 5
+        },
+        {
+            "id": 11,
+            "type": "army",
+            "nation": 5
+        },
+        {
+            "id": 12,
+            "type": "fleet",
+            "nation": 6
+        },
+        {
+            "id": 13,
+            "type": "army",
+            "nation": 7
+        },
+        {
+            "id": 14,
+            "type": "fleet",
+            "nation": 4
+        },
+        {
+            "id": 15,
+            "type": "army",
+            "nation": 5
+        },
+        {
+            "id": 16,
+            "type": "army",
+            "nation": 4
+        },
+        {
+            "id": 17,
+            "type": "army",
+            "nation": 6
+        },
+        {
+            "id": 18,
+            "type": "army",
+            "nation": 3
+        },
+        {
+            "id": 19,
+            "type": "army",
+            "nation": 2
+        },
+        {
+            "id": 20,
+            "type": "army",
+            "nation": 4
+        },
+        {
+            "id": 21,
+            "type": "army",
+            "nation": 6
+        },
+        {
+            "id": 22,
+            "type": "fleet",
+            "nation": 6
+        }
+    ],
+    "status": "active"
+}
