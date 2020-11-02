@@ -63,6 +63,7 @@
     "redux-logger": "3.0.6",
     "redux-thunk": "^2.3.0",
     "shortid": "2.2.15",
+    "slugify": "^1.4.6",
     "svg-url-loader": "^6.0.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
