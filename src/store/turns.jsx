@@ -20,7 +20,6 @@ const turnSlice = createSlice({
   reducers: {
     turnsReceived: turnAdapter.setAll,
     turnDetailsReceived: turnAdapter.upsertMany,
-    addSandboxTurn: turnAdapter.upsertOne,
   },
   extraReducers: {
     [LIST_ORDERS_FULFILLED]: (state, { payload, meta }) => {
