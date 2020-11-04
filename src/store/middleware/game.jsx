@@ -38,7 +38,6 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
   actions for each entity.
   */
   if (action.type === gameActions.getGameDetail.fulfilled.type) {
-    console.log(action.payload);
     const { entities } = gameDetailNormalizer(action.payload);
     const {
       game,
