@@ -16,6 +16,7 @@ const pieceSlice = createSlice({
   reducers: {
     piecesReceived: pieceAdapter.setAll,
     addPiece: pieceAdapter.addOne,
+    removePiece: pieceAdapter.removeOne,
   },
 });
 
