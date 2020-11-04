@@ -20,6 +20,11 @@ const turnSlice = createSlice({
   reducers: {
     turnsReceived: turnAdapter.setAll,
     turnDetailsReceived: turnAdapter.upsertMany,
+    addOrder: (state, { payload }) => {
+      const { id, order } = payload;
+      const turn = state.entities[id];
+      turn.orders.push(order);
+    },
   },
   extraReducers: {
     [LIST_ORDERS_FULFILLED]: (state, { payload, meta }) => {
