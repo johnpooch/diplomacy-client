@@ -34,8 +34,8 @@ const ordersSlice = createSlice({
   name: 'order',
   initialState: orderAdapter.getInitialState(),
   reducers: {
-    ordersReceived: orderAdapter.upsertMany,
     addOrder: orderAdapter.addOne,
+    ordersReceived: orderAdapter.upsertMany,
     removeOrder: orderAdapter.removeOne,
   },
   extraReducers: {
