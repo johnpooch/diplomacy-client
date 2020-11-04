@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import Loading from '../components/Loading';
 import Map from '../components/Map';
+import OrderDialogue from '../components/OrderDialogue';
 import StatusBar from '../components/StatusBar';
 import { gameActions, gameSelectors } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
@@ -65,6 +66,7 @@ const Game = (props) => {
         turn={currentTurn}
         postOrder={postOrder}
       />
+      <OrderDialogue gameInterface={gameInterface} />
       <StatusBar
         finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         turn={turn}
