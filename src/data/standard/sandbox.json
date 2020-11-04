@@ -3,7 +3,7 @@
     "name": "Sandbox",
     "turns": [
         {
-            "id": "SANDBOX",
+            "id": 1,
             "next_turn": null,
             "previous_turn": null,
             "current_turn": true,
@@ -12,27 +12,27 @@
             "phase": "Order",
             "territory_states": [
                 {
-                    "id": "SANDBOX-1",
+                    "id": 1,
                     "territory": 1,
                     "controlled_by": null
                 },
                 {
-                    "id": "SANDBOX-2",
+                    "id": 2,
                     "territory": 2,
                     "controlled_by": null
                 },
                 {
-                    "id": "SANDBOX-3",
+                    "id": 3,
                     "territory": 3,
                     "controlled_by": null
                 },
                 {
-                    "id": "SANDBOX-4",
+                    "id": 4,
                     "territory": 4,
                     "controlled_by": null
                 },
                 {
-                    "id": "SANDBOX-5",
+                    "id": 5,
                     "territory": 5,
                     "controlled_by": null
                 },
