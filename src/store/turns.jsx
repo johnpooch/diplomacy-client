@@ -30,6 +30,11 @@ const turnSlice = createSlice({
       const turn = state.entities[id];
       turn.piece_states.push(pieceState);
     },
+    removeOrder: (state, { payload }) => {
+      const { id, order } = payload;
+      const turn = state.entities[id];
+      turn.orders = turn.orders.filter((o) => o !== order);
+    },
   },
   extraReducers: {
     [LIST_ORDERS_FULFILLED]: (state, { payload, meta }) => {
