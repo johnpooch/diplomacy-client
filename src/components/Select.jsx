@@ -3,7 +3,7 @@ import React from 'react';
 import { FormLabelText } from '../styles';
 
 const DipSelect = (props) => {
-  const { name, label, value, onChange, options } = props;
+  const { name, label, value, onChange, options, required } = props;
 
   const emptyOptionString = '-------';
 
@@ -14,11 +14,13 @@ const DipSelect = (props) => {
       </option>
     );
   });
-  formattedOptions.unshift(
-    <option key="empty" value="">
-      {emptyOptionString}
-    </option>
-  );
+  if (!required) {
+    formattedOptions.unshift(
+      <option key="empty" value="">
+        {emptyOptionString}
+      </option>
+    );
+  }
 
   return (
     <label htmlFor={name}>
