@@ -80,6 +80,9 @@ const Header = (props) => {
           <StyledNavLink exact to="/create-game">
             Create game
           </StyledNavLink>
+          <StyledNavLink exact to="/sandbox">
+            Sandbox
+          </StyledNavLink>
         </nav>
         <StyledUserAccount
           user={user}
