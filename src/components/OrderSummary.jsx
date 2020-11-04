@@ -20,7 +20,7 @@ const StyledP = styled.p`
 `;
 
 const OrderSummary = (props) => {
-  const { order } = props;
+  const { gameInterface } = props;
   const {
     aux,
     source,
@@ -28,7 +28,7 @@ const OrderSummary = (props) => {
     type,
     piece_type: pieceType,
     targetCoast,
-  } = order;
+  } = gameInterface;
 
   let orderSummary = null;
 
