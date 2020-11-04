@@ -46,7 +46,7 @@ const OrderSummary = (props) => {
     case 'hold':
       orderSummary = (
         <StyledP>
-          <span className="piece">{pieceType}</span>
+          <span className="piece">{source.piece.type}</span>
           in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
         </StyledP>
@@ -59,11 +59,9 @@ const OrderSummary = (props) => {
       if (targetCoast) {
         name = targetCoast.name;
       }
-      // TODO fix piece type
-      const pieceType = 'Army';
       orderSummary = (
         <StyledP>
-          <span className="piece">{pieceType}</span>
+          <span className="piece">{source.piece.type}</span>
           in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
           to <span className="target">{name}</span>
@@ -76,7 +74,7 @@ const OrderSummary = (props) => {
     case 'support':
       orderSummary = (
         <StyledP>
-          <span className="piece">{pieceType}</span>
+          <span className="piece">{source.piece.type}</span>
           in <span className="source">{source.name}</span>
           to <span className="action">{type}</span>
           <span className="aux">{aux.name}</span>
