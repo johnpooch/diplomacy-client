@@ -15,6 +15,7 @@ const pieceStateSlice = createSlice({
   initialState: pieceStateAdapter.getInitialState(),
   reducers: {
     pieceStatesReceived: pieceStateAdapter.setAll,
+    addPieceState: pieceStateAdapter.addOne,
   },
 });
 
