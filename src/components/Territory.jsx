@@ -46,7 +46,7 @@ const getFillColor = (territory) => {
 };
 
 const Territory = (props) => {
-  const { territory, hovering, order, panning, callbacks } = props;
+  const { territory, hovering, gameInterface, panning, callbacks } = props;
   const {
     abbreviation,
     dislodgedPiece,
@@ -60,7 +60,7 @@ const Territory = (props) => {
   } = territory;
 
   const color = getFillColor(territory);
-  const territoryOrderState = order.getTerritoryOrderState(id);
+  const territoryOrderState = gameInterface.getTerritoryOrderState(id);
 
   return (
     <StyledTerritory
