@@ -27,9 +27,8 @@ const StyledDiv = styled.div`
 `;
 
 const Map = (props) => {
-  const { postOrder, game, order, turn } = props;
-  const { orders, territories, userNation } = turn;
-  const { mapData } = game.variant;
+  const { gameInterface, turn } = props;
+  const { orders, territories } = turn;
 
   const PANNING_THRESHOLD = 5;
 
@@ -52,7 +51,7 @@ const Map = (props) => {
     };
     const mouseUp = (e) => {
       if (e.nativeEvent.which !== 1) return;
-      if (!panning) order.clickTerritory(territory);
+      if (!panning) gameInterface.clickTerritory(territory);
     };
     const contextMenu = (e) => {
       e.nativeEvent.preventDefault();
@@ -122,7 +121,7 @@ const Map = (props) => {
         <Territories
           getCallbacks={getTerritoryCallbacks}
           hovering={hovering}
-          order={order}
+          gameInterface={gameInterface}
           panning={panning}
           territories={territories}
         />
