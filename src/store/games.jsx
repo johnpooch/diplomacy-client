@@ -78,6 +78,11 @@ const gameSlice = createSlice({
       gameAdapter.setAll(state, action.payload);
       state.loading = false;
     },
+    addPiece: (state, { payload }) => {
+      const { id, piece } = payload;
+      const game = state.entities[id];
+      game.pieces.push(piece);
+    },
   },
   extraReducers: {
     [getGameDetail.pending]: (state, action) => {
