@@ -3,6 +3,7 @@ import { routerMiddleware } from 'connected-react-router';
 
 import reducer from './reducer';
 import gameMiddleware from './middleware/game';
+import orderMiddleware from './middleware/order';
 import variantMiddleware from './middleware/variant';
 
 export default function (history) {
@@ -12,6 +13,7 @@ export default function (history) {
       routerMiddleware(history), // for dispatching history actions
       ...getDefaultMiddleware(),
       ...gameMiddleware,
+      ...orderMiddleware,
       ...variantMiddleware,
     ],
   });
