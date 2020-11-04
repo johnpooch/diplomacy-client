@@ -11,7 +11,7 @@ import { turnSelectors } from './turns';
 const pieceStateAdapter = createEntityAdapter();
 
 const pieceStateSlice = createSlice({
-  name: 'territory_states',
+  name: 'pieceStates',
   initialState: pieceStateAdapter.getInitialState(),
   reducers: {
     pieceStatesReceived: pieceStateAdapter.setAll,
