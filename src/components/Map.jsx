@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
 import ArrowheadMarker from './ArrowheadMarker';
-import OrderDialogue from './OrderDialogue';
 import Orders from './Orders';
 import ScrollableSVG from './ScrollableSVG';
 import Territories from './Territories';
@@ -128,11 +127,6 @@ const Map = (props) => {
         <Orders orders={orders} />
       </ScrollableSVG>
       <Tooltip territory={tooltip} />
-      <OrderDialogue
-        onClickConfirm={postOrder}
-        nation={userNation}
-        order={order}
-      />
     </StyledDiv>
   );
 };
