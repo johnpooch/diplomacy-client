@@ -71,10 +71,10 @@ const StyledCloseButton = styled(BaseButton)`
   }
 `;
 
-function renderOrderConfirmation(order, callback) {
+function renderOrderConfirmation(gameInterface, callback) {
   return (
     <div className="order-confirmation">
-      <OrderSummary order={order} />
+      <OrderSummary gameInterface={gameInterface} />
       <Button onClick={callback}>Confirm</Button>
     </div>
   );
@@ -83,16 +83,16 @@ function renderOrderConfirmation(order, callback) {
 // This function is exported for patching in test
 export function renderOrderActions(props) {
   /* Gets the appropriate sub component based on the state of the order. */
-  const { onClickConfirm, order } = props;
-  const { type, source, target, piece_type: pieceType } = order;
+  const { gameInterface } = props;
+  const { type, source, target, piece_type: pieceType } = gameInterface;
 
   if (!type) {
     return (
       <OrderTypeSelector
         name="type"
         summary={source}
-        choices={order.getOrderTypeChoices()}
-        onClickChoice={order.clickOrderTypeChoice}
+        choices={gameInterface.getOrderTypeChoices()}
+        onClickChoice={gameInterface.clickOrderTypeChoice}
       />
     );
   }
@@ -100,56 +100,35 @@ export function renderOrderActions(props) {
   switch (type) {
     case 'build':
       if (!pieceType) {
-        return (
-          <OrderTypeSelector
-            name="piece_type"
-            summary={source}
-            choices={pieceTypeChoices}
-            onClickChoice={updateOrderState}
-          />
-        );
+        return <OrderTypeSelector name="piece_type" summary={source} />;
       }
-      return renderOrderConfirmation(order, onClickConfirm);
+      return renderOrderConfirmation(gameInterface, gameInterface.createOrder);
 
     case 'hold':
-      return renderOrderConfirmation(order, onClickConfirm);
+      return renderOrderConfirmation(gameInterface, gameInterface.createOrder);
 
     default: {
       if (!target) {
-        return <OrderMessage order={order} />;
+        return <OrderMessage order={gameInterface} />;
       }
-      // const { named_coasts: namedCoasts } = target;
-      // if (namedCoasts.length && !targetCoast) {
-      //   const choices = namedCoasts.map((namedCoast) => [
-      //     namedCoast.id,
-      //     namedCoast,
-      //     namedCoast.name,
-      //   ]);
-      //   return (
-      //     <OptionSelector
-      //       choices={choices}
-      //       onSelect={onClickChoice('named_coast')}
-      //     />
-      //   );
-      // }
-      return renderOrderConfirmation(order, onClickConfirm);
+      return renderOrderConfirmation(gameInterface, gameInterface.createOrder);
     }
   }
 }
 
 const OrderDialogue = (props) => {
-  const { nation, order } = props;
-  const { source } = order;
+  const { gameInterface } = props;
+  const { source } = gameInterface;
 
-  if (!(source && nation)) return null;
+  if (!source) return null;
 
   return (
     <StyledWrapper>
       <StyledDiv>
-        <StyledCloseButton onClick={order.reset}>
+        <StyledCloseButton onClick={gameInterface.reset}>
           <FontAwesomeIcon icon={faTimes} />
         </StyledCloseButton>
-        <TerritorySummary nation={nation} territory={source} />
+        <TerritorySummary territory={source} />
         <div className="order-actions">{renderOrderActions(props)}</div>
       </StyledDiv>
     </StyledWrapper>
