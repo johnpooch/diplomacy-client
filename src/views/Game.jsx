@@ -12,7 +12,7 @@ import { orderActions } from '../store/orders';
 import { variantActions } from '../store/variants';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
 import { initialGameFormState } from '../game/base';
-import GameInterface from '../game/liveGameInterface';
+import GameInterface from '../game/gameInterface';
 
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
