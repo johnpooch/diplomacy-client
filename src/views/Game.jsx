@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import Loading from '../components/Loading';
-import Map from '../components/Map';
-import StatusBar from '../components/StatusBar';
+import Canvas from '../components/Canvas';
+// import Map from '../components/Map';
+// import StatusBar from '../components/StatusBar';
 import { gameActions, gameSelectors } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
@@ -15,7 +16,6 @@ import { initialOrderState, Order } from '../game/order';
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
    * The view loads until the game detail data is in the store. */
-
   const {
     createOrder,
     finalizeOrders,
@@ -54,16 +54,17 @@ const Game = (props) => {
   };
 
   return (
-    <div>
-      <Map game={game} order={order} turn={turn} postOrder={postOrder} />
-      <StatusBar
-        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
-        turn={turn}
-        _setTurn={(_id) => {
-          setActiveTurn(_id);
-        }}
-      />
-    </div>
+    <Canvas game={game} />
+    // <div>
+    //   <Map game={game} order={order} turn={turn} postOrder={postOrder} />
+    //   <StatusBar
+    //     finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
+    //     turn={turn}
+    //     _setTurn={(_id) => {
+    //       setActiveTurn(_id);
+    //     }}
+    //   />
+    // </div>
   );
 };
 

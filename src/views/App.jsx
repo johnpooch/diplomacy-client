@@ -18,12 +18,8 @@ const App = (props) => {
     clearAndPromoteAlerts();
   }, [location.pathname]);
 
-  // User is logged out
-  if (!loggedIn) {
-    return <RouterLoggedOut />;
-  }
+  if (!loggedIn) return <RouterLoggedOut />;
 
-  // User is logged in
   return (
     <div>
       <Alerts alerts={alerts} onClick={alertsClear} />
