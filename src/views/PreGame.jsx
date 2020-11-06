@@ -26,6 +26,10 @@ const PreGame = (props) => {
     }
   };
 
+  const formText = userJoined
+    ? `You have already joined this game. The game will begin once all players have joined.`
+    : `You are not currently part of this game.`;
+
   return (
     <Page title={game ? game.name : null}>
       <Grid columns={1}>
@@ -33,6 +37,7 @@ const PreGame = (props) => {
         <Players game={game} />
         <FormWrapper>
           <Form onSubmit={handleSubmit}>
+            <p>{formText}</p>
             <GridTemplate templateColumns="2fr 1fr">
               <Button type="submit">
                 {userJoined ? 'Leave game' : 'Join game'}
