@@ -54,7 +54,7 @@ const Game = (props) => {
   };
 
   return (
-    <Canvas game={game} />
+    <Canvas currentTurn={currentTurn} />
     // <div>
     //   <Map game={game} order={order} turn={turn} postOrder={postOrder} />
     //   <StatusBar
