@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 
-import useForm from '../hooks/useForm';
+import Form, { FormLabel, FormWrapper } from '../components/Form';
 import Page from '../components/Page';
-import { Button, SecondaryButton } from '../components/Button';
-import { Form, FormLabel, FormWrapper } from '../components/Form';
-import { GridTemplate } from '../styles';
+import useForm from '../hooks/useForm';
 import { alertActions } from '../store/alerts';
+import { Button, SecondaryButton } from '../components/Button';
 import { gameActions } from '../store/games';
+import { GridTemplate } from '../layout';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 

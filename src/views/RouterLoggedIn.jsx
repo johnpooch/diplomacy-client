@@ -13,6 +13,7 @@ import { authActions } from '../store/auth';
 
 const RouterLoggedIn = (props) => {
   const { loggedIn } = props;
+
   return (
     <Switch>
       <Route

@@ -16,6 +16,7 @@ const Header = styled.header`
   position: sticky;
   right: 0;
   top: 0;
+  z-index: 1;
 
   nav {
     display: grid;
@@ -27,7 +28,7 @@ const Header = styled.header`
   }
 
   > * {
-    padding: ${variables.spacing[2]}px;
+    padding: ${variables.spacing[2]}px ${variables.spacing[3]}px;
   }
 
   > *:last-child {
@@ -35,29 +36,37 @@ const Header = styled.header`
   }
 
   a {
-    &:hover {
-      text-decoration: underline;
-    }
+    border-bottom: solid ${variables.sizes.border}px transparent;
+    padding: ${variables.spacing[0]}px 0;
 
     &.active {
       color: ${variables.colors.base};
+      border-color: ${variables.colors.darkgray};
     }
+  }
+
+  nav {
+    font-size: ${variables.fontSizes.sans[2]}px;
+  }
+
+  .username {
+    font-weight: bold;
   }
 `;
 
 const Logo = () => {
-  return <span css={{ fontWeight: 'bold' }}>Diplomacy</span>;
-};
-
-const Player = (user) => {
-  return <span css={{ fontWeight: 'bold' }}>{user.user.username}</span>;
+  return (
+    <span css={{ fontWeight: 'bold', fontSize: variables.fontSizes.sans[3] }}>
+      Diplomacy
+    </span>
+  );
 };
 
 const Navigation = (props) => {
   const { onLogout, user } = props;
   return (
     <Header>
-      <nav>
+      <nav className="primary-nav">
         <NavLink exact to="/">
           Browse games
         </NavLink>
@@ -66,10 +75,10 @@ const Navigation = (props) => {
         </NavLink>
       </nav>
       <Logo />
-      <nav>
-        <span>
-          Logged in as <Player user={user} />
-        </span>
+      <nav className="user-nav">
+        <div>
+          Logged in as <span className="username">{user.username}</span>
+        </div>
         <SecondaryButton type="button" onClick={onLogout} role="link">
           Log out
         </SecondaryButton>

@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import RouterLoggedIn from './RouterLoggedIn';
 import RouterLoggedOut from './RouterLoggedOut';
 
-import AlertList from '../components/AlertList';
+import Alerts from '../components/Alerts';
 import Navigation from '../components/Navigation';
 
 import { authActions } from '../store/auth';
@@ -31,7 +31,7 @@ const App = (props) => {
   if (!loggedIn) {
     return (
       <div>
-        <AlertList alerts={alerts} onClick={alertsClear} />
+        <Alerts alerts={alerts} onClick={alertsClear} />
         <RouterLoggedOut />
       </div>
     );
@@ -41,7 +41,7 @@ const App = (props) => {
   return (
     <div>
       <Navigation loggedIn={loggedIn} onLogout={logout} user={user} />
-      <AlertList alerts={alerts} onClick={alertsClear} />
+      <Alerts alerts={alerts} onClick={alertsClear} />
       <RouterLoggedIn />
     </div>
   );

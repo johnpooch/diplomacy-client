@@ -1,25 +1,53 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
-import JoinGame from '../components/JoinGame';
-import JoinedGame from '../components/JoinedGame';
+import Form, { FormWrapper } from '../components/Form';
 import Page from '../components/Page';
-import PlayerList from '../components/PlayerList';
-import { spacing } from '../variables';
-
+import Players from '../components/Players';
 import { alertActions } from '../store/alerts';
+import { Button, SecondaryButton } from '../components/Button';
 import { gameActions } from '../store/games';
 import { getDenormalizedPreGame } from '../store/denormalizers';
+import { Grid, GridTemplate } from '../layout';
 
-const StyledP = styled.p`
-  margin: ${spacing[4]}px 0;
-  font-style: italic;
-`;
+const NavLinkButton = SecondaryButton.withComponent(NavLink);
+
+const JoinedGame = (props) => {
+  const { onClickLeave } = props;
+  return (
+    <FormWrapper>
+      <Form onSubmit={onClickLeave}>
+        <p>
+          You have already joined this game. The game will begin once all
+          players have joined.
+        </p>
+        <GridTemplate templateColumns="2fr 1fr">
+          <Button type="submit">Leave game</Button>
+          <NavLinkButton to="/">Cancel</NavLinkButton>
+        </GridTemplate>
+      </Form>
+    </FormWrapper>
+  );
+};
+
+const JoinGame = (props) => {
+  const { onClickJoin } = props;
+  return (
+    <FormWrapper>
+      <Form onSubmit={onClickJoin}>
+        <GridTemplate templateColumns="2fr 1fr">
+          <Button type="submit">Join game</Button>
+          <NavLinkButton to="/">Cancel</NavLinkButton>
+        </GridTemplate>
+      </Form>
+    </FormWrapper>
+  );
+};
 
 const PreGame = (props) => {
   const { game, joinGame, leaveGame, token } = props;
-  const { description, participants, userJoined } = game;
+  const { description, userJoined } = game;
 
   const onClickJoin = (e) => {
     e.preventDefault();
@@ -31,18 +59,17 @@ const PreGame = (props) => {
     leaveGame(token, game.slug);
   };
 
-  const formComponent = userJoined ? (
-    <JoinedGame onClickLeave={onClickLeave} />
-  ) : (
-    <JoinGame onClickJoin={onClickJoin} />
-  );
-
   return (
     <Page title={game ? game.name : null}>
-      <StyledP>{description}</StyledP>
-      <h2>Players</h2>
-      <PlayerList players={participants} />
-      {formComponent}
+      <Grid columns={1}>
+        {description ? <p>{description}</p> : null}
+        <Players game={game} />
+        {userJoined ? (
+          <JoinedGame onClickLeave={onClickLeave} />
+        ) : (
+          <JoinGame onClickJoin={onClickJoin} />
+        )}
+      </Grid>
     </Page>
   );
 };
