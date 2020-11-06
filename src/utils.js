@@ -1,4 +1,17 @@
 import _slugify from 'slugify';
+import { useRef, useState } from 'react';
+
+export const useReferredState = (initialValue) => {
+  const [state, setState] = useState(initialValue);
+  const reference = useRef(state);
+
+  const setReferredState = (value) => {
+    reference.current = value;
+    setState(value);
+  };
+
+  return [reference, setReferredState];
+};
 
 export const slugify = (str) => {
   return _slugify(str, {
@@ -6,6 +19,10 @@ export const slugify = (str) => {
     lower: true,
     strict: true,
   });
+};
+
+export const clamp = (n, min, max) => {
+  return Math.max(min, Math.min(n, max));
 };
 
 export const dateDisplayFormat = {
