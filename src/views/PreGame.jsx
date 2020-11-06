@@ -13,50 +13,17 @@ import { Grid, GridTemplate } from '../layout';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
-const JoinedGame = (props) => {
-  const { onClickLeave } = props;
-  return (
-    <FormWrapper>
-      <Form onSubmit={onClickLeave}>
-        <p>
-          You have already joined this game. The game will begin once all
-          players have joined.
-        </p>
-        <GridTemplate templateColumns="2fr 1fr">
-          <Button type="submit">Leave game</Button>
-          <NavLinkButton to="/">Cancel</NavLinkButton>
-        </GridTemplate>
-      </Form>
-    </FormWrapper>
-  );
-};
-
-const JoinGame = (props) => {
-  const { onClickJoin } = props;
-  return (
-    <FormWrapper>
-      <Form onSubmit={onClickJoin}>
-        <GridTemplate templateColumns="2fr 1fr">
-          <Button type="submit">Join game</Button>
-          <NavLinkButton to="/">Cancel</NavLinkButton>
-        </GridTemplate>
-      </Form>
-    </FormWrapper>
-  );
-};
-
 const PreGame = (props) => {
   const { game, joinGame, leaveGame, token } = props;
   const { description, userJoined } = game;
 
-  const onClickJoin = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    joinGame(token, game.slug);
-  };
-
-  const onClickLeave = (e) => {
-    e.preventDefault();
-    leaveGame(token, game.slug);
+    if (userJoined) {
+      leaveGame(token, game.slug);
+    } else {
+      joinGame(token, game.slug);
+    }
   };
 
   return (
@@ -64,11 +31,16 @@ const PreGame = (props) => {
       <Grid columns={1}>
         {description ? <p>{description}</p> : null}
         <Players game={game} />
-        {userJoined ? (
-          <JoinedGame onClickLeave={onClickLeave} />
-        ) : (
-          <JoinGame onClickJoin={onClickJoin} />
-        )}
+        <FormWrapper>
+          <Form onSubmit={handleSubmit}>
+            <GridTemplate templateColumns="2fr 1fr">
+              <Button type="submit">
+                {userJoined ? 'Leave game' : 'Join game'}
+              </Button>
+              <NavLinkButton to="/">Cancel</NavLinkButton>
+            </GridTemplate>
+          </Form>
+        </FormWrapper>
       </Grid>
     </Page>
   );
