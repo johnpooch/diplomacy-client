@@ -20,8 +20,9 @@ const StyledGame = styled.div`
   }
 
   .players {
-    padding-left: ${variables.spacing[2]}px;
     border-left: solid ${variables.sizes.border}px ${variables.colors.gray};
+    height: 100%;
+    padding-left: ${variables.spacing[2]}px;
   }
 
   > div {
@@ -58,7 +59,9 @@ const Game = (props) => {
         <h2 className="name">{name}</h2>
         <p className="description">{description}</p>
       </div>
-      <Players className="players" game={game} />
+      <div className="players">
+        <Players game={game} />
+      </div>
     </StyledGame>
   );
 };

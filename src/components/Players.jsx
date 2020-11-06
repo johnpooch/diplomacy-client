@@ -63,7 +63,7 @@ export const PlayerList = ({ game }) => {
 
 const StyledPlayers = styled.div`
   display: grid;
-  grid-row-gap: ${variables.spacing[1]}px;
+  grid-row-gap: ${variables.spacing[2]}px;
 `;
 
 const Players = ({ game }) => {
