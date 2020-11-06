@@ -11,7 +11,7 @@ import { gameSelectors } from './games';
 const pieceAdapter = createEntityAdapter();
 
 const pieceSlice = createSlice({
-  name: 'territory_states',
+  name: 'territoryStates',
   initialState: pieceAdapter.getInitialState(),
   reducers: {
     piecesReceived: pieceAdapter.setAll,

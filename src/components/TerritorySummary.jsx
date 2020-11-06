@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 import { colors, fontSizes, sizes, spacing } from '../variables';
-import { nationStateConstants } from '../store/nationStates';
 
 const StyledDiv = styled.div`
   pointer-events: none;
@@ -31,11 +30,7 @@ const StyledSpan = styled.span`
 `;
 
 const TerritorySummary = ({ nation, territory }) => {
-  const {
-    controlled_by: controlledBy,
-    supply_center: supplyCenter,
-    name,
-  } = territory;
+  const { controlledBy, name, supplyCenter } = territory;
   const color = colors.nations[controlledBy];
   const elements = [];
 

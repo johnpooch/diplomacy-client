@@ -11,7 +11,7 @@ import { turnSelectors } from './turns';
 const territoryStateAdapter = createEntityAdapter();
 
 const territoryStateSlice = createSlice({
-  name: 'territory_states',
+  name: 'territoryStates',
   initialState: territoryStateAdapter.getInitialState(),
   reducers: {
     territoryStatesReceived: territoryStateAdapter.setAll,
@@ -30,7 +30,7 @@ const selectByTurnId = createSelector(
   turnSelectors.selectById,
   adapterSelectors.selectAll,
   (turn, territoryStates) =>
-    territoryStates.filter((t) => turn.territory_states.includes(t.id))
+    territoryStates.filter((t) => turn.territoryStates.includes(t.id))
 );
 
 export const territoryStateSelectors = {

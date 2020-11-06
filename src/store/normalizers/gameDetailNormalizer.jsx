@@ -9,10 +9,10 @@ const territoryState = new schema.Entity('territoryStates');
 const orders = new schema.Entity('orders');
 
 const turn = new schema.Entity('turns', {
-  nation_states: [nationState],
+  nationStates: [nationState],
   orders: [orders],
-  piece_states: [pieceState],
-  territory_states: [territoryState],
+  pieceStates: [pieceState],
+  territoryStates: [territoryState],
 });
 
 const piece = new schema.Entity('pieces');

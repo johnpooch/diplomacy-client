@@ -1,5 +1,4 @@
 /** @jsx jsx */
-/* eslint camelcase: [2, { "allow": ["num_players", "nation_choice_mode", "order_deadline", "retreat_deadline", "build_deadline", "game_statuses"] }] */
 import {
   faChevronDown,
   faChevronUp,
@@ -29,11 +28,11 @@ const GamesFilters = ({ callback, choices }) => {
     search: '',
     variant: '',
     status: '',
-    num_players: '',
-    nation_choice_mode: '',
-    order_deadline: '',
-    retreat_deadline: '',
-    build_deadline: '',
+    numPlayers: '',
+    nationChoiceMode: '',
+    orderDeadline: '',
+    retreatDeadline: '',
+    buildDeadline: '',
   });
   const [open, setOpen] = useState(false);
 
@@ -75,13 +74,13 @@ const GamesFilters = ({ callback, choices }) => {
             placeholder="Search by game name"
           />
         </label>
-        <label htmlFor="num_players">
+        <label htmlFor="numPlayers">
           <FormLabel>Players</FormLabel>
           <input
-            id="num_players"
-            name="num_players"
+            id="numPlayers"
+            name="numPlayers"
             type="number"
-            value={values.num_players}
+            value={values.numPlayers}
             onChange={handleChange}
             min={1}
             max={7}
@@ -99,33 +98,33 @@ const GamesFilters = ({ callback, choices }) => {
           label="Status"
           value={values.status}
           onChange={handleChange}
-          options={choices.game_statuses}
+          options={choices.gameStatuses}
         />
         <Select
-          name="nation_choice_mode"
+          name="nationChoiceMode"
           label="Nation choice mode"
-          value={values.nation_choice_mode}
+          value={values.nationChoiceMode}
           onChange={handleChange}
-          options={choices.nation_choice_modes}
+          options={choices.nationChoiceModes}
         />
         <Select
-          name="order_deadline"
+          name="orderDeadline"
           label="Order deadline"
-          value={values.order_deadline}
+          value={values.orderDeadline}
           onChange={handleChange}
           options={choices.deadlines}
         />
         <Select
-          name="retreat_deadline"
+          name="retreatDeadline"
           label="Retreat deadline"
-          value={values.retreat_deadline}
+          value={values.retreatDeadline}
           onChange={handleChange}
           options={choices.deadlines}
         />
         <Select
-          name="build_deadline"
+          name="buildDeadline"
           label="Build deadline"
-          value={values.build_deadline}
+          value={values.buildDeadline}
           onChange={handleChange}
           options={choices.deadlines}
         />

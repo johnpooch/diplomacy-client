@@ -42,7 +42,7 @@ const StyledDiv = styled.div`
 
 const StatusBar = (props) => {
   const { finalizeOrders, turn, _setTurn } = props;
-  const { current_turn: currentTurn, userNation } = turn;
+  const { currentTurn, userNation } = turn;
 
   return (
     <StyledFooter>
