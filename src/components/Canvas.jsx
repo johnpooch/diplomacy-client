@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
 
 import Territories from './CanvasTerritories';
+import Tooltip from './CanvasTooltip';
 import viewBox from '../data/standard/viewBox.json';
 import { clamp, useReferredState } from '../utils';
 import { variables } from '../variables';
@@ -9,7 +10,9 @@ import { variables } from '../variables';
 const Canvas = ({ currentTurn }) => {
   const { territories } = currentTurn;
 
+  const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
+  const [pointer, setPointer] = useReferredState({ x: 0, y: 0 });
   const [position, setPosition] = useReferredState({ x: 0, y: 0 });
   const [scale, setScale] = useReferredState(0);
   const [size, setSize] = useReferredState({ width: 0, height: 0 });
@@ -58,14 +61,13 @@ const Canvas = ({ currentTurn }) => {
       if (viewBox.width * newScale < size.current.width) return;
       if (viewBox.height * newScale < size.current.height) return;
 
-      const pointer = stageRef.current.getPointerPosition();
       const mousePointTo = {
-        x: (pointer.x - position.current.x) / scale.current,
-        y: (pointer.y - position.current.y) / scale.current,
+        x: (pointer.current.x - position.current.x) / scale.current,
+        y: (pointer.current.y - position.current.y) / scale.current,
       };
       const newPosition = {
-        x: pointer.x - mousePointTo.x * newScale,
-        y: pointer.y - mousePointTo.y * newScale,
+        x: pointer.current.x - mousePointTo.x * newScale,
+        y: pointer.current.y - mousePointTo.y * newScale,
       };
 
       setScale(newScale);
@@ -101,6 +103,9 @@ const Canvas = ({ currentTurn }) => {
         });
       }}
       dragBoundFunc={(pos) => bounds(pos)}
+      onMouseMove={() => {
+        setPointer(stageRef.current.getPointerPosition());
+      }}
     >
       <Layer>
         <Rect
@@ -109,9 +114,32 @@ const Canvas = ({ currentTurn }) => {
           fill={variables.colors.base}
         />
       </Layer>
-      <Layer x={viewBox.territoriesX} y={viewBox.territoriesY}>
+      <Layer
+        x={viewBox.territoriesX}
+        y={viewBox.territoriesY}
+        onMouseMove={(event) => {
+          setHoverTarget(event.target);
+        }}
+        onMouseOut={() => {
+          setHoverTarget();
+        }}
+        onBlur={() => {
+          setHoverTarget();
+        }}
+      >
         <Territories territories={territories} />
       </Layer>
+      {!isDragging.current ? (
+        <Layer>
+          <Tooltip
+            target={hoverTarget.current}
+            stageRef={stageRef}
+            scale={scale.current}
+            position={position.current}
+            pointer={pointer.current}
+          />
+        </Layer>
+      ) : null}
     </Stage>
   );
 };

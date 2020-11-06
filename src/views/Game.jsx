@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 import Canvas from '../components/Canvas';
 // import Map from '../components/Map';
 // import StatusBar from '../components/StatusBar';
@@ -33,7 +33,7 @@ const Game = (props) => {
     prepareGameDetail(token, slug);
   }, [location.pathname]);
 
-  if (!game) return <Loading />;
+  if (!game) return null; // return <Loading />;
   const currentTurn = game.turns.find((t) => t.current_turn === true);
 
   // Set the active turn to the current turn on initial load
