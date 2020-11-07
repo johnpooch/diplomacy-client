@@ -96,7 +96,6 @@ const gameSlice = createSlice({
     },
     [getGames.pending]: (state) => {
       state.loading = true;
-      state.browseGamesLoaded = false;
     },
     [getGames.fulfilled]: (state) => {
       state.loading = false;
