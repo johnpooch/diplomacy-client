@@ -124,9 +124,7 @@ export const getDenormalizedGameDetail = (state, id, user) => {
 export const getDenormalizedPreGame = (state, slug) => {
   const { user } = state.auth;
   const game = gameSelectors.selectBySlug(state, slug);
-  if (!game) {
-    return { participants: [] };
-  }
+  if (!game) return null;
   const participants = game.participants.map((p) =>
     userSelectors.selectById(state, p)
   );
