@@ -5,23 +5,30 @@ import { darken, lighten } from 'polished';
 
 import { variables } from '../variables';
 
-const Territory = ({ territory }) => {
-  const { controlled_by, name, path, playable, type } = territory;
+const Territory = ({ territory, isHovering }) => {
+  const { controlled_by, name, path, playable, type, id } = territory;
 
   const getFill = () => {
-    if (type === 'sea') return variables.colors.sea;
-    if (playable === false) return lighten(0.1, variables.colors.base);
     if (controlled_by in variables.colors.nations)
       return variables.colors.nations[controlled_by];
-    return variables.colors.land;
+
+    if (playable === true) {
+      return type === 'sea' ? variables.colors.sea : variables.colors.land;
+    }
+
+    return type === 'sea'
+      ? darken(0.2, variables.colors.sea)
+      : lighten(0.1, variables.colors.base);
   };
 
   const getStroke = () => {
+    if (isHovering) return variables.colors.white;
     return darken(0.2, getFill());
   };
 
   return (
     <Path
+      id={id}
       name={name}
       data={path}
       fill={getFill()}
@@ -33,10 +40,14 @@ const Territory = ({ territory }) => {
   );
 };
 
-const Territories = ({ territories }) => {
+const Territories = ({ territories, hoverTarget }) => {
   const elements = territories.map((territory) => {
     return (
-      <Territory key={territory.territory_map_data_id} territory={territory} />
+      <Territory
+        key={territory.territory_map_data_id}
+        territory={territory}
+        isHovering={hoverTarget !== null && territory.id === hoverTarget}
+      />
     );
   });
   return <Group>{elements}</Group>;

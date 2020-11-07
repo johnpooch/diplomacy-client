@@ -1,25 +1,62 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Label, Tag, Text } from 'react-konva';
 
-// import { variables } from '../variables';
+import { useReferredState } from '../utils';
+import { variables } from '../variables';
 
-const Tooltip = ({ target, scale, position, pointer }) => {
-  if (!target) return null;
+const FONTSIZE = 16;
+const PADDING = 5;
+const OFFSET = 8;
 
-  const { name } = target.attrs;
-  if (!name) return null;
+const Tooltip = ({
+  hoverTarget,
+  mousePosition,
+  scale,
+  stagePosition,
+  stageRef,
+}) => {
+  const [position, setPosition] = useReferredState({ x: 0, y: 0 });
 
-  const fontSize = 20 / scale;
-  const padding = 5 / scale;
-  const pos = {
-    x: (pointer.x - position.x + 10) / scale,
-    y: (pointer.y - position.y + 10) / scale,
-  };
+  const labelRef = useRef();
+
+  useEffect(() => {
+    if (!labelRef.current) return;
+    const { attrs } = stageRef.current;
+    const offset = {
+      x:
+        mousePosition.x < attrs.width / 2
+          ? OFFSET / scale
+          : -labelRef.current.width() - OFFSET / scale,
+      y:
+        mousePosition.y < attrs.height / 2
+          ? OFFSET / scale
+          : -labelRef.current.height() - OFFSET / scale,
+    };
+    setPosition({
+      x: (mousePosition.x - stagePosition.x) / scale + offset.x,
+      y: (mousePosition.y - stagePosition.y) / scale + offset.y,
+    });
+  }, [hoverTarget, mousePosition, scale]);
+
+  if (!hoverTarget || !hoverTarget.attrs.name) return null;
+
+  const fontSize = FONTSIZE / scale;
+  const padding = PADDING / scale;
 
   return (
-    <Label x={pos.x} y={pos.y}>
-      <Tag fill="white" />
-      <Text text={target.attrs.name} fontSize={fontSize} padding={padding} />
+    <Label
+      listening={false}
+      ref={labelRef}
+      x={position.current.x}
+      y={position.current.y}
+    >
+      <Tag fill={variables.colors.white} />
+      <Text
+        fontFamily={variables.fontFamilies.sans}
+        fontSize={fontSize}
+        padding={padding}
+        text={hoverTarget.attrs.name.toUpperCase()}
+      />
     </Label>
   );
 };

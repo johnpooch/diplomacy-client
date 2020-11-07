@@ -7,25 +7,25 @@ import viewBox from '../data/standard/viewBox.json';
 import { clamp, useReferredState } from '../utils';
 import { variables } from '../variables';
 
+const ZOOMFACTOR = 1.1;
+const ZOOMMAX = 3;
+
 const Canvas = ({ currentTurn }) => {
   const { territories } = currentTurn;
 
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
-  const [pointer, setPointer] = useReferredState({ x: 0, y: 0 });
-  const [position, setPosition] = useReferredState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
+  const [stagePosition, setStagePosition] = useReferredState({ x: 0, y: 0 });
   const [scale, setScale] = useReferredState(0);
   const [size, setSize] = useReferredState({ width: 0, height: 0 });
 
   const stageRef = useRef();
 
-  const ZOOMFACTOR = 1.1;
-  const ZOOMMAX = 3;
-
-  const bounds = (pos) => {
+  const bounds = ({ x, y }) => {
     return {
-      x: clamp(pos.x, size.current.width - viewBox.width * scale.current, 0),
-      y: clamp(pos.y, size.current.height - viewBox.height * scale.current, 0),
+      x: clamp(x, size.current.width - viewBox.width * scale.current, 0),
+      y: clamp(y, size.current.height - viewBox.height * scale.current, 0),
     };
   };
 
@@ -47,11 +47,12 @@ const Canvas = ({ currentTurn }) => {
 
       setScale(newScale);
       setSize(newSize);
-      setPosition(newPosition);
+      setStagePosition(newPosition);
     };
 
     const zoom = (e) => {
       if (isDragging.current) return;
+      setHoverTarget(null);
 
       const newScale = Math.min(
         e.deltaY > 0 ? scale.current / ZOOMFACTOR : scale.current * ZOOMFACTOR,
@@ -61,17 +62,18 @@ const Canvas = ({ currentTurn }) => {
       if (viewBox.width * newScale < size.current.width) return;
       if (viewBox.height * newScale < size.current.height) return;
 
+      const pointer = stageRef.current.getPointerPosition();
       const mousePointTo = {
-        x: (pointer.current.x - position.current.x) / scale.current,
-        y: (pointer.current.y - position.current.y) / scale.current,
+        x: (pointer.x - stagePosition.current.x) / scale.current,
+        y: (pointer.y - stagePosition.current.y) / scale.current,
       };
       const newPosition = {
-        x: pointer.current.x - mousePointTo.x * newScale,
-        y: pointer.current.y - mousePointTo.y * newScale,
+        x: pointer.x - mousePointTo.x * newScale,
+        y: pointer.y - mousePointTo.y * newScale,
       };
 
       setScale(newScale);
-      setPosition(bounds(newPosition));
+      setStagePosition(bounds(newPosition));
     };
 
     resize();
@@ -89,23 +91,23 @@ const Canvas = ({ currentTurn }) => {
       ref={stageRef}
       width={size.current.width}
       height={size.current.height}
-      x={position.current.x}
-      y={position.current.y}
+      x={stagePosition.current.x}
+      y={stagePosition.current.y}
       scaleX={scale.current}
       scaleY={scale.current}
       draggable
-      onDragStart={() => setIsDragging(true)}
+      onDragStart={() => {
+        setIsDragging(true);
+        setHoverTarget(null);
+      }}
       onDragEnd={(e) => {
         setIsDragging(false);
-        setPosition({
+        setStagePosition({
           x: e.target.x(),
           y: e.target.y(),
         });
       }}
       dragBoundFunc={(pos) => bounds(pos)}
-      onMouseMove={() => {
-        setPointer(stageRef.current.getPointerPosition());
-      }}
     >
       <Layer>
         <Rect
@@ -118,28 +120,36 @@ const Canvas = ({ currentTurn }) => {
         x={viewBox.territoriesX}
         y={viewBox.territoriesY}
         onMouseMove={(event) => {
-          setHoverTarget(event.target);
+          if (!isDragging.current) setHoverTarget(event.target);
+          else setHoverTarget(null);
+          setMousePosition({
+            x: event.evt.clientX,
+            y: event.evt.clientY,
+          });
         }}
         onMouseOut={() => {
-          setHoverTarget();
+          setHoverTarget(null);
         }}
         onBlur={() => {
-          setHoverTarget();
+          setHoverTarget(null);
         }}
       >
-        <Territories territories={territories} />
+        <Territories
+          territories={territories}
+          hoverTarget={
+            hoverTarget.current ? hoverTarget.current.attrs.id : null
+          }
+        />
       </Layer>
-      {!isDragging.current ? (
-        <Layer>
-          <Tooltip
-            target={hoverTarget.current}
-            stageRef={stageRef}
-            scale={scale.current}
-            position={position.current}
-            pointer={pointer.current}
-          />
-        </Layer>
-      ) : null}
+      <Layer>
+        <Tooltip
+          hoverTarget={hoverTarget.current}
+          mousePosition={mousePosition.current}
+          scale={scale.current}
+          stagePosition={stagePosition.current}
+          stageRef={stageRef}
+        />
+      </Layer>
     </Stage>
   );
 };
