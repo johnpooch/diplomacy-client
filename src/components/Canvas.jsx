@@ -71,13 +71,13 @@ const Canvas = ({ currentTurn }) => {
         x: (pointer.x - stagePosition.current.x) / scale.current,
         y: (pointer.y - stagePosition.current.y) / scale.current,
       };
-      const newPosition = bounds({
+      const newPosition = {
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
-      });
+      };
 
       setScale(newScale);
-      setStagePosition(newPosition);
+      setStagePosition(bounds(newPosition));
     };
 
     resize();
