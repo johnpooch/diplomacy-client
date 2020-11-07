@@ -5,6 +5,8 @@ import { darken, lighten } from 'polished';
 
 import { variables } from '../variables';
 
+const STROKEWIDTH = 2;
+
 const Territory = ({ territory, isHovering }) => {
   const { controlled_by, name, path, playable, type, id } = territory;
 
@@ -33,7 +35,7 @@ const Territory = ({ territory, isHovering }) => {
       data={path}
       fill={getFill()}
       stroke={getStroke()}
-      strokeWidth={2}
+      strokeWidth={STROKEWIDTH}
       hitStrokeWidth={0}
       shadowForStrokeEnabled={false}
     />
@@ -41,16 +43,19 @@ const Territory = ({ territory, isHovering }) => {
 };
 
 const Territories = ({ territories, hoverTarget }) => {
-  const elements = territories.map((territory) => {
-    return (
-      <Territory
-        key={territory.territory_map_data_id}
-        territory={territory}
-        isHovering={hoverTarget !== null && territory.id === hoverTarget}
-      />
-    );
-  });
-  return <Group>{elements}</Group>;
+  return (
+    <Group>
+      {territories.map((territory) => {
+        return (
+          <Territory
+            key={territory.territory_map_data_id}
+            territory={territory}
+            isHovering={hoverTarget !== null && territory.id === hoverTarget}
+          />
+        );
+      })}
+    </Group>
+  );
 };
 
 export default Territories;

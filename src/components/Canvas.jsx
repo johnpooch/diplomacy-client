@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
 
+import Pieces from './CanvasPieces';
 import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import viewBox from '../data/standard/viewBox.json';
@@ -139,6 +140,14 @@ const Canvas = ({ currentTurn }) => {
         }}
       >
         <Territories
+          territories={territories}
+          hoverTarget={
+            hoverTarget.current ? hoverTarget.current.attrs.id : null
+          }
+        />
+      </Layer>
+      <Layer>
+        <Pieces
           territories={territories}
           hoverTarget={
             hoverTarget.current ? hoverTarget.current.attrs.id : null

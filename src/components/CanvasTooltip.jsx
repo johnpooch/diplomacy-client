@@ -40,9 +40,6 @@ const Tooltip = ({
 
   if (!hoverTarget || !hoverTarget.attrs.name) return null;
 
-  const fontSize = FONTSIZE / scale;
-  const padding = PADDING / scale;
-
   return (
     <Label
       listening={false}
@@ -53,8 +50,8 @@ const Tooltip = ({
       <Tag fill={variables.colors.white} />
       <Text
         fontFamily={variables.fontFamilies.sans}
-        fontSize={fontSize}
-        padding={padding}
+        fontSize={FONTSIZE / scale}
+        padding={PADDING / scale}
         text={hoverTarget.attrs.name.toUpperCase()}
       />
     </Label>
