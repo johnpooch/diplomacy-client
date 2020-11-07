@@ -29,15 +29,20 @@ const Canvas = ({ currentTurn }) => {
     };
   };
 
+  const minScale = () => {
+    return Math.max(
+      window.innerWidth / viewBox.width,
+      window.innerHeight / viewBox.height
+    );
+  };
+
   useEffect(() => {
     const resize = () => {
-      const scaleX = window.innerWidth / viewBox.width;
-      const scaleY = window.innerHeight / viewBox.height;
-      const newScale = Math.max(scaleX, scaleY);
+      const newScale = minScale();
 
       const newSize = {
-        width: viewBox.width * scaleX,
-        height: viewBox.height * scaleY,
+        width: window.innerWidth,
+        height: window.innerHeight,
       };
 
       const newPosition = {
@@ -52,28 +57,26 @@ const Canvas = ({ currentTurn }) => {
 
     const zoom = (e) => {
       if (isDragging.current) return;
+
       setHoverTarget(null);
 
-      const newScale = Math.min(
+      const newScale = clamp(
         e.deltaY > 0 ? scale.current / ZOOMFACTOR : scale.current * ZOOMFACTOR,
+        minScale(),
         ZOOMMAX
       );
-
-      if (viewBox.width * newScale < size.current.width) return;
-      if (viewBox.height * newScale < size.current.height) return;
+      setScale(newScale);
 
       const pointer = stageRef.current.getPointerPosition();
       const mousePointTo = {
         x: (pointer.x - stagePosition.current.x) / scale.current,
         y: (pointer.y - stagePosition.current.y) / scale.current,
       };
-      const newPosition = {
+      const newPosition = bounds({
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
-      };
-
-      setScale(newScale);
-      setStagePosition(bounds(newPosition));
+      });
+      setStagePosition(newPosition);
     };
 
     resize();
