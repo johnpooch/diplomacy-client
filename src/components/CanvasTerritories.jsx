@@ -1,14 +1,14 @@
-/* eslint camelcase: [2, { "allow": ["controlled_by", "territory_map_data_id"] }]
-          react/jsx-props-no-spreading: ["error", {"custom": "ignore"}] */
+/* eslint camelcase: [2, { "allow": ["controlled_by", "territory_map_data_id"] }] */
 
 import React, { useEffect, useState } from 'react';
 import { Path, Group } from 'react-konva';
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
 
 import stripes from '../img/stripes.svg';
-// import { useReferredState } from '../utils';
 import { variables } from '../variables';
 
+const FILLPATTERNSCALE = 0.15;
+const FILLPATTERNOPACITY = 0.1;
 const STROKEWIDTH = 2;
 
 const Territory = ({ territory, isHovering, stripesImage }) => {
@@ -17,7 +17,6 @@ const Territory = ({ territory, isHovering, stripesImage }) => {
   const getFill = () => {
     if (controlled_by in variables.colors.nations)
       return variables.colors.nations[controlled_by];
-
     return type === 'sea' ? variables.colors.sea : variables.colors.land;
   };
 
@@ -41,9 +40,9 @@ const Territory = ({ territory, isHovering, stripesImage }) => {
           data={path}
           fillPatternImage={stripesImage}
           fillPatternRotation={45}
-          fillPatternScale={{ x: 0.1, y: 0.1 }}
+          fillPatternScale={{ x: FILLPATTERNSCALE, y: FILLPATTERNSCALE }}
           listening={false}
-          opacity={0.1}
+          opacity={FILLPATTERNOPACITY}
         />
       )}
     </Group>

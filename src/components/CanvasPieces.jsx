@@ -17,20 +17,20 @@ const ICONSCALES = {
 const CIRCLESTROKEWIDTH = 2;
 const PATHSTROKEWIDTH = 0.25;
 
-const getCircleFill = (isHovering) =>
-  isHovering ? variables.colors.white : variables.colors.base;
-
-const getIconSize = (type) => ({
-  width: ICONS[type].icon[0] * ICONSCALES[type],
-  height: ICONS[type].icon[1] * ICONSCALES[type],
-});
-
 const Piece = ({ piece, isHovering }) => {
   const { x, y, type, dislodged, nation } = piece;
+
+  const getCircleFill = () =>
+    isHovering ? variables.colors.white : variables.colors.base;
+
+  const getIconWidth = () => ICONS[type].icon[0] * ICONSCALES[type];
+
+  const getIconHeight = () => ICONS[type].icon[1] * ICONSCALES[type];
+
   return (
     <Group dislodged={dislodged} listening={false} type={type}>
       <Circle
-        fill={getCircleFill(isHovering)}
+        fill={getCircleFill()}
         radius={CIRCLERADIUS}
         stroke={darken(0.2, variables.colors.nations[nation])}
         strokeWidth={CIRCLESTROKEWIDTH}
@@ -43,11 +43,11 @@ const Piece = ({ piece, isHovering }) => {
         fill={variables.colors.nations[nation]}
         scaleX={ICONSCALES[type]}
         scaleY={ICONSCALES[type]}
-        stroke={getCircleFill(isHovering)}
+        stroke={getCircleFill()}
         strokeWidth={PATHSTROKEWIDTH / ICONSCALES[type]}
         shadowForStrokeEnabled={false}
-        x={x - getIconSize(type).width / 2}
-        y={y - getIconSize(type).height / 2}
+        x={x - getIconWidth() / 2}
+        y={y - getIconHeight() / 2}
       />
     </Group>
   );

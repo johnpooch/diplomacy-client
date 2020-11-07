@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import flags from '../data/standard/flags/flags';
 import { variables } from '../variables';
 import { slugify } from '../utils';
-import flags from '../data/standard/flags/flags';
 
 const FlagWrapper = styled.div`
   background: ${variables.colors.darkgray};
