@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Label, Tag, Text } from 'react-konva';
 
-import { useReferredState } from '../utils';
 import { variables } from '../variables';
 
-const FONTSIZE = 16;
-const PADDING = 5;
-const OFFSET = 7;
+const FONTSIZE = variables.fontSizes.sans[2];
+const PADDING = variables.spacing[0];
+const OFFSET = variables.spacing[1];
 
 const Tooltip = ({
   hoverTarget,
@@ -15,7 +14,8 @@ const Tooltip = ({
   stagePosition,
   stageRef,
 }) => {
-  const [position, setPosition] = useReferredState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [text, setText] = useState('');
 
   const labelRef = useRef();
 
@@ -28,32 +28,49 @@ const Tooltip = ({
       x:
         mousePosition.x < attrs.width / 2
           ? OFFSET / scale
-          : -labelRef.current.width() - OFFSET / scale,
+          : -labelRef.current.width(),
       y:
         mousePosition.y < attrs.height / 2
           ? OFFSET / scale
-          : -labelRef.current.height() - OFFSET / scale,
+          : -labelRef.current.height(),
     };
 
     setPosition({
       x: (mousePosition.x - stagePosition.x) / scale + offset.x,
       y: (mousePosition.y - stagePosition.y) / scale + offset.y,
     });
-  }, [hoverTarget, mousePosition]);
+  }, [mousePosition]);
 
-  return hoverTarget && hoverTarget.attrs.name ? (
-    <Label
-      listening={false}
-      ref={labelRef}
-      x={position.current.x}
-      y={position.current.y}
-    >
+  useEffect(() => {
+    setText('');
+
+    if (hoverTarget && hoverTarget.attrs.territory.name) {
+      const { territory } = hoverTarget.attrs;
+
+      const newText = territory.name;
+
+      // if (territory.controlled_by_nation) {
+      //   const controlledName = territory.controlled_by_nation.name;
+      //   newText = `${controlledName} ${newText}`;
+      // }
+
+      // if (territory.piece && territory.piece_nation) {
+      //   const pieceName = territory.piece_nation.name;
+      //   newText = `${pieceName} ${territory.piece.type} in ${newText}`;
+      // }
+
+      setText(newText.toUpperCase());
+    }
+  }, [hoverTarget]);
+
+  return text ? (
+    <Label listening={false} ref={labelRef} x={position.x} y={position.y}>
       <Tag fill={variables.colors.white} />
       <Text
         fontFamily={variables.fontFamilies.sans}
         fontSize={FONTSIZE / scale}
         padding={PADDING / scale}
-        text={hoverTarget.attrs.name.toUpperCase()}
+        text={text}
       />
     </Label>
   ) : null;

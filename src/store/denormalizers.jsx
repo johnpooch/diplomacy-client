@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+/* eslint camelcase: [2, { "allow": ["controlled_by_nation", "current_turn", "piece_nation"] }] */
 
 import { gameSelectors } from './games';
 import { nationSelectors } from './nations';
@@ -38,12 +39,16 @@ const mergeTerritories = (tds, territories, territoryStates) => {
   });
 };
 
-const getDenormalizedTerritories = (s, game, turn) => {
+const getDenormalizedTerritories = (state, game, turn) => {
   const { variant } = game;
-  const territories = territorySelectors.selectByVariantId(s, variant);
-  const territoryStates = territoryStateSelectors.selectByTurnId(s, turn.id);
-  const pieces = pieceSelectors.selectByGameId(s, game.id);
-  const pieceStates = pieceStateSelectors.selectByTurnId(s, turn.id);
+  const nations = nationSelectors.selectByVariantId(state, variant);
+  const pieces = pieceSelectors.selectByGameId(state, game.id);
+  const pieceStates = pieceStateSelectors.selectByTurnId(state, turn.id);
+  const territories = territorySelectors.selectByVariantId(state, variant);
+  const territoryStates = territoryStateSelectors.selectByTurnId(
+    state,
+    turn.id
+  );
 
   const mergedTerritories = mergeTerritories(
     territoryData,
@@ -60,7 +65,12 @@ const getDenormalizedTerritories = (s, game, turn) => {
         mergedPieces.find((p) => p.territory === t.id && !p.must_retreat) ||
         null;
       if (t.piece) {
-        t.piece = { ...t.piece, x: t.piece_x, y: t.piece_y };
+        t.piece = {
+          ...t.piece,
+          x: t.piece_x,
+          y: t.piece_y,
+        };
+        t.piece_nation = nations.find((n) => t.piece.nation === n.id);
       }
       t.dislodgedPiece =
         mergedPieces.find((p) => p.territory === t.id && p.must_retreat) ||
@@ -71,6 +81,9 @@ const getDenormalizedTerritories = (s, game, turn) => {
           x: t.dislodged_piece_x,
           y: t.dislodged_piece_y,
         };
+      }
+      if (t.controlled_by) {
+        t.controlled_by_nation = nations.find((n) => t.controlled_by === n.id);
       }
     }
   });

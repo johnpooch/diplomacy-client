@@ -12,7 +12,7 @@ const FILLPATTERNOPACITY = 0.1;
 const STROKEWIDTH = 2;
 
 const Territory = ({ territory, isHovering, stripesImage }) => {
-  const { controlled_by, name, path, playable, type, id } = territory;
+  const { controlled_by, path, playable, type, id } = territory;
 
   const getFill = () => {
     if (controlled_by in variables.colors.nations)
@@ -26,14 +26,14 @@ const Territory = ({ territory, isHovering, stripesImage }) => {
   return (
     <Group>
       <Path
-        id={id}
-        name={name}
         data={path}
         fill={getFill()}
+        hitStrokeWidth={0}
+        id={id}
+        shadowForStrokeEnabled={false}
         stroke={getStroke()}
         strokeWidth={STROKEWIDTH}
-        hitStrokeWidth={0}
-        shadowForStrokeEnabled={false}
+        territory={territory}
       />
       {playable ? null : (
         <Path

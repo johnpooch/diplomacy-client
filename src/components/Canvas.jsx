@@ -1,5 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
 import { Stage, Layer, Rect } from 'react-konva';
+import { useEffect, useRef } from 'react';
 
 import Pieces from './CanvasPieces';
 import Territories from './CanvasTerritories';
@@ -113,6 +115,7 @@ const Canvas = ({ currentTurn }) => {
         });
       }}
       dragBoundFunc={(pos) => bounds(pos)}
+      css={{ cursor: 'pointer' }}
     >
       <Layer>
         <Rect
