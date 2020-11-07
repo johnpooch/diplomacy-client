@@ -15,7 +15,7 @@ export const useReferredState = (initialValue) => {
 
 export const slugify = (str) => {
   return _slugify(str, {
-    replacement: '-',
+    replacement: '',
     lower: true,
     strict: true,
   });

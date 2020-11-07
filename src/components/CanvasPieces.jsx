@@ -1,4 +1,3 @@
-/* eslint camelcase: [2, { "allow": ["controlled_by", "territory_map_data_id"] }] */
 import React from 'react';
 import { Circle, Group, Path } from 'react-konva';
 import { faAnchor, faTruckMoving } from '@fortawesome/free-solid-svg-icons';
@@ -16,29 +15,26 @@ const ICONSCALES = {
   fleet: 0.04,
 };
 const CIRCLESTROKEWIDTH = 2;
-const PATHSTROKEWIDTH = 0.5;
+const PATHSTROKEWIDTH = 0.25;
+
+const getCircleFill = (isHovering) =>
+  isHovering ? variables.colors.white : variables.colors.base;
+
+const getIconSize = (type) => ({
+  width: ICONS[type].icon[0] * ICONSCALES[type],
+  height: ICONS[type].icon[1] * ICONSCALES[type],
+});
 
 const Piece = ({ piece, isHovering }) => {
   const { x, y, type, dislodged, nation } = piece;
-
-  if (!type || !(nation in variables.colors.nations)) return null;
-
-  const getCircleFill = () => {
-    return isHovering ? variables.colors.white : variables.colors.base;
-  };
-
-  const iconSize = {
-    width: ICONS[type].icon[0] * ICONSCALES[type],
-    height: ICONS[type].icon[1] * ICONSCALES[type],
-  };
-
   return (
     <Group dislodged={dislodged} listening={false} type={type}>
       <Circle
-        fill={getCircleFill()}
+        fill={getCircleFill(isHovering)}
         radius={CIRCLERADIUS}
         stroke={darken(0.2, variables.colors.nations[nation])}
         strokeWidth={CIRCLESTROKEWIDTH}
+        shadowForStrokeEnabled={false}
         x={x}
         y={y}
       />
@@ -47,10 +43,11 @@ const Piece = ({ piece, isHovering }) => {
         fill={variables.colors.nations[nation]}
         scaleX={ICONSCALES[type]}
         scaleY={ICONSCALES[type]}
-        stroke={getCircleFill()}
+        stroke={getCircleFill(isHovering)}
         strokeWidth={PATHSTROKEWIDTH / ICONSCALES[type]}
-        x={x - iconSize.width / 2}
-        y={y - iconSize.height / 2}
+        shadowForStrokeEnabled={false}
+        x={x - getIconSize(type).width / 2}
+        y={y - getIconSize(type).height / 2}
       />
     </Group>
   );
@@ -61,14 +58,13 @@ const Pieces = ({ territories, hoverTarget }) => {
     <Group>
       {territories.map((territory) => {
         const { piece } = territory;
-        if (!piece) return null;
-        return (
+        return piece ? (
           <Piece
             key={piece.id}
             piece={piece}
             isHovering={hoverTarget !== null && territory.id === hoverTarget}
           />
-        );
+        ) : null;
       })}
     </Group>
   );

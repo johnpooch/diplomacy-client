@@ -33,7 +33,6 @@
     "@fortawesome/free-solid-svg-icons": "5.13.0",
     "@fortawesome/react-fontawesome": "0.1.9",
     "@reduxjs/toolkit": "1.4.0",
-    "@svgr/webpack": "^5.4.0",
     "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
     "babel-plugin-emotion": "^10.0.33",
@@ -65,7 +64,7 @@
     "redux-thunk": "^2.3.0",
     "shortid": "2.2.15",
     "slugify": "^1.4.6",
-    "svg-url-loader": "^6.0.0",
+    "url-loader": "^4.1.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-merge": "^4.2.2"

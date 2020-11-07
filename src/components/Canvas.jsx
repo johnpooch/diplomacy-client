@@ -11,6 +11,13 @@ import { variables } from '../variables';
 const ZOOMFACTOR = 1.1;
 const ZOOMMAX = 3;
 
+const getMinScale = () => {
+  return Math.max(
+    window.innerWidth / viewBox.width,
+    window.innerHeight / viewBox.height
+  );
+};
+
 const Canvas = ({ currentTurn }) => {
   const { territories } = currentTurn;
 
@@ -30,16 +37,9 @@ const Canvas = ({ currentTurn }) => {
     };
   };
 
-  const minScale = () => {
-    return Math.max(
-      window.innerWidth / viewBox.width,
-      window.innerHeight / viewBox.height
-    );
-  };
-
   useEffect(() => {
     const resize = () => {
-      const newScale = minScale();
+      const newScale = getMinScale();
 
       const newSize = {
         width: window.innerWidth,
@@ -63,7 +63,7 @@ const Canvas = ({ currentTurn }) => {
 
       const newScale = clamp(
         e.deltaY > 0 ? scale.current / ZOOMFACTOR : scale.current * ZOOMFACTOR,
-        minScale(),
+        getMinScale(),
         ZOOMMAX
       );
 

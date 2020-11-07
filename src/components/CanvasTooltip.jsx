@@ -6,7 +6,7 @@ import { variables } from '../variables';
 
 const FONTSIZE = 16;
 const PADDING = 5;
-const OFFSET = 8;
+const OFFSET = 7;
 
 const Tooltip = ({
   hoverTarget,
@@ -21,7 +21,9 @@ const Tooltip = ({
 
   useEffect(() => {
     if (!labelRef.current) return;
+
     const { attrs } = stageRef.current;
+
     const offset = {
       x:
         mousePosition.x < attrs.width / 2
@@ -32,15 +34,14 @@ const Tooltip = ({
           ? OFFSET / scale
           : -labelRef.current.height() - OFFSET / scale,
     };
+
     setPosition({
       x: (mousePosition.x - stagePosition.x) / scale + offset.x,
       y: (mousePosition.y - stagePosition.y) / scale + offset.y,
     });
-  }, [hoverTarget, mousePosition, scale]);
+  }, [hoverTarget, mousePosition]);
 
-  if (!hoverTarget || !hoverTarget.attrs.name) return null;
-
-  return (
+  return hoverTarget && hoverTarget.attrs.name ? (
     <Label
       listening={false}
       ref={labelRef}
@@ -55,7 +56,7 @@ const Tooltip = ({
         text={hoverTarget.attrs.name.toUpperCase()}
       />
     </Label>
-  );
+  ) : null;
 };
 
 export default Tooltip;

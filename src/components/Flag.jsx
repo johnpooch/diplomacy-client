@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import { variables } from '../variables';
 import { slugify } from '../utils';
+import flags from '../data/standard/flags/flags';
 
 const FlagWrapper = styled.div`
   background: ${variables.colors.darkgray};
@@ -14,10 +15,7 @@ const Flag = (props) => {
   return (
     <FlagWrapper size={size}>
       {nation ? (
-        <img
-          src={`/src/data/standard/flags/${slugify(nation.name)}.svg`}
-          alt={`${nation.name} flag`}
-        />
+        <img src={flags[slugify(nation.name)]} alt={`${nation.name} flag`} />
       ) : null}
     </FlagWrapper>
   );
