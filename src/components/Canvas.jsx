@@ -65,7 +65,6 @@ const Canvas = ({ currentTurn }) => {
         minScale(),
         ZOOMMAX
       );
-      setScale(newScale);
 
       const pointer = stageRef.current.getPointerPosition();
       const mousePointTo = {
@@ -76,6 +75,8 @@ const Canvas = ({ currentTurn }) => {
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
       });
+
+      setScale(newScale);
       setStagePosition(newPosition);
     };
 
