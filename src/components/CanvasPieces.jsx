@@ -15,7 +15,7 @@ const ICONSCALES = {
   army: 0.03,
   fleet: 0.04,
 };
-const CIRCLESTROKEWIDTH = 1;
+const CIRCLESTROKEWIDTH = 2;
 const PATHSTROKEWIDTH = 0.5;
 
 const Piece = ({ piece, isHovering }) => {
@@ -24,9 +24,7 @@ const Piece = ({ piece, isHovering }) => {
   if (!type || !(nation in variables.colors.nations)) return null;
 
   const getCircleFill = () => {
-    return isHovering
-      ? variables.colors.white
-      : darken(0.3, variables.colors.nations[nation]);
+    return isHovering ? variables.colors.white : variables.colors.base;
   };
 
   const iconSize = {
@@ -39,7 +37,7 @@ const Piece = ({ piece, isHovering }) => {
       <Circle
         fill={getCircleFill()}
         radius={CIRCLERADIUS}
-        stroke={variables.colors.base}
+        stroke={darken(0.15, variables.colors.nations[nation])}
         strokeWidth={CIRCLESTROKEWIDTH}
         x={x}
         y={y}
