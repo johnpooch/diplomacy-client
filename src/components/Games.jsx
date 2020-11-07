@@ -33,12 +33,11 @@ const StyledGame = styled.div`
 `;
 
 export const Status = ({ game }) => {
-  const { status, turns } = game;
+  const { status, currentTurn } = game;
   let message = 'Unknown status';
   if (status === 'pending') {
     message = 'Waiting for players to join';
-  } else if (turns) {
-    const currentTurn = turns.find((t) => t.current_turn === true);
+  } else if (currentTurn) {
     const { phase, season, year } = currentTurn;
     message = `${season} ${year} - ${phase}`;
   }
