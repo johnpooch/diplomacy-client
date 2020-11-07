@@ -37,7 +37,7 @@ const Piece = ({ piece, isHovering }) => {
       <Circle
         fill={getCircleFill()}
         radius={CIRCLERADIUS}
-        stroke={darken(0.15, variables.colors.nations[nation])}
+        stroke={darken(0.2, variables.colors.nations[nation])}
         strokeWidth={CIRCLESTROKEWIDTH}
         x={x}
         y={y}
