@@ -21,7 +21,7 @@ const getMinScale = () => {
 };
 
 const Canvas = ({ currentTurn }) => {
-  const { territories } = currentTurn;
+  const { territories, userNation } = currentTurn;
 
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
@@ -37,6 +37,13 @@ const Canvas = ({ currentTurn }) => {
       x: clamp(x, size.current.width - viewBox.width * scale.current, 0),
       y: clamp(y, size.current.height - viewBox.height * scale.current, 0),
     };
+  };
+
+  const getCursor = () => {
+    if (isDragging.current) return 'grabbing';
+    if (hoverTarget.current && hoverTarget.current.attrs.isOrderable)
+      return 'context-menu';
+    return 'grab';
   };
 
   useEffect(() => {
@@ -115,7 +122,7 @@ const Canvas = ({ currentTurn }) => {
         });
       }}
       dragBoundFunc={(pos) => bounds(pos)}
-      css={{ cursor: 'pointer' }}
+      css={{ cursor: getCursor() }}
     >
       <Layer>
         <Rect
@@ -147,6 +154,7 @@ const Canvas = ({ currentTurn }) => {
           hoverTarget={
             hoverTarget.current ? hoverTarget.current.attrs.id : null
           }
+          userNation={userNation}
         />
       </Layer>
       <Layer>
@@ -155,6 +163,7 @@ const Canvas = ({ currentTurn }) => {
           hoverTarget={
             hoverTarget.current ? hoverTarget.current.attrs.id : null
           }
+          userNation={userNation}
         />
       </Layer>
       <Layer>

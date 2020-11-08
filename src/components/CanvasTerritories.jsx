@@ -1,8 +1,9 @@
 /* eslint camelcase: [2, { "allow": ["controlled_by", "territory_map_data_id"] }] */
-
-import React, { useEffect, useState } from 'react';
-import { Path, Group } from 'react-konva';
+/** @jsx jsx */
 import { darken } from 'polished';
+import { jsx } from '@emotion/core';
+import { Path, Group } from 'react-konva';
+import { useEffect, useState } from 'react';
 
 import stripes from '../img/stripes.svg';
 import { variables } from '../variables';
@@ -11,7 +12,7 @@ const FILLPATTERNSCALE = 0.15;
 const FILLPATTERNOPACITY = 0.1;
 const STROKEWIDTH = 2;
 
-const Territory = ({ territory, isHovering, stripesImage }) => {
+const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   const { controlled_by, path, playable, type, id } = territory;
 
   const getFill = () => {
@@ -30,6 +31,7 @@ const Territory = ({ territory, isHovering, stripesImage }) => {
         fill={getFill()}
         hitStrokeWidth={0}
         id={id}
+        isOrderable={isOrderable}
         shadowForStrokeEnabled={false}
         stroke={getStroke()}
         strokeWidth={STROKEWIDTH}
@@ -49,7 +51,7 @@ const Territory = ({ territory, isHovering, stripesImage }) => {
   );
 };
 
-const Territories = ({ territories, hoverTarget }) => {
+const Territories = ({ territories, hoverTarget, userNation }) => {
   const [stripesImage, setStripesImage] = useState(null);
 
   useEffect(() => {
@@ -61,11 +63,15 @@ const Territories = ({ territories, hoverTarget }) => {
   return (
     <Group>
       {territories.map((territory) => {
+        const { piece } = territory;
         return (
           <Territory
             key={territory.territory_map_data_id}
             territory={territory}
             isHovering={hoverTarget !== null && territory.id === hoverTarget}
+            isOrderable={
+              userNation && piece ? userNation.id === piece.nation : false
+            }
             stripesImage={stripesImage}
           />
         );

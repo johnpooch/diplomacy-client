@@ -4,8 +4,9 @@ import { Label, Tag, Text } from 'react-konva';
 import { variables } from '../variables';
 
 const FONTSIZE = variables.fontSizes.sans[2];
-const PADDING = variables.spacing[0];
 const OFFSET = variables.spacing[1];
+const PADDING = variables.spacing[0];
+const STROKEWIDTH = 1;
 
 const Tooltip = ({
   hoverTarget,
@@ -16,6 +17,7 @@ const Tooltip = ({
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [text, setText] = useState('');
+  const [textFill, setTextFill] = useState(variables.colors.base);
 
   const labelRef = useRef();
 
@@ -28,11 +30,11 @@ const Tooltip = ({
       x:
         mousePosition.x < attrs.width / 2
           ? OFFSET / scale
-          : -labelRef.current.width(),
+          : -labelRef.current.width() - OFFSET / scale,
       y:
         mousePosition.y < attrs.height / 2
           ? OFFSET / scale
-          : -labelRef.current.height(),
+          : -labelRef.current.height() - OFFSET / scale,
     };
 
     setPosition({
@@ -43,34 +45,31 @@ const Tooltip = ({
 
   useEffect(() => {
     setText('');
+    setTextFill(variables.colors.base);
 
     if (hoverTarget && hoverTarget.attrs.territory.name) {
       const { territory } = hoverTarget.attrs;
+      setText(territory.name.toUpperCase());
 
-      const newText = territory.name;
-
-      // if (territory.controlled_by_nation) {
-      //   const controlledName = territory.controlled_by_nation.name;
-      //   newText = `${controlledName} ${newText}`;
-      // }
-
-      // if (territory.piece && territory.piece_nation) {
-      //   const pieceName = territory.piece_nation.name;
-      //   newText = `${pieceName} ${territory.piece.type} in ${newText}`;
-      // }
-
-      setText(newText.toUpperCase());
+      if (territory.controlled_by) {
+        setTextFill(variables.colors.nations[territory.controlled_by]);
+      }
     }
   }, [hoverTarget]);
 
   return text ? (
     <Label listening={false} ref={labelRef} x={position.x} y={position.y}>
-      <Tag fill={variables.colors.white} />
+      <Tag
+        fill={variables.colors.white}
+        stroke={variables.colors.base}
+        strokeWidth={STROKEWIDTH / scale}
+      />
       <Text
         fontFamily={variables.fontFamilies.sans}
         fontSize={FONTSIZE / scale}
         padding={PADDING / scale}
         text={text}
+        fill={textFill}
       />
     </Label>
   ) : null;

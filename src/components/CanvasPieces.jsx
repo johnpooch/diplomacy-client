@@ -17,11 +17,16 @@ const ICONSCALES = {
 const CIRCLESTROKEWIDTH = 2;
 const PATHSTROKEWIDTH = 0.25;
 
-const Piece = ({ piece, isHovering }) => {
+const Piece = ({ piece, isHovering, isOrderable }) => {
   const { x, y, type, dislodged, nation } = piece;
 
   const getCircleFill = () =>
-    isHovering ? variables.colors.white : variables.colors.base;
+    isHovering && isOrderable ? variables.colors.white : variables.colors.base;
+
+  const getCircleStroke = () =>
+    !isHovering && isOrderable
+      ? variables.colors.white
+      : darken(0.2, variables.colors.nations[nation]);
 
   const getIconWidth = () => ICONS[type].icon[0] * ICONSCALES[type];
 
@@ -32,7 +37,7 @@ const Piece = ({ piece, isHovering }) => {
       <Circle
         fill={getCircleFill()}
         radius={CIRCLERADIUS}
-        stroke={darken(0.2, variables.colors.nations[nation])}
+        stroke={getCircleStroke()}
         strokeWidth={CIRCLESTROKEWIDTH}
         shadowForStrokeEnabled={false}
         x={x}
@@ -53,7 +58,7 @@ const Piece = ({ piece, isHovering }) => {
   );
 };
 
-const Pieces = ({ territories, hoverTarget }) => {
+const Pieces = ({ territories, hoverTarget, userNation }) => {
   return (
     <Group>
       {territories.map((territory) => {
@@ -61,8 +66,9 @@ const Pieces = ({ territories, hoverTarget }) => {
         return piece ? (
           <Piece
             key={piece.id}
-            piece={piece}
             isHovering={hoverTarget !== null && territory.id === hoverTarget}
+            isOrderable={userNation ? userNation.id === piece.nation : false}
+            piece={piece}
           />
         ) : null;
       })}
