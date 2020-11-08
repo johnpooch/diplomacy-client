@@ -17,14 +17,16 @@ const ICONSCALES = {
 const CIRCLESTROKEWIDTH = 2;
 const PATHSTROKEWIDTH = 0.25;
 
-const Piece = ({ piece, isHovering, isOrderable }) => {
+const Piece = ({ piece, isHovering, isOrderable, isSelected }) => {
   const { x, y, type, dislodged, nation } = piece;
 
   const getCircleFill = () =>
-    isHovering && isOrderable ? variables.colors.white : variables.colors.base;
+    (isHovering || isSelected) && isOrderable
+      ? variables.colors.white
+      : variables.colors.base;
 
   const getCircleStroke = () =>
-    !isHovering && isOrderable
+    !(isHovering || isSelected) && isOrderable
       ? variables.colors.white
       : darken(0.2, variables.colors.nations[nation]);
 
@@ -58,7 +60,7 @@ const Piece = ({ piece, isHovering, isOrderable }) => {
   );
 };
 
-const Pieces = ({ territories, hoverTarget, userNation }) => {
+const Pieces = ({ territories, hoverId, selectedId, userNation }) => {
   return (
     <Group>
       {territories.map((territory) => {
@@ -66,8 +68,9 @@ const Pieces = ({ territories, hoverTarget, userNation }) => {
         return piece ? (
           <Piece
             key={piece.id}
-            isHovering={hoverTarget !== null && territory.id === hoverTarget}
+            isHovering={hoverId !== null && territory.id === hoverId}
             isOrderable={userNation ? userNation.id === piece.nation : false}
+            isSelected={selectedId !== null && territory.id === selectedId}
             piece={piece}
           />
         ) : null;

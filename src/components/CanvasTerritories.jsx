@@ -51,7 +51,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   );
 };
 
-const Territories = ({ territories, hoverTarget, userNation }) => {
+const Territories = ({ territories, hoverId, userNation }) => {
   const [stripesImage, setStripesImage] = useState(null);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const Territories = ({ territories, hoverTarget, userNation }) => {
           <Territory
             key={territory.territory_map_data_id}
             territory={territory}
-            isHovering={hoverTarget !== null && territory.id === hoverTarget}
+            isHovering={hoverId !== null && territory.id === hoverId}
             isOrderable={
               userNation && piece ? userNation.id === piece.nation : false
             }

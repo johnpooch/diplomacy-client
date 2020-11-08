@@ -1,9 +1,9 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
+import React, { useEffect, useRef } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
-import { useEffect, useRef } from 'react';
 
+import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
+import Portal from './Portal';
 import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import viewBox from '../data/standard/viewBox.json';
@@ -26,9 +26,10 @@ const Canvas = ({ currentTurn }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
-  const [stagePosition, setStagePosition] = useReferredState({ x: 0, y: 0 });
   const [scale, setScale] = useReferredState(0);
+  const [selectedTarget, setSelectedTarget] = useReferredState(null);
   const [size, setSize] = useReferredState({ width: 0, height: 0 });
+  const [stagePosition, setStagePosition] = useReferredState({ x: 0, y: 0 });
 
   const stageRef = useRef();
 
@@ -60,6 +61,8 @@ const Canvas = ({ currentTurn }) => {
         y: (viewBox.height * newScale - newSize.height) / -2,
       };
 
+      setHoverTarget(null);
+      setSelectedTarget(null);
       setScale(newScale);
       setSize(newSize);
       setStagePosition(newPosition);
@@ -67,8 +70,6 @@ const Canvas = ({ currentTurn }) => {
 
     const zoom = (e) => {
       if (isDragging.current) return;
-
-      setHoverTarget(null);
 
       const newScale = clamp(
         e.deltaY > 0 ? scale.current / ZOOMFACTOR : scale.current * ZOOMFACTOR,
@@ -86,6 +87,8 @@ const Canvas = ({ currentTurn }) => {
         y: pointer.y - mousePointTo.y * newScale,
       };
 
+      setHoverTarget(null);
+      setSelectedTarget(null);
       setScale(newScale);
       setStagePosition(bounds(newPosition));
     };
@@ -113,6 +116,7 @@ const Canvas = ({ currentTurn }) => {
       onDragStart={() => {
         setIsDragging(true);
         setHoverTarget(null);
+        setSelectedTarget(null);
       }}
       onDragEnd={(e) => {
         setIsDragging(false);
@@ -121,8 +125,22 @@ const Canvas = ({ currentTurn }) => {
           y: e.target.y(),
         });
       }}
+      onClick={(event) => {
+        if (!event.target) {
+          setSelectedTarget(null);
+        } else if (
+          selectedTarget.current &&
+          selectedTarget.current.attrs.id === event.target.attrs.id
+        ) {
+          setSelectedTarget(null);
+        } else if (event.target.attrs.isOrderable) {
+          setSelectedTarget(event.target);
+          return;
+        }
+        setSelectedTarget(null);
+      }}
       dragBoundFunc={(pos) => bounds(pos)}
-      css={{ cursor: getCursor() }}
+      style={{ cursor: getCursor() }}
     >
       <Layer>
         <Rect
@@ -151,17 +169,16 @@ const Canvas = ({ currentTurn }) => {
       >
         <Territories
           territories={territories}
-          hoverTarget={
-            hoverTarget.current ? hoverTarget.current.attrs.id : null
-          }
+          hoverId={hoverTarget.current ? hoverTarget.current.attrs.id : null}
           userNation={userNation}
         />
       </Layer>
       <Layer>
         <Pieces
           territories={territories}
-          hoverTarget={
-            hoverTarget.current ? hoverTarget.current.attrs.id : null
+          hoverId={hoverTarget.current ? hoverTarget.current.attrs.id : null}
+          selectedId={
+            selectedTarget.current ? selectedTarget.current.attrs.id : null
           }
           userNation={userNation}
         />
@@ -174,6 +191,21 @@ const Canvas = ({ currentTurn }) => {
           stagePosition={stagePosition.current}
           stageRef={stageRef}
         />
+      </Layer>
+      <Layer>
+        {selectedTarget.current ? (
+          <Portal>
+            <ContextMenu
+              stageRef={stageRef}
+              selectedTarget={selectedTarget.current}
+              mousePosition={mousePosition.current}
+              onOptionSelected={(option) => {
+                setSelectedTarget(null);
+                console.log('Handle', option);
+              }}
+            />
+          </Portal>
+        ) : null}
       </Layer>
     </Stage>
   );
