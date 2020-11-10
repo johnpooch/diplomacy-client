@@ -103,6 +103,22 @@ const Canvas = ({ currentTurn }) => {
     };
   }, []);
 
+  const handleClick = (e) => {
+    if (!e.target) {
+      setSelectedTarget(null);
+    } else if (
+      selectedTarget.current &&
+      selectedTarget.current.attrs.id === e.target.attrs.id
+    ) {
+      setSelectedTarget(null);
+    } else if (e.target.attrs.isOrderable) {
+      setSelectedTarget(e.target);
+      return;
+    }
+
+    setSelectedTarget(null);
+  };
+
   return (
     <Stage
       ref={stageRef}
@@ -125,20 +141,8 @@ const Canvas = ({ currentTurn }) => {
           y: e.target.y(),
         });
       }}
-      onClick={(event) => {
-        if (!event.target) {
-          setSelectedTarget(null);
-        } else if (
-          selectedTarget.current &&
-          selectedTarget.current.attrs.id === event.target.attrs.id
-        ) {
-          setSelectedTarget(null);
-        } else if (event.target.attrs.isOrderable) {
-          setSelectedTarget(event.target);
-          return;
-        }
-        setSelectedTarget(null);
-      }}
+      onClick={(event) => handleClick(event)}
+      onTouchEnd={(event) => handleClick(event)}
       dragBoundFunc={(pos) => bounds(pos)}
       style={{ cursor: getCursor() }}
     >
