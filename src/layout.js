@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 
 import { spacing } from './variables';
 
-// Layout
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>

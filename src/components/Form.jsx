@@ -4,7 +4,8 @@ import styled from '@emotion/styled';
 import { variables } from '../variables';
 
 const StyledForm = styled.form`
-  display: block;
+  display: grid;
+  grid-row-gap: ${variables.spacing[4]}px;
 
   input,
   select,
@@ -42,34 +43,25 @@ const StyledForm = styled.form`
     resize: vertical;
   }
 
-  hr,
   label,
   p,
   .field-error,
   .non-field-errors {
-    display: block;
-    margin: ${variables.spacing[4]}px 0;
     text-align: left;
+  }
+
+  hr {
+    width: 100%;
+    border: none;
+    border-top: ${variables.sizes.border}px solid ${variables.colors.gray};
+    margin: 0;
   }
 
   .field-error,
   .non-field-errors {
     color: ${variables.colors.error};
   }
-
-  > *:first-child {
-    margin-top: 0;
-  }
-
-  > *:last-child {
-    margin-bottom: 0;
-  }
 `;
-
-export const Form = (props) => {
-  const { children, onSubmit } = props;
-  return <StyledForm onSubmit={onSubmit}>{children}</StyledForm>;
-};
 
 const StyledFormWrapper = styled.div`
   background: ${variables.colors.white};
@@ -94,3 +86,10 @@ export const FormLabel = styled.span`
   margin-bottom: ${variables.spacing[2]}px;
   color: ${variables.colors.base};
 `;
+
+const Form = (props) => {
+  const { children, onSubmit } = props;
+  return <StyledForm onSubmit={onSubmit}>{children}</StyledForm>;
+};
+
+export default Form;

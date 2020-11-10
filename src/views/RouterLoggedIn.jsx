@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Switch, withRouter, Redirect, Route } from 'react-router-dom';
@@ -6,89 +7,70 @@ import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
 import Error from './Error';
 import Game from './Game';
+import Navigation from '../components/Navigation';
 import PreGame from './PreGame';
 
-import { alertActions } from '../store/alerts';
 import { authActions } from '../store/auth';
 
 const RouterLoggedIn = (props) => {
-  const { loggedIn } = props;
+  const { loggedIn, logout, user } = props;
+
+  const RouteWithNavigation = ({ component: Component, ...routeProps }) => {
+    return (
+      <Route
+        {...routeProps}
+        render={(componentProps) => (
+          <div>
+            <Navigation loggedIn={loggedIn} onLogout={logout} user={user} />
+            <Component {...componentProps} />
+          </div>
+        )}
+      />
+    );
+  };
+
   return (
     <Switch>
-      <Route
+      <RouteWithNavigation
         exact
         path="/create-game"
         component={CreateGame}
         loggedIn={loggedIn}
       />
-      <Route
+      <RouteWithNavigation
         exact
         path="/pre-game/:slug"
         component={PreGame}
         loggedIn={loggedIn}
       />
       <Route exact path="/game/:slug" component={Game} loggedIn={loggedIn} />
-      <Route exact path="/" component={BrowseGames} loggedIn={loggedIn} />
-      <Route exact path="/login">
+      <RouteWithNavigation
+        exact
+        path="/"
+        component={BrowseGames}
+        loggedIn={loggedIn}
+      />
+      <Route exact path={['/forgot-password', '/login', '/register']}>
         <Redirect to="/" />
       </Route>
-      <Route component={() => <Error text="Page not found" />} />
+      <RouteWithNavigation component={() => <Error text="Page not found" />} />
     </Switch>
   );
 };
 
-const mapDispatchToProps = (dispatch, { history }) => {
-  const category = 'success';
-  const pending = true;
+const mapDispatchToProps = (dispatch) => {
   return {
-    forgotPassword: (setErrors, email) =>
-      dispatch(authActions.forgotPassword({ email })).then(
-        ({ error, payload }) => {
-          const message = `Thanks! Please check ${email} for a link to reset your password.`;
-          if (error) {
-            setErrors(payload);
-          } else {
-            dispatch(alertActions.alertsAdd({ message, category, pending }));
-            history.push('/login');
-          }
-        }
-      ),
-    login: (setErrors, username, password) =>
-      dispatch(authActions.login({ username, password })).then(
-        ({ payload }) => {
-          setErrors(payload);
-        }
-      ),
-    register: (setErrors, username, email, password) =>
-      dispatch(authActions.register({ username, email, password })).then(
-        ({ error, payload }) => {
-          const message = 'Account created! Log in to continue.';
-          if (error) {
-            setErrors(payload);
-          } else {
-            dispatch(alertActions.alertsAdd({ message, category, pending }));
-            history.push('/login');
-          }
-        }
-      ),
-    resetPassword: (setErrors, token, password) =>
-      dispatch(authActions.resetPassword({ token, password })).then(
-        ({ error, payload }) => {
-          const message = 'Password updated!';
-          if (error) {
-            setErrors(payload);
-          } else {
-            dispatch(alertActions.alertsAdd({ message, category, pending }));
-            history.push('/login');
-          }
-        }
-      ),
+    logout: () => {
+      dispatch(authActions.logout());
+    },
   };
 };
 
 const mapStateToProps = (state) => {
+  const { loggedIn, user } = state.auth;
   return {
-    loggedIn: state.auth.loggedIn,
+    loggedIn,
+    user,
   };
 };
 

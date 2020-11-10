@@ -1,48 +1,52 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
-import JoinGame from '../components/JoinGame';
-import JoinedGame from '../components/JoinedGame';
+import Form, { FormWrapper } from '../components/Form';
 import Page from '../components/Page';
-import PlayerList from '../components/PlayerList';
-import { spacing } from '../variables';
-
+import Players from '../components/Players';
 import { alertActions } from '../store/alerts';
+import { Button, SecondaryButton } from '../components/Button';
 import { gameActions } from '../store/games';
 import { getDenormalizedPreGame } from '../store/denormalizers';
+import { Grid, GridTemplate } from '../layout';
 
-const StyledP = styled.p`
-  margin: ${spacing[4]}px 0;
-  font-style: italic;
-`;
+const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
 const PreGame = (props) => {
   const { game, joinGame, leaveGame, token } = props;
-  const { description, participants, userJoined } = game;
+  const { description, userJoined } = game;
 
-  const onClickJoin = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    joinGame(token, game.slug);
+    if (userJoined) {
+      leaveGame(token, game.slug);
+    } else {
+      joinGame(token, game.slug);
+    }
   };
 
-  const onClickLeave = (e) => {
-    e.preventDefault();
-    leaveGame(token, game.slug);
-  };
-
-  const formComponent = userJoined ? (
-    <JoinedGame onClickLeave={onClickLeave} />
-  ) : (
-    <JoinGame onClickJoin={onClickJoin} />
-  );
+  const formText = userJoined
+    ? `You have already joined this game. The game will begin once all players have joined.`
+    : `You are not currently part of this game.`;
 
   return (
     <Page title={game ? game.name : null}>
-      <StyledP>{description}</StyledP>
-      <h2>Players</h2>
-      <PlayerList players={participants} />
-      {formComponent}
+      <Grid columns={1}>
+        {description ? <p>{description}</p> : null}
+        <Players game={game} />
+        <FormWrapper>
+          <Form onSubmit={handleSubmit}>
+            <p>{formText}</p>
+            <GridTemplate templateColumns="2fr 1fr">
+              <Button type="submit">
+                {userJoined ? 'Leave game' : 'Join game'}
+              </Button>
+              <NavLinkButton to="/">Cancel</NavLinkButton>
+            </GridTemplate>
+          </Form>
+        </FormWrapper>
+      </Grid>
     </Page>
   );
 };

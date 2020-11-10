@@ -13,18 +13,18 @@ import styled from '@emotion/styled';
 import Select from './Select';
 import useForm from '../hooks/useForm';
 import { Button, SecondaryButton } from './Button';
-import { Form, FormLabel } from './Form';
-import { GridTemplate } from '../styles';
+import Form, { FormLabel } from './Form';
+import { GridTemplate } from '../layout';
 import { variables } from '../variables';
 
-const StyledWrapper = styled.div`
+const StyledGamesFilters = styled.div`
   border-bottom: ${variables.sizes.border}px solid ${variables.colors.darkgray};
   margin-bottom: ${variables.spacing[5]}px;
   padding-bottom: ${variables.spacing[5]}px;
   width: 100%;
 `;
 
-const GameFilters = ({ callback, choices }) => {
+const GamesFilters = ({ callback, choices }) => {
   const [values, handleChange] = useForm({
     search: '',
     variant: '',
@@ -62,7 +62,7 @@ const GameFilters = ({ callback, choices }) => {
     <Form onSubmit={filter}>
       <GridTemplate
         templateColumns="2fr 1fr 1fr 1fr"
-        css={{ paddingTop: `${variables.spacing[4]}px` }}
+        css={{ marginTop: `${variables.spacing[4]}px` }}
       >
         <label htmlFor="search">
           <FormLabel>Search</FormLabel>
@@ -129,19 +129,17 @@ const GameFilters = ({ callback, choices }) => {
           onChange={handleChange}
           options={choices.deadlines}
         />
+        <Button type="submit">Search</Button>
       </GridTemplate>
-      <Button type="submit" css={{ marginTop: `${variables.spacing[4]}px` }}>
-        Search
-      </Button>
     </Form>
   );
 
   return (
-    <StyledWrapper>
+    <StyledGamesFilters>
       {toggleButton}
       {open ? filters : null}
-    </StyledWrapper>
+    </StyledGamesFilters>
   );
 };
 
-export default GameFilters;
+export default GamesFilters;

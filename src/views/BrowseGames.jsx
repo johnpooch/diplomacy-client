@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import GameFilters from '../components/GameFilters';
-import GameSummaryList from '../components/GameSummaryList';
+import Games from '../components/Games';
+import GamesFilters from '../components/GamesFilters';
 import Page from '../components/Page';
 import { choiceActions } from '../store/choices';
 import { gameActions } from '../store/games';
@@ -14,7 +14,6 @@ const BrowseGames = (props) => {
     choices,
     getGames,
     games,
-    isLoaded,
     location,
     prepareBrowseGames,
     token,
@@ -30,8 +29,8 @@ const BrowseGames = (props) => {
 
   return (
     <Page>
-      <GameFilters callback={filterGames} choices={choices} />
-      <GameSummaryList games={games} isLoaded={isLoaded} />
+      <GamesFilters callback={filterGames} choices={choices} />
+      <Games games={games} />
     </Page>
   );
 };
@@ -40,11 +39,9 @@ const mapStateToProps = (state, { location }) => {
   const { browseGamesLoaded } = state.entities.games;
   let games = null;
   if (browseGamesLoaded) games = getDenormalizedGamesList(state);
-  const isLoaded = browseGamesLoaded;
   return {
     choices: state.choices,
     games,
-    isLoaded,
     location,
     token: state.auth.token,
   };
