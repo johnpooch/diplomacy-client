@@ -34,7 +34,7 @@ const Game = (props) => {
   }, [location.pathname]);
 
   if (!game) return <Loading />;
-  const currentTurn = game.turns.find((t) => t.current_turn === true);
+  const currentTurn = game.turns.find((t) => t.currentTurn === true);
 
   // Set the active turn to the current turn on initial load
   let turn = null;
@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(variantActions.getVariants({ token })).then(() => {
       dispatch(gameActions.getGameDetail({ token, slug })).then(
         ({ payload }) => {
-          const { id } = payload.turns.find((t) => t.current_turn === true);
+          const { id } = payload.turns.find((t) => t.currentTurn === true);
           dispatch(orderActions.listOrders({ token, id }));
         }
       );

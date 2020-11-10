@@ -1,9 +1,9 @@
 import { normalize, schema } from 'normalizr';
 
-const namedCoast = new schema.Entity('named_coasts');
+const namedCoast = new schema.Entity('namedCoasts');
 
 const territory = new schema.Entity('territories', {
-  named_coasts: [namedCoast],
+  namedCoasts: [namedCoast],
 });
 
 const nation = new schema.Entity('nations');

@@ -25,7 +25,7 @@ export class Order {
     this.targetCoast = targetCoast;
     this.type = type;
 
-    this.currentTurn = turn.current_turn;
+    this.currentTurn = turn.currentTurn;
     this.territories = territories;
     this.userNation = userNation;
 

@@ -7,12 +7,12 @@ const nationState = new schema.Entity('nationStates', {
 });
 
 const turn = new schema.Entity('turns', {
-  nation_states: [nationState],
+  nationStates: [nationState],
 });
 
 const game = new schema.Entity('games', {
   participants: [user],
-  current_turn: turn,
+  currentTurn: turn,
 });
 
 const gameList = new schema.Array(game);

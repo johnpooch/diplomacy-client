@@ -5,7 +5,7 @@ import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 const namedCoastAdapter = createEntityAdapter();
 
 const namedCoastSlice = createSlice({
-  name: 'named_coasts',
+  name: 'namedCoasts',
   initialState: namedCoastAdapter.getInitialState(),
   reducers: {
     namedCoastsReceived: namedCoastAdapter.setAll,

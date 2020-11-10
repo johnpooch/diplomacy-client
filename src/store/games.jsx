@@ -59,8 +59,8 @@ const getGames = createAsyncThunk(
 );
 
 const gameAdapter = createEntityAdapter({
-  // Sort games by created_at
-  sortComparer: (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
+  // Sort games by createdAt
+  sortComparer: (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt),
 });
 
 const setLoading = (state, loading) => {

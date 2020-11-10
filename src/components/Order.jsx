@@ -14,18 +14,18 @@ const Order = ({ order }) => {
 
   let [sx, sy] = [null, null];
   if (order.type === 'retreat') {
-    sx = source.dislodged_piece_x;
-    sy = source.dislodged_piece_y;
+    sx = source.dislodgedPieceX;
+    sy = source.dislodgedPieceY;
   } else {
-    sx = source.piece_x;
-    sy = source.piece_y;
+    sx = source.pieceX;
+    sy = source.pieceY;
   }
 
   if (target) {
-    let { piece_x: tx, piece_y: ty } = target;
+    let { pieceX: tx, pieceY: ty } = target;
     if (targetCoast) {
-      tx = targetCoast.piece_x;
-      ty = targetCoast.piece_y;
+      tx = targetCoast.pieceX;
+      ty = targetCoast.pieceY;
     }
     elements.push(
       <TargetArrow
@@ -33,15 +33,15 @@ const Order = ({ order }) => {
         id={id}
         type={type}
         nation={nation}
-        x1={source.piece_x}
+        x1={source.pieceX}
         x2={tx}
-        y1={source.piece_y}
+        y1={source.pieceY}
         y2={ty}
         offsetSize={26}
       />
     );
     if (aux) {
-      const { piece_x: ax, piece_y: ay } = aux;
+      const { pieceX: ax, pieceY: ay } = aux;
       elements.push(
         <AuxArrow
           key={`aux-${id}`}
