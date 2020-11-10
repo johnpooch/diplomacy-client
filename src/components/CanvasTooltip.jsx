@@ -51,8 +51,8 @@ const Tooltip = ({
       const { territory } = hoverTarget.attrs;
       setText(territory.name.toUpperCase());
 
-      if (territory.controlled_by) {
-        setTextFill(variables.colors.nations[territory.controlled_by]);
+      if (territory.controlledBy) {
+        setTextFill(variables.colors.nations[territory.controlledBy]);
       }
     }
   }, [hoverTarget]);

@@ -1,4 +1,3 @@
-/* eslint camelcase: [2, { "allow": ["num_players"] }] */
 import React from 'react';
 import styled from '@emotion/styled';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -37,12 +36,12 @@ const StyledPlayerCount = styled.div`
 `;
 
 export const PlayerCount = ({ game }) => {
-  const { num_players, participants } = game;
+  const { numPlayers, participants } = game;
   return (
     <StyledPlayerCount>
       <FontAwesomeIcon icon={faUser} />
       <span className="count">
-        {participants.length} / {num_players}
+        {participants.length} / {numPlayers}
       </span>
     </StyledPlayerCount>
   );

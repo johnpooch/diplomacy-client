@@ -1,4 +1,3 @@
-/* eslint camelcase: [2, { "allow": ["controlled_by", "territory_map_data_id"] }] */
 /** @jsx jsx */
 import { darken } from 'polished';
 import { jsx } from '@emotion/core';
@@ -13,11 +12,11 @@ const FILLPATTERNOPACITY = 0.1;
 const STROKEWIDTH = 2;
 
 const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
-  const { controlled_by, path, playable, type, id } = territory;
+  const { controlledBy, path, playable, type, id } = territory;
 
   const getFill = () => {
-    if (controlled_by in variables.colors.nations)
-      return variables.colors.nations[controlled_by];
+    if (controlledBy in variables.colors.nations)
+      return variables.colors.nations[controlledBy];
     return type === 'sea' ? variables.colors.sea : variables.colors.land;
   };
 
@@ -66,7 +65,7 @@ const Territories = ({ territories, hoverId, userNation }) => {
         const { piece } = territory;
         return (
           <Territory
-            key={territory.territory_map_data_id}
+            key={territory.territoryMapDataId}
             territory={territory}
             isHovering={hoverId !== null && territory.id === hoverId}
             isOrderable={

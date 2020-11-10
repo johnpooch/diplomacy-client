@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint camelcase: [2, { "allow": ["controlled_by_nation", "current_turn", "piece_nation"] }] */
 
 import { gameSelectors } from './games';
 import { nationSelectors } from './nations';
@@ -25,7 +24,7 @@ const mergePieces = (pieces, pieceStates) => {
 const mergeTerritories = (tds, territories, territoryStates) => {
   return tds.map((td) => {
     let playable = false;
-    const territory = territories.find((t) => t.uid === td.territory_uid);
+    const territory = territories.find((t) => t.uid === td.territoryUID);
 
     // If territory not found this is a non-playable territory
     if (!territory) return { ...td, playable, id: null };
@@ -62,28 +61,27 @@ const getDenormalizedTerritories = (state, game, turn) => {
   mergedTerritories.forEach((t) => {
     if (t.playable) {
       t.piece =
-        mergedPieces.find((p) => p.territory === t.id && !p.must_retreat) ||
+        mergedPieces.find((p) => p.territory === t.id && !p.mustRetreat) ||
         null;
       if (t.piece) {
         t.piece = {
           ...t.piece,
-          x: t.piece_x,
-          y: t.piece_y,
+          x: t.pieceX,
+          y: t.pieceY,
         };
-        t.piece_nation = nations.find((n) => t.piece.nation === n.id);
+        t.pieceNation = nations.find((n) => t.piece.nation === n.id);
       }
       t.dislodgedPiece =
-        mergedPieces.find((p) => p.territory === t.id && p.must_retreat) ||
-        null;
+        mergedPieces.find((p) => p.territory === t.id && p.mustRetreat) || null;
       if (t.dislodgedPiece) {
         t.dislodgedPiece = {
           ...t.dislodgedPiece,
-          x: t.dislodged_piece_x,
-          y: t.dislodged_piece_y,
+          x: t.dislodgedPieceX,
+          y: t.dislodgedPieceY,
         };
       }
-      if (t.controlled_by) {
-        t.controlled_by_nation = nations.find((n) => t.controlled_by === n.id);
+      if (t.controlledBy) {
+        t.controlledByNation = nations.find((n) => t.controlledBy === n.id);
       }
     }
   });
@@ -153,9 +151,9 @@ export const getDenormalizedGamesList = (state) => {
   const { user } = state.auth;
   const allGames = gameSelectors.selectAll(state);
   const denormalizedGames = allGames.map((game) => {
-    const { current_turn } = game;
-    if (!current_turn) return { ...game };
-    const nations = getDenormalizedNations(state, game, current_turn);
+    const { currentTurn } = game;
+    if (!currentTurn) return { ...game };
+    const nations = getDenormalizedNations(state, game, currentTurn);
     const participants = game.participants.map((p) => {
       const participant = userSelectors.selectById(state, p);
       const nation = nations.find((n) => n.user === p) || null;

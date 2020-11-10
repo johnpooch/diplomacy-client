@@ -29,7 +29,7 @@ const turnSlice = createSlice({
       return state;
     },
     [CREATE_ORDER_FULFILLED]: (state, { payload }) => {
-      const { old_order: oldOrder, ...newOrder } = payload;
+      const { oldOrder, ...newOrder } = payload;
       const { id: turnId } = newOrder.turn;
       const turn = state.entities[turnId];
       turn.orders = turn.orders.filter((o) => o !== oldOrder);
