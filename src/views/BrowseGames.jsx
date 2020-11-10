@@ -1,32 +1,19 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled';
 
-import { spacing } from '../variables';
-
-import GameSummaryList from '../components/GameSummaryList';
-import GameFilters from '../components/GameFilters';
+import Games from '../components/Games';
+import GamesFilters from '../components/GamesFilters';
 import Page from '../components/Page';
-
 import { choiceActions } from '../store/choices';
-import { variantActions } from '../store/variants';
-
-import { getDenormalizedGamesList } from '../store/denormalizers';
 import { gameActions } from '../store/games';
-
-const StyledDiv = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-row-gap: ${spacing[5]}px;
-  grid-column-gap: ${spacing[5]}px;
-`;
+import { getDenormalizedGamesList } from '../store/denormalizers';
+import { variantActions } from '../store/variants';
 
 const BrowseGames = (props) => {
   const {
     choices,
     getGames,
     games,
-    isLoaded,
     location,
     prepareBrowseGames,
     token,
@@ -41,14 +28,9 @@ const BrowseGames = (props) => {
   };
 
   return (
-    <Page headingText={null} isLoaded>
-      <StyledDiv>
-        <div>
-          <GameFilters callback={filterGames} choices={choices} />
-          <GameSummaryList games={games} isLoaded={isLoaded} />
-        </div>
-        <div>My active games</div>
-      </StyledDiv>
+    <Page>
+      <GamesFilters callback={filterGames} choices={choices} />
+      <Games games={games} />
     </Page>
   );
 };
@@ -56,14 +38,10 @@ const BrowseGames = (props) => {
 const mapStateToProps = (state, { location }) => {
   const { browseGamesLoaded } = state.entities.games;
   let games = null;
-  if (browseGamesLoaded) {
-    games = getDenormalizedGamesList(state);
-  }
-  const isLoaded = browseGamesLoaded;
+  if (browseGamesLoaded) games = getDenormalizedGamesList(state);
   return {
     choices: state.choices,
     games,
-    isLoaded,
     location,
     token: state.auth.token,
   };

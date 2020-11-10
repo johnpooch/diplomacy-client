@@ -2,17 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 
-import useForm from '../hooks/useForm';
+import Form, { FormLabel, FormWrapper } from '../components/Form';
 import Page from '../components/Page';
-import {
-  Button,
-  FormLabelText,
-  GenericForm,
-  GridTemplate,
-  SecondaryButton,
-} from '../styles';
+import useForm from '../hooks/useForm';
 import { alertActions } from '../store/alerts';
+import { Button, SecondaryButton } from '../components/Button';
 import { gameActions } from '../store/games';
+import { GridTemplate } from '../layout';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
@@ -31,40 +27,42 @@ const CreateGame = (props) => {
   };
 
   return (
-    <Page headingText="Create game" isLoaded>
-      <GenericForm onSubmit={handleSubmit}>
-        <label htmlFor="name">
-          <FormLabelText>Name</FormLabelText>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Name"
-            autoComplete="name"
-            value={name}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label htmlFor="description">
-          <FormLabelText>Description</FormLabelText>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            placeholder="Description"
-            autoComplete="description"
-            onChange={handleChange}
-            value={description}
-            required
-            rows={1}
-          />
-        </label>
-        <GridTemplate templateColumns="auto auto 1fr">
-          <Button type="submit">Create game</Button>
-          <NavLinkButton to="/">Cancel</NavLinkButton>
-        </GridTemplate>
-      </GenericForm>
+    <Page title="Create game">
+      <FormWrapper>
+        <Form onSubmit={handleSubmit}>
+          <label htmlFor="name">
+            <FormLabel>Name</FormLabel>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Name"
+              autoComplete="name"
+              value={name}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label htmlFor="description">
+            <FormLabel>Description</FormLabel>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              placeholder="Description"
+              autoComplete="description"
+              onChange={handleChange}
+              value={description}
+              required
+              rows={1}
+            />
+          </label>
+          <GridTemplate templateColumns="2fr 1fr">
+            <Button type="submit">Create game</Button>
+            <NavLinkButton to="/">Cancel</NavLinkButton>
+          </GridTemplate>
+        </Form>
+      </FormWrapper>
     </Page>
   );
 };

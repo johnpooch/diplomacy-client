@@ -1,76 +1,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch, withRouter, Route } from 'react-router-dom';
-import styled from '@emotion/styled';
+import { Switch, withRouter, Route, Redirect } from 'react-router-dom';
 
-import Error from './Error';
-import Page from '../components/Page';
-import ForgotPasswordForm from '../components/ForgotPasswordForm';
-import LoginForm from '../components/LoginForm';
-import RegisterForm from '../components/RegisterForm';
-import ResetPasswordForm from '../components/ResetPasswordForm';
+import ForgotPassword from './ForgotPassword';
+import Login from './Login';
+import Register from './Register';
+import ResetPassword from './ResetPassword';
 import { alertActions } from '../store/alerts';
 import { authActions } from '../store/auth';
-import { spacing } from '../variables';
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  grid-column-gap: ${(props) =>
-    props.columnGap ? props.columnGap : `${spacing[4]}px`};
-  grid-row-gap: ${(props) => (props.rowGap ? props.rowGap : `${spacing[4]}px`)};
-
-  label,
-  input {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-`;
-
-const Auth = (props) => {
-  const {
-    forgotPassword,
-    history,
-    loggedIn,
-    login,
-    register,
-    resetPassword,
-  } = props;
-
-  if (loggedIn) {
-    history.push('/');
-  }
-
+const RouterLoggedOut = (props) => {
+  const { forgotPassword, login, register, resetPassword } = props;
   return (
-    <Page isLoaded>
-      <Grid>
-        <div />
-        <Switch>
-          <Route exact path="/" render={() => <LoginForm onAuth={login} />} />
-          <Route
-            exact
-            path="/login"
-            render={() => <LoginForm onAuth={login} />}
-          />
-          <Route
-            exact
-            path="/register"
-            render={() => <RegisterForm onAuth={register} />}
-          />
-          <Route
-            exact
-            path="/forgot-password"
-            render={() => <ForgotPasswordForm onAuth={forgotPassword} />}
-          />
-          <Route
-            exact
-            path="/reset-password"
-            render={() => <ResetPasswordForm onAuth={resetPassword} />}
-          />
-          <Route component={() => <Error text="Page not found" />} />
-        </Switch>
-      </Grid>
-    </Page>
+    <Switch>
+      <Route
+        exact
+        path={['/', '/login']}
+        component={() => <Login onAuth={login} />}
+      />
+      <Route
+        exact
+        path="/register"
+        component={() => <Register onAuth={register} />}
+      />
+      <Route
+        exact
+        path="/forgot-password"
+        component={() => <ForgotPassword onAuth={forgotPassword} />}
+      />
+      <Route
+        exact
+        path="/reset-password"
+        component={() => <ResetPassword onAuth={resetPassword} />}
+      />
+      <Redirect to="/" />
+    </Switch>
   );
 };
 
@@ -129,4 +93,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Auth));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(RouterLoggedOut));

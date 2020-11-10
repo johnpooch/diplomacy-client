@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormLabelText } from '../styles';
+import { FormLabel } from './Form';
 
 const DipSelect = (props) => {
   const { name, label, value, onChange, options } = props;
@@ -22,7 +22,7 @@ const DipSelect = (props) => {
 
   return (
     <label htmlFor={name}>
-      <FormLabelText>{label}</FormLabelText>
+      <FormLabel>{label}</FormLabel>
       <select
         id={name}
         name={name}

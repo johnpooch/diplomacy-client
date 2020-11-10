@@ -1,9 +1,12 @@
-export function getObjectByKey(pk, objs, key = 'pk') {
-  const id = parseInt(pk, 10);
-  return objs.find((obj) => {
-    return obj[key] === id;
+import _slugify from 'slugify';
+
+export const slugify = (str) => {
+  return _slugify(str, {
+    replacement: '-',
+    lower: true,
+    strict: true,
   });
-}
+};
 
 export const dateDisplayFormat = {
   year: 'numeric',

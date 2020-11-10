@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 
-import { colors, fontFamilies } from './variables';
+import { variables } from './variables';
 
 export default css`
   * {
@@ -9,8 +9,9 @@ export default css`
 
   body {
     margin: 0;
-    font-family: ${fontFamilies.sans};
-    color: ${colors.base};
+    font-family: ${variables.fontFamilies.sans};
+    color: ${variables.colors.base};
+    background: ${variables.colors.gray};
   }
 
   ul,
@@ -37,11 +38,20 @@ export default css`
   }
 
   a {
-    color: ${colors.darkgray};
+    color: ${variables.colors.darkgray};
     cursor: pointer;
+    text-decoration: none;
 
     &:hover {
-      color: ${colors.base};
+      color: ${variables.colors.base};
     }
+  }
+
+  .link-overlay {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 `;

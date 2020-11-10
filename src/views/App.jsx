@@ -1,30 +1,16 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import Auth from './Auth';
-import BrowseGames from './BrowseGames';
-import CreateGame from './CreateGame';
-import Error from './Error';
-import Game from './Game';
-import PreGame from './PreGame';
+import RouterLoggedIn from './RouterLoggedIn';
+import RouterLoggedOut from './RouterLoggedOut';
 
-import AlertList from '../components/AlertList';
-import Header from '../components/Header';
-import PrivateRoute from '../components/PrivateRoute';
+import Alerts from '../components/Alerts';
 
-import { authActions } from '../store/auth';
 import { alertActions, alertSelectors } from '../store/alerts';
 
 const App = (props) => {
-  const {
-    alerts,
-    alertsClear,
-    clearAndPromoteAlerts,
-    loggedIn,
-    logout,
-    user,
-  } = props;
+  const { alerts, alertsClear, clearAndPromoteAlerts, loggedIn } = props;
 
   const location = useLocation();
 
@@ -32,48 +18,25 @@ const App = (props) => {
     clearAndPromoteAlerts();
   }, [location.pathname]);
 
+  // User is logged out
+  if (!loggedIn) {
+    return <RouterLoggedOut />;
+  }
+
+  // User is logged in
   return (
     <div>
-      <Header loggedIn={loggedIn} onLogout={logout} user={user} />
-      <AlertList alerts={alerts} onClick={alertsClear} />
-      <Switch>
-        <PrivateRoute
-          exact
-          path="/create-game"
-          component={CreateGame}
-          loggedIn={loggedIn}
-        />
-        <PrivateRoute
-          exact
-          path="/pre-game/:slug"
-          component={PreGame}
-          loggedIn={loggedIn}
-        />
-        <PrivateRoute
-          exact
-          path="/game/:slug"
-          component={Game}
-          loggedIn={loggedIn}
-        />
-        <PrivateRoute
-          exact
-          path="/"
-          component={BrowseGames}
-          loggedIn={loggedIn}
-        />
-        <Route path="/" component={Auth} />
-        <Route component={() => <Error text="Page not found" />} />
-      </Switch>
+      <Alerts alerts={alerts} onClick={alertsClear} />
+      <RouterLoggedIn />
     </div>
   );
 };
 
 const mapStateToProps = (state) => {
-  const { loggedIn, user } = state.auth;
+  const { loggedIn } = state.auth;
   return {
     alerts: alertSelectors.selectAll(state),
     loggedIn,
-    user,
   };
 };
 
@@ -85,13 +48,9 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(alertActions.alertsClearActive());
     dispatch(alertActions.alertsPromotePending());
   };
-  const logout = () => {
-    dispatch(authActions.logout());
-  };
   return {
     alertsClear,
     clearAndPromoteAlerts,
-    logout,
   };
 };
 
