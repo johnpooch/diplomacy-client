@@ -7,6 +7,7 @@ import {
 } from '@reduxjs/toolkit';
 
 import { gameSelectors } from './games';
+import { surrenderActions } from './surrenders';
 
 // use string literal to avoid import loop
 const LIST_ORDERS_FULFILLED = 'orders/listOrdersStatus/fulfilled';
@@ -35,6 +36,11 @@ const turnSlice = createSlice({
       turn.orders = turn.orders.filter((o) => o !== oldOrder);
       turn.orders.push(newOrder.id);
       return state;
+    },
+    [surrenderActions.setSurrender.fulfilled]: (state, { payload }) => {
+      const { turn, id } = payload;
+      const turnToUpdate = state.entities[turn];
+      turnToUpdate.surrenders.push(id);
     },
   },
 });
