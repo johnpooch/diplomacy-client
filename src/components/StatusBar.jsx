@@ -41,7 +41,7 @@ const StyledDiv = styled.div`
 `;
 
 const StatusBar = (props) => {
-  const { finalizeOrders, turn, _setTurn } = props;
+  const { finalizeOrders, toggleSurrender, turn, _setTurn } = props;
   const { currentTurn, userNation } = turn;
 
   return (
@@ -57,6 +57,7 @@ const StatusBar = (props) => {
         {currentTurn ? (
           <OrdersStatus
             finalizeOrders={finalizeOrders}
+            toggleSurrender={toggleSurrender}
             userNation={userNation}
           />
         ) : null}

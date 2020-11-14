@@ -7,6 +7,7 @@ import Map from '../components/Map';
 import StatusBar from '../components/StatusBar';
 import { gameActions, gameSelectors } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
+import { surrenderActions } from '../store/surrenders';
 import { orderActions } from '../store/orders';
 import { variantActions } from '../store/variants';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
@@ -19,6 +20,7 @@ const Game = (props) => {
   const {
     createOrder,
     finalizeOrders,
+    toggleSurrender,
     game,
     location,
     prepareGameDetail,
@@ -58,6 +60,7 @@ const Game = (props) => {
       <Map game={game} order={order} turn={turn} postOrder={postOrder} />
       <StatusBar
         finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
+        toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
         turn={turn}
         _setTurn={(_id) => {
           setActiveTurn(_id);
@@ -92,11 +95,18 @@ const mapDispatchToProps = (dispatch) => {
   const finalizeOrders = (token, id) => {
     dispatch(nationStateActions.finalizeOrders({ token, id }));
   };
+  const toggleSurrender = (token, turn, id) => {
+    if (id) {
+      dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
+    } else {
+      dispatch(surrenderActions.setSurrender({ token, turn }));
+    }
+  };
   const createOrder = (token, slug, data) => {
     dispatch(orderActions.createOrder({ token, slug, data }));
   };
 
-  return { createOrder, finalizeOrders, prepareGameDetail };
+  return { createOrder, finalizeOrders, prepareGameDetail, toggleSurrender };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));
