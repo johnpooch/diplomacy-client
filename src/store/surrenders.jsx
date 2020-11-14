@@ -6,6 +6,8 @@ import {
 
 import { apiRequest, getOptions, urls } from './api';
 
+import { turnSelectors } from './turns';
+
 const cancelSurrender = createAsyncThunk(
   'surrenders/cancelSurrenderStatus',
   async ({ token, turn, id }, thunkApi) => {
@@ -62,8 +64,17 @@ const adapterSelectors = surrenderAdapter.getSelectors(
   (state) => state.entities.surrenders
 );
 
+const selectByNationState = (state, { id, user }) => {
+  const turn = turnSelectors.selectByNationStateId(state, id);
+  const surrenders = adapterSelectors.selectAll(state);
+  return surrenders.find(
+    (s) => s.user === user && s.turn === turn.id && s.status === 'pending'
+  );
+};
+
 export const surrenderSelectors = {
   ...adapterSelectors,
+  selectByNationState,
 };
 
 export const surrenderActions = {
