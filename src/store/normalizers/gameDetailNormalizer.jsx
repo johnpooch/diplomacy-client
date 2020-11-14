@@ -4,6 +4,8 @@ const pieceState = new schema.Entity('pieceStates');
 
 const nationState = new schema.Entity('nationStates');
 
+const surrender = new schema.Entity('surrenders');
+
 const territoryState = new schema.Entity('territoryStates');
 
 const orders = new schema.Entity('orders');
@@ -12,6 +14,7 @@ const turn = new schema.Entity('turns', {
   nationStates: [nationState],
   orders: [orders],
   pieceStates: [pieceState],
+  surrenders: [surrender],
   territoryStates: [territoryState],
 });
 
