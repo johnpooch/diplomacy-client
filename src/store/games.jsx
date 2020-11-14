@@ -6,13 +6,12 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import * as API from '../api';
-import { apiRequest, getOptions } from './api';
+import { apiRequest, getOptions, urls } from './api';
 
 const createGame = createAsyncThunk(
   'games/createGameStatus',
   async ({ token, data }, thunkApi) => {
-    const url = API.CREATEGAMEURL;
+    const url = urls.CREATE_GAME;
     const options = getOptions(token, 'POST', data);
     return apiRequest(url, options, thunkApi);
   }
@@ -21,7 +20,7 @@ const createGame = createAsyncThunk(
 const joinGame = createAsyncThunk(
   'games/joinGameStatus',
   async ({ token, slug }, thunkApi) => {
-    const url = API.JOINGAMEURL.replace('<game>', slug);
+    const url = urls.JOIN_GAME.replace('<game>', slug);
     const options = getOptions(token, 'PATCH');
     return apiRequest(url, options, thunkApi);
   }
@@ -30,7 +29,7 @@ const joinGame = createAsyncThunk(
 const leaveGame = createAsyncThunk(
   'games/joinGameStatus',
   async ({ token, slug }, thunkApi) => {
-    const url = API.JOINGAMEURL.replace('<game>', slug);
+    const url = urls.JOIN_GAME.replace('<game>', slug);
     const options = getOptions(token, 'PATCH');
     return apiRequest(url, options, thunkApi);
   }
@@ -39,7 +38,7 @@ const leaveGame = createAsyncThunk(
 const getGameDetail = createAsyncThunk(
   'games/getGameDetailStatus',
   async ({ token, slug }, thunkApi) => {
-    const url = API.GAMESTATEURL.replace('<game>', slug);
+    const url = urls.GAME_STATE.replace('<game>', slug);
     const options = getOptions(token);
     return apiRequest(url, options, thunkApi);
   }
@@ -48,7 +47,7 @@ const getGameDetail = createAsyncThunk(
 const getGames = createAsyncThunk(
   'games/getGamesStatus',
   async ({ token, filters }, thunkApi) => {
-    let url = API.ALLGAMESURL;
+    let url = urls.ALL_GAMES;
     if (filters) {
       const queryParams = new URLSearchParams(filters).toString();
       url = url.concat(`?${queryParams}`);
