@@ -6,6 +6,7 @@ import { nationStateSelectors } from './nationStates';
 import { orderSelectors } from './orders';
 import { pieceSelectors } from './pieces';
 import { pieceStateSelectors } from './pieceStates';
+import { surrenderSelectors } from './surrenders';
 import { territorySelectors } from './territories';
 import { territoryStateSelectors } from './territoryStates';
 import { turnSelectors } from './turns';
@@ -81,8 +82,9 @@ const getDenormalizedNations = (state, game, turnId) => {
   const nations = nationSelectors.selectByVariantId(state, variant);
   const nationStates = nationStateSelectors.selectByTurnId(state, turnId);
   const mergedNations = nationStates.map((ns) => {
+    const surrender = surrenderSelectors.selectByNationState(state, ns);
     const nation = nations.find((n) => ns.nation === n.id);
-    return { ...ns, ...nation, nationStateId: ns.id };
+    return { ...ns, ...nation, nationStateId: ns.id, surrender };
   });
   return mergedNations;
 };
