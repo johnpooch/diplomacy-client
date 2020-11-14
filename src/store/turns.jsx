@@ -7,11 +7,11 @@ import {
 } from '@reduxjs/toolkit';
 
 import { gameSelectors } from './games';
-import { surrenderActions } from './surrenders';
 
 // use string literal to avoid import loop
 const LIST_ORDERS_FULFILLED = 'orders/listOrdersStatus/fulfilled';
 const CREATE_ORDER_FULFILLED = 'orders/createOrderStatus/fulfilled';
+const SET_SURRENDER_FULFILLED = 'surrenders/setSurrender/fulfilled';
 
 const turnAdapter = createEntityAdapter();
 
@@ -37,7 +37,7 @@ const turnSlice = createSlice({
       turn.orders.push(newOrder.id);
       return state;
     },
-    [surrenderActions.setSurrender.fulfilled]: (state, { payload }) => {
+    [SET_SURRENDER_FULFILLED]: (state, { payload }) => {
       const { turn, id } = payload;
       const turnToUpdate = state.entities[turn];
       turnToUpdate.surrenders.push(id);
@@ -59,9 +59,15 @@ const selectGameCurrentTurn = createSelector(
   (game, turns) => turns.find((t) => game.current_turn === t.id)
 );
 
+const selectByNationStateId = (state, nationStateId) => {
+  const turns = adapterSelectors.selectAll(state);
+  return turns.find((t) => t.nationStates.includes(nationStateId));
+};
+
 export const turnSelectors = {
   ...adapterSelectors,
   selectGameCurrentTurn,
+  selectByNationStateId,
 };
 
 export default turnSlice.reducer;
