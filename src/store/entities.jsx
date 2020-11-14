@@ -5,8 +5,9 @@ import namedCoasts from './namedCoasts';
 import nationStates from './nationStates';
 import nations from './nations';
 import orders from './orders';
-import pieces from './pieces';
 import pieceStates from './pieceStates';
+import pieces from './pieces';
+import surrenders from './surrenders';
 import territories from './territories';
 import territoryStates from './territoryStates';
 import turns from './turns';
@@ -19,8 +20,9 @@ export default combineReducers({
   nationStates,
   nations,
   orders,
-  pieces,
   pieceStates,
+  pieces,
+  surrenders,
   territories,
   territoryStates,
   turns,
