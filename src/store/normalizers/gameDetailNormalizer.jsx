@@ -2,9 +2,16 @@ import { normalize, schema } from 'normalizr';
 
 const pieceState = new schema.Entity('pieceStates');
 
-const nationState = new schema.Entity('nationStates');
+const user = new schema.Entity('users');
 
-const surrender = new schema.Entity('surrenders');
+const surrender = new schema.Entity('surrenders', {
+  user,
+});
+
+const nationState = new schema.Entity('nationStates', {
+  surrenders: [surrender],
+  user,
+});
 
 const territoryState = new schema.Entity('territoryStates');
 
@@ -14,7 +21,6 @@ const turn = new schema.Entity('turns', {
   nationStates: [nationState],
   orders: [orders],
   pieceStates: [pieceState],
-  surrenders: [surrender],
   territoryStates: [territoryState],
 });
 

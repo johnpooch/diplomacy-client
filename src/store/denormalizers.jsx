@@ -82,7 +82,7 @@ const getDenormalizedNations = (state, game, turnId) => {
   const nations = nationSelectors.selectByVariantId(state, variant);
   const nationStates = nationStateSelectors.selectByTurnId(state, turnId);
   const mergedNations = nationStates.map((ns) => {
-    const surrender = surrenderSelectors.selectByNationState(state, ns);
+    const surrender = surrenderSelectors.selectByNationState(state, ns.id);
     const nation = nations.find((n) => ns.nation === n.id);
     return { ...ns, ...nation, nationStateId: ns.id, surrender };
   });
