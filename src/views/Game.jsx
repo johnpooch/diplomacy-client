@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import Draws from '../components/Draws';
 import Loading from '../components/Loading';
 import Map from '../components/Map';
 import StatusBar from '../components/StatusBar';
+import { drawResponseActions } from '../store/drawResponses';
 import { gameActions, gameSelectors } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
 import { surrenderActions } from '../store/surrenders';
@@ -18,6 +20,9 @@ const Game = (props) => {
    * The view loads until the game detail data is in the store. */
 
   const {
+    cancelDrawResponse,
+    setDrawResponse,
+    drawResponseLoading,
     createOrder,
     finalizeOrders,
     toggleSurrender,
@@ -66,19 +71,31 @@ const Game = (props) => {
           setActiveTurn(_id);
         }}
       />
+      <Draws
+        cancelDrawResponse={(draw, response) =>
+          cancelDrawResponse(token, draw, response)
+        }
+        setDrawResponse={(draw, response) =>
+          setDrawResponse(token, draw, response)
+        }
+        draws={turn.draws}
+        participants={game.participants}
+        userNation={userNation}
+        variant={game.variant}
+        drawResponseLoading={drawResponseLoading}
+      />
     </div>
   );
 };
 
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
-  const { token, user } = state.auth;
+  const { token } = state.auth;
   let game = gameSelectors.selectBySlug(state, slug);
   const gameDetailInStore = game && game.detailLoaded;
-  game = gameDetailInStore
-    ? getDenormalizedGameDetail(state, game.id, user)
-    : null;
-  return { game, slug, token };
+  game = gameDetailInStore ? getDenormalizedGameDetail(state, game.id) : null;
+  const { loading: drawResponseLoading } = state.entities.drawResponses;
+  return { drawResponseLoading, game, slug, token };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -106,7 +123,21 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(orderActions.createOrder({ token, slug, data }));
   };
 
-  return { createOrder, finalizeOrders, prepareGameDetail, toggleSurrender };
+  const cancelDrawResponse = (token, draw, response) => {
+    dispatch(drawResponseActions.cancelDrawResponse({ token, draw, response }));
+  };
+  const setDrawResponse = (token, draw, response) => {
+    dispatch(drawResponseActions.setDrawResponse({ token, draw, response }));
+  };
+
+  return {
+    cancelDrawResponse,
+    setDrawResponse,
+    createOrder,
+    finalizeOrders,
+    prepareGameDetail,
+    toggleSurrender,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));
