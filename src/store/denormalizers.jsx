@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 
+import { drawSelectors } from './draws';
+import { drawResponseSelectors } from './drawResponses';
 import { gameSelectors } from './games';
 import { nationSelectors } from './nations';
 import { nationStateSelectors } from './nationStates';
@@ -98,16 +100,33 @@ const getDenormalizedOrders = (state, turn, territories) => {
   });
 };
 
+const getDenormalizedDraws = (state, turn, nations) => {
+  return drawSelectors.selectByTurnId(state, turn.id).map((d) => {
+    const responses = drawResponseSelectors.selectByDrawId(state, d.id);
+    const nationResponses = nations.map((n) => {
+      const responseItem = responses.find((r) => r.nation === n.id);
+      let response = null;
+      if (responseItem) {
+        response = responseItem;
+      }
+      return { ...n, response };
+    });
+    return { ...d, responses: nationResponses };
+  });
+};
+
 const getDenormalizedTurn = (state, game, turn, user) => {
   const territories = getDenormalizedTerritories(state, game, turn);
   const nations = getDenormalizedNations(state, game, turn.id);
   const orders = getDenormalizedOrders(state, turn, territories);
+  const draws = getDenormalizedDraws(state, turn, nations);
   const userNation = nations.find((n) => n.user === user.id) || null;
-  const newTurn = { ...turn, territories, nations, orders, userNation };
+  const newTurn = { ...turn, draws, territories, nations, orders, userNation };
   return newTurn;
 };
 
-export const getDenormalizedGameDetail = (state, id, user) => {
+export const getDenormalizedGameDetail = (state, id) => {
+  const { user } = state.auth;
   const denormalizedGame = {
     turns: [],
   };
@@ -119,8 +138,11 @@ export const getDenormalizedGameDetail = (state, id, user) => {
     const turn = turnSelectors.selectById(state, turnId, user);
     denormalizedGame.turns.push(getDenormalizedTurn(state, game, turn, user));
   });
+  const participants = game.participants.map((p) => {
+    return userSelectors.selectById(state, p);
+  });
 
-  return denormalizedGame;
+  return { ...denormalizedGame, participants };
 };
 
 export const getDenormalizedPreGame = (state, slug) => {
