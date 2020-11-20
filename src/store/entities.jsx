@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 
+import draws from './draws';
+import drawResponses from './drawResponses';
 import games from './games';
 import namedCoasts from './namedCoasts';
 import nationStates from './nationStates';
@@ -15,6 +17,8 @@ import users from './users';
 import variants from './variants';
 
 export default combineReducers({
+  draws,
+  drawResponses,
   games,
   namedCoasts,
   nationStates,
