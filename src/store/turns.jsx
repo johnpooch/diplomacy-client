@@ -11,7 +11,6 @@ import { gameSelectors } from './games';
 // use string literal to avoid import loop
 const LIST_ORDERS_FULFILLED = 'orders/listOrdersStatus/fulfilled';
 const CREATE_ORDER_FULFILLED = 'orders/createOrderStatus/fulfilled';
-const SET_SURRENDER_FULFILLED = 'surrenders/setSurrender/fulfilled';
 
 const turnAdapter = createEntityAdapter();
 
@@ -36,11 +35,6 @@ const turnSlice = createSlice({
       turn.orders = turn.orders.filter((o) => o !== oldOrder);
       turn.orders.push(newOrder.id);
       return state;
-    },
-    [SET_SURRENDER_FULFILLED]: (state, { payload }) => {
-      const { turn, id } = payload;
-      const turnToUpdate = state.entities[turn];
-      turnToUpdate.surrenders.push(id);
     },
   },
 });
