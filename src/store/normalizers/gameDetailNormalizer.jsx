@@ -1,5 +1,11 @@
 import { normalize, schema } from 'normalizr';
 
+const drawResponse = new schema.Entity('drawResponses');
+
+const draw = new schema.Entity('draws', {
+  drawResponses: [drawResponse],
+});
+
 const pieceState = new schema.Entity('pieceStates');
 
 const user = new schema.Entity('users');
@@ -18,6 +24,7 @@ const territoryState = new schema.Entity('territoryStates');
 const orders = new schema.Entity('orders');
 
 const turn = new schema.Entity('turns', {
+  draws: [draw],
   nationStates: [nationState],
   orders: [orders],
   pieceStates: [pieceState],
@@ -27,8 +34,9 @@ const turn = new schema.Entity('turns', {
 const piece = new schema.Entity('pieces');
 
 const game = new schema.Entity('game', {
-  turns: [turn],
+  participants: [user],
   pieces: [piece],
+  turns: [turn],
 });
 
 const gameDetailNormalizer = (gameData) => normalize(gameData, game);

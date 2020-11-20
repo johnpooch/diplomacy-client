@@ -3,6 +3,8 @@ import { gameActions } from '../games';
 import gameListNormalizer from '../normalizers/gameListNormalizer';
 import gameDetailNormalizer from '../normalizers/gameDetailNormalizer';
 
+import { drawActions } from '../draws';
+import { drawResponseActions } from '../drawResponses';
 import { nationStateActions } from '../nationStates';
 import { orderActions } from '../orders';
 import { pieceActions } from '../pieces';
@@ -42,6 +44,8 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
   if (action.type === gameActions.getGameDetail.fulfilled.type) {
     const { entities } = gameDetailNormalizer(action.payload);
     const {
+      draws,
+      drawResponses,
       game,
       nationStates,
       orders,
@@ -50,7 +54,10 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
       surrenders,
       territoryStates,
       turns,
+      users,
     } = entities;
+    dispatch(drawActions.drawsReceived(draws || []));
+    dispatch(drawResponseActions.drawResponsesReceived(drawResponses || []));
     dispatch(pieceActions.piecesReceived(pieces));
     dispatch(turnActions.turnDetailsReceived(turns));
     dispatch(surrenderActions.surrendersReceived(surrenders || []));
@@ -58,6 +65,7 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
     dispatch(territoryStateActions.territoryStatesReceived(territoryStates));
     dispatch(pieceStateActions.pieceStatesReceived(pieceStates));
     dispatch(orderActions.ordersReceived(orders || []));
+    dispatch(userActions.usersReceived(users || []));
     next({
       type: gameActions.getGameDetail.fulfilled.type,
       payload: Object.values(game)[0],
