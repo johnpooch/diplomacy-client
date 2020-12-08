@@ -5,7 +5,8 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { darken } from 'polished';
 
 import useForm from '../hooks/useForm';
-import { BaseButton, Button, GenericForm } from '../styles';
+import Form from './Form';
+import { BaseButton, Button } from './Button';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
 import OrderMessage from './OrderMessage';
@@ -95,7 +96,7 @@ const Dialogue = (props) => {
   const renderActionForm = () => {
     if (gameInterface.action) return null;
     return (
-      <GenericForm onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit}>
         <Select
           name="action"
           label="Action"
@@ -115,7 +116,7 @@ const Dialogue = (props) => {
           />
         ) : null}
         <Button type="submit">Confirm</Button>
-      </GenericForm>
+      </Form>
     );
   };
 

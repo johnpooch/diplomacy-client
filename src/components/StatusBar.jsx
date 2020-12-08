@@ -33,7 +33,7 @@ const StyledFooter = styled.footer`
 const StyledDiv = styled.div`
   margin: 0 auto;
   padding: 0 ${spacing[6]}px;
-  max-width: ${sizes.maxWidth}px;
+  max-width: ${sizes.outerWidth}px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -42,7 +42,7 @@ const StyledDiv = styled.div`
 
 const StatusBar = (props) => {
   const { finalizeOrders, turn, _setTurn } = props;
-  const { current_turn: currentTurn, userNation } = turn;
+  const { currentTurn, userNation } = turn;
 
   return (
     <StyledFooter>

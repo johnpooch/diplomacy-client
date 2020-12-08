@@ -30,11 +30,7 @@ const StyledSpan = styled.span`
 `;
 
 const TerritorySummary = ({ territory }) => {
-  const {
-    controlled_by: controlledBy,
-    supply_center: supplyCenter,
-    name,
-  } = territory;
+  const { controlledBy, name, supplyCenter } = territory;
   const color = colors.nations[controlledBy];
   const elements = [];
 

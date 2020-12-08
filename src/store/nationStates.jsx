@@ -60,7 +60,7 @@ const selectByTurnId = createSelector(
   turnSelectors.selectById,
   adapterSelectors.selectAll,
   (turn, nationStates) =>
-    nationStates.filter((n) => turn.nation_states.includes(n.id))
+    nationStates.filter((n) => turn.nationStates.includes(n.id))
 );
 
 export const nationStateSelectors = {

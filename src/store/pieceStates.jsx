@@ -32,7 +32,7 @@ const selectByTurnId = createSelector(
   turnSelectors.selectById,
   adapterSelectors.selectAll,
   (turn, pieceStates) =>
-    pieceStates.filter((p) => turn.piece_states.includes(p.id))
+    pieceStates.filter((p) => turn.pieceStates.includes(p.id))
 );
 
 export const pieceStateSelectors = {

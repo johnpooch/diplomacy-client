@@ -1,27 +1,25 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import slugify from 'slugify';
 
-import { sizes } from '../variables';
+import { variables } from '../variables';
+import { slugify } from '../utils';
 
-const flagSizes = {
-  small: 30,
-};
-
-const StyledDiv = styled.div`
-  width: ${(props) => flagSizes[props.size]}px;
-  img {
-    border-radius: ${sizes.borderRadius[0]}px;
-  }
+const FlagWrapper = styled.div`
+  border: ${variables.sizes.border}px solid ${variables.colors.darkgray};
+  width: ${(props) => variables.flagSizes[props.size]}px;
 `;
 
 const Flag = (props) => {
   const { nation, size } = props;
-  const flagPath = `/src/data/standard/flags/${slugify(nation.name)}.svg`;
   return (
-    <StyledDiv className="flag-div" size={size}>
-      <img src={flagPath} alt={`${nation.name} flag`} />
-    </StyledDiv>
+    <FlagWrapper size={size}>
+      {nation ? (
+        <img
+          src={`/src/data/standard/flags/${slugify(nation.name)}.svg`}
+          alt={`${nation.name} flag`}
+        />
+      ) : null}
+    </FlagWrapper>
   );
 };
 

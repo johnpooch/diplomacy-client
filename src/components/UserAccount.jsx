@@ -2,8 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import Player from './Player';
+import { TertiaryButton } from './Button';
 import { fontSizes, spacing } from '../variables';
-import { TertiaryButton } from '../styles';
 
 const StyledDiv = styled.div`
   display: grid;

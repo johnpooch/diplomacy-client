@@ -9,6 +9,8 @@ import Territories from './Territories';
 import Tooltip from './Tooltip';
 import { colors } from '../variables';
 
+import viewBox from '../data/standard/viewBox.json';
+
 const StyledDiv = styled.div`
   position: absolute;
   width: 100vw;
@@ -108,15 +110,19 @@ const Map = (props) => {
       onMouseLeave={resetPan}
     >
       <ScrollableSVG
-        viewBoxWidth={1835}
-        viewBoxHeight={1360}
+        viewBoxWidth={viewBox.width}
+        viewBoxHeight={viewBox.height}
         interacting={interacting}
         panning={panning}
       >
         <defs>
           <ArrowheadMarker id="arrow-move" fill="white" width={3} height={3} />
         </defs>
-        <rect width={1835} height={1360} fill={colors.base} />
+        <rect
+          width={viewBox.width}
+          height={viewBox.height}
+          fill={colors.base}
+        />
         <Territories
           getCallbacks={getTerritoryCallbacks}
           hovering={hovering}

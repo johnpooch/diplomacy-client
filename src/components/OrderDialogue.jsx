@@ -8,7 +8,7 @@ import OrderMessage from './OrderMessage';
 import OrderTypeSelector from './OrderTypeSelector';
 import OrderSummary from './OrderSummary';
 import TerritorySummary from './TerritorySummary';
-import { Button, BaseButton } from '../styles';
+import { Button, BaseButton } from './Button';
 import { colors, fontSizes, sizes, spacing } from '../variables';
 
 const StyledWrapper = styled.div`

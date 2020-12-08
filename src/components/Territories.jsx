@@ -6,12 +6,12 @@ const Territories = (props) => {
   const { gameInterface, getCallbacks, hovering, panning, territories } = props;
   const elements = [];
   territories.forEach((territory) => {
-    const { id, territory_map_data_id } = territory;
+    const { id, territoryMapDataId } = territory;
     const callbacks = getCallbacks(id);
     elements.push(
       <Territory
         callbacks={callbacks}
-        key={territory_map_data_id}
+        key={territoryMapDataId}
         // If hovering is null do not highlight non-playable
         // territories
         hovering={hovering === id && id}

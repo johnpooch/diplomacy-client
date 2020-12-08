@@ -42,7 +42,7 @@ const ordersSlice = createSlice({
     // Need to remove orders for this turn and set new ones
     [listOrders.fulfilled]: orderAdapter.upsertMany,
     [createOrder.fulfilled]: (state, { payload }) => {
-      const { old_order: oldOrder, ...newOrder } = payload;
+      const { oldOrder, ...newOrder } = payload;
       orderAdapter.removeOne(state, oldOrder);
       orderAdapter.addOne(state, newOrder);
     },
