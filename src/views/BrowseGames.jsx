@@ -20,7 +20,10 @@ const BrowseGames = (props) => {
   } = props;
 
   useEffect(() => {
-    prepareBrowseGames(token);
+    // This will only be called on initial page load
+    if (!games) {
+      prepareBrowseGames(token);
+    }
   }, [location.pathname]);
 
   const filterGames = (filters) => {
@@ -36,9 +39,9 @@ const BrowseGames = (props) => {
 };
 
 const mapStateToProps = (state, { location }) => {
-  const { browseGamesLoaded } = state.entities.games;
+  const { browseGamesLoaded, loading } = state.entities.games;
   let games = null;
-  if (browseGamesLoaded) games = getDenormalizedGamesList(state);
+  if (browseGamesLoaded && !loading) games = getDenormalizedGamesList(state);
   return {
     choices: state.choices,
     games,

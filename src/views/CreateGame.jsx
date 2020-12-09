@@ -77,11 +77,11 @@ const mapDispatchToProps = (dispatch, { history }) => {
   return {
     createGame: (token, data) =>
       dispatch(gameActions.createGame({ token, data })).then(({ payload }) => {
-        const { name } = payload;
+        const { name, slug } = payload;
         const message = `Game '${name}' created!`;
         const category = 'success';
         dispatch(alertActions.alertsAdd({ message, category, pending: true }));
-        history.push('/');
+        history.push(`/pre-game/${slug}`);
       }),
   };
 };
