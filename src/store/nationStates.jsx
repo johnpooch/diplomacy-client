@@ -8,13 +8,12 @@ import {
 } from '@reduxjs/toolkit';
 
 import { turnSelectors } from './turns';
-import { apiRequest, getOptions } from './api';
-import * as API from '../api';
+import { apiRequest, getOptions, urls } from './api';
 
 const finalizeOrders = createAsyncThunk(
   'games/finalizeOrdersStatus',
   async ({ token, id }, thunkApi) => {
-    const url = API.FINALIZEORDERSURL.replace('<pk>', id);
+    const url = urls.FINALIZE_ORDERS.replace('<pk>', id);
     const options = getOptions(token, 'PATCH', { id });
     return apiRequest(url, options, thunkApi);
   }

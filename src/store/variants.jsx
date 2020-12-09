@@ -5,13 +5,12 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import * as API from '../api';
-import { apiRequest, getOptions } from './api';
+import { apiRequest, getOptions, urls } from './api';
 
 const getVariants = createAsyncThunk(
   'variants/getVariants',
   async ({ token }, thunkApi) => {
-    const url = API.LISTVARIANTS;
+    const url = urls.LIST_VARIANTS;
     const options = getOptions(token);
     return apiRequest(url, options, thunkApi);
   }

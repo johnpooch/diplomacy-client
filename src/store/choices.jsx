@@ -2,13 +2,12 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import * as API from '../api';
-import { apiRequest, getOptions } from './api';
+import { apiRequest, getOptions, urls } from './api';
 
 const getChoices = createAsyncThunk(
   'choices/getChoicesStatus',
   async (_, thunkApi) => {
-    const url = API.GAMEFILTERCHOICESURL;
+    const url = urls.GAME_FILTER_CHOICES;
     const options = getOptions();
     return apiRequest(url, options, thunkApi);
   }
