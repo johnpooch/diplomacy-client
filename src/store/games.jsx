@@ -94,7 +94,7 @@ const gameSlice = createSlice({
       const existingGame = Object.values(state.entities).find((obj) => {
         return obj.slug === slug;
       });
-      const changes = { loading: true, detailLoaded: false };
+      const changes = { loading: true };
       if (existingGame) {
         gameAdapter.updateOne(state, { id: existingGame.id, changes });
       }
@@ -105,7 +105,6 @@ const gameSlice = createSlice({
     },
     [getGames.pending]: (state) => {
       state.loading = true;
-      state.browseGamesLoaded = false;
     },
     [getGames.fulfilled]: (state) => {
       state.loading = false;

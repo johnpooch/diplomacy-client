@@ -127,9 +127,7 @@ export const getDenormalizedGameDetail = (state, id, user) => {
 export const getDenormalizedPreGame = (state, slug) => {
   const { user } = state.auth;
   const game = gameSelectors.selectBySlug(state, slug);
-  if (!game) {
-    return { participants: [] };
-  }
+  if (!game) return null;
   const participants = game.participants.map((p) =>
     userSelectors.selectById(state, p)
   );
@@ -144,6 +142,7 @@ export const getDenormalizedGamesList = (state) => {
   const denormalizedGames = allGames.map((game) => {
     const { currentTurn } = game;
     if (!currentTurn) return { ...game };
+    const turn = turnSelectors.selectById(state, currentTurn, user);
     const nations = getDenormalizedNations(state, game, currentTurn);
     const participants = game.participants.map((p) => {
       const participant = userSelectors.selectById(state, p);
@@ -152,7 +151,7 @@ export const getDenormalizedGamesList = (state) => {
       return { ...participant, nation, isCurrentUser };
     });
     const userNation = nations.find((n) => n.user === user.id) || null;
-    return { ...game, nations, userNation, participants };
+    return { ...game, currentTurn: turn, nations, userNation, participants };
   });
   return denormalizedGames;
 };
