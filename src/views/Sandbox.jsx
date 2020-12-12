@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Dialogue from '../components/Dialogue';
-import Map from '../components/Map';
+import Canvas from '../components/Canvas';
 import sandboxGameData from '../data/standard/sandbox.json';
 
 import { initialGameFormState } from '../game/base';
@@ -41,12 +40,7 @@ const Sandbox = (props) => {
     turn
   );
 
-  return (
-    <div>
-      <Map gameInterface={gameInterface} turn={turn} />
-      <Dialogue gameInterface={gameInterface} />
-    </div>
-  );
+  return <Canvas currentTurn={turn} gameInterface={gameInterface} />;
 };
 
 const mapStateToProps = (state) => {

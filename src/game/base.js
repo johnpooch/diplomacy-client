@@ -32,93 +32,113 @@ export const initialGameFormState = {
 
 export class baseGameInterface {
   /*
-  The game interface takes the user's interactions with the map and updates the
-  game form accordingly.
+  The game interface takes the user's interactions with the map and updates
+  the game form accordingly.
 
   The game interface is also responsible for presenting the user with the
-  correct options depending on the state of the game and the territory that the
-  user is interacting with.
+  correct options depending on the state of the game and the territory that
+  the user is interacting with.
   */
   constructor(actions, gameForm, setGameForm, turn) {
-    const { action, aux, source, target, targetCoast, type } = gameForm;
+    const { aux, source, target, targetCoast, type } = gameForm;
     const { territories, userNation } = turn;
 
-    this.actions = actions;
     this.gameForm = gameForm;
     this.setGameForm = setGameForm;
-    this.turn = turn;
-    this.nations = turn.nations;
-    this.action = action;
+
+    this.actions = actions;
+
+    // Unpack the gameForm and get territory objects using IDs Is there a
+    // cleaner way to do this? This is a lot of iteration for every single time
+    // this class is instantiated.
     this.aux = territories.find((t) => t.id && t.id === aux) || null;
     this.source = territories.find((t) => t.id && t.id === source) || null;
     this.target = territories.find((t) => t.id && t.id === target) || null;
     this.targetCoast = targetCoast;
     this.type = type;
 
-    this.currentTurn = turn.current_turn;
-    this.territories = territories;
+    this.turn = turn;
+    this.phase = turn.phase;
     this.userNation = userNation;
 
-    this.clickOrderTypeChoice = this.clickOrderTypeChoice.bind(this);
-    this.reset = this.reset.bind(this);
-    this.createOrder = this.createOrder.bind(this);
+    // Is there really no way to avoid doing this cruft?
+    this.onOptionSelected = this.onOptionSelected.bind(this);
+    this.onOrderTypeSelected = this.onOrderTypeSelected.bind(this);
 
-    this._tryingToSupportOrConvoySource = this._tryingToSupportOrConvoySource.bind(
-      this
-    );
-    this._tryingToMoveToSource = this._tryingToMoveToSource.bind(this);
-    this._tryingToCreateOrderImpossible = this._tryingToCreateOrderImpossible.bind(
-      this
-    );
+    // Create order once it is ready
+    if (this.orderComplete()) {
+      this.createOrder();
+      this.reset();
+    }
   }
 
   createOrder() {
-    /*
-    What happens when the user confirms an order. Subclasses must implement
-    this method.
-    */
     throw new Error(
       'Subclasses of baseGameInterface must implement a createOrder method.'
     );
   }
 
-  clickTerritory(territory) {
-    /*
-    Determine whether the user can interact with the territory. If possible,
-    update the game form.
-    */
+  showContextMenu() {
+    // User first clicks a territory
+    if (this.source && !this.type) {
+      return true;
+    }
+    return false;
+  }
+
+  onClickTerritory(territory) {
     if (
       // If any of the following are true, interaction is not possible
       Boolean(!territory.id) ||
       this._tryingToCreateOrderImpossible(territory) ||
       this._tryingToSupportOrConvoySource(territory) ||
       this._tryingToMoveToSource(territory)
-    )
+    ) {
       return;
+    }
     const attr = this._getOrderAttrToUpdate();
     this.setGameForm({ ...this.gameForm, [attr]: territory.id });
   }
 
-  clickOrderTypeChoice(_, type) {
-    /*
-    Update gameForm based on the order type which the user has selected.
-    */
+  getOptions() {
+    return this.getOrderTypeChoices();
+  }
+
+  onOptionSelected(option) {
+    // TODO namedCoasts, pieceTypes
+    this.onOrderTypeSelected(option);
+  }
+
+  onOrderTypeSelected(type) {
     this.setGameForm({ ...this.gameForm, type });
   }
 
-  userCanOrder(territory) {
-    /*
-    Determine whether a user can create an order for the given territory.
-    */
-    if (!(this.userNation && this.currentTurn)) return false;
+  orderComplete() {
+    if (this.type === OrderTypes.HOLD) {
+      return true;
+    }
+    if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(this.type)) {
+      // TODO namedCoasts
+      if (this.target) {
+        return true;
+      }
+    }
+    if ([OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(this.type)) {
+      if (this.target && this.aux) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-    // Orders turn
-    if (this.turn.phase === Phases.ORDER) {
+  userCanOrder(territory) {
+    if (!this.userNation || !this.turn.currentTurn) return false;
+
+    if (this.phase === Phases.ORDER) {
       return territory.piece && territory.piece.nation === this.userNation.id;
     }
 
-    // Retreat turn
-    if (this.turn.phase === Phases.RETREAT) {
+    if (this.phase === Phases.RETREAT) {
       return (
         territory.dislodgedPiece &&
         territory.dislodgedPiece.nation === this.userNation.id
@@ -131,14 +151,10 @@ export class baseGameInterface {
   }
 
   getOrderTypeChoices() {
-    /*
-    Given the current turn phase and the piece being ordered, determine
-    which order types are available to the piece.
-    */
     if (!this.source) return null;
     if (!this.source.piece) return null;
     const { type: territoryType } = this.source;
-    if (this.turn.phase === Phases.ORDER) {
+    if (this.phase === Phases.ORDER) {
       const options = [OrderTypes.HOLD, OrderTypes.MOVE, OrderTypes.SUPPORT];
       const { type: pieceType } = this.source.piece;
       if (pieceType === PieceTypes.FLEET && territoryType === 'sea') {
@@ -146,7 +162,7 @@ export class baseGameInterface {
       }
       return options;
     }
-    if (this.turn.phase === Phases.RETREAT) {
+    if (this.phase === Phases.RETREAT) {
       const options = [OrderTypes.RETREAT, OrderTypes.DISBAND];
       return options;
     }
@@ -154,28 +170,14 @@ export class baseGameInterface {
   }
 
   getPieceTypeChoices() {
-    /*
-    If the turn is a build phase, determine which piece types can be build
-    by the source territory
-    */
-    if (this.source && this.turn.phase === Phases.BUILD)
+    if (this.source && this.phase === Phases.BUILD)
       return this.source.type === 'coastal'
         ? [PieceTypes.ARMY, PieceTypes.FLEET]
         : [PieceTypes.ARMY];
     return null;
   }
 
-  getNationChoices() {
-    /*
-    Get an option for each nation in the game.
-    */
-    return this.turn.nations.map((n) => [n.id, n.name]);
-  }
-
   getTerritoryOrderState(territoryId) {
-    /*
-    Determine the status of a territory in the order.
-    */
     // TODO could this be written more elegantly?
     const { aux, source, target } = this.gameForm;
     if (!territoryId) return null;
@@ -192,36 +194,21 @@ export class baseGameInterface {
   }
 
   reset() {
-    /*
-    Set the order form to its initial state.
-    */
     this.setGameForm(initialGameFormState);
   }
 
   _tryingToSupportOrConvoySource(territory) {
-    /*
-    Determine whether the player is trying to choose the source territory as
-    the aux for a support or convoy order.
-    */
     const choosingAux =
       [OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(this.type) && !this.aux;
     return Boolean(choosingAux && this.source === territory);
   }
 
   _tryingToMoveToSource(territory) {
-    /*
-    Determine whether the player is trying to choose the source territory as
-    the target for a move order.
-    */
     const choosingTarget = this.type === OrderTypes.MOVE && !this.target;
     return Boolean(choosingTarget && this.source === territory);
   }
 
   _tryingToCreateOrderImpossible(territory) {
-    /*
-    Determine whether the player is trying to create an order for a territory
-    which it cannot order.
-    */
     return Boolean(!this.source && !this.userCanOrder(territory));
   }
 

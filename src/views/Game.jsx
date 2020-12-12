@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Loading from '../components/Loading';
-import Map from '../components/Map';
-import OrderDialogue from '../components/OrderDialogue';
-import StatusBar from '../components/StatusBar';
+// import Loading from '../components/Loading';
+import Canvas from '../components/Canvas';
+// import Map from '../components/Map';
+// import StatusBar from '../components/StatusBar';
 import { gameActions, gameSelectors } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
@@ -17,7 +17,6 @@ import GameInterface from '../game/gameInterface';
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
    * The view loads until the game detail data is in the store. */
-
   const {
     createOrder,
     finalizeOrders,
@@ -35,7 +34,7 @@ const Game = (props) => {
     prepareGameDetail(token, slug);
   }, [location.pathname]);
 
-  if (!game) return <Loading />;
+  if (!game) return null; // return <Loading />;
   const currentTurn = game.turns.find((t) => t.currentTurn === true);
 
   // Set the active turn to the current turn on initial load
@@ -51,7 +50,6 @@ const Game = (props) => {
     createOrder(token, slug, gameForm);
   };
 
-  const { userNation } = turn;
   const gameInterface = new GameInterface(
     { postOrder },
     gameForm,
@@ -59,23 +57,7 @@ const Game = (props) => {
     currentTurn
   );
 
-  return (
-    <div>
-      <Map
-        gameInterface={gameInterface}
-        turn={currentTurn}
-        postOrder={postOrder}
-      />
-      <OrderDialogue gameInterface={gameInterface} />
-      <StatusBar
-        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
-        turn={turn}
-        _setTurn={(_id) => {
-          setActiveTurn(_id);
-        }}
-      />
-    </div>
-  );
+  return <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />;
 };
 
 const mapStateToProps = (state, { match }) => {
