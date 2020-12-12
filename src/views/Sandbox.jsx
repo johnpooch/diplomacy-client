@@ -61,12 +61,13 @@ const mapDispatchToProps = (dispatch) => {
       nation,
       type,
       territory,
-      named_coast: null,
+      namedCoast: null,
       dislodged: false,
-      dislodged_by: null,
-      attacker_territory: null,
-      must_retreat: false,
+      dislodgedBy: null,
+      attackerTerritory: null,
+      mustRetreat: false,
     };
+    console.log(pieceData);
     dispatch(pieceActions.addPiece(pieceData));
   };
   const removePiece = (id) => {

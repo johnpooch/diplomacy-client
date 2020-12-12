@@ -28,7 +28,7 @@ const turnSlice = createSlice({
     addPieceState: (state, { payload }) => {
       const { id, pieceState } = payload;
       const turn = state.entities[id];
-      turn.piece_states.push(pieceState);
+      turn.pieceStates.push(pieceState);
     },
     removeOrder: (state, { payload }) => {
       const { id, order } = payload;
@@ -38,7 +38,7 @@ const turnSlice = createSlice({
     removePieceState: (state, { payload }) => {
       const { id, pieceState } = payload;
       const turn = state.entities[id];
-      turn.piece_states = turn.piece_states.filter((ps) => ps !== pieceState);
+      turn.pieceStates = turn.pieceStates.filter((ps) => ps !== pieceState);
     },
   },
   extraReducers: {

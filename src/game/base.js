@@ -35,6 +35,7 @@ export const PieceTypes = {
 export const initialGameFormState = {
   action: null,
   aux: null,
+  nation: null,
   source: null,
   target: null,
   targetCoast: null,
@@ -43,21 +44,21 @@ export const initialGameFormState = {
 
 export class baseGameInterface {
   /*
-  The game interface takes the user's interactions with the map and updates
+  The game interface takes the user's interacions with the map and updates
   the game form accordingly.
 
   The game interface is also responsible for presenting the user with the
   correct options depending on the state of the game and the territory that
   the user is interacting with.
   */
-  constructor(actions, gameForm, setGameForm, turn) {
-    const { action, aux, source, target, targetCoast, type } = gameForm;
+  constructor(callbacks, gameForm, setGameForm, turn) {
+    const { action, aux, nation, source, target, targetCoast, type } = gameForm;
     const { territories, userNation } = turn;
 
     this.gameForm = gameForm;
     this.setGameForm = setGameForm;
 
-    this.actions = actions;
+    this.callbacks = callbacks;
 
     // Unpack the gameForm and get territory objects using IDs Is there a
     // cleaner way to do this? This is a lot of iteration for every single time
@@ -72,6 +73,7 @@ export class baseGameInterface {
     this.turn = turn;
     this.phase = turn.phase;
     this.userNation = userNation;
+    this.nation = nation;
 
     this.nations = turn.nations.map((n) => [n.id, n.name]);
 
@@ -80,8 +82,8 @@ export class baseGameInterface {
     this.onOrderTypeSelected = this.onOrderTypeSelected.bind(this);
 
     // Create order once it is ready
-    if (this.orderComplete()) {
-      this.createOrder();
+    if (this.formIsReady()) {
+      this.submitForm();
       this.reset();
     }
   }
@@ -96,6 +98,36 @@ export class baseGameInterface {
     throw new Error(
       'Subclasses of baseGameInterface must implement a showContextMenu method.'
     );
+  }
+
+  submitForm() {
+    throw new Error(
+      'Subclasses of baseGameInterface must implement a submitForm method.'
+    );
+  }
+
+  formIsReady() {
+    throw new Error(
+      'Subclasses of baseGameInterface must implement a formIsReady method.'
+    );
+  }
+
+  orderIsReady() {
+    if (this.type === OrderTypes.HOLD) {
+      return true;
+    }
+    if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(this.type)) {
+      // TODO namedCoasts
+      if (this.target) {
+        return true;
+      }
+    }
+    if ([OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(this.type)) {
+      if (this.target && this.aux) {
+        return true;
+      }
+    }
+    return false;
   }
 
   onClickTerritory(territory) {
@@ -123,24 +155,6 @@ export class baseGameInterface {
 
   onOrderTypeSelected(type) {
     this.setGameForm({ ...this.gameForm, type });
-  }
-
-  orderComplete() {
-    if (this.type === OrderTypes.HOLD) {
-      return true;
-    }
-    if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(this.type)) {
-      // TODO namedCoasts
-      if (this.target) {
-        return true;
-      }
-    }
-    if ([OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(this.type)) {
-      if (this.target && this.aux) {
-        return true;
-      }
-    }
-    return false;
   }
 
   userCanOrder(territory) {

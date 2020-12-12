@@ -2,7 +2,7 @@ import { baseGameInterface, PieceTypes } from './base';
 
 export const ActionTypes = {
   ADD_ARMY: 'add_army',
-  ADD_FLEET: 'add_army',
+  ADD_FLEET: 'add_fleet',
   REMOVE_PIECE: 'remove_piece',
   CREATE_ORDER: 'create_order',
 };
@@ -14,18 +14,21 @@ const ActionTypeChoices = {
   [ActionTypes.CREATE_ORDER]: [ActionTypes.CREATE_ORDER, 'Create Order'],
 };
 
-const ADD_ARMY_CHOICE = ['add_army', 'Add army'];
-const ADD_FLEET_CHOICE = ['add_fleet', 'Add fleet'];
-const REMOVE_PIECE_CHOICE = ['remove_piece', 'Remove piece'];
-const CREATE_ORDER_CHOICE = ['create_order', 'Create order'];
-
 export default class SandboxGameInterface extends baseGameInterface {
   userCanOrder() {
     return true;
   }
 
   showContextMenu() {
-    // User first clicks a territory
+    // TODO clean up logic
+    if (
+      [ActionTypes.ADD_FLEET, ActionTypes.ADD_ARMY].includes(this.action) &&
+      this.nation
+    )
+      return false;
+    if (this.action === ActionTypes.CREATE_ORDER && this.type) {
+      return false;
+    }
     if (this.source && !this.action) {
       return true;
     }
@@ -38,13 +41,40 @@ export default class SandboxGameInterface extends baseGameInterface {
 
   onOptionSelected(option) {
     if (!this.action) {
-      console.log(`Setting action to ${option}`);
       this.onActionTypeSelected(option);
+    }
+    if ([ActionTypes.ADD_FLEET, ActionTypes.ADD_ARMY].includes(this.action)) {
+      if (!this.nation) {
+        this.onNationSelected(option);
+      }
+    }
+    if (this.action === ActionTypes.CREATE_ORDER) {
+      this.onOrderTypeSelected(option);
     }
   }
 
+  submitForm() {
+    // TODO merge these
+    if (this.action === ActionTypes.ADD_ARMY) {
+      this.callbacks.addPiece(this.source.id, PieceTypes.ARMY, this.nation);
+    }
+    if (this.action === ActionTypes.ADD_FLEET) {
+      this.callbacks.addPiece(this.source.id, PieceTypes.FLEET, this.nation);
+    }
+    if (this.action === ActionTypes.REMOVE_PIECE) {
+      this.callbacks.removePiece(this.source.piece.id);
+    }
+    if (this.action === ActionTypes.CREATE_ORDER) {
+    }
+  }
+
+  // TODO these methods can be merged
   onActionTypeSelected(action) {
     this.setGameForm({ ...this.gameForm, action });
+  }
+
+  onNationSelected(nation) {
+    this.setGameForm({ ...this.gameForm, nation });
   }
 
   getOptions() {
@@ -54,26 +84,10 @@ export default class SandboxGameInterface extends baseGameInterface {
     if ([ActionTypes.ADD_FLEET, ActionTypes.ADD_ARMY].includes(this.action)) {
       return this.nations;
     }
-    return [];
-  }
-
-  handleSubmit({ action, nation }) {
-    if (action === CREATE_ORDER_CHOICE[0]) {
-      return this.setGameForm({
-        ...this.gameForm,
-        action: CREATE_ORDER_CHOICE[0],
-      });
+    if (this.action === ActionTypes.CREATE_ORDER) {
+      return this.getOrderTypeChoices();
     }
-    if (action === ADD_ARMY_CHOICE[0]) {
-      this.actions.addPiece(this.source.id, PieceTypes.ARMY, nation);
-    }
-    if (action === ADD_FLEET_CHOICE[0]) {
-      this.actions.addPiece(this.source.id, PieceTypes.FLEET, nation);
-    }
-    if (action === REMOVE_PIECE_CHOICE[0]) {
-      this.actions.removePiece(this.source.piece.id);
-    }
-    return this.reset();
+    return null;
   }
 
   getActionChoices() {
@@ -81,21 +95,36 @@ export default class SandboxGameInterface extends baseGameInterface {
     Get a choice for each action that is available to the territory.
     */
     if (this.source.piece) {
-      return [CREATE_ORDER_CHOICE, REMOVE_PIECE_CHOICE];
+      return [
+        ActionTypeChoices[ActionTypes.CREATE_ORDER],
+        ActionTypeChoices[ActionTypes.REMOVE_PIECE],
+      ];
     }
-    if (this.source.type === 'sea') return [ADD_FLEET_CHOICE];
-    if (this.source.type === 'inland') return [ADD_ARMY_CHOICE];
-    return [ADD_ARMY_CHOICE, ADD_FLEET_CHOICE];
+    if (this.source.type === 'sea') {
+      return [ActionTypeChoices[ActionTypes.ADD_FLEET]];
+    }
+    if (this.source.type === 'inland') {
+      return [ActionTypeChoices[ActionTypes.ADD_ARMY]];
+    }
+    return [
+      ActionTypeChoices[ActionTypes.ADD_ARMY],
+      ActionTypeChoices[ActionTypes.ADD_FLEET],
+    ];
   }
 
   createOrder() {
-    // TODO remove
-    console.log('Created Order');
-    console.log(this.gameForm);
-    this.actions.addOrder({
+    this.callbacks.addOrder({
       ...this.gameForm,
       nation: this.source.piece.nation,
     });
     this.reset();
+  }
+
+  formIsReady() {
+    if ([ActionTypes.ADD_FLEET, ActionTypes.ADD_ARMY].includes(this.action)) {
+      return Boolean(this.nation);
+    }
+    if (ActionTypes.REMOVE_PIECE === this.action) return true;
+    return this.orderIsReady();
   }
 }
