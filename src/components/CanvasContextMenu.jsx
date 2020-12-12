@@ -44,10 +44,10 @@ const ContextMenu = ({
     });
   }, [selectedTarget]);
 
-  const elements = options.map((option) => {
+  const elements = options.map(([value, label]) => {
     return (
-      <Button key={option} onClick={handleOptionSelected(option)}>
-        {option}
+      <Button key={value} onClick={handleOptionSelected(value)}>
+        {label}
       </Button>
     );
   });

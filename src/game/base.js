@@ -16,6 +16,17 @@ export const OrderTypes = {
   DISBAND: 'disband',
 };
 
+// I wonder if there is a DRYer way to set up this structure?
+const OrderTypeChoices = {
+  [OrderTypes.HOLD]: [OrderTypes.HOLD, 'Hold'],
+  [OrderTypes.MOVE]: [OrderTypes.MOVE, 'Move'],
+  [OrderTypes.SUPPORT]: [OrderTypes.SUPPORT, 'Support'],
+  [OrderTypes.CONVOY]: [OrderTypes.CONVOY, 'Convoy'],
+  [OrderTypes.RETREAT]: [OrderTypes.RETREAT, 'Retreat'],
+  [OrderTypes.BUILD]: [OrderTypes.BUILD, 'Build'],
+  [OrderTypes.DISBAND]: [OrderTypes.DISBAND, 'Disband'],
+};
+
 export const PieceTypes = {
   ARMY: 'army',
   FLEET: 'fleet',
@@ -40,7 +51,7 @@ export class baseGameInterface {
   the user is interacting with.
   */
   constructor(actions, gameForm, setGameForm, turn) {
-    const { aux, source, target, targetCoast, type } = gameForm;
+    const { action, aux, source, target, targetCoast, type } = gameForm;
     const { territories, userNation } = turn;
 
     this.gameForm = gameForm;
@@ -56,10 +67,13 @@ export class baseGameInterface {
     this.target = territories.find((t) => t.id && t.id === target) || null;
     this.targetCoast = targetCoast;
     this.type = type;
+    this.action = action;
 
     this.turn = turn;
     this.phase = turn.phase;
     this.userNation = userNation;
+
+    this.nations = turn.nations.map((n) => [n.id, n.name]);
 
     // Is there really no way to avoid doing this cruft?
     this.onOptionSelected = this.onOptionSelected.bind(this);
@@ -79,11 +93,9 @@ export class baseGameInterface {
   }
 
   showContextMenu() {
-    // User first clicks a territory
-    if (this.source && !this.type) {
-      return true;
-    }
-    return false;
+    throw new Error(
+      'Subclasses of baseGameInterface must implement a showContextMenu method.'
+    );
   }
 
   onClickTerritory(territory) {
@@ -155,7 +167,11 @@ export class baseGameInterface {
     if (!this.source.piece) return null;
     const { type: territoryType } = this.source;
     if (this.phase === Phases.ORDER) {
-      const options = [OrderTypes.HOLD, OrderTypes.MOVE, OrderTypes.SUPPORT];
+      const options = [
+        OrderTypeChoices[OrderTypes.HOLD],
+        OrderTypeChoices[OrderTypes.MOVE],
+        OrderTypeChoices[OrderTypes.SUPPORT],
+      ];
       const { type: pieceType } = this.source.piece;
       if (pieceType === PieceTypes.FLEET && territoryType === 'sea') {
         options.push(OrderTypes.CONVOY);
@@ -163,10 +179,17 @@ export class baseGameInterface {
       return options;
     }
     if (this.phase === Phases.RETREAT) {
-      const options = [OrderTypes.RETREAT, OrderTypes.DISBAND];
+      const options = [
+        OrderTypeChoices[OrderTypes.RETREAT],
+        OrderTypeChoices[OrderTypes.DISBAND],
+      ];
       return options;
     }
-    return [OrderTypes.BUILD];
+    // TODO logic for which build order is available
+    return [
+      OrderTypeChoices[OrderTypes.BUILD],
+      OrderTypeChoices[OrderTypes.DISBAND],
+    ];
   }
 
   getPieceTypeChoices() {
