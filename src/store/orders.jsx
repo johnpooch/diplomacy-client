@@ -7,13 +7,12 @@ import {
 
 import { turnSelectors } from './turns';
 
-import * as API from '../api';
-import { apiRequest, getOptions } from './api';
+import { apiRequest, getOptions, urls } from './api';
 
 const listOrders = createAsyncThunk(
   'orders/listOrdersStatus',
   async ({ token, id }, thunkApi) => {
-    const url = API.LISTORDERSURL.replace('<pk>', id);
+    const url = urls.LIST_ORDERS.replace('<pk>', id);
     const options = getOptions(token);
     return apiRequest(url, options, thunkApi);
   }
@@ -22,7 +21,7 @@ const listOrders = createAsyncThunk(
 const createOrder = createAsyncThunk(
   'orders/createOrderStatus',
   async ({ token, slug, data }, thunkApi) => {
-    const url = API.CREATEORDERURL.replace('<game>', slug);
+    const url = urls.CREATE_ORDER.replace('<game>', slug);
     const options = getOptions(token, 'POST', data);
     return apiRequest(url, options, thunkApi);
   }

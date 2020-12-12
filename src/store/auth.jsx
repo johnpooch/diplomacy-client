@@ -2,8 +2,7 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import * as API from '../api';
-import { apiRequest, getOptions } from './api';
+import { apiRequest, getOptions, urls } from './api';
 
 const userInStorage = JSON.parse(localStorage.getItem('user'));
 const tokenInStorage = JSON.parse(localStorage.getItem('token'));
@@ -11,14 +10,14 @@ const tokenInStorage = JSON.parse(localStorage.getItem('token'));
 const forgotPassword = createAsyncThunk(
   'auth/forgotPasswordStatus',
   async (data, thunkApi) => {
-    const url = API.PASSWORDRESET;
+    const url = urls.PASSWORD_RESET;
     const options = getOptions(null, 'POST', data);
     return apiRequest(url, options, thunkApi);
   }
 );
 
 const login = createAsyncThunk('auth/loginStatus', async (data, thunkApi) => {
-  const url = API.LOGINURL;
+  const url = urls.LOGIN;
   const options = getOptions(null, 'POST', data);
   return apiRequest(url, options, thunkApi);
 });
@@ -26,7 +25,7 @@ const login = createAsyncThunk('auth/loginStatus', async (data, thunkApi) => {
 const register = createAsyncThunk(
   'auth/registerStatus',
   async (data, thunkApi) => {
-    const url = API.REGISTERURL;
+    const url = urls.REGISTER;
     const options = getOptions(null, 'POST', data);
     return apiRequest(url, options, thunkApi);
   }
@@ -35,7 +34,7 @@ const register = createAsyncThunk(
 const resetPassword = createAsyncThunk(
   'auth/resetPasswordStatus',
   async (data, thunkApi) => {
-    const url = API.PASSWORDRESETCONFIRM;
+    const url = urls.PASSWORD_RESET_CONFIRM;
     const options = getOptions(null, 'POST', data);
     return apiRequest(url, options, thunkApi);
   }
