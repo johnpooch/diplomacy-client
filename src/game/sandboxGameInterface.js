@@ -65,6 +65,13 @@ export default class SandboxGameInterface extends baseGameInterface {
       this.callbacks.removePiece(this.source.piece.id);
     }
     if (this.action === ActionTypes.CREATE_ORDER) {
+      console.log('Created Order');
+      console.log(this.gameForm);
+      delete this.gameForm.action;
+      this.callbacks.addOrder({
+        ...this.gameForm,
+        nation: this.source.piece.nation,
+      });
     }
   }
 

@@ -14,29 +14,15 @@ export default class GameInterface extends baseGameInterface {
     return false;
   }
 
-  createOrder() {
+  formIsReady() {
+    return this.orderIsReady();
+  }
+
+  submitForm() {
     // TODO remove
     console.log('Created Order');
     console.log(this.gameForm);
+    delete this.gameForm.action;
     this.callbacks.postOrder();
-    this.reset();
-  }
-
-  formIsReady() {
-    if (this.type === OrderTypes.HOLD) {
-      return true;
-    }
-    if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(this.type)) {
-      // TODO namedCoasts
-      if (this.target) {
-        return true;
-      }
-    }
-    if ([OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(this.type)) {
-      if (this.target && this.aux) {
-        return true;
-      }
-    }
-    return false;
   }
 }
