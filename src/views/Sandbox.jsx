@@ -67,7 +67,6 @@ const mapDispatchToProps = (dispatch) => {
       attackerTerritory: null,
       mustRetreat: false,
     };
-    console.log(pieceData);
     dispatch(pieceActions.addPiece(pieceData));
   };
   const removePiece = (id) => {

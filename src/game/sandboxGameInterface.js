@@ -26,6 +26,9 @@ export default class SandboxGameInterface extends baseGameInterface {
       this.nation
     )
       return false;
+    if (this.target) {
+      return true;
+    }
     if (this.action === ActionTypes.CREATE_ORDER && this.type) {
       return false;
     }
@@ -41,16 +44,17 @@ export default class SandboxGameInterface extends baseGameInterface {
 
   onOptionSelected(option) {
     if (!this.action) {
-      this.onActionTypeSelected(option);
+      return this.onActionTypeSelected(option);
+    }
+    if (this.target) {
+      return this.onTargetCoastSelected(option);
     }
     if ([ActionTypes.ADD_FLEET, ActionTypes.ADD_ARMY].includes(this.action)) {
       if (!this.nation) {
-        this.onNationSelected(option);
+        return this.onNationSelected(option);
       }
     }
-    if (this.action === ActionTypes.CREATE_ORDER) {
-      this.onOrderTypeSelected(option);
-    }
+    return this.onOrderTypeSelected(option);
   }
 
   submitForm() {
@@ -84,7 +88,14 @@ export default class SandboxGameInterface extends baseGameInterface {
     this.setGameForm({ ...this.gameForm, nation });
   }
 
+  onTargetCoastSelected(targetCoast) {
+    this.setGameForm({ ...this.gameForm, targetCoast });
+  }
+
   getOptions() {
+    if (this.target) {
+      return this.getCoastChoices();
+    }
     if (!this.action) {
       return this.getActionChoices();
     }
@@ -97,10 +108,11 @@ export default class SandboxGameInterface extends baseGameInterface {
     return null;
   }
 
+  getCoastChoices() {
+    return this.target.namedCoasts.map((nc) => [nc.id, nc.name]);
+  }
+
   getActionChoices() {
-    /*
-    Get a choice for each action that is available to the territory.
-    */
     if (this.source.piece) {
       return [
         ActionTypeChoices[ActionTypes.CREATE_ORDER],

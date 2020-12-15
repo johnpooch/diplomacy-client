@@ -44,7 +44,7 @@ export const initialGameFormState = {
 
 export class baseGameInterface {
   /*
-  The game interface takes the user's interacions with the map and updates
+  The game interface takes the user's interactions with the map and updates
   the game form accordingly.
 
   The game interface is also responsible for presenting the user with the
@@ -117,9 +117,11 @@ export class baseGameInterface {
       return true;
     }
     if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(this.type)) {
-      // TODO namedCoasts
       if (this.target) {
-        return true;
+        // If the target has namedCoasts, not ready until named coast is specified
+        if (!this.target.namedCoasts.length || this.targetCoast) {
+          return true;
+        }
       }
     }
     if ([OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(this.type)) {
@@ -188,7 +190,7 @@ export class baseGameInterface {
       ];
       const { type: pieceType } = this.source.piece;
       if (pieceType === PieceTypes.FLEET && territoryType === 'sea') {
-        options.push(OrderTypes.CONVOY);
+        options.push(OrderTypeChoices[OrderTypes.CONVOY]);
       }
       return options;
     }
