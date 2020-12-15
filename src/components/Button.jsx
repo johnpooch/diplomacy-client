@@ -34,11 +34,6 @@ export const Button = styled(BaseButton)`
 export const SecondaryButton = styled(Button)`
   background: ${colors.white};
   color: ${colors.base};
-
-  &:hover {
-    background: ${colors.base};
-    color: white;
-  }
 `;
 
 export const TertiaryButton = styled(Button)`

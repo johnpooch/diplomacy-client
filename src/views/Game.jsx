@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-// import Loading from '../components/Loading';
 import Canvas from '../components/Canvas';
-// import Map from '../components/Map';
-// import StatusBar from '../components/StatusBar';
+import Sidebar from '../components/Sidebar';
 import { gameActions, gameSelectors } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
@@ -17,15 +15,7 @@ import GameInterface from '../game/gameInterface';
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
    * The view loads until the game detail data is in the store. */
-  const {
-    createOrder,
-    finalizeOrders,
-    game,
-    location,
-    prepareGameDetail,
-    slug,
-    token,
-  } = props;
+  const { createOrder, game, location, prepareGameDetail, slug, token } = props;
 
   const [gameForm, setGameForm] = useState(initialGameFormState);
   const [activeTurnId, setActiveTurn] = useState();
@@ -57,7 +47,12 @@ const Game = (props) => {
     currentTurn
   );
 
-  return <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />;
+  return (
+    <div>
+      <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
+      <Sidebar currentTurn={currentTurn} />
+    </div>
+  );
 };
 
 const mapStateToProps = (state, { match }) => {
