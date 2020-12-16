@@ -5,6 +5,7 @@ import { colors, fontSizes, sizes, spacing } from '../variables';
 export const BaseButton = styled.button`
   cursor: pointer;
   border: none;
+  border-radius: ${sizes.borderRadius[0]}px;
   margin: 0;
   padding: 0;
   font-size: inherit;
@@ -19,7 +20,6 @@ export const BaseButton = styled.button`
 
 export const Button = styled(BaseButton)`
   background: ${colors.base};
-  border-radius: ${sizes.borderRadius[0]}px;
   border: ${sizes.border}px solid ${colors.base};
   color: white;
   font-size: ${fontSizes.sans[2]}px;
