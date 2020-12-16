@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { BaseButton } from './Button';
+import { BaseButton, Button } from './Button';
 import { variables } from '../variables';
 import Flag from './Flag';
 
@@ -90,7 +90,7 @@ const StyledTab = styled(BaseButton)`
   }
 `;
 
-const Tab = ({ activeTab, setActiveTab, type, icon }) => {
+const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
   return (
     <StyledTab
       className="tab"
@@ -102,6 +102,7 @@ const Tab = ({ activeTab, setActiveTab, type, icon }) => {
       }}
       data-active={activeTab === type}
       data-type={type}
+      title={label}
     >
       <FontAwesomeIcon icon={icon} size="2x" />
     </StyledTab>
@@ -112,13 +113,62 @@ const StyledPane = styled.div`
   padding: ${variables.spacing[1]}px;
 `;
 
-const Pane = ({ type }) => {
-  return <StyledPane className="pane">{type}</StyledPane>;
+const Pane = ({ children }) => {
+  return <StyledPane className="pane">{children}</StyledPane>;
+};
+
+const MessagesPane = () => {
+  return <Pane />;
+};
+
+const HistoryPane = () => {
+  return <Pane />;
+};
+
+const OrdersPane = () => {
+  return (
+    <Pane>
+      <div>
+        <p className="heading">Status</p>
+        <p>3 supply centers controlled</p>
+        <p>2 territories controlled</p>
+      </div>
+      <div>
+        <p className="heading">
+          <span className="label">Draw proposals</span>
+          <span className="count">2/3</span>
+        </p>
+      </div>
+      <div>
+        <p className="heading">
+          <span className="label">Orders</span>
+          <span className="count">2/3</span>
+        </p>
+      </div>
+      <Button>Finalize orders</Button>
+    </Pane>
+  );
 };
 
 const Sidebar = ({ currentTurn }) => {
   const [activeTab, setActiveTab] = useState(null);
   const { userNation } = currentTurn;
+
+  const renderPane = () => {
+    switch (activeTab) {
+      case 'messages':
+        return <MessagesPane />;
+
+      case 'history':
+        return <HistoryPane />;
+
+      case 'orders':
+        return <OrdersPane />;
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <StyledSidebar isTabOpen={!!activeTab}>
@@ -130,23 +180,26 @@ const Sidebar = ({ currentTurn }) => {
         <Tab
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          label="Messages"
           type="messages"
           icon={faComment}
         />
         <Tab
           activeTab={activeTab}
           setActiveTab={setActiveTab}
-          type="log"
+          label="History"
+          type="history"
           icon={faHistory}
         />
         <Tab
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          label="Orders"
           type="orders"
           icon={faFlag}
         />
       </div>
-      {activeTab ? <Pane type={activeTab} /> : null}
+      {renderPane()}
     </StyledSidebar>
   );
 };
