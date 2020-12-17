@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
-import { faHistory } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { BaseButton, Button } from './Button';
+import { BaseButton, Button, SecondaryButton } from './Button';
 import { variables } from '../variables';
 import Flag from './Flag';
 
@@ -12,11 +12,13 @@ const StyledSidebar = styled.aside`
   background: ${variables.colors.gray};
   border-bottom-left-radius: ${(props) =>
     props.isTabOpen ? '0' : `${variables.sizes.borderRadius[0]}px`};
-  min-width: 320px;
+  width: 320px;
   position: absolute;
   right: 0;
   top: 0;
   bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
+  display: flex;
+  flex-direction: column;
 
   .details {
     color: ${variables.colors.white};
@@ -25,18 +27,14 @@ const StyledSidebar = styled.aside`
     display: flex;
     grid-gap: ${variables.spacing[1]}px;
     justify-content: space-between;
-    padding: ${variables.spacing[1]}px;
+    padding: ${variables.spacing[2]}px;
   }
 
   .tabs {
     display: flex;
-    grid-gap: ${variables.spacing[1]}px;
-    padding: ${variables.spacing[1]}px;
+    grid-gap: ${variables.spacing[2]}px;
+    padding: ${variables.spacing[2]}px;
     text-align: center;
-  }
-
-  .button {
-    flex-grow: 1;
   }
 `;
 
@@ -79,14 +77,15 @@ const StyledTab = styled(BaseButton)`
   justify-content: center;
   padding: ${variables.spacing[1]}px;
   width: 100%;
-
-  &:hover {
-    background: ${variables.colors.darkgray};
-  }
+  color: ${variables.colors.base};
 
   &[data-active='true'] {
     background: ${variables.colors.darkgray};
     color: white;
+  }
+
+  &:hover {
+    background: ${variables.colors.darkgray};
   }
 `;
 
@@ -110,7 +109,44 @@ const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
 };
 
 const StyledPane = styled.div`
-  padding: ${variables.spacing[1]}px;
+  background: white;
+  display: flow-root;
+  flex-grow: 1;
+  font-size: ${variables.fontSizes.sans[2]}px;
+  padding: 0 ${variables.spacing[2]}px;
+  overflow-y: auto;
+
+  section {
+    margin: ${variables.spacing[3]}px 0;
+
+    > * {
+      margin: ${variables.spacing[3]}px 0;
+    }
+  }
+
+  section + section {
+    border-top: ${variables.sizes.border}px solid ${variables.colors.base};
+  }
+
+  .heading {
+    display: flex;
+    grid-gap: ${variables.spacing[3]}px;
+    justify-content: space-between;
+    text-transform: uppercase;
+  }
+
+  .count {
+    white-space: pre;
+  }
+
+  li {
+    margin: ${variables.spacing[1]}px 0;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+  }
 `;
 
 const Pane = ({ children }) => {
@@ -125,27 +161,161 @@ const HistoryPane = () => {
   return <Pane />;
 };
 
+const StyledDrawProposals = styled.ul`
+  li {
+    margin: ${variables.spacing[3]}px 0;
+  }
+
+  li + li {
+    border-top: ${variables.sizes.border}px solid ${variables.colors.darkgray};
+  }
+
+  .text {
+    display: block;
+    margin: ${variables.spacing[3]}px 0;
+  }
+
+  .actions {
+    display: grid;
+    grid-gap: ${variables.spacing[3]}px;
+    grid-template-columns: repeat(2, 1fr);
+    margin: ${variables.spacing[3]}px 0;
+  }
+`;
+
+const DrawProposal = ({ player }) => {
+  return (
+    <div>
+      <span className="text">
+        <span className="player">{player}</span>{' '}
+        <span className="action">has proposed a draw</span>{' '}
+      </span>
+      <div className="actions">
+        <SecondaryButton type="button" onClick={() => console.log('accept')}>
+          Accept
+        </SecondaryButton>
+        <SecondaryButton type="button" onClick={() => console.log('decline')}>
+          Decline
+        </SecondaryButton>
+      </div>
+    </div>
+  );
+};
+
+const StyledOrder = styled.div`
+  display: grid;
+  grid-gap: ${variables.spacing[3]}px;
+  grid-template-columns: 1fr auto;
+
+  button {
+    margin: 0 0 auto;
+  }
+`;
+
+const Order = ({ action, destination, source, type }) => {
+  return (
+    <StyledOrder>
+      <span className="text">
+        <span className="type">{type}</span>{' '}
+        <span className="source">{source}</span>{' '}
+        <span className="action">{action}</span>{' '}
+        <span className="destination">{destination}</span>
+      </span>
+      <BaseButton type="button" onClick={() => console.log('cancel')}>
+        <FontAwesomeIcon icon={faTimes} />
+      </BaseButton>
+    </StyledOrder>
+  );
+};
+
 const OrdersPane = () => {
+  const orders = [
+    {
+      id: 1,
+      type: 'Fleet',
+      source: 'Liverpool',
+      action: 'move to',
+      destination: 'Irish Sea',
+    },
+    {
+      id: 2,
+      type: 'Army',
+      source: 'Yorkshire',
+      action: 'move to',
+      destination: 'Liverpool',
+    },
+  ];
+
+  const drawProposals = [
+    {
+      id: 1,
+      nation: 1,
+      player: 'johnpooch',
+    },
+    {
+      id: 2,
+      nation: 1,
+      player: 'samjhayes',
+    },
+  ];
+
+  const renderDrawProposals = () => {
+    const elements = [];
+    drawProposals.forEach((item) =>
+      elements.push(
+        <li>
+          <DrawProposal
+            key={item.id}
+            nation={item.nation}
+            player={item.player}
+          />
+        </li>
+      )
+    );
+    return <StyledDrawProposals>{elements}</StyledDrawProposals>;
+  };
+
+  const renderOrders = () => {
+    const elements = [];
+    orders.forEach((item) =>
+      elements.push(
+        <li key={item.id}>
+          <Order
+            action={item.action}
+            destination={item.destination}
+            source={item.source}
+            type={item.type}
+          />
+        </li>
+      )
+    );
+    return <ul>{elements}</ul>;
+  };
+
   return (
     <Pane>
-      <div>
+      <section className="status">
         <p className="heading">Status</p>
-        <p>3 supply centers controlled</p>
-        <p>2 territories controlled</p>
-      </div>
-      <div>
+        <ul>
+          <li>3 supply centers controlled</li>
+          <li>2 territories controlled</li>
+        </ul>
+      </section>
+      <section className="draw-proposals">
         <p className="heading">
           <span className="label">Draw proposals</span>
-          <span className="count">2/3</span>
+          <span className="count">0 / 2</span>
         </p>
-      </div>
-      <div>
+        {renderDrawProposals()}
+      </section>
+      <section className="orders">
         <p className="heading">
           <span className="label">Orders</span>
-          <span className="count">2/3</span>
+          <span className="count">2 / 4</span>
         </p>
-      </div>
-      <Button>Finalize orders</Button>
+        {renderOrders()}
+        <Button>Finalize orders</Button>
+      </section>
     </Pane>
   );
 };

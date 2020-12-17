@@ -76,10 +76,13 @@ const Canvas = ({ currentTurn, gameInterface }) => {
       );
 
       const pointer = stageRef.current.getPointerPosition();
+      if (!pointer) return;
+
       const mousePointTo = {
         x: (pointer.x - stagePosition.current.x) / scale.current,
         y: (pointer.y - stagePosition.current.y) / scale.current,
       };
+
       const newPosition = {
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
