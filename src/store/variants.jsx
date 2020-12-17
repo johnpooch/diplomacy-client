@@ -20,11 +20,16 @@ const variantAdapter = createEntityAdapter();
 
 const variantSlice = createSlice({
   name: 'variants',
-  initialState: variantAdapter.getInitialState({ loading: false }),
+  initialState: variantAdapter.getInitialState({
+    loading: false,
+    error: null,
+    loaded: false,
+  }),
   extraReducers: {
     [getVariants.fulfilled]: (state, action) => {
       variantAdapter.setAll(state, action);
       state.loading = false;
+      state.loaded = true;
     },
     [getVariants.pending]: (state) => {
       state.loading = true;
