@@ -8,36 +8,6 @@ import { BaseButton, Button, SecondaryButton } from './Button';
 import { variables } from '../variables';
 import Flag from './Flag';
 
-const StyledSidebar = styled.aside`
-  background: ${variables.colors.gray};
-  border-bottom-left-radius: ${(props) =>
-    props.isTabOpen ? '0' : `${variables.sizes.borderRadius[0]}px`};
-  width: 320px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
-  display: flex;
-  flex-direction: column;
-
-  .details {
-    color: ${variables.colors.white};
-    background: ${variables.colors.base};
-    ${(props) => (props.color ? props.color : variables.colors.white)};
-    display: flex;
-    grid-gap: ${variables.spacing[1]}px;
-    justify-content: space-between;
-    padding: ${variables.spacing[2]}px;
-  }
-
-  .tabs {
-    display: flex;
-    grid-gap: ${variables.spacing[2]}px;
-    padding: ${variables.spacing[2]}px;
-    text-align: center;
-  }
-`;
-
 const StyledNation = styled.div`
   display: flex;
   grid-gap: ${variables.spacing[1]}px;
@@ -68,16 +38,33 @@ const Turn = ({ turn }) => {
   );
 };
 
+const StyledNotification = styled.div`
+  background: ${variables.colors.error};
+  border-radius: 50%;
+  color: ${variables.colors.white};
+  min-width: 30px;
+  padding: ${variables.spacing[0]}px;
+  border: ${variables.sizes.border}px solid ${variables.colors.base};
+  position: absolute;
+  right: -7px;
+  top: -7px;
+`;
+
+const Notification = ({ count }) => {
+  return count ? <StyledNotification>{count}</StyledNotification> : null;
+};
+
 const StyledTab = styled(BaseButton)`
   align-items: center;
   background: ${variables.colors.white};
+  color: ${variables.colors.base};
   display: flex;
   flex-direction: column;
   grid-gap: ${variables.spacing[1]}px;
   justify-content: center;
   padding: ${variables.spacing[1]}px;
+  position: relative;
   width: 100%;
-  color: ${variables.colors.base};
 
   &[data-active='true'] {
     background: ${variables.colors.darkgray};
@@ -89,7 +76,14 @@ const StyledTab = styled(BaseButton)`
   }
 `;
 
-const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
+const Tab = ({
+  activeTab,
+  icon,
+  label,
+  notificationCount,
+  setActiveTab,
+  type,
+}) => {
   return (
     <StyledTab
       className="tab"
@@ -104,6 +98,7 @@ const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
       title={label}
     >
       <FontAwesomeIcon icon={icon} size="2x" />
+      <Notification count={notificationCount} />
     </StyledTab>
   );
 };
@@ -177,7 +172,7 @@ const StyledDrawProposals = styled.ul`
 
   .actions {
     display: grid;
-    grid-gap: ${variables.spacing[3]}px;
+    grid-gap: ${variables.spacing[2]}px;
     grid-template-columns: repeat(2, 1fr);
     margin: ${variables.spacing[3]}px 0;
   }
@@ -185,7 +180,7 @@ const StyledDrawProposals = styled.ul`
 
 const DrawProposal = ({ player }) => {
   return (
-    <div>
+    <div className="draw-proposal">
       <span className="text">
         <span className="player">{player}</span>{' '}
         <span className="action">has proposed a draw</span>{' '}
@@ -202,10 +197,12 @@ const DrawProposal = ({ player }) => {
   );
 };
 
-const StyledOrder = styled.div`
-  display: grid;
-  grid-gap: ${variables.spacing[3]}px;
-  grid-template-columns: 1fr auto;
+const StyledOrders = styled.ul`
+  .order {
+    display: grid;
+    grid-gap: ${variables.spacing[3]}px;
+    grid-template-columns: 1fr auto;
+  }
 
   button {
     margin: 0 0 auto;
@@ -214,7 +211,7 @@ const StyledOrder = styled.div`
 
 const Order = ({ action, destination, source, type }) => {
   return (
-    <StyledOrder>
+    <div className="order">
       <span className="text">
         <span className="type">{type}</span>{' '}
         <span className="source">{source}</span>{' '}
@@ -224,7 +221,7 @@ const Order = ({ action, destination, source, type }) => {
       <BaseButton type="button" onClick={() => console.log('cancel')}>
         <FontAwesomeIcon icon={faTimes} />
       </BaseButton>
-    </StyledOrder>
+    </div>
   );
 };
 
@@ -289,7 +286,7 @@ const OrdersPane = () => {
         </li>
       )
     );
-    return <ul>{elements}</ul>;
+    return <StyledOrders>{elements}</StyledOrders>;
   };
 
   return (
@@ -319,6 +316,36 @@ const OrdersPane = () => {
     </Pane>
   );
 };
+
+const StyledSidebar = styled.aside`
+  background: ${variables.colors.gray};
+  border-bottom-left-radius: ${(props) =>
+    props.isTabOpen ? '0' : `${variables.sizes.borderRadius[0]}px`};
+  width: 320px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
+  display: flex;
+  flex-direction: column;
+
+  .details {
+    color: ${variables.colors.white};
+    background: ${variables.colors.base};
+    ${(props) => (props.color ? props.color : variables.colors.white)};
+    display: flex;
+    grid-gap: ${variables.spacing[1]}px;
+    justify-content: space-between;
+    padding: ${variables.spacing[2]}px;
+  }
+
+  .tabs {
+    display: flex;
+    grid-gap: ${variables.spacing[2]}px;
+    padding: ${variables.spacing[2]}px;
+    text-align: center;
+  }
+`;
 
 const Sidebar = ({ currentTurn }) => {
   const [activeTab, setActiveTab] = useState(null);
@@ -367,6 +394,7 @@ const Sidebar = ({ currentTurn }) => {
           label="Orders"
           type="orders"
           icon={faFlag}
+          notificationCount={4}
         />
       </div>
       {renderPane()}
