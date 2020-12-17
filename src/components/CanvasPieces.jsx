@@ -6,7 +6,7 @@ import { darken } from 'polished';
 import { variables } from '../variables';
 
 const CIRCLERADIUS = 15;
-const ICONS = {
+export const ICONS = {
   army: faTruckMoving,
   fleet: faAnchor,
 };
