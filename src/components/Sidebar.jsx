@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import styled from '@emotion/styled';
-
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { BaseButton, Button, SecondaryButton } from './Button';
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import { variables } from '../variables';
 import Flag from './Flag';
+import { BaseButton, Button, SecondaryButton, IconButton } from './Button';
 
 const StyledNation = styled.div`
   display: flex;
@@ -41,13 +40,12 @@ const Turn = ({ turn }) => {
 const StyledNotification = styled.div`
   background: ${variables.colors.error};
   border-radius: 50%;
-  border: ${variables.sizes.border}px solid ${variables.colors.base};
   color: ${variables.colors.white};
-  min-width: 30px;
+  min-width: 26px;
   padding: ${variables.spacing[0]}px;
   position: absolute;
-  right: -7px;
-  top: -7px;
+  right: -8px;
+  top: -8px;
 `;
 
 const Notification = ({ count }) => {
@@ -209,7 +207,7 @@ const StyledOrders = styled.ul`
   .order {
     display: grid;
     grid-gap: ${variables.spacing[1]}px;
-    grid-template-columns: 20px 1fr auto;
+    grid-template-columns: 20px auto 20px;
     align-items: center;
   }
 `;
@@ -223,9 +221,7 @@ const Order = ({ action, destination, source, type }) => {
         <span className="action">{action}</span>{' '}
         <span className="destination">{destination}</span>
       </span>
-      <BaseButton type="button" onClick={() => console.log('cancel')}>
-        <FontAwesomeIcon icon={faTimes} />
-      </BaseButton>
+      <IconButton icon={faTimes} onClick={() => console.log('cancel')} />
     </div>
   );
 };
@@ -250,23 +246,6 @@ const Status = ({ count, label, type }) => {
 };
 
 const OrdersPane = () => {
-  const orders = [
-    {
-      id: 1,
-      type: 'fleet',
-      source: 'Liverpool',
-      action: 'move to',
-      destination: 'Irish Sea',
-    },
-    {
-      id: 2,
-      type: 'army',
-      source: 'Yorkshire',
-      action: 'move to',
-      destination: 'Liverpool',
-    },
-  ];
-
   const drawProposals = [
     {
       id: 1,
@@ -291,6 +270,23 @@ const OrdersPane = () => {
     );
     return <StyledDrawProposals>{elements}</StyledDrawProposals>;
   };
+
+  const orders = [
+    {
+      id: 1,
+      type: 'fleet',
+      source: 'Liverpool',
+      action: 'move to',
+      destination: 'Irish Sea',
+    },
+    {
+      id: 2,
+      type: 'army',
+      source: 'Yorkshire',
+      action: 'move to',
+      destination: 'Liverpool',
+    },
+  ];
 
   const renderOrders = () => {
     const elements = [];

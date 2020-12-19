@@ -1,14 +1,13 @@
-import React, { useEffect, useRef } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
-
+import React, { useEffect, useRef } from 'react';
+import { clamp, useReferredState } from '../utils';
+import { variables } from '../variables';
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
 import Portal from './Portal';
 import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import viewBox from '../data/standard/viewBox.json';
-import { clamp, useReferredState } from '../utils';
-import { variables } from '../variables';
 
 const ZOOMFACTOR = 1.1;
 const ZOOMMAX = 3;

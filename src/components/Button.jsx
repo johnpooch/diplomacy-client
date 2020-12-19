@@ -1,11 +1,12 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import styled from '@emotion/styled';
-
-import { colors, fontSizes, sizes, spacing } from '../variables';
+import { variables } from '../variables';
 
 export const BaseButton = styled.button`
   cursor: pointer;
   border: none;
-  border-radius: ${sizes.borderRadius[0]}px;
+  border-radius: ${variables.sizes.borderRadius[0]}px;
   margin: 0;
   padding: 0;
   font-size: inherit;
@@ -19,47 +20,48 @@ export const BaseButton = styled.button`
 `;
 
 export const Button = styled(BaseButton)`
-  background: ${colors.base};
-  border: ${sizes.border}px solid ${colors.base};
+  background: ${variables.colors.base};
+  border: ${variables.sizes.border}px solid ${variables.colors.base};
   color: white;
-  font-size: ${fontSizes.sans[2]}px;
-  padding: ${spacing[1]}px ${spacing[3]}px;
+  font-size: ${variables.fontSizes.sans[2]}px;
+  padding: ${variables.spacing[1]}px ${variables.spacing[3]}px;
 
   &:hover {
-    background: ${colors.darkgray};
+    background: ${variables.colors.darkgray};
     color: white;
   }
 `;
 
 export const SecondaryButton = styled(Button)`
-  background: ${colors.white};
-  color: ${colors.base};
+  background: ${variables.colors.white};
+  color: ${variables.colors.base};
 `;
 
 export const TertiaryButton = styled(Button)`
   background: transparent;
-  color: ${colors.darkgray};
-  font-size: ${fontSizes.sans[2]}px;
+  color: ${variables.colors.darkgray};
+  font-size: ${variables.fontSizes.sans[2]}px;
   padding: 0;
 
   &:hover {
     background: transparent;
-    color: ${colors.darkgray};
+    color: ${variables.colors.darkgray};
     text-decoration: underline;
   }
 `;
 
-export const IconButton = styled(SecondaryButton)`
-  border-radius: 50%;
-  font-size: inherit;
-  min-width: ${sizes.input}px;
-  height: ${sizes.input}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const IconButton = ({ icon, size = '1x' }) => (
+  <BaseButton type="button">
+    <FontAwesomeIcon className="icon" icon={icon} size={size} />
+  </BaseButton>
+);
 
-  &[disabled] {
-    opacity: 0;
-    cursor: initial;
+export const BackButton = styled(IconButton)`
+  background: ${variables.colors.base};
+  border-radius: 50%;
+  color: ${variables.colors.white};
+
+  &:hover {
+    color: ${variables.colors.darkgray};
   }
 `;
