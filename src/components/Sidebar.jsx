@@ -2,15 +2,9 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
-import {
-  faHistory,
-  faTimes,
-  faMapPin,
-  faIndustry,
-} from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BaseButton, Button, SecondaryButton } from './Button';
-import { ICONS } from './CanvasPieces';
 import { variables } from '../variables';
 import Flag from './Flag';
 
@@ -26,12 +20,12 @@ const StyledNation = styled.div`
 `;
 
 const Nation = ({ nation }) => {
-  return (
+  return nation ? (
     <StyledNation color={variables.colors.nations[nation.id]}>
       <Flag nation={nation} size="small" />
       <span className="name">{nation.name}</span>
     </StyledNation>
-  );
+  ) : null;
 };
 
 const Turn = ({ turn }) => {
@@ -159,7 +153,7 @@ const StyledPane = styled.div`
 `;
 
 const Pane = ({ children }) => {
-  return <StyledPane className="pane">{children}</StyledPane>;
+  return <StyledPane>{children}</StyledPane>;
 };
 
 const MessagesPane = () => {
@@ -223,7 +217,7 @@ const StyledOrders = styled.ul`
 const Order = ({ action, destination, source, type }) => {
   return (
     <div className="order">
-      <FontAwesomeIcon className="icon" icon={ICONS[type]} />{' '}
+      <FontAwesomeIcon className="icon" icon={variables.icons[type]} />{' '}
       <span className="text">
         <span className="source">{source}</span>{' '}
         <span className="action">{action}</span>{' '}
@@ -243,10 +237,10 @@ const StyledStatus = styled.div`
   align-items: center;
 `;
 
-const Status = ({ count, icon, label }) => {
+const Status = ({ count, label, type }) => {
   return (
     <StyledStatus>
-      <FontAwesomeIcon className="icon" icon={icon} />{' '}
+      <FontAwesomeIcon className="icon" icon={variables.icons[type]} />{' '}
       <span className="text">
         <span className="count">{count}</span>{' '}
         <span className="label">{label}</span>
@@ -290,12 +284,8 @@ const OrdersPane = () => {
     const elements = [];
     drawProposals.forEach((item) =>
       elements.push(
-        <li>
-          <DrawProposal
-            key={item.id}
-            nation={item.nation}
-            player={item.player}
-          />
+        <li key={item.id}>
+          <DrawProposal nation={item.nation} player={item.player} />
         </li>
       )
     );
@@ -329,12 +319,12 @@ const OrdersPane = () => {
           <li>
             <Status
               count={3}
-              icon={faIndustry}
+              type="supplyCenter"
               label="supply centers controlled"
             />
           </li>
           <li>
-            <Status count={2} icon={faMapPin} label="territories controlled" />
+            <Status count={2} type="territory" label="territories controlled" />
           </li>
         </ul>
       </section>
