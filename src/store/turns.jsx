@@ -9,6 +9,7 @@ import {
 import { gameSelectors } from './games';
 
 // use string literal to avoid import loop
+// TODO we actually don't need the two way relation between turns and orders
 const LIST_ORDERS_FULFILLED = 'orders/listOrdersStatus/fulfilled';
 const CREATE_ORDER_FULFILLED = 'orders/createOrderStatus/fulfilled';
 
