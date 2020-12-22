@@ -2,10 +2,15 @@ import React from 'react';
 
 import { SecondaryButton } from './Button';
 
-const OrdersStatus = ({ finalizeOrders, userNation }) => {
+const OrdersStatus = ({ finalizeOrders, toggleSurrender, userNation }) => {
   if (!userNation) return null;
 
-  const { numOrdersRemaining, ordersFinalized, loading } = userNation;
+  const {
+    numOrdersRemaining,
+    ordersFinalized,
+    loading,
+    surrender,
+  } = userNation;
 
   let ordersRemainingMessage = null;
   if (ordersFinalized) {
@@ -15,7 +20,16 @@ const OrdersStatus = ({ finalizeOrders, userNation }) => {
     ordersRemainingMessage = `${numOrdersRemaining} ${orderType} remaining`;
   }
 
-  const buttonText = ordersFinalized ? 'Un-finalize orders' : 'Finalize orders';
+  const finalizeButtonText = ordersFinalized
+    ? 'Un-finalize orders'
+    : 'Finalize orders';
+
+  const surrenderButtonText = surrender ? 'Cancel surrender' : 'Surrender';
+  const surrenderId = surrender ? surrender.id : null;
+
+  const onClickSurrender = () => {
+    toggleSurrender(surrenderId);
+  };
 
   return (
     <div className="orders">
@@ -25,7 +39,14 @@ const OrdersStatus = ({ finalizeOrders, userNation }) => {
         onClick={finalizeOrders}
         disabled={loading}
       >
-        {buttonText}
+        {finalizeButtonText}
+      </SecondaryButton>
+      <SecondaryButton
+        type="submit"
+        onClick={onClickSurrender}
+        disabled={false}
+      >
+        {surrenderButtonText}
       </SecondaryButton>
     </div>
   );

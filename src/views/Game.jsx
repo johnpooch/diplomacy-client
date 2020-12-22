@@ -5,11 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { jsx } from '@emotion/core';
 import { useEffect, useState } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
+import { drawResponseActions } from '../store/drawResponses';
 import { gameActions, gameSelectors } from '../store/games';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
 import { BackButton } from '../components/Button';
+import Draws from '../components/Draws';
 import { initialGameFormState } from '../game/base';
 import { nationStateActions } from '../store/nationStates';
+import { surrenderActions } from '../store/surrenders';
 import { orderActions } from '../store/orders';
 import { variables } from '../variables';
 import { variantActions } from '../store/variants';
@@ -23,9 +26,13 @@ const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
    * The view loads until the game detail data is in the store. */
   const {
+    cancelDrawResponse,
+    setDrawResponse,
+    drawResponseLoading,
     createOrder,
     destroyOrder,
     finalizeOrders,
+    toggleSurrender,
     game,
     location,
     prepareGameDetail,
@@ -71,6 +78,7 @@ const Game = (props) => {
         currentTurn={currentTurn}
         finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         destroyOrder={(id) => destroyOrder(token, slug, id)}
+        toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
       />
       <NavLinkButton
         exact
@@ -83,19 +91,31 @@ const Game = (props) => {
       >
         <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
       </NavLinkButton>
+      <Draws
+        cancelDrawResponse={(draw, response) =>
+          cancelDrawResponse(token, draw, response)
+        }
+        setDrawResponse={(draw, response) =>
+          setDrawResponse(token, draw, response)
+        }
+        draws={turn.draws}
+        participants={game.participants}
+        userNation={userNation}
+        variant={game.variant}
+        drawResponseLoading={drawResponseLoading}
+      />
     </div>
   );
 };
 
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
-  const { token, user } = state.auth;
+  const { token } = state.auth;
   let game = gameSelectors.selectBySlug(state, slug);
   const gameDetailInStore = game && game.detailLoaded;
-  game = gameDetailInStore
-    ? getDenormalizedGameDetail(state, game.id, user)
-    : null;
-  return { game, slug, token };
+  game = gameDetailInStore ? getDenormalizedGameDetail(state, game.id) : null;
+  const { loading: drawResponseLoading } = state.entities.drawResponses;
+  return { drawResponseLoading, game, slug, token };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -112,14 +132,35 @@ const mapDispatchToProps = (dispatch) => {
   const finalizeOrders = (token, id) => {
     dispatch(nationStateActions.finalizeOrders({ token, id }));
   };
+  const toggleSurrender = (token, turn, id) => {
+    if (id) {
+      dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
+    } else {
+      dispatch(surrenderActions.setSurrender({ token, turn }));
+    }
+  };
   const createOrder = (token, slug, data) => {
     dispatch(orderActions.createOrder({ token, slug, data }));
   };
   const destroyOrder = (token, slug, id) => {
     dispatch(orderActions.destroyOrder({ token, slug, id }));
   };
+  const cancelDrawResponse = (token, draw, response) => {
+    dispatch(drawResponseActions.cancelDrawResponse({ token, draw, response }));
+  };
+  const setDrawResponse = (token, draw, response) => {
+    dispatch(drawResponseActions.setDrawResponse({ token, draw, response }));
+  };
 
-  return { createOrder, destroyOrder, finalizeOrders, prepareGameDetail };
+  return {
+    cancelDrawResponse,
+    createOrder,
+    destroyOrder,
+    finalizeOrders,
+    prepareGameDetail,
+    setDrawResponse,
+    toggleSurrender,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

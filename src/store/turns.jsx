@@ -74,9 +74,15 @@ const selectGameCurrentTurn = createSelector(
   (game, turns) => turns.find((t) => game.current_turn === t.id)
 );
 
+const selectByNationStateId = (state, nationStateId) => {
+  const turns = adapterSelectors.selectAll(state);
+  return turns.find((t) => t.nationStates.includes(nationStateId));
+};
+
 export const turnSelectors = {
   ...adapterSelectors,
   selectGameCurrentTurn,
+  selectByNationStateId,
 };
 
 export default turnSlice.reducer;

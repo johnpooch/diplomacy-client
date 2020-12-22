@@ -19,6 +19,7 @@ export const apiRequest = async (url, options, { rejectWithValue }) => {
     if (!response.ok) {
       throw response;
     }
+    // 204 and `response.json()` don't seem to get along
     if (response.status === 204) {
       return {};
     }
@@ -50,6 +51,7 @@ export const urls = {
   LIST_VARIANTS: 'variants',
   PASSWORD_RESET: 'password_reset',
   PASSWORD_RESET_CONFIRM: 'password_reset/confirm',
+  DRAW_RESPONSE: 'draw-response/<draw>',
   LOGIN: 'auth/login',
   REGISTER: 'auth/register',
 };

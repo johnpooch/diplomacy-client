@@ -10,6 +10,8 @@ import {
 import { turnSelectors } from './turns';
 import { apiRequest, getOptions, urls } from './api';
 
+const SET_SURRENDER_FULFILLED = 'surrenders/setSurrender/fulfilled';
+
 const finalizeOrders = createAsyncThunk(
   'games/finalizeOrdersStatus',
   async ({ token, id }, thunkApi) => {
@@ -42,6 +44,11 @@ const nationStateSlice = createSlice({
       const { id } = meta.arg;
       const changes = { loading: false };
       nationStateAdapter.updateOne(state, { id, changes });
+    },
+    [SET_SURRENDER_FULFILLED]: (state, { payload }) => {
+      const { nationState, id } = payload;
+      const nationStateToUpdate = state.entities[nationState];
+      nationStateToUpdate.surrenders.push(id);
     },
   },
 });

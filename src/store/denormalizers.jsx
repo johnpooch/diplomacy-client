@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 
+import { drawSelectors } from './draws';
+import { drawResponseSelectors } from './drawResponses';
 import { gameSelectors } from './games';
 import { namedCoastSelectors } from './namedCoasts';
 import { nationSelectors } from './nations';
@@ -7,6 +9,7 @@ import { nationStateSelectors } from './nationStates';
 import { orderSelectors } from './orders';
 import { pieceSelectors } from './pieces';
 import { pieceStateSelectors } from './pieceStates';
+import { surrenderSelectors } from './surrenders';
 import { territorySelectors } from './territories';
 import { territoryStateSelectors } from './territoryStates';
 import { turnSelectors } from './turns';
@@ -104,8 +107,9 @@ const getDenormalizedNations = (state, game, turnId) => {
   const nations = nationSelectors.selectByVariantId(state, variant);
   const nationStates = nationStateSelectors.selectByTurnId(state, turnId);
   const mergedNations = nationStates.map((ns) => {
+    const surrender = surrenderSelectors.selectByNationState(state, ns.id);
     const nation = nations.find((n) => ns.nation === n.id);
-    return { ...ns, ...nation, nationStateId: ns.id };
+    return { ...ns, ...nation, nationStateId: ns.id, surrender };
   });
   return mergedNations;
 };
@@ -119,6 +123,21 @@ const getDenormalizedOrders = (state, turn, territories) => {
   });
 };
 
+const getDenormalizedDraws = (state, turn, nations) => {
+  return drawSelectors.selectByTurnId(state, turn.id).map((d) => {
+    const responses = drawResponseSelectors.selectByDrawId(state, d.id);
+    const nationResponses = nations.map((n) => {
+      const responseItem = responses.find((r) => r.nation === n.id);
+      let response = null;
+      if (responseItem) {
+        response = responseItem;
+      }
+      return { ...n, response };
+    });
+    return { ...d, responses: nationResponses };
+  });
+};
+
 const getDenormalizedTurn = (state, game, turn, user) => {
   const territories = getDenormalizedTerritories(state, game, turn);
   const nations = getDenormalizedNations(state, game, turn.id);
@@ -127,11 +146,13 @@ const getDenormalizedTurn = (state, game, turn, user) => {
   if (user) {
     userNation = nations.find((n) => n.user === user.id) || null;
   }
-  const newTurn = { ...turn, territories, nations, orders, userNation };
+  const draws = getDenormalizedDraws(state, turn, nations);
+  const newTurn = { ...turn, draws, territories, nations, orders, userNation };
   return newTurn;
 };
 
-export const getDenormalizedGameDetail = (state, id, user) => {
+export const getDenormalizedGameDetail = (state, id) => {
+  const { user } = state.auth;
   const denormalizedGame = {
     turns: [],
   };
@@ -143,8 +164,11 @@ export const getDenormalizedGameDetail = (state, id, user) => {
     const turn = turnSelectors.selectById(state, turnId, user);
     denormalizedGame.turns.push(getDenormalizedTurn(state, game, turn, user));
   });
+  const participants = game.participants.map((p) => {
+    return userSelectors.selectById(state, p);
+  });
 
-  return denormalizedGame;
+  return { ...denormalizedGame, participants };
 };
 
 export const getDenormalizedPreGame = (state, slug) => {
