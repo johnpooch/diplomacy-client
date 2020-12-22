@@ -101,8 +101,11 @@ const mapDispatchToProps = (dispatch) => {
   const createOrder = (token, slug, data) => {
     dispatch(orderActions.createOrder({ token, slug, data }));
   };
+  const destroyOrder = (token, slug, id) => {
+    dispatch(orderActions.destroyOrder({ token, slug, id }));
+  };
 
-  return { createOrder, finalizeOrders, prepareGameDetail };
+  return { createOrder, destroyOrder, finalizeOrders, prepareGameDetail };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

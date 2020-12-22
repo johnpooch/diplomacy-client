@@ -27,6 +27,15 @@ const createOrder = createAsyncThunk(
   }
 );
 
+const destroyOrder = createAsyncThunk(
+  'orders/destroyOrderStatus',
+  async ({ token, slug, id }, thunkApi) => {
+    const url = urls.DESTROY_ORDER.replace('<game>', slug).replace('<pk>', id);
+    const options = getOptions(token, 'DELETE');
+    return apiRequest(url, options, thunkApi);
+  }
+);
+
 const orderAdapter = createEntityAdapter();
 
 const ordersSlice = createSlice({
@@ -45,10 +54,20 @@ const ordersSlice = createSlice({
       orderAdapter.removeOne(state, oldOrder);
       orderAdapter.addOne(state, newOrder);
     },
+    [destroyOrder.fulfilled]: (state, { meta }) => {
+      const { arg } = meta;
+      const { id } = arg;
+      orderAdapter.removeOne(state, id);
+    },
   },
 });
 
-export const orderActions = { ...ordersSlice.actions, createOrder, listOrders };
+export const orderActions = {
+  ...ordersSlice.actions,
+  createOrder,
+  destroyOrder,
+  listOrders,
+};
 
 const adapterSelectors = orderAdapter.getSelectors(
   (state) => state.entities.orders
