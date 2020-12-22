@@ -22,7 +22,16 @@ const NavLinkButton = BackButton.withComponent(NavLink);
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
    * The view loads until the game detail data is in the store. */
-  const { createOrder, game, location, prepareGameDetail, slug, token } = props;
+  const {
+    createOrder,
+    destroyOrder,
+    finalizeOrders,
+    game,
+    location,
+    prepareGameDetail,
+    slug,
+    token,
+  } = props;
 
   const [gameForm, setGameForm] = useState(initialGameFormState);
   const [activeTurnId, setActiveTurn] = useState();
@@ -53,11 +62,16 @@ const Game = (props) => {
     setGameForm,
     currentTurn
   );
+  const { userNation } = turn;
 
   return (
     <div>
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
-      <Sidebar currentTurn={currentTurn} />
+      <Sidebar
+        currentTurn={currentTurn}
+        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
+        destroyOrder={(id) => destroyOrder(token, slug, id)}
+      />
       <NavLinkButton
         exact
         to="/"

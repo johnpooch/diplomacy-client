@@ -132,9 +132,9 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-const Sidebar = ({ currentTurn }) => {
+const Sidebar = ({ currentTurn, destroyOrder, finalizeOrders }) => {
   const [activeTab, setActiveTab] = useState(null);
-  const { userNation } = currentTurn;
+  const { userNation, orders } = currentTurn;
 
   const renderPane = () => {
     switch (activeTab) {
@@ -145,7 +145,14 @@ const Sidebar = ({ currentTurn }) => {
         return <HistoryPane />;
 
       case 'orders':
-        return <OrdersPane />;
+        return (
+          <OrdersPane
+            destroyOrder={destroyOrder}
+            finalizeOrders={finalizeOrders}
+            orders={orders}
+            userNation={userNation}
+          />
+        );
 
       default:
         return null;

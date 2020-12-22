@@ -2,6 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from '@emotion/styled';
+import { OrderTypes } from '../game/base';
 import { variables } from '../variables';
 import { Button, SecondaryButton, IconButton } from './Button';
 
@@ -66,7 +67,12 @@ export const HistoryPane = () => {
   return <Pane />;
 };
 
-export const OrdersPane = () => {
+export const OrdersPane = ({
+  destroyOrder,
+  finalizeOrders,
+  orders,
+  userNation,
+}) => {
   const drawProposals = [
     {
       id: 1,
@@ -80,6 +86,8 @@ export const OrdersPane = () => {
     },
   ];
 
+  const { loading, ordersFinalized, numOrders } = userNation;
+
   const renderDrawProposals = () => {
     const elements = [];
     drawProposals.forEach((item) =>
@@ -92,32 +100,17 @@ export const OrdersPane = () => {
     return <StyledDrawProposals>{elements}</StyledDrawProposals>;
   };
 
-  const orders = [
-    {
-      id: 1,
-      type: 'fleet',
-      source: 'Liverpool',
-      action: 'move to',
-      destination: 'Irish Sea',
-    },
-    {
-      id: 2,
-      type: 'army',
-      source: 'Yorkshire',
-      action: 'move to',
-      destination: 'Liverpool',
-    },
-  ];
-
   const renderOrders = () => {
     const elements = [];
     orders.forEach((item) =>
       elements.push(
         <li key={item.id}>
           <Order
-            action={item.action}
-            destination={item.destination}
-            source={item.source}
+            aux={item.aux ? item.aux.name : null}
+            destroyOrder={() => destroyOrder(item.id)}
+            target={item.target ? item.target.name : null}
+            source={item.source.name}
+            pieceType={item.source.piece.type}
             type={item.type}
           />
         </li>
@@ -125,6 +118,10 @@ export const OrdersPane = () => {
     );
     return <StyledOrders>{elements}</StyledOrders>;
   };
+
+  const finalizeButtonText = ordersFinalized
+    ? 'Un-finalize orders'
+    : 'Finalize orders';
 
   return (
     <Pane>
@@ -140,9 +137,6 @@ export const OrdersPane = () => {
               label="supply centers controlled"
             />
           </li>
-          <li>
-            <Status count={2} type="territory" label="territories controlled" />
-          </li>
         </ul>
       </section>
       <section className="draw-proposals">
@@ -155,10 +149,20 @@ export const OrdersPane = () => {
       <section className="orders">
         <p className="heading">
           <span className="text">Orders</span>
-          <span className="count">2 / 4</span>
+          <span className="count">
+            {orders.length} / {numOrders}
+          </span>
         </p>
         {renderOrders()}
-        <Button>Finalize orders</Button>
+        <Button onClick={finalizeOrders} disabled={loading}>
+          {finalizeButtonText}
+        </Button>
+        {ordersFinalized ? (
+          <p className="orders-finalized-message">
+            Orders finalized. The turn will be processed once all players have
+            finalized their orders
+          </p>
+        ) : null}
       </section>
     </Pane>
   );
@@ -233,16 +237,54 @@ const StyledOrders = styled.ul`
   }
 `;
 
-const Order = ({ action, destination, source, type }) => {
+const HoldOrderText = ({ source, type }) => {
+  return (
+    <span className="text">
+      <span className="source">{source}</span>{' '}
+      <span className="action">{type}</span>
+    </span>
+  );
+};
+
+const MoveOrderText = ({ source, target, type }) => {
+  return (
+    <span className="text">
+      <span className="source">{source}</span>{' '}
+      <span className="action">{type} to</span>{' '}
+      <span className="target">{target}</span>
+    </span>
+  );
+};
+
+const AuxOrderText = ({ aux, source, target, type }) => {
+  return (
+    <span className="text">
+      <span className="source">{source}</span>{' '}
+      <span className="action">{type}</span>{' '}
+      <span className="target">{target}</span>{' '}
+      <span className="action">to</span> <span className="aux">{aux}</span>
+    </span>
+  );
+};
+
+const Order = ({ aux, destroyOrder, pieceType, source, target, type }) => {
+  let orderText = null;
+  if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(type)) {
+    orderText = <MoveOrderText source={source} target={target} type={type} />;
+  } else if ([OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(type)) {
+    orderText = (
+      <AuxOrderText aux={aux} source={source} target={target} type={type} />
+    );
+  } else {
+    orderText = (
+      <HoldOrderText aux={aux} source={source} target={target} type={type} />
+    );
+  }
   return (
     <div className="order">
-      <FontAwesomeIcon className="icon" icon={variables.icons[type]} />{' '}
-      <span className="text">
-        <span className="source">{source}</span>{' '}
-        <span className="action">{action}</span>{' '}
-        <span className="destination">{destination}</span>
-      </span>
-      <IconButton icon={faTimes} onClick={() => console.log('cancel')} />
+      <FontAwesomeIcon className="icon" icon={variables.icons[pieceType]} />{' '}
+      {orderText}
+      <IconButton icon={faTimes} onClick={destroyOrder} />
     </div>
   );
 };
