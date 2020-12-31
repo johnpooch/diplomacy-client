@@ -4,7 +4,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { OrderTypes } from '../game/base';
 import { variables } from '../variables';
-import { Button, SecondaryButton, IconButton } from './Button';
+import { Button, IconButton, SecondaryButton } from './Button';
+import DrawsPane from './Draws';
 
 const StyledPane = styled.div`
   background: white;
@@ -68,37 +69,18 @@ export const HistoryPane = () => {
 };
 
 export const OrdersPane = ({
+  cancelDrawResponse,
   destroyOrder,
+  drawResponseLoading,
+  draws,
   finalizeOrders,
   orders,
+  participants,
+  setDrawResponse,
   userNation,
+  variant,
 }) => {
-  const drawProposals = [
-    {
-      id: 1,
-      nation: 1,
-      player: 'johnpooch',
-    },
-    {
-      id: 2,
-      nation: 1,
-      player: 'samjhayes',
-    },
-  ];
-
   const { loading, ordersFinalized, numOrders } = userNation;
-
-  const renderDrawProposals = () => {
-    const elements = [];
-    drawProposals.forEach((item) =>
-      elements.push(
-        <li key={item.id}>
-          <DrawProposal nation={item.nation} player={item.player} />
-        </li>
-      )
-    );
-    return <StyledDrawProposals>{elements}</StyledDrawProposals>;
-  };
 
   const renderOrders = () => {
     const elements = [];
@@ -139,13 +121,19 @@ export const OrdersPane = ({
           </li>
         </ul>
       </section>
-      <section className="draw-proposals">
-        <p className="heading">
-          <span className="text">Draw proposals</span>
-          <span className="count">0 / 2</span>
-        </p>
-        {renderDrawProposals()}
-      </section>
+      {draws.length ? (
+        <section className="draw-proposals">
+          <DrawsPane
+            cancelDrawResponse={cancelDrawResponse}
+            drawResponseLoading={drawResponseLoading}
+            draws={draws}
+            participants={participants}
+            setDrawResponse={setDrawResponse}
+            userNation={userNation}
+            variant={variant}
+          />
+        </section>
+      ) : null}
       <section className="orders">
         <p className="heading">
           <span className="text">Orders</span>
@@ -184,47 +172,6 @@ const Status = ({ count, label, type }) => {
         <span className="label">{label}</span>
       </span>
     </StyledStatus>
-  );
-};
-
-const StyledDrawProposals = styled.ul`
-  li {
-    margin: ${variables.spacing[3]}px 0;
-  }
-
-  li + li {
-    border-top: ${variables.sizes.border}px solid ${variables.colors.darkgray};
-  }
-
-  .text {
-    display: block;
-    margin: ${variables.spacing[3]}px 0;
-  }
-
-  .actions {
-    display: grid;
-    grid-gap: ${variables.spacing[2]}px;
-    grid-template-columns: repeat(2, 1fr);
-    margin: ${variables.spacing[3]}px 0;
-  }
-`;
-
-const DrawProposal = ({ player }) => {
-  return (
-    <div className="draw-proposal">
-      <span className="text">
-        <span className="player">{player}</span>{' '}
-        <span className="action">has proposed a draw</span>{' '}
-      </span>
-      <div className="actions">
-        <SecondaryButton type="button" onClick={() => console.log('accept')}>
-          Accept
-        </SecondaryButton>
-        <SecondaryButton type="button" onClick={() => console.log('decline')}>
-          Decline
-        </SecondaryButton>
-      </div>
-    </div>
   );
 };
 

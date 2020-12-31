@@ -132,9 +132,19 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-const Sidebar = ({ currentTurn, destroyOrder, finalizeOrders }) => {
+const Sidebar = ({
+  currentTurn,
+  cancelDrawResponse,
+  drawResponseLoading,
+  destroyOrder,
+  finalizeOrders,
+  participants,
+  setDrawResponse,
+  toggleSurrender,
+  variant,
+}) => {
   const [activeTab, setActiveTab] = useState(null);
-  const { userNation, orders } = currentTurn;
+  const { draws, orders, userNation } = currentTurn;
 
   const renderPane = () => {
     switch (activeTab) {
@@ -147,10 +157,17 @@ const Sidebar = ({ currentTurn, destroyOrder, finalizeOrders }) => {
       case 'orders':
         return (
           <OrdersPane
+            cancelDrawResponse={cancelDrawResponse}
             destroyOrder={destroyOrder}
+            draws={draws}
+            drawResponseLoading={drawResponseLoading}
             finalizeOrders={finalizeOrders}
             orders={orders}
             userNation={userNation}
+            participants={participants}
+            setDrawResponse={setDrawResponse}
+            toggleSurrender={toggleSurrender}
+            variant={variant}
           />
         );
 

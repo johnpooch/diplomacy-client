@@ -164,9 +164,12 @@ export const getDenormalizedGameDetail = (state, id) => {
     const turn = turnSelectors.selectById(state, turnId, user);
     denormalizedGame.turns.push(getDenormalizedTurn(state, game, turn, user));
   });
-  const participants = game.participants.map((p) => {
-    return userSelectors.selectById(state, p);
-  });
+  let participants = [];
+  if (game.participants) {
+    participants = game.participants.map((p) => {
+      return userSelectors.selectById(state, p);
+    });
+  }
 
   return { ...denormalizedGame, participants };
 };

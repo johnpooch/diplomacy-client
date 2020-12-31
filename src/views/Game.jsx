@@ -9,7 +9,6 @@ import { drawResponseActions } from '../store/drawResponses';
 import { gameActions, gameSelectors } from '../store/games';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
 import { BackButton } from '../components/Button';
-import Draws from '../components/Draws';
 import { initialGameFormState } from '../game/base';
 import { nationStateActions } from '../store/nationStates';
 import { surrenderActions } from '../store/surrenders';
@@ -75,10 +74,19 @@ const Game = (props) => {
     <div>
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
+        cancelDrawResponse={(draw, response) =>
+          cancelDrawResponse(token, draw, response)
+        }
         currentTurn={currentTurn}
+        drawResponseLoading={drawResponseLoading}
         finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         destroyOrder={(id) => destroyOrder(token, slug, id)}
+        participants={game.participants}
+        setDrawResponse={(draw, response) =>
+          setDrawResponse(token, draw, response)
+        }
         toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
+        variant={game.variant}
       />
       <NavLinkButton
         exact
@@ -91,19 +99,6 @@ const Game = (props) => {
       >
         <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
       </NavLinkButton>
-      <Draws
-        cancelDrawResponse={(draw, response) =>
-          cancelDrawResponse(token, draw, response)
-        }
-        setDrawResponse={(draw, response) =>
-          setDrawResponse(token, draw, response)
-        }
-        draws={turn.draws}
-        participants={game.participants}
-        userNation={userNation}
-        variant={game.variant}
-        drawResponseLoading={drawResponseLoading}
-      />
     </div>
   );
 };
