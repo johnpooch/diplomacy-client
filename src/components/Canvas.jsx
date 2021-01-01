@@ -2,6 +2,7 @@ import { Stage, Layer, Rect } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
 import { clamp, useReferredState } from '../utils';
 import { variables } from '../variables';
+import Orders from './Orders';
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
 import Portal from './Portal';
@@ -20,7 +21,7 @@ const getMinScale = () => {
 };
 
 const Canvas = ({ currentTurn, gameInterface }) => {
-  const { territories, userNation } = currentTurn;
+  const { orders, territories, userNation } = currentTurn;
 
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
@@ -171,6 +172,9 @@ const Canvas = ({ currentTurn, gameInterface }) => {
           userNation={userNation}
           gameInterface={gameInterface}
         />
+      </Layer>
+      <Layer>
+        <Orders orders={orders} />
       </Layer>
       <Layer>
         <Pieces
