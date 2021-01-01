@@ -6,6 +6,7 @@ import Orders from './Orders';
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
 import Portal from './Portal';
+import SupplyCenters from './SupplyCenters';
 import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import viewBox from '../data/standard/viewBox.json';
@@ -172,6 +173,9 @@ const Canvas = ({ currentTurn, gameInterface }) => {
           userNation={userNation}
           gameInterface={gameInterface}
         />
+      </Layer>
+      <Layer>
+        <SupplyCenters territories={territories} />
       </Layer>
       <Layer>
         <Orders orders={orders} />
