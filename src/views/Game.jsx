@@ -82,8 +82,11 @@ const Game = (props) => {
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
         currentTurn={currentTurn}
-        finalizeOrders={finalizeOrders}
-        toggleSurrender={toggleSurrender}
+        finalizeOrders={() =>
+          finalizeOrders(token, currentTurn.userNation.nationStateId)
+        }
+        toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
+        // TODO: clean this up
       />
       <HomeNavLinkButton />
     </div>
@@ -116,11 +119,8 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(nationStateActions.finalizeOrders({ token, id }));
   };
   const toggleSurrender = (token, turn, id) => {
-    if (id) {
-      dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
-    } else {
-      dispatch(surrenderActions.setSurrender({ token, turn }));
-    }
+    if (id) dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
+    else dispatch(surrenderActions.setSurrender({ token, turn }));
   };
   const createOrder = (token, slug, data) => {
     dispatch(orderActions.createOrder({ token, slug, data }));
