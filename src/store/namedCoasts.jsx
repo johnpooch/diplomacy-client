@@ -1,6 +1,12 @@
 /* eslint-disable no-param-reassign */
 
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+
+import { territorySelectors } from './territories';
 
 const namedCoastAdapter = createEntityAdapter();
 
@@ -16,8 +22,20 @@ export const namedCoastActions = {
   ...namedCoastSlice.actions,
 };
 
-export const namedCoastSelectors = namedCoastAdapter.getSelectors(
+const adapterSelectors = namedCoastAdapter.getSelectors(
   (state) => state.entities.namedCoasts
 );
+
+const selectByVariantId = createSelector(
+  territorySelectors.selectByVariantId,
+  adapterSelectors.selectAll,
+  (territories, namedCoasts) =>
+    namedCoasts.filter((nc) => territories.map((t) => t.id).includes(nc.parent))
+);
+
+export const namedCoastSelectors = {
+  ...adapterSelectors,
+  selectByVariantId,
+};
 
 export default namedCoastSlice.reducer;

@@ -7,6 +7,7 @@ import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
 import Error from './Error';
 import Game from './Game';
+import Sandbox from './Sandbox';
 import Navigation from '../components/Navigation';
 import PreGame from './PreGame';
 
@@ -35,6 +36,12 @@ const RouterLoggedIn = (props) => {
         exact
         path="/create-game"
         component={CreateGame}
+        loggedIn={loggedIn}
+      />
+      <RouteWithNavigation
+        exact
+        path="/sandbox"
+        component={Sandbox}
         loggedIn={loggedIn}
       />
       <RouteWithNavigation

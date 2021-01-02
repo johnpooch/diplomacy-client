@@ -50,7 +50,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   );
 };
 
-const Territories = ({ territories, hoverId, userNation }) => {
+const Territories = ({ territories, hoverId, userNation, gameInterface }) => {
   const [stripesImage, setStripesImage] = useState(null);
 
   useEffect(() => {
@@ -62,15 +62,11 @@ const Territories = ({ territories, hoverId, userNation }) => {
   return (
     <Group>
       {territories.map((territory) => {
-        const { piece } = territory;
         return (
           <Territory
             key={territory.territoryMapDataId}
             territory={territory}
             isHovering={hoverId !== null && territory.id === hoverId}
-            isOrderable={
-              userNation && piece ? userNation.id === piece.nation : false
-            }
             stripesImage={stripesImage}
           />
         );

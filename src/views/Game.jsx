@@ -11,7 +11,8 @@ import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { variantActions } from '../store/variants';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
-import { initialOrderState, Order } from '../game/order';
+import { initialGameFormState } from '../game/base';
+import GameInterface from '../game/gameInterface';
 
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
@@ -26,7 +27,7 @@ const Game = (props) => {
     token,
   } = props;
 
-  const [orderForm, setOrderForm] = useState(initialOrderState);
+  const [gameForm, setGameForm] = useState(initialGameFormState);
   const [activeTurnId, setActiveTurn] = useState();
 
   useEffect(() => {
@@ -45,27 +46,18 @@ const Game = (props) => {
     turn = game.turns.find((t) => t.id === activeTurnId);
   }
 
-  const { userNation } = turn;
-  const order = new Order(orderForm, currentTurn, setOrderForm);
-
   const postOrder = () => {
-    createOrder(token, slug, orderForm);
-    order.reset();
+    createOrder(token, slug, gameForm);
   };
 
-  return (
-    <Canvas currentTurn={currentTurn} />
-    // <div>
-    //   <Map game={game} order={order} turn={turn} postOrder={postOrder} />
-    //   <StatusBar
-    //     finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
-    //     turn={turn}
-    //     _setTurn={(_id) => {
-    //       setActiveTurn(_id);
-    //     }}
-    //   />
-    // </div>
+  const gameInterface = new GameInterface(
+    { postOrder },
+    gameForm,
+    setGameForm,
+    currentTurn
   );
+
+  return <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />;
 };
 
 const mapStateToProps = (state, { match }) => {

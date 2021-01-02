@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import { gameSelectors } from './games';
+import { namedCoastSelectors } from './namedCoasts';
 import { nationSelectors } from './nations';
 import { nationStateSelectors } from './nationStates';
 import { orderSelectors } from './orders';
@@ -21,7 +22,12 @@ const mergePieces = (pieces, pieceStates) => {
   });
 };
 
-const mergeTerritories = (tds, territories, territoryStates) => {
+const mergeTerritories = (
+  tds,
+  territories,
+  territoryStates,
+  allNamedCoasts
+) => {
   return tds.map((td) => {
     let playable = false;
     const territory = territories.find((t) => t.uid === td.territoryUID);
@@ -34,7 +40,10 @@ const mergeTerritories = (tds, territories, territoryStates) => {
     const territoryState = territoryStates.find(
       (ts) => ts.territory === territory.id
     );
-    return { ...td, ...territoryState, ...territory, playable };
+    const namedCoasts = allNamedCoasts.filter(
+      (nc) => nc.parent === territory.id
+    );
+    return { ...td, ...territoryState, ...territory, namedCoasts, playable };
   });
 };
 
@@ -48,11 +57,13 @@ const getDenormalizedTerritories = (state, game, turn) => {
     state,
     turn.id
   );
+  const namedCoasts = namedCoastSelectors.selectByVariantId(state, variant);
 
   const mergedTerritories = mergeTerritories(
     territoryData,
     territories,
-    territoryStates
+    territoryStates,
+    namedCoasts
   );
 
   const mergedPieces = mergePieces(pieces, pieceStates);
@@ -112,7 +123,10 @@ const getDenormalizedTurn = (state, game, turn, user) => {
   const territories = getDenormalizedTerritories(state, game, turn);
   const nations = getDenormalizedNations(state, game, turn.id);
   const orders = getDenormalizedOrders(state, turn, territories);
-  const userNation = nations.find((n) => n.user === user.id) || null;
+  let userNation = null;
+  if (user) {
+    userNation = nations.find((n) => n.user === user.id) || null;
+  }
   const newTurn = { ...turn, territories, nations, orders, userNation };
   return newTurn;
 };

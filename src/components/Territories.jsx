@@ -3,7 +3,7 @@ import React from 'react';
 import Territory from './Territory';
 
 const Territories = (props) => {
-  const { getCallbacks, order, hovering, panning, territories } = props;
+  const { gameInterface, getCallbacks, hovering, panning, territories } = props;
   const elements = [];
   territories.forEach((territory) => {
     const { id, territoryMapDataId } = territory;
@@ -15,7 +15,7 @@ const Territories = (props) => {
         // If hovering is null do not highlight non-playable
         // territories
         hovering={hovering === id && id}
-        order={order}
+        gameInterface={gameInterface}
         panning={panning}
         territory={territory}
       />

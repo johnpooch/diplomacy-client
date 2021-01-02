@@ -48,11 +48,13 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
       territoryStates,
       turns,
     } = entities;
-    dispatch(pieceActions.piecesReceived(pieces));
+    dispatch(pieceActions.piecesReceived(pieces || []));
     dispatch(turnActions.turnDetailsReceived(turns));
-    dispatch(nationStateActions.nationStatesReceived(nationStates));
-    dispatch(territoryStateActions.territoryStatesReceived(territoryStates));
-    dispatch(pieceStateActions.pieceStatesReceived(pieceStates));
+    dispatch(nationStateActions.nationStatesReceived(nationStates || []));
+    dispatch(
+      territoryStateActions.territoryStatesReceived(territoryStates || [])
+    );
+    dispatch(pieceStateActions.pieceStatesReceived(pieceStates || []));
     dispatch(orderActions.ordersReceived(orders || []));
     next({
       type: gameActions.getGameDetail.fulfilled.type,

@@ -4,8 +4,6 @@ import styled from '@emotion/styled';
 import { Button } from './Button';
 import { variables } from '../variables';
 
-const OPTIONS = ['Hold', 'Move', 'Support', 'Convoy'];
-
 const StyledContextMenu = styled.nav`
   background: ${variables.colors.white};
   border-radius: ${variables.sizes.borderRadius[0]}px;
@@ -22,6 +20,7 @@ const ContextMenu = ({
   selectedTarget,
   mousePosition,
   onOptionSelected,
+  options,
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -45,10 +44,10 @@ const ContextMenu = ({
     });
   }, [selectedTarget]);
 
-  const elements = OPTIONS.map((optionName) => {
+  const elements = options.map(([value, label]) => {
     return (
-      <Button key={optionName} onClick={handleOptionSelected(optionName)}>
-        {optionName}
+      <Button key={value} onClick={handleOptionSelected(value)}>
+        {label}
       </Button>
     );
   });

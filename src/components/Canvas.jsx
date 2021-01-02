@@ -20,14 +20,13 @@ const getMinScale = () => {
   );
 };
 
-const Canvas = ({ currentTurn }) => {
+const Canvas = ({ currentTurn, gameInterface }) => {
   const { territories, userNation } = currentTurn;
 
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
   const [scale, setScale] = useReferredState(0);
-  const [selectedTarget, setSelectedTarget] = useReferredState(null);
   const [size, setSize] = useReferredState({ width: 0, height: 0 });
   const [stagePosition, setStagePosition] = useReferredState({ x: 0, y: 0 });
 
@@ -62,7 +61,6 @@ const Canvas = ({ currentTurn }) => {
       };
 
       setHoverTarget(null);
-      setSelectedTarget(null);
       setScale(newScale);
       setSize(newSize);
       setStagePosition(newPosition);
@@ -88,7 +86,6 @@ const Canvas = ({ currentTurn }) => {
       };
 
       setHoverTarget(null);
-      setSelectedTarget(null);
       setScale(newScale);
       setStagePosition(bounds(newPosition));
     };
@@ -104,19 +101,15 @@ const Canvas = ({ currentTurn }) => {
   }, []);
 
   const handleClick = (e) => {
-    if (!e.target) {
-      setSelectedTarget(null);
-    } else if (
-      selectedTarget.current &&
-      selectedTarget.current.attrs.id === e.target.attrs.id
-    ) {
-      setSelectedTarget(null);
-    } else if (e.target.attrs.isOrderable) {
-      setSelectedTarget(e.target);
-      return;
-    }
+    if (!e.target) return gameInterface.reset();
+    // Clicking outside of context menu resets order
+    if (gameInterface.showContextMenu()) return gameInterface.reset();
 
-    setSelectedTarget(null);
+    const { territory } = e.target.attrs;
+    if (territory) {
+      return gameInterface.onClickTerritory(territory);
+    }
+    return gameInterface.reset();
   };
 
   return (
@@ -132,7 +125,6 @@ const Canvas = ({ currentTurn }) => {
       onDragStart={() => {
         setIsDragging(true);
         setHoverTarget(null);
-        setSelectedTarget(null);
       }}
       onDragEnd={(e) => {
         setIsDragging(false);
@@ -175,15 +167,14 @@ const Canvas = ({ currentTurn }) => {
           territories={territories}
           hoverId={hoverTarget.current ? hoverTarget.current.attrs.id : null}
           userNation={userNation}
+          gameInterface={gameInterface}
         />
       </Layer>
       <Layer>
         <Pieces
           territories={territories}
           hoverId={hoverTarget.current ? hoverTarget.current.attrs.id : null}
-          selectedId={
-            selectedTarget.current ? selectedTarget.current.attrs.id : null
-          }
+          selectedId={gameInterface.source ? gameInterface.source.id : null}
           userNation={userNation}
         />
       </Layer>
@@ -197,16 +188,14 @@ const Canvas = ({ currentTurn }) => {
         />
       </Layer>
       <Layer>
-        {selectedTarget.current ? (
+        {gameInterface.showContextMenu() ? (
           <Portal>
             <ContextMenu
               stageRef={stageRef}
-              selectedTarget={selectedTarget.current}
+              selectedTarget={gameInterface.source}
               mousePosition={mousePosition.current}
-              onOptionSelected={(option) => {
-                setSelectedTarget(null);
-                console.log('Handle', option);
-              }}
+              onOptionSelected={gameInterface.onOptionSelected}
+              options={gameInterface.getOptions()}
             />
           </Portal>
         ) : null}
