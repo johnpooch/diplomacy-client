@@ -39,9 +39,11 @@ const BrowseGames = (props) => {
 };
 
 const mapStateToProps = (state, { location }) => {
+  const { loaded: variantsLoaded } = state.entities.variants;
   const { browseGamesLoaded, loading } = state.entities.games;
   let games = null;
-  if (browseGamesLoaded && !loading) games = getDenormalizedGamesList(state);
+  if (browseGamesLoaded && variantsLoaded && !loading)
+    games = getDenormalizedGamesList(state);
   return {
     choices: state.choices,
     games,

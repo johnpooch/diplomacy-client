@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+/** @jsx jsx */
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-
-// import Loading from '../components/Loading';
-import Canvas from '../components/Canvas';
-// import Map from '../components/Map';
-// import StatusBar from '../components/StatusBar';
+import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { jsx } from '@emotion/core';
+import { useEffect, useState } from 'react';
+import { withRouter, NavLink } from 'react-router-dom';
 import { gameActions, gameSelectors } from '../store/games';
+import { getDenormalizedGameDetail } from '../store/denormalizers';
+import { BackButton } from '../components/Button';
+import { initialGameFormState } from '../game/base';
 import { nationStateActions } from '../store/nationStates';
 import { surrenderActions } from '../store/surrenders';
 import { orderActions } from '../store/orders';
+import { variables } from '../variables';
 import { variantActions } from '../store/variants';
-import { getDenormalizedGameDetail } from '../store/denormalizers';
-import { initialGameFormState } from '../game/base';
+import Canvas from '../components/Canvas';
 import GameInterface from '../game/gameInterface';
+import Sidebar from '../components/Sidebar';
+
+const NavLinkButton = BackButton.withComponent(NavLink);
 
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
@@ -59,7 +64,23 @@ const Game = (props) => {
     currentTurn
   );
 
-  return <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />;
+  return (
+    <div>
+      <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
+      <Sidebar currentTurn={currentTurn} />
+      <NavLinkButton
+        exact
+        to="/"
+        css={{
+          position: 'fixed',
+          top: `${variables.spacing[2]}px`,
+          left: `${variables.spacing[2]}px`,
+        }}
+      >
+        <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
+      </NavLinkButton>
+    </div>
+  );
 };
 
 const mapStateToProps = (state, { match }) => {
