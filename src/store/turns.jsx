@@ -21,6 +21,26 @@ const turnSlice = createSlice({
   reducers: {
     turnsReceived: turnAdapter.setAll,
     turnDetailsReceived: turnAdapter.upsertMany,
+    addOrder: (state, { payload }) => {
+      const { id, order } = payload;
+      const turn = state.entities[id];
+      turn.orders.push(order);
+    },
+    addPieceState: (state, { payload }) => {
+      const { id, pieceState } = payload;
+      const turn = state.entities[id];
+      turn.pieceStates.push(pieceState);
+    },
+    removeOrder: (state, { payload }) => {
+      const { id, order } = payload;
+      const turn = state.entities[id];
+      turn.orders = turn.orders.filter((o) => o !== order);
+    },
+    removePieceState: (state, { payload }) => {
+      const { id, pieceState } = payload;
+      const turn = state.entities[id];
+      turn.pieceStates = turn.pieceStates.filter((ps) => ps !== pieceState);
+    },
   },
   extraReducers: {
     [LIST_ORDERS_FULFILLED]: (state, { payload, meta }) => {

@@ -11,10 +11,12 @@ import { gameSelectors } from './games';
 const pieceAdapter = createEntityAdapter();
 
 const pieceSlice = createSlice({
-  name: 'territoryStates',
+  name: 'pieces',
   initialState: pieceAdapter.getInitialState(),
   reducers: {
     piecesReceived: pieceAdapter.setAll,
+    addPiece: pieceAdapter.addOne,
+    removePiece: pieceAdapter.removeOne,
   },
 });
 

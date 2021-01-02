@@ -1,0 +1,808 @@
+{
+  "id": "SANDBOX",
+  "name": "Sandbox",
+  "turns": [
+    {
+      "id": 1,
+      "nextTurn": null,
+      "previousTurn": null,
+      "currentTurn": true,
+      "year": 1901,
+      "season": "spring",
+      "phase": "Order",
+      "territoryStates": [
+        {
+          "id": 1,
+          "territory": 1,
+          "controlledBy": null
+        },
+        {
+          "id": 2,
+          "territory": 2,
+          "controlledBy": null
+        },
+        {
+          "id": 3,
+          "territory": 3,
+          "controlledBy": null
+        },
+        {
+          "id": 4,
+          "territory": 4,
+          "controlledBy": null
+        },
+        {
+          "id": 5,
+          "territory": 5,
+          "controlledBy": null
+        },
+        {
+          "id": 6,
+          "territory": 6,
+          "controlledBy": null
+        },
+        {
+          "id": 7,
+          "territory": 7,
+          "controlledBy": null
+        },
+        {
+          "id": 8,
+          "territory": 8,
+          "controlledBy": null
+        },
+        {
+          "id": 9,
+          "territory": 9,
+          "controlledBy": null
+        },
+        {
+          "id": 10,
+          "territory": 10,
+          "controlledBy": null
+        },
+        {
+          "id": 11,
+          "territory": 11,
+          "controlledBy": null
+        },
+        {
+          "id": 12,
+          "territory": 12,
+          "controlledBy": null
+        },
+        {
+          "id": 13,
+          "territory": 13,
+          "controlledBy": null
+        },
+        {
+          "id": 14,
+          "territory": 14,
+          "controlledBy": null
+        },
+        {
+          "id": 15,
+          "territory": 15,
+          "controlledBy": null
+        },
+        {
+          "id": 16,
+          "territory": 16,
+          "controlledBy": null
+        },
+        {
+          "id": 17,
+          "territory": 17,
+          "controlledBy": null
+        },
+        {
+          "id": 18,
+          "territory": 18,
+          "controlledBy": null
+        },
+        {
+          "id": 19,
+          "territory": 19,
+          "controlledBy": null
+        },
+        {
+          "id": 20,
+          "territory": 20,
+          "controlledBy": null
+        },
+        {
+          "id": 21,
+          "territory": 21,
+          "controlledBy": 7
+        },
+        {
+          "id": 22,
+          "territory": 22,
+          "controlledBy": 5
+        },
+        {
+          "id": 23,
+          "territory": 23,
+          "controlledBy": 7
+        },
+        {
+          "id": 24,
+          "territory": 24,
+          "controlledBy": 3
+        },
+        {
+          "id": 25,
+          "territory": 25,
+          "controlledBy": null
+        },
+        {
+          "id": 26,
+          "territory": 26,
+          "controlledBy": 2
+        },
+        {
+          "id": 27,
+          "territory": 27,
+          "controlledBy": 1
+        },
+        {
+          "id": 28,
+          "territory": 28,
+          "controlledBy": 7
+        },
+        {
+          "id": 29,
+          "territory": 29,
+          "controlledBy": null
+        },
+        {
+          "id": 30,
+          "territory": 30,
+          "controlledBy": 1
+        },
+        {
+          "id": 31,
+          "territory": 31,
+          "controlledBy": null
+        },
+        {
+          "id": 32,
+          "territory": 32,
+          "controlledBy": 2
+        },
+        {
+          "id": 33,
+          "territory": 33,
+          "controlledBy": null
+        },
+        {
+          "id": 34,
+          "territory": 34,
+          "controlledBy": null
+        },
+        {
+          "id": 35,
+          "territory": 35,
+          "controlledBy": 3
+        },
+        {
+          "id": 36,
+          "territory": 36,
+          "controlledBy": 1
+        },
+        {
+          "id": 37,
+          "territory": 37,
+          "controlledBy": 6
+        },
+        {
+          "id": 38,
+          "territory": 38,
+          "controlledBy": 1
+        },
+        {
+          "id": 39,
+          "territory": 39,
+          "controlledBy": 2
+        },
+        {
+          "id": 40,
+          "territory": 40,
+          "controlledBy": null
+        },
+        {
+          "id": 41,
+          "territory": 41,
+          "controlledBy": 5
+        },
+        {
+          "id": 42,
+          "territory": 42,
+          "controlledBy": null
+        },
+        {
+          "id": 43,
+          "territory": 43,
+          "controlledBy": 2
+        },
+        {
+          "id": 44,
+          "territory": 44,
+          "controlledBy": 5
+        },
+        {
+          "id": 45,
+          "territory": 45,
+          "controlledBy": null
+        },
+        {
+          "id": 46,
+          "territory": 46,
+          "controlledBy": 5
+        },
+        {
+          "id": 47,
+          "territory": 47,
+          "controlledBy": null
+        },
+        {
+          "id": 48,
+          "territory": 48,
+          "controlledBy": 3
+        },
+        {
+          "id": 49,
+          "territory": 49,
+          "controlledBy": 6
+        },
+        {
+          "id": 50,
+          "territory": 50,
+          "controlledBy": 7
+        },
+        {
+          "id": 51,
+          "territory": 51,
+          "controlledBy": null
+        },
+        {
+          "id": 52,
+          "territory": 52,
+          "controlledBy": 7
+        },
+        {
+          "id": 53,
+          "territory": 53,
+          "controlledBy": 4
+        },
+        {
+          "id": 54,
+          "territory": 54,
+          "controlledBy": null
+        },
+        {
+          "id": 55,
+          "territory": 55,
+          "controlledBy": 5
+        },
+        {
+          "id": 56,
+          "territory": 56,
+          "controlledBy": 5
+        },
+        {
+          "id": 57,
+          "territory": 57,
+          "controlledBy": 1
+        },
+        {
+          "id": 58,
+          "territory": 58,
+          "controlledBy": 1
+        },
+        {
+          "id": 59,
+          "territory": 59,
+          "controlledBy": 4
+        },
+        {
+          "id": 60,
+          "territory": 60,
+          "controlledBy": 4
+        },
+        {
+          "id": 61,
+          "territory": 61,
+          "controlledBy": 2
+        },
+        {
+          "id": 62,
+          "territory": 62,
+          "controlledBy": 4
+        },
+        {
+          "id": 63,
+          "territory": 63,
+          "controlledBy": 6
+        },
+        {
+          "id": 64,
+          "territory": 64,
+          "controlledBy": 3
+        },
+        {
+          "id": 65,
+          "territory": 65,
+          "controlledBy": 2
+        },
+        {
+          "id": 66,
+          "territory": 66,
+          "controlledBy": 3
+        },
+        {
+          "id": 67,
+          "territory": 67,
+          "controlledBy": null
+        },
+        {
+          "id": 68,
+          "territory": 68,
+          "controlledBy": 3
+        },
+        {
+          "id": 69,
+          "territory": 69,
+          "controlledBy": 4
+        },
+        {
+          "id": 70,
+          "territory": 70,
+          "controlledBy": 6
+        },
+        {
+          "id": 71,
+          "territory": 71,
+          "controlledBy": 4
+        },
+        {
+          "id": 72,
+          "territory": 72,
+          "controlledBy": 6
+        },
+        {
+          "id": 73,
+          "territory": 73,
+          "controlledBy": null
+        },
+        {
+          "id": 74,
+          "territory": 74,
+          "controlledBy": null
+        },
+        {
+          "id": 75,
+          "territory": 75,
+          "controlledBy": 6
+        }
+      ],
+      "pieceStates": [
+        {
+          "id": 1,
+          "piece": 1,
+          "territory": 21,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 2,
+          "piece": 2,
+          "territory": 24,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 3,
+          "piece": 3,
+          "territory": 26,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 4,
+          "piece": 4,
+          "territory": 28,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 5,
+          "piece": 5,
+          "territory": 30,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 6,
+          "piece": 6,
+          "territory": 35,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 7,
+          "piece": 7,
+          "territory": 36,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 8,
+          "piece": 8,
+          "territory": 38,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 9,
+          "piece": 9,
+          "territory": 39,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 10,
+          "piece": 10,
+          "territory": 41,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 11,
+          "piece": 11,
+          "territory": 46,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 12,
+          "piece": 12,
+          "territory": 49,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 13,
+          "piece": 13,
+          "territory": 50,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 14,
+          "piece": 14,
+          "territory": 53,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 15,
+          "piece": 15,
+          "territory": 56,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 16,
+          "piece": 16,
+          "territory": 60,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 17,
+          "piece": 17,
+          "territory": 63,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 18,
+          "piece": 18,
+          "territory": 64,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 19,
+          "piece": 19,
+          "territory": 65,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 20,
+          "piece": 20,
+          "territory": 71,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 21,
+          "piece": 21,
+          "territory": 72,
+          "namedCoast": null,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        },
+        {
+          "id": 22,
+          "piece": 22,
+          "territory": 75,
+          "namedCoast": 6,
+          "dislodged": false,
+          "dislodgedBy": null,
+          "attackerTerritory": null,
+          "mustRetreat": false
+        }
+      ],
+      "nationStates": [
+        {
+          "id": 1,
+          "user": 7,
+          "nation": 1,
+          "ordersFinalized": null,
+          "numOrdersRemaining": null,
+          "surrendered": false,
+          "supplyDelta": 0,
+          "numBuilds": 0,
+          "numDisbands": 0
+        },
+        {
+          "id": 2,
+          "user": 1,
+          "nation": 2,
+          "ordersFinalized": null,
+          "numOrdersRemaining": null,
+          "surrendered": false,
+          "supplyDelta": 0,
+          "numBuilds": 0,
+          "numDisbands": 0
+        },
+        {
+          "id": 3,
+          "user": 2,
+          "nation": 3,
+          "ordersFinalized": null,
+          "numOrdersRemaining": null,
+          "surrendered": false,
+          "supplyDelta": 0,
+          "numBuilds": 0,
+          "numDisbands": 0
+        },
+        {
+          "id": 4,
+          "user": 3,
+          "nation": 4,
+          "ordersFinalized": null,
+          "numOrdersRemaining": null,
+          "surrendered": false,
+          "supplyDelta": 0,
+          "numBuilds": 0,
+          "numDisbands": 0
+        },
+        {
+          "id": 5,
+          "user": 4,
+          "nation": 5,
+          "ordersFinalized": null,
+          "numOrdersRemaining": null,
+          "surrendered": false,
+          "supplyDelta": 0,
+          "numBuilds": 0,
+          "numDisbands": 0
+        },
+        {
+          "id": 6,
+          "user": 5,
+          "nation": 6,
+          "ordersFinalized": null,
+          "numOrdersRemaining": null,
+          "surrendered": false,
+          "supplyDelta": 0,
+          "numBuilds": 0,
+          "numDisbands": 0
+        },
+        {
+          "id": 7,
+          "user": 6,
+          "nation": 7,
+          "ordersFinalized": null,
+          "numOrdersRemaining": null,
+          "surrendered": false,
+          "supplyDelta": 0,
+          "numBuilds": 0,
+          "numDisbands": 0
+        }
+      ],
+      "orders": []
+    }
+  ],
+  "variant": 1,
+  "pieces": [
+    {
+      "id": 1,
+      "type": "fleet",
+      "nation": 7
+    },
+    {
+      "id": 2,
+      "type": "army",
+      "nation": 3
+    },
+    {
+      "id": 3,
+      "type": "fleet",
+      "nation": 2
+    },
+    {
+      "id": 4,
+      "type": "army",
+      "nation": 7
+    },
+    {
+      "id": 5,
+      "type": "fleet",
+      "nation": 1
+    },
+    {
+      "id": 6,
+      "type": "fleet",
+      "nation": 3
+    },
+    {
+      "id": 7,
+      "type": "fleet",
+      "nation": 1
+    },
+    {
+      "id": 8,
+      "type": "army",
+      "nation": 1
+    },
+    {
+      "id": 9,
+      "type": "army",
+      "nation": 2
+    },
+    {
+      "id": 10,
+      "type": "fleet",
+      "nation": 5
+    },
+    {
+      "id": 11,
+      "type": "army",
+      "nation": 5
+    },
+    {
+      "id": 12,
+      "type": "fleet",
+      "nation": 6
+    },
+    {
+      "id": 13,
+      "type": "army",
+      "nation": 7
+    },
+    {
+      "id": 14,
+      "type": "fleet",
+      "nation": 4
+    },
+    {
+      "id": 15,
+      "type": "army",
+      "nation": 5
+    },
+    {
+      "id": 16,
+      "type": "army",
+      "nation": 4
+    },
+    {
+      "id": 17,
+      "type": "army",
+      "nation": 6
+    },
+    {
+      "id": 18,
+      "type": "army",
+      "nation": 3
+    },
+    {
+      "id": 19,
+      "type": "army",
+      "nation": 2
+    },
+    {
+      "id": 20,
+      "type": "army",
+      "nation": 4
+    },
+    {
+      "id": 21,
+      "type": "army",
+      "nation": 6
+    },
+    {
+      "id": 22,
+      "type": "fleet",
+      "nation": 6
+    }
+  ],
+  "status": "active"
+}

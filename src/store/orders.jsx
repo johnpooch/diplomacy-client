@@ -33,7 +33,9 @@ const ordersSlice = createSlice({
   name: 'order',
   initialState: orderAdapter.getInitialState(),
   reducers: {
+    addOrder: orderAdapter.addOne,
     ordersReceived: orderAdapter.upsertMany,
+    removeOrder: orderAdapter.removeOne,
   },
   extraReducers: {
     // Need to remove orders for this turn and set new ones

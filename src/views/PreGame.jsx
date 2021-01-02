@@ -1,20 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import Form, { FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import Players from '../components/Players';
-import { alertActions } from '../store/alerts';
 import { Button, SecondaryButton } from '../components/Button';
-import { gameActions } from '../store/games';
-import { getDenormalizedPreGame } from '../store/denormalizers';
 import { Grid, GridTemplate } from '../layout';
+
+import { alertActions } from '../store/alerts';
+import { choiceActions } from '../store/choices';
+import { getDenormalizedPreGame } from '../store/denormalizers';
+import { gameActions } from '../store/games';
+import { variantActions } from '../store/variants';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
 const PreGame = (props) => {
-  const { game, joinGame, leaveGame, token } = props;
+  const {
+    game,
+    joinGame,
+    leaveGame,
+    location,
+    prepareBrowseGames,
+    token,
+  } = props;
+
+  useEffect(() => {
+    // This will only be called on initial page load
+    if (!game) {
+      prepareBrowseGames(token);
+    }
+  }, [location.pathname]);
+
+  if (!game) return null;
+
   const { description, userJoined } = game;
 
   const handleSubmit = (e) => {
@@ -59,6 +79,11 @@ const mapStateToProps = (state, { match }) => {
 
 const mapDispatchToProps = (dispatch) => {
   const category = 'success';
+  const prepareBrowseGames = (token) => {
+    dispatch(variantActions.getVariants({ token }));
+    dispatch(gameActions.getGames({ token }));
+    dispatch(choiceActions.getChoices());
+  };
   return {
     joinGame: (token, slug) =>
       dispatch(gameActions.joinGame({ token, slug })).then(({ payload }) => {
@@ -74,6 +99,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(gameActions.getGames({ token }));
         dispatch(alertActions.alertsAdd({ message, category }));
       }),
+    prepareBrowseGames,
   };
 };
 

@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import flags from '../data/standard/flags/flags';
 import { variables } from '../variables';
 import { slugify } from '../utils';
 
 const FlagWrapper = styled.div`
-  border: ${variables.sizes.border}px solid ${variables.colors.darkgray};
+  background: ${variables.colors.darkgray};
   width: ${(props) => variables.flagSizes[props.size]}px;
 `;
 
@@ -14,10 +15,7 @@ const Flag = (props) => {
   return (
     <FlagWrapper size={size}>
       {nation ? (
-        <img
-          src={`/src/data/standard/flags/${slugify(nation.name)}.svg`}
-          alt={`${nation.name} flag`}
-        />
+        <img src={flags[slugify(nation.name)]} alt={`${nation.name} flag`} />
       ) : null}
     </FlagWrapper>
   );

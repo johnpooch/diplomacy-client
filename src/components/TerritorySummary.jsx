@@ -29,7 +29,7 @@ const StyledSpan = styled.span`
   }
 `;
 
-const TerritorySummary = ({ nation, territory }) => {
+const TerritorySummary = ({ territory }) => {
   const { controlledBy, name, supplyCenter } = territory;
   const color = colors.nations[controlledBy];
   const elements = [];
@@ -42,9 +42,11 @@ const TerritorySummary = ({ nation, territory }) => {
           <FontAwesomeIcon icon={faStar} />
         </StyledSpan>
       ) : null}
-      <StyledSpan className="nation" color={color}>
-        ({nation.name})
-      </StyledSpan>
+      {controlledBy ? (
+        <StyledSpan className="nation" color={color}>
+          {controlledBy.name}
+        </StyledSpan>
+      ) : null}
     </p>
   );
 
