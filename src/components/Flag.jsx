@@ -6,7 +6,6 @@ import { variables } from '../variables';
 import { slugify } from '../utils';
 
 const FlagWrapper = styled.div`
-  background: ${variables.colors.darkgray};
   width: ${(props) => variables.flagSizes[props.size]}px;
 `;
 
