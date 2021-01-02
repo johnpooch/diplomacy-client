@@ -38,12 +38,16 @@ const mergeTerritories = (tds, territories, territoryStates) => {
   });
 };
 
-const getDenormalizedTerritories = (s, game, turn) => {
+const getDenormalizedTerritories = (state, game, turn) => {
   const { variant } = game;
-  const territories = territorySelectors.selectByVariantId(s, variant);
-  const territoryStates = territoryStateSelectors.selectByTurnId(s, turn.id);
-  const pieces = pieceSelectors.selectByGameId(s, game.id);
-  const pieceStates = pieceStateSelectors.selectByTurnId(s, turn.id);
+  const nations = nationSelectors.selectByVariantId(state, variant);
+  const pieces = pieceSelectors.selectByGameId(state, game.id);
+  const pieceStates = pieceStateSelectors.selectByTurnId(state, turn.id);
+  const territories = territorySelectors.selectByVariantId(state, variant);
+  const territoryStates = territoryStateSelectors.selectByTurnId(
+    state,
+    turn.id
+  );
 
   const mergedTerritories = mergeTerritories(
     territoryData,
@@ -60,7 +64,12 @@ const getDenormalizedTerritories = (s, game, turn) => {
         mergedPieces.find((p) => p.territory === t.id && !p.mustRetreat) ||
         null;
       if (t.piece) {
-        t.piece = { ...t.piece, x: t.pieceX, y: t.pieceY };
+        t.piece = {
+          ...t.piece,
+          x: t.pieceX,
+          y: t.pieceY,
+        };
+        t.pieceNation = nations.find((n) => t.piece.nation === n.id);
       }
       t.dislodgedPiece =
         mergedPieces.find((p) => p.territory === t.id && p.mustRetreat) || null;
@@ -70,6 +79,9 @@ const getDenormalizedTerritories = (s, game, turn) => {
           x: t.dislodgedPieceX,
           y: t.dislodgedPieceY,
         };
+      }
+      if (t.controlledBy) {
+        t.controlledByNation = nations.find((n) => t.controlledBy === n.id);
       }
     }
   });
