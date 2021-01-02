@@ -19,18 +19,31 @@ import GameInterface from '../game/gameInterface';
 import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
+const HomeNavLinkButton = () => (
+  <NavLinkButton
+    exact
+    to="/"
+    css={{
+      position: 'fixed',
+      top: `${variables.spacing[2]}px`,
+      left: `${variables.spacing[2]}px`,
+    }}
+  >
+    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
+  </NavLinkButton>
+);
 
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
    * The view loads until the game detail data is in the store. */
   const {
     createOrder,
-    // finalizeOrders,
-    // toggleSurrender,
+    finalizeOrders,
     game,
     location,
     prepareGameDetail,
     slug,
+    toggleSurrender,
     token,
   } = props;
 
@@ -67,18 +80,12 @@ const Game = (props) => {
   return (
     <div>
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
-      <Sidebar currentTurn={currentTurn} />
-      <NavLinkButton
-        exact
-        to="/"
-        css={{
-          position: 'fixed',
-          top: `${variables.spacing[2]}px`,
-          left: `${variables.spacing[2]}px`,
-        }}
-      >
-        <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
-      </NavLinkButton>
+      <Sidebar
+        currentTurn={currentTurn}
+        finalizeOrders={finalizeOrders}
+        toggleSurrender={toggleSurrender}
+      />
+      <HomeNavLinkButton />
     </div>
   );
 };

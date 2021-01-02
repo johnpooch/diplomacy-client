@@ -66,7 +66,9 @@ export const HistoryPane = () => {
   return <Pane />;
 };
 
-export const OrdersPane = () => {
+export const OrdersPane = ({ finalizeOrders, toggleSurrender, userNation }) => {
+  const { ordersFinalized, surrender } = userNation;
+
   const drawProposals = [
     {
       id: 1,
@@ -158,7 +160,14 @@ export const OrdersPane = () => {
           <span className="count">2 / 4</span>
         </p>
         {renderOrders()}
-        <Button>Finalize orders</Button>
+        <Button onClick={finalizeOrders}>
+          {ordersFinalized ? `Un-finalize orders` : 'Finalize orders'}
+        </Button>
+        <SecondaryButton
+          onClick={() => toggleSurrender(surrender ? surrender.id : null)}
+        >
+          {ordersFinalized ? `Cancel surrender` : 'Surrender'}
+        </SecondaryButton>
       </section>
     </Pane>
   );
