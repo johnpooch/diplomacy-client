@@ -5,13 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { jsx } from '@emotion/core';
 import { useEffect, useState } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
+
+import { BackButton } from '../components/Button';
+import { drawResponseActions } from '../store/drawResponses';
 import { gameActions, gameSelectors } from '../store/games';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
-import { BackButton } from '../components/Button';
 import { initialGameFormState } from '../game/base';
 import { nationStateActions } from '../store/nationStates';
-import { surrenderActions } from '../store/surrenders';
 import { orderActions } from '../store/orders';
+import { surrenderActions } from '../store/surrenders';
 import { variables } from '../variables';
 import { variantActions } from '../store/variants';
 import Canvas from '../components/Canvas';
@@ -37,6 +39,9 @@ const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
    * The view loads until the game detail data is in the store. */
   const {
+    cancelDrawResponse,
+    setDrawResponse,
+    drawResponseLoading,
     createOrder,
     finalizeOrders,
     game,
@@ -77,15 +82,26 @@ const Game = (props) => {
     currentTurn
   );
 
+  const { userNation } = currentTurn;
+
   return (
     <div>
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
         currentTurn={currentTurn}
-        finalizeOrders={() =>
-          finalizeOrders(token, currentTurn.userNation.nationStateId)
-        }
+        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
+        cancelDrawResponse={(draw, response) =>
+          cancelDrawResponse(token, draw, response)
+        }
+        setDrawResponse={(draw, response) =>
+          setDrawResponse(token, draw, response)
+        }
+        drawResponseLoading={drawResponseLoading}
+        draws={turn.draws}
+        participants={game.participants}
+        userNation={userNation}
+        variant={game.variant}
         // TODO: clean this up
       />
       <HomeNavLinkButton />
@@ -95,13 +111,12 @@ const Game = (props) => {
 
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
-  const { token, user } = state.auth;
+  const { token } = state.auth;
   let game = gameSelectors.selectBySlug(state, slug);
   const gameDetailInStore = game && game.detailLoaded;
-  game = gameDetailInStore
-    ? getDenormalizedGameDetail(state, game.id, user)
-    : null;
-  return { game, slug, token };
+  game = gameDetailInStore ? getDenormalizedGameDetail(state, game.id) : null;
+  const { loading: drawResponseLoading } = state.entities.drawResponses;
+  return { drawResponseLoading, game, slug, token };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -126,7 +141,21 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(orderActions.createOrder({ token, slug, data }));
   };
 
-  return { createOrder, finalizeOrders, prepareGameDetail, toggleSurrender };
+  const cancelDrawResponse = (token, draw, response) => {
+    dispatch(drawResponseActions.cancelDrawResponse({ token, draw, response }));
+  };
+  const setDrawResponse = (token, draw, response) => {
+    dispatch(drawResponseActions.setDrawResponse({ token, draw, response }));
+  };
+
+  return {
+    cancelDrawResponse,
+    setDrawResponse,
+    createOrder,
+    finalizeOrders,
+    prepareGameDetail,
+    toggleSurrender,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

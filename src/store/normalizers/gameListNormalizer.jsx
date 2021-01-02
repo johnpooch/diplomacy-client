@@ -7,12 +7,12 @@ const surrender = new schema.Entity('surrenders', {
 });
 
 const nationState = new schema.Entity('nationStates', {
+  surrenders: [surrender],
   user,
 });
 
 const turn = new schema.Entity('turns', {
   nationStates: [nationState],
-  surrenders: [surrender],
 });
 
 const game = new schema.Entity('games', {

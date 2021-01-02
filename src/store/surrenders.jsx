@@ -1,12 +1,13 @@
 import {
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
 
 import { apiRequest, getOptions, urls } from './api';
 
-import { turnSelectors } from './turns';
+import { nationStateSelectors } from './nationStates';
 
 const cancelSurrender = createAsyncThunk(
   'surrenders/cancelSurrenderStatus',
@@ -64,13 +65,12 @@ const adapterSelectors = surrenderAdapter.getSelectors(
   (state) => state.entities.surrenders
 );
 
-const selectByNationState = (state, { id, user }) => {
-  const turn = turnSelectors.selectByNationStateId(state, id);
-  const surrenders = adapterSelectors.selectAll(state);
-  return surrenders.find(
-    (s) => s.user === user && s.turn === turn.id && s.status === 'pending'
-  );
-};
+const selectByNationState = createSelector(
+  nationStateSelectors.selectById,
+  adapterSelectors.selectAll,
+  (ns, surrenders) =>
+    surrenders.find((s) => s.nationState === ns.id && s.status === 'pending')
+);
 
 export const surrenderSelectors = {
   ...adapterSelectors,
