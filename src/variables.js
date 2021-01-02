@@ -1,3 +1,17 @@
+import {
+  faAnchor,
+  faIndustry,
+  faMapMarkerAlt,
+  faTruckMoving,
+} from '@fortawesome/free-solid-svg-icons';
+
+export const icons = {
+  army: faTruckMoving,
+  fleet: faAnchor,
+  supplyCenter: faIndustry,
+  territory: faMapMarkerAlt,
+};
+
 export const colors = {
   white: '#ffffff',
   base: '#111111',
@@ -27,6 +41,7 @@ export const colors = {
 
 export const flagSizes = {
   small: 30,
+  medium: 80,
 };
 
 export const fontFamilies = {
@@ -57,6 +72,7 @@ export const variables = {
   flagSizes,
   fontFamilies,
   fontSizes,
+  icons,
   sizes,
   spacing,
 };
