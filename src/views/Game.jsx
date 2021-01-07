@@ -20,6 +20,19 @@ import GameInterface from '../game/gameInterface';
 import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
+const HomeNavLinkButton = () => (
+  <NavLinkButton
+    exact
+    to="/"
+    css={{
+      position: 'fixed',
+      top: `${variables.spacing[2]}px`,
+      left: `${variables.spacing[2]}px`,
+    }}
+  >
+    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
+  </NavLinkButton>
+);
 
 const Game = (props) => {
   /* Game board view. Calls the API to grab the detail data for the given game.
@@ -31,11 +44,11 @@ const Game = (props) => {
     createOrder,
     destroyOrder,
     finalizeOrders,
-    toggleSurrender,
     game,
     location,
     prepareGameDetail,
     slug,
+    toggleSurrender,
     token,
   } = props;
 
@@ -88,17 +101,7 @@ const Game = (props) => {
         toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
         variant={game.variant}
       />
-      <NavLinkButton
-        exact
-        to="/"
-        css={{
-          position: 'fixed',
-          top: `${variables.spacing[2]}px`,
-          left: `${variables.spacing[2]}px`,
-        }}
-      >
-        <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
-      </NavLinkButton>
+      <HomeNavLinkButton />
     </div>
   );
 };
@@ -128,11 +131,8 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(nationStateActions.finalizeOrders({ token, id }));
   };
   const toggleSurrender = (token, turn, id) => {
-    if (id) {
-      dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
-    } else {
-      dispatch(surrenderActions.setSurrender({ token, turn }));
-    }
+    if (id) dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
+    else dispatch(surrenderActions.setSurrender({ token, turn }));
   };
   const createOrder = (token, slug, data) => {
     dispatch(orderActions.createOrder({ token, slug, data }));

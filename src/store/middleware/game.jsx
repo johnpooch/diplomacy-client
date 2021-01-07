@@ -58,6 +58,7 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
     } = entities;
     dispatch(pieceActions.piecesReceived(pieces || []));
     dispatch(turnActions.turnDetailsReceived(turns));
+    dispatch(surrenderActions.surrendersReceived(surrenders || []));
     dispatch(nationStateActions.nationStatesReceived(nationStates || []));
     dispatch(
       territoryStateActions.territoryStatesReceived(territoryStates || [])
@@ -65,7 +66,6 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
     dispatch(pieceStateActions.pieceStatesReceived(pieceStates || []));
     dispatch(drawActions.drawsReceived(draws || []));
     dispatch(drawResponseActions.drawResponsesReceived(drawResponses || []));
-    dispatch(surrenderActions.surrendersReceived(surrenders || []));
     dispatch(orderActions.ordersReceived(orders || []));
     dispatch(userActions.usersReceived(users || []));
     next({

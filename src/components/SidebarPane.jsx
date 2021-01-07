@@ -4,7 +4,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { OrderTypes } from '../game/base';
 import { variables } from '../variables';
-import { Button, IconButton } from './Button';
+import { Button, IconButton, SecondaryButton } from './Button';
 import DrawsPane from './Draws';
 
 const StyledPane = styled.div`
@@ -77,10 +77,12 @@ export const OrdersPane = ({
   orders,
   participants,
   setDrawResponse,
+  toggleSurrender,
   userNation,
   variant,
 }) => {
-  const { loading, ordersFinalized, numOrders } = userNation;
+  const { loading, ordersFinalized, numOrders, surrender } = userNation;
+  console.log(surrender);
 
   const renderOrders = () => {
     const elements = [];
@@ -151,6 +153,11 @@ export const OrdersPane = ({
             finalized their orders
           </p>
         ) : null}
+        <SecondaryButton
+          onClick={() => toggleSurrender(surrender ? surrender.id : null)}
+        >
+          {surrender ? `Cancel surrender` : 'Surrender'}
+        </SecondaryButton>
       </section>
     </Pane>
   );
