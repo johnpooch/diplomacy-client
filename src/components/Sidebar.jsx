@@ -3,10 +3,11 @@ import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { BaseButton } from './Button';
 import { variables } from '../variables';
 import Flag from './Flag';
-import { BaseButton } from './Button';
-import { HistoryPane, MessagesPane, OrdersPane } from './SidebarPane';
+import OrdersPane from './SidebarOrdersPane';
+import Pane from './SidebarPane';
 
 const StyledNation = styled.div`
   display: flex;
@@ -149,10 +150,10 @@ const Sidebar = ({
   const renderPane = () => {
     switch (activeTab) {
       case 'messages':
-        return <MessagesPane />;
+        return <Pane />;
 
       case 'history':
-        return <HistoryPane />;
+        return <Pane />;
 
       case 'orders':
         return (

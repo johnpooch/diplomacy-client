@@ -28,8 +28,6 @@ const StyledDiv = styled.div`
 `;
 
 const StyledDrawPanel = styled.div`
-  max-width: 450px;
-  position: absolute;
   background: white;
   padding: 0.5rem;
 `;

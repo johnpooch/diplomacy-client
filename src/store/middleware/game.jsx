@@ -56,17 +56,19 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
       turns,
       users,
     } = entities;
-    dispatch(pieceActions.piecesReceived(pieces || []));
-    dispatch(turnActions.turnDetailsReceived(turns));
-    dispatch(surrenderActions.surrendersReceived(surrenders || []));
+    dispatch(drawActions.drawsReceived(draws || []));
+    dispatch(drawResponseActions.drawResponsesReceived(drawResponses || []));
     dispatch(nationStateActions.nationStatesReceived(nationStates || []));
+    dispatch(nationStateActions.nationStatesReceived(nationStates));
+    dispatch(orderActions.ordersReceived(orders || []));
+    dispatch(pieceActions.piecesReceived(pieces || []));
+    dispatch(pieceStateActions.pieceStatesReceived(pieceStates || []));
+    dispatch(surrenderActions.surrendersReceived(surrenders || []));
     dispatch(
       territoryStateActions.territoryStatesReceived(territoryStates || [])
     );
-    dispatch(pieceStateActions.pieceStatesReceived(pieceStates || []));
-    dispatch(drawActions.drawsReceived(draws || []));
-    dispatch(drawResponseActions.drawResponsesReceived(drawResponses || []));
-    dispatch(orderActions.ordersReceived(orders || []));
+    dispatch(territoryStateActions.territoryStatesReceived(territoryStates));
+    dispatch(turnActions.turnDetailsReceived(turns));
     dispatch(userActions.usersReceived(users || []));
     next({
       type: gameActions.getGameDetail.fulfilled.type,

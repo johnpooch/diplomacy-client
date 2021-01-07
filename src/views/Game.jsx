@@ -5,14 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { jsx } from '@emotion/core';
 import { useEffect, useState } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
+
+import { BackButton } from '../components/Button';
 import { drawResponseActions } from '../store/drawResponses';
 import { gameActions, gameSelectors } from '../store/games';
 import { getDenormalizedGameDetail } from '../store/denormalizers';
-import { BackButton } from '../components/Button';
 import { initialGameFormState } from '../game/base';
 import { nationStateActions } from '../store/nationStates';
-import { surrenderActions } from '../store/surrenders';
 import { orderActions } from '../store/orders';
+import { surrenderActions } from '../store/surrenders';
 import { variables } from '../variables';
 import { variantActions } from '../store/variants';
 import Canvas from '../components/Canvas';
@@ -87,19 +88,22 @@ const Game = (props) => {
     <div>
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
+        currentTurn={currentTurn}
+        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
+        toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
         cancelDrawResponse={(draw, response) =>
           cancelDrawResponse(token, draw, response)
         }
-        currentTurn={currentTurn}
         drawResponseLoading={drawResponseLoading}
-        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         destroyOrder={(id) => destroyOrder(token, slug, id)}
         participants={game.participants}
         setDrawResponse={(draw, response) =>
           setDrawResponse(token, draw, response)
         }
-        toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
+        draws={turn.draws}
+        userNation={userNation}
         variant={game.variant}
+        // TODO: clean this up
       />
       <HomeNavLinkButton />
     </div>
