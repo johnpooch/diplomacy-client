@@ -3,10 +3,11 @@ import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { BaseButton } from './Button';
 import { variables } from '../variables';
 import Flag from './Flag';
-import { BaseButton } from './Button';
-import { HistoryPane, MessagesPane, OrdersPane } from './SidebarPane';
+import OrdersPane from './SidebarOrdersPane';
+import Pane from './SidebarPane';
 
 const StyledNation = styled.div`
   display: flex;
@@ -132,20 +133,44 @@ const StyledSidebar = styled.aside`
   }
 `;
 
-const Sidebar = ({ currentTurn }) => {
+const Sidebar = ({
+  currentTurn,
+  cancelDrawResponse,
+  drawResponseLoading,
+  destroyOrder,
+  finalizeOrders,
+  participants,
+  setDrawResponse,
+  toggleSurrender,
+  variant,
+}) => {
   const [activeTab, setActiveTab] = useState(null);
-  const { userNation } = currentTurn;
+  const { draws, orders, userNation } = currentTurn;
 
   const renderPane = () => {
     switch (activeTab) {
       case 'messages':
-        return <MessagesPane />;
+        return <Pane />;
 
       case 'history':
-        return <HistoryPane />;
+        return <Pane />;
 
       case 'orders':
-        return <OrdersPane />;
+        return (
+          <OrdersPane
+            cancelDrawResponse={cancelDrawResponse}
+            destroyOrder={destroyOrder}
+            draws={draws}
+            drawResponseLoading={drawResponseLoading}
+            finalizeOrders={finalizeOrders}
+            orders={orders}
+            userNation={userNation}
+            participants={participants}
+            setDrawResponse={setDrawResponse}
+            toggleSurrender={toggleSurrender}
+            variant={variant}
+          />
+        );
 
       default:
         return null;

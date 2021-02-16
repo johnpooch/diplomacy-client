@@ -9,6 +9,7 @@ import {
 import { gameSelectors } from './games';
 
 // use string literal to avoid import loop
+// TODO we actually don't need the two way relation between turns and orders
 const LIST_ORDERS_FULFILLED = 'orders/listOrdersStatus/fulfilled';
 const CREATE_ORDER_FULFILLED = 'orders/createOrderStatus/fulfilled';
 
@@ -73,9 +74,15 @@ const selectGameCurrentTurn = createSelector(
   (game, turns) => turns.find((t) => game.current_turn === t.id)
 );
 
+const selectByNationStateId = (state, nationStateId) => {
+  const turns = adapterSelectors.selectAll(state);
+  return turns.find((t) => t.nationStates.includes(nationStateId));
+};
+
 export const turnSelectors = {
   ...adapterSelectors,
   selectGameCurrentTurn,
+  selectByNationStateId,
 };
 
 export default turnSlice.reducer;

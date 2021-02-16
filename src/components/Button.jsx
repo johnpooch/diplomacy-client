@@ -50,8 +50,8 @@ export const TertiaryButton = styled(Button)`
   }
 `;
 
-export const IconButton = ({ icon, size = '1x' }) => (
-  <BaseButton type="button">
+export const IconButton = ({ icon, onClick, size = '1x' }) => (
+  <BaseButton type="button" onClick={onClick}>
     <FontAwesomeIcon className="icon" icon={icon} size={size} />
   </BaseButton>
 );

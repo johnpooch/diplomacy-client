@@ -2,7 +2,12 @@ import { normalize, schema } from 'normalizr';
 
 const user = new schema.Entity('users');
 
+const surrender = new schema.Entity('surrenders', {
+  user,
+});
+
 const nationState = new schema.Entity('nationStates', {
+  surrenders: [surrender],
   user,
 });
 

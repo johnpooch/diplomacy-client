@@ -19,6 +19,10 @@ export const apiRequest = async (url, options, { rejectWithValue }) => {
     if (!response.ok) {
       throw response;
     }
+    // 204 and `response.json()` don't seem to get along
+    if (response.status === 204) {
+      return {};
+    }
     const data = await response.json();
     return data;
   } catch (response) {
@@ -39,7 +43,7 @@ export const urls = {
   GAME_STATE: 'game/<game>',
   JOIN_GAME: 'game/<game>/join',
   CREATE_ORDER: 'game/<game>/order',
-  DESTROY_ORDER: 'game/<game>/order/<pk>',
+  DESTROY_ORDER: 'game/<game>/destroy-order/<pk>',
   LIST_ORDERS: 'game/<pk>/orders',
   RETRIEVE_PRIVATE_NATION_STATE: 'game/<game>/nation-state',
   FINALIZE_ORDERS: 'game/finalize/<pk>',
@@ -47,6 +51,7 @@ export const urls = {
   LIST_VARIANTS: 'variants',
   PASSWORD_RESET: 'password_reset',
   PASSWORD_RESET_CONFIRM: 'password_reset/confirm',
+  DRAW_RESPONSE: 'draw-response/<draw>',
   LOGIN: 'auth/login',
   REGISTER: 'auth/register',
 };
