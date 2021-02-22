@@ -1,3 +1,5 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
 const serviceURI = process.env.SERVICE_URI;
 const re = /:([a-zA-z]+)/g;
 
@@ -45,6 +47,20 @@ export const apiRequest = async (url, options, { rejectWithValue }) => {
     return rejectWithValue(data);
   }
 };
+
+export const apiAction = (urlConf) =>
+  createAsyncThunk(
+    `${urlConf.name}Status`,
+    async ({ token, data, urlParams, queryParams }, thunkApi) => {
+      let url = substituteUrlParams(urlConf.urlPattern, urlParams);
+      const options = getOptions(token, urlConf.method, data);
+      if (queryParams) {
+        const queryParamsString = new URLSearchParams(queryParams).toString();
+        url = url.concat(`?${queryParamsString}`);
+      }
+      return apiRequest(url, options, thunkApi);
+    }
+  );
 
 export const urls = {
   ALL_GAMES: 'games',
