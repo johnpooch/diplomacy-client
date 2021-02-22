@@ -9,3 +9,7 @@
 
 yarn-debug.log*
 yarn-error.log*
+
+# Mock example files
+/src/mocks/handlers.js
+/src/mocks/data/current/
