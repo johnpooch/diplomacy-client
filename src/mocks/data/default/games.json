@@ -1,0 +1,149 @@
+[
+    {
+        "id": 2,
+        "name": "New game",
+        "slug": "new-game",
+        "description": null,
+        "variant": 1,
+        "private": false,
+        "password": null,
+        "orderDeadline": "twenty_four_hours",
+        "retreatDeadline": "twenty_four_hours",
+        "buildDeadline": "twelve_hours",
+        "processOnFinalizedOrders": true,
+        "nationChoiceMode": "random",
+        "numPlayers": 7,
+        "participants": [
+            {
+                "username": "testuser",
+                "id": 7
+            }
+        ],
+        "createdAt": "2021-02-20T17:54:54.433646Z",
+        "createdBy": 7,
+        "initializedAt": null,
+        "status": "pending",
+        "currentTurn": null
+    },
+    {
+        "id": 1,
+        "name": "First turn",
+        "slug": "first-turn",
+        "description": "This game has just started. Test user is playing as England.",
+        "variant": 1,
+        "private": false,
+        "password": null,
+        "orderDeadline": "twenty_four_hours",
+        "retreatDeadline": "twenty_four_hours",
+        "buildDeadline": "twelve_hours",
+        "processOnFinalizedOrders": true,
+        "nationChoiceMode": "random",
+        "numPlayers": 7,
+        "participants": [
+            {
+                "username": "samuelsaunders",
+                "id": 1
+            },
+            {
+                "username": "codycarrillo",
+                "id": 2
+            },
+            {
+                "username": "juliegilmore",
+                "id": 3
+            },
+            {
+                "username": "melissanichols",
+                "id": 4
+            },
+            {
+                "username": "aprilbutler",
+                "id": 5
+            },
+            {
+                "username": "daniellerodriguez",
+                "id": 6
+            },
+            {
+                "username": "testuser",
+                "id": 7
+            }
+        ],
+        "createdAt": "2020-12-17T17:11:43.031625Z",
+        "createdBy": 7,
+        "initializedAt": "2020-07-26T12:59:22.541000Z",
+        "status": "active",
+        "currentTurn": {
+            "id": 1,
+            "year": 1901,
+            "season": "spring",
+            "phase": "Order",
+            "nationStates": [
+                {
+                    "id": 1,
+                    "user": {
+                        "username": "testuser",
+                        "id": 7
+                    },
+                    "nation": 1,
+                    "surrenders": []
+                },
+                {
+                    "id": 2,
+                    "user": {
+                        "username": "samuelsaunders",
+                        "id": 1
+                    },
+                    "nation": 2,
+                    "surrenders": []
+                },
+                {
+                    "id": 3,
+                    "user": {
+                        "username": "codycarrillo",
+                        "id": 2
+                    },
+                    "nation": 3,
+                    "surrenders": []
+                },
+                {
+                    "id": 4,
+                    "user": {
+                        "username": "juliegilmore",
+                        "id": 3
+                    },
+                    "nation": 4,
+                    "surrenders": []
+                },
+                {
+                    "id": 5,
+                    "user": {
+                        "username": "melissanichols",
+                        "id": 4
+                    },
+                    "nation": 5,
+                    "surrenders": []
+                },
+                {
+                    "id": 6,
+                    "user": {
+                        "username": "aprilbutler",
+                        "id": 5
+                    },
+                    "nation": 6,
+                    "surrenders": []
+                },
+                {
+                    "id": 7,
+                    "user": {
+                        "username": "daniellerodriguez",
+                        "id": 6
+                    },
+                    "nation": 7,
+                    "surrenders": []
+                }
+            ],
+            "turnEnd": null
+        }
+    }
+]
