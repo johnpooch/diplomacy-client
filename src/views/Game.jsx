@@ -73,7 +73,7 @@ const Game = (props) => {
   }
 
   const postOrder = () => {
-    createOrder(token, slug, gameForm);
+    createOrder(token, slug, turn.id, gameForm);
   };
 
   const gameInterface = new GameInterface(
@@ -95,7 +95,7 @@ const Game = (props) => {
           cancelDrawResponse(token, draw, response)
         }
         drawResponseLoading={drawResponseLoading}
-        destroyOrder={(id) => destroyOrder(token, slug, id)}
+        destroyOrder={(id) => destroyOrder(token, slug, id, turn.id)}
         participants={game.participants}
         setDrawResponse={(draw, response) =>
           setDrawResponse(token, draw, response)
@@ -121,12 +121,15 @@ const mapStateToProps = (state, { match }) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const prepareGameDetail = (token, slug) => {
-    dispatch(variantActions.getVariants({ token })).then(() => {
-      dispatch(gameActions.getGameDetail({ token, slug })).then(
+  const prepareGameDetail = (token, gameSlug) => {
+    dispatch(variantActions.listVariants({ token })).then(() => {
+      const urlParams = { gameSlug };
+      dispatch(gameActions.getGameDetail({ token, urlParams })).then(
         ({ payload }) => {
-          const { id } = payload.turns.find((t) => t.currentTurn === true);
-          dispatch(orderActions.listOrders({ token, id }));
+          const { id: turnId } = payload.turns.find(
+            (t) => t.currentTurn === true
+          );
+          dispatch(orderActions.listOrders({ token, turnId }));
         }
       );
     });
@@ -138,11 +141,19 @@ const mapDispatchToProps = (dispatch) => {
     if (id) dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
     else dispatch(surrenderActions.setSurrender({ token, turn }));
   };
-  const createOrder = (token, slug, data) => {
-    dispatch(orderActions.createOrder({ token, slug, data }));
+  const createOrder = (token, gameSlug, turnId, data) => {
+    let urlParams = { gameSlug };
+    dispatch(orderActions.createOrder({ token, urlParams, data })).then(() => {
+      urlParams = { turnId };
+      dispatch(orderActions.listOrders({ token, urlParams }));
+    });
   };
-  const destroyOrder = (token, slug, id) => {
-    dispatch(orderActions.destroyOrder({ token, slug, id }));
+  const destroyOrder = (token, gameSlug, orderId, turnId) => {
+    let urlParams = { gameSlug, orderId };
+    dispatch(orderActions.destroyOrder({ token, urlParams })).then(() => {
+      urlParams = { turnId };
+      dispatch(orderActions.listOrders({ token, urlParams }));
+    });
   };
   const cancelDrawResponse = (token, draw, response) => {
     dispatch(drawResponseActions.cancelDrawResponse({ token, draw, response }));
