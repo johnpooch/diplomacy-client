@@ -76,14 +76,7 @@ const StyledTab = styled(BaseButton)`
   }
 `;
 
-const Tab = ({
-  activeTab,
-  icon,
-  label,
-  notificationCount,
-  setActiveTab,
-  type,
-}) => {
+const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
   return (
     <StyledTab
       className="tab"
@@ -98,7 +91,6 @@ const Tab = ({
       title={label}
     >
       <FontAwesomeIcon icon={icon} size="2x" />
-      <Notification count={notificationCount} />
     </StyledTab>
   );
 };
