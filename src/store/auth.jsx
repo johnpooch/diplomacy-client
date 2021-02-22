@@ -1,44 +1,12 @@
 /* eslint-disable no-param-reassign */
 
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import apiActions from './apiActions';
 
-import { apiRequest, getOptions, urls } from './api';
+const { forgotPassword, login, register, resetPassword } = apiActions;
 
 const userInStorage = JSON.parse(localStorage.getItem('user'));
 const tokenInStorage = JSON.parse(localStorage.getItem('token'));
-
-const forgotPassword = createAsyncThunk(
-  'auth/forgotPasswordStatus',
-  async (data, thunkApi) => {
-    const url = urls.PASSWORD_RESET;
-    const options = getOptions(null, 'POST', data);
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const login = createAsyncThunk('auth/loginStatus', async (data, thunkApi) => {
-  const url = urls.LOGIN;
-  const options = getOptions(null, 'POST', data);
-  return apiRequest(url, options, thunkApi);
-});
-
-const register = createAsyncThunk(
-  'auth/registerStatus',
-  async (data, thunkApi) => {
-    const url = urls.REGISTER;
-    const options = getOptions(null, 'POST', data);
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const resetPassword = createAsyncThunk(
-  'auth/resetPasswordStatus',
-  async (data, thunkApi) => {
-    const url = urls.PASSWORD_RESET_CONFIRM;
-    const options = getOptions(null, 'POST', data);
-    return apiRequest(url, options, thunkApi);
-  }
-);
 
 const initialState = userInStorage
   ? {

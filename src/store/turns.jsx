@@ -11,7 +11,6 @@ import { gameSelectors } from './games';
 // use string literal to avoid import loop
 // TODO we actually don't need the two way relation between turns and orders
 const LIST_ORDERS_FULFILLED = 'orders/listOrdersStatus/fulfilled';
-const CREATE_ORDER_FULFILLED = 'orders/createOrderStatus/fulfilled';
 
 const turnAdapter = createEntityAdapter();
 
@@ -47,14 +46,6 @@ const turnSlice = createSlice({
       const { id: turnId } = meta.arg;
       const turn = state.entities[turnId];
       turn.orders = payload.map((o) => o.id);
-      return state;
-    },
-    [CREATE_ORDER_FULFILLED]: (state, { payload }) => {
-      const { oldOrder, ...newOrder } = payload;
-      const { id: turnId } = newOrder.turn;
-      const turn = state.entities[turnId];
-      turn.orders = turn.orders.filter((o) => o !== oldOrder);
-      turn.orders.push(newOrder.id);
       return state;
     },
   },

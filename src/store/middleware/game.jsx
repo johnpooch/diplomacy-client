@@ -19,7 +19,7 @@ const normalizeGames = ({ dispatch }) => (next) => (action) => {
   When games list is received, normalize data and dispatch actions for each entity.
   */
 
-  if (action.type === gameActions.getGames.fulfilled.type) {
+  if (action.type === gameActions.listGames.fulfilled.type) {
     const { entities } = gameListNormalizer(action.payload);
     const { games, nationStates, surrenders, turns, users } = entities;
 

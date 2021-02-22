@@ -1,17 +1,9 @@
 /* eslint-disable no-param-reassign */
 
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import apiActions from './apiActions';
 
-import { apiRequest, getOptions, urls } from './api';
-
-const getChoices = createAsyncThunk(
-  'choices/getChoicesStatus',
-  async (_, thunkApi) => {
-    const url = urls.GAME_FILTER_CHOICES;
-    const options = getOptions();
-    return apiRequest(url, options, thunkApi);
-  }
-);
+const { getGameFilterChoices } = apiActions;
 
 const initialState = { loading: false };
 
@@ -28,13 +20,13 @@ const choicesSlice = createSlice({
     },
   },
   extraReducers: {
-    [getChoices.pending]: (state) => {
+    [getGameFilterChoices.pending]: (state) => {
       state.loading = true;
     },
-    [getChoices.fulfilled]: (_, { payload }) => {
+    [getGameFilterChoices.fulfilled]: (_, { payload }) => {
       return { loading: false, ...payload };
     },
-    [getChoices.rejected]: (state) => {
+    [getGameFilterChoices.rejected]: (state) => {
       state.loading = false;
     },
   },
@@ -42,7 +34,7 @@ const choicesSlice = createSlice({
 
 export const choiceActions = {
   ...choicesSlice.actions,
-  getChoices,
+  getGameFilterChoices,
 };
 
 export default choicesSlice.reducer;

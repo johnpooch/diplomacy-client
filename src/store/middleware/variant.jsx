@@ -11,13 +11,13 @@ const normalizeVariants = ({ dispatch }) => (next) => (action) => {
   entity.
   */
 
-  if (action.type === variantActions.getVariants.fulfilled.type) {
+  if (action.type === variantActions.listVariants.fulfilled.type) {
     const { entities } = variantNormalizer(action.payload);
     const { variants, nations, territories, namedCoasts } = entities;
     dispatch(territoryActions.territoriesReceived(territories));
     dispatch(nationActions.nationsReceived(nations));
     dispatch(namedCoastActions.namedCoastsReceived(namedCoasts));
-    next(variantActions.getVariants.fulfilled(variants));
+    next(variantActions.listVariants.fulfilled(variants));
   } else {
     next(action);
   }

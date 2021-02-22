@@ -1,32 +1,16 @@
 /* eslint-disable no-param-reassign */
 
 import {
-  createAsyncThunk,
   createEntityAdapter,
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
 
-import { apiRequest, getOptions, urls } from './api';
 import { drawSelectors } from './draws';
 
-const setDrawResponse = createAsyncThunk(
-  'draws/setDrawResponseStatus',
-  async ({ token, draw, response }, thunkApi) => {
-    const url = urls.DRAW_RESPONSE.replace('<draw>', draw);
-    const options = getOptions(token, 'POST', { response });
-    return apiRequest(url, options, thunkApi);
-  }
-);
+import apiActions from './apiActions';
 
-const cancelDrawResponse = createAsyncThunk(
-  'draws/cancelDrawResponseStatus',
-  async ({ token, draw, response }, thunkApi) => {
-    const url = `${urls.DRAW_RESPONSE.replace('<draw>', draw)}/${response}`;
-    const options = getOptions(token, 'DELETE');
-    return apiRequest(url, options, thunkApi);
-  }
-);
+const { cancelDrawResponse, setDrawResponse } = apiActions;
 
 const drawResponseAdapter = createEntityAdapter();
 

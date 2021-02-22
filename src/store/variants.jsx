@@ -1,20 +1,8 @@
 /* eslint-disable no-param-reassign */
-import {
-  createAsyncThunk,
-  createEntityAdapter,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import apiActions from './apiActions';
 
-import { apiRequest, getOptions, urls } from './api';
-
-const getVariants = createAsyncThunk(
-  'variants/getVariants',
-  async ({ token }, thunkApi) => {
-    const url = urls.LIST_VARIANTS;
-    const options = getOptions(token);
-    return apiRequest(url, options, thunkApi);
-  }
-);
+const { listVariants } = apiActions;
 
 const variantAdapter = createEntityAdapter();
 
@@ -26,15 +14,15 @@ const variantSlice = createSlice({
     loaded: false,
   }),
   extraReducers: {
-    [getVariants.fulfilled]: (state, action) => {
+    [listVariants.fulfilled]: (state, action) => {
       variantAdapter.setAll(state, action);
       state.loading = false;
       state.loaded = true;
     },
-    [getVariants.pending]: (state) => {
+    [listVariants.pending]: (state) => {
       state.loading = true;
     },
-    [getVariants.rejected]: (state) => {
+    [listVariants.rejected]: (state) => {
       state.loading = false;
     },
   },
@@ -42,7 +30,7 @@ const variantSlice = createSlice({
 
 export const variantActions = {
   ...variantSlice.actions,
-  getVariants,
+  listVariants,
 };
 
 export const variantSelectors = {

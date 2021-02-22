@@ -1,25 +1,17 @@
 /* eslint-disable no-param-reassign */
 
 import {
-  createAsyncThunk,
   createEntityAdapter,
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
 
 import { turnSelectors } from './turns';
-import { apiRequest, getOptions, urls } from './api';
+import apiActions from './apiActions';
+
+const { finalizeOrders } = apiActions;
 
 const SET_SURRENDER_FULFILLED = 'surrenders/setSurrender/fulfilled';
-
-const finalizeOrders = createAsyncThunk(
-  'games/finalizeOrdersStatus',
-  async ({ token, id }, thunkApi) => {
-    const url = urls.FINALIZE_ORDERS.replace('<pk>', id);
-    const options = getOptions(token, 'PATCH', { id });
-    return apiRequest(url, options, thunkApi);
-  }
-);
 
 const nationStateAdapter = createEntityAdapter();
 
