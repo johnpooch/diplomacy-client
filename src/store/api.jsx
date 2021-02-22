@@ -1,4 +1,5 @@
 const serviceURI = process.env.SERVICE_URI;
+const re = /:([a-zA-z]+)/g;
 
 export const getOptions = (token = null, method = 'GET', data = {}) => {
   const headers = { 'Content-Type': 'application/json' };
@@ -10,6 +11,15 @@ export const getOptions = (token = null, method = 'GET', data = {}) => {
     options.body = JSON.stringify(data);
   }
   return options;
+};
+
+const substituteUrlParams = (urlPattern, urlParams) => {
+  const matches = [...urlPattern.matchAll(re)];
+  let newUrl = urlPattern;
+  matches.forEach((m) => {
+    newUrl = newUrl.replace(m[0], urlParams[m[1]]);
+  });
+  return newUrl;
 };
 
 export const apiRequest = async (url, options, { rejectWithValue }) => {
