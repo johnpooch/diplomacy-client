@@ -95,7 +95,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(RouterLoggedOut));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(RouterLoggedOut)
+);
