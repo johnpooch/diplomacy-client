@@ -1,11 +1,11 @@
-import createGameData from './current/createGame.json';
-import gamesData from './current/games.json';
-import gameDetailData from './current/gameDetail.json';
-import gameFilterChoicesData from './current/gameFilterChoices.json';
-import joinGameData from './current/joinGame.json';
-import orderData from './current/orders.json';
-import userData from './current/user.json';
-import variantsData from './current/variants.json';
+import createGameData from './createGame.json';
+import gamesData from './games.json';
+import gameDetailData from './gameDetail.json';
+import gameFilterChoicesData from './gameFilterChoices.json';
+import joinGameData from './joinGame.json';
+import orderData from './orders.json';
+import userData from './user.json';
+import variantsData from './variants.json';
 
 const getCreateGameData = (statusCode) => {
   return statusCode === 201 ? createGameData : null;
