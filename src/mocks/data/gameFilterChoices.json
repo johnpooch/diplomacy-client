@@ -1,0 +1,62 @@
+{
+    "gameStatuses": [
+        [
+            "pending",
+            "Pending"
+        ],
+        [
+            "active",
+            "Active"
+        ],
+        [
+            "ended",
+            "Ended"
+        ]
+    ],
+    "nationChoiceModes": [
+        [
+            "random",
+            "Random"
+        ],
+        [
+            "preference",
+            "Preference"
+        ],
+        [
+            "first_come",
+            "First come first serve"
+        ]
+    ],
+    "deadlines": [
+        [
+            "twelve_hours",
+            "12 hours"
+        ],
+        [
+            "twenty_four_hours",
+            "24 hours"
+        ],
+        [
+            "two_days",
+            "2 days"
+        ],
+        [
+            "three_days",
+            "3 days"
+        ],
+        [
+            "five_days",
+            "5 days"
+        ],
+        [
+            "seven_days",
+            "7 days"
+        ]
+    ],
+    "variants": [
+        [
+            1,
+            "Standard"
+        ]
+    ]
+}

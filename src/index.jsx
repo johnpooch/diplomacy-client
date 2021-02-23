@@ -8,6 +8,12 @@ import { ConnectedRouter } from 'connected-react-router';
 import App from './views/App';
 import globals from './globals';
 import configureStore from './store/store';
+import { worker } from './mocks/browser';
+
+const USE_MOCK_SERVICE_WORKER = false;
+if (USE_MOCK_SERVICE_WORKER) {
+  worker.start();
+}
 
 const history = createBrowserHistory();
 const store = configureStore(history);
