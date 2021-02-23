@@ -21,7 +21,12 @@ const OrdersPane = ({
   participants,
   variant,
 }) => {
-  const { numOrders, ordersFinalized, surrender } = userNation;
+  const {
+    numOrders,
+    numSupplyCenters,
+    ordersFinalized,
+    surrender,
+  } = userNation;
 
   const renderOrders = () => {
     const elements = [];
@@ -31,6 +36,7 @@ const OrdersPane = ({
           <Order
             aux={item.aux ? item.aux.name : null}
             destroyOrder={() => destroyOrder(item.id)}
+            loading={item.loading}
             target={item.target ? item.target.name : null}
             source={item.source.name}
             pieceType={item.source.piece.type}
@@ -51,13 +57,10 @@ const OrdersPane = ({
         <ul>
           <li>
             <Status
-              count={3}
+              count={numSupplyCenters}
               type="supplyCenter"
               label="supply centers controlled"
             />
-          </li>
-          <li>
-            <Status count={2} type="territory" label="territories controlled" />
           </li>
         </ul>
       </section>
@@ -69,7 +72,7 @@ const OrdersPane = ({
           </span>
         </p>
         {renderOrders()}
-        <Button onClick={finalizeOrders}>
+        <Button onClick={finalizeOrders} disabled={userNation.loading}>
           {ordersFinalized ? `Un-finalize orders` : 'Finalize orders'}
         </Button>
         <SecondaryButton
@@ -120,6 +123,9 @@ const StyledOrders = styled.ul`
     grid-template-columns: 20px auto 20px;
     align-items: center;
   }
+  .disabled {
+    color: gray;
+  }
 `;
 
 const HoldOrderText = ({ source, type }) => {
@@ -152,7 +158,15 @@ const AuxOrderText = ({ aux, source, target, type }) => {
   );
 };
 
-const Order = ({ aux, destroyOrder, pieceType, source, target, type }) => {
+const Order = ({
+  aux,
+  destroyOrder,
+  loading,
+  pieceType,
+  source,
+  target,
+  type,
+}) => {
   let orderText = null;
   if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(type)) {
     orderText = <MoveOrderText source={source} target={target} type={type} />;
@@ -165,11 +179,12 @@ const Order = ({ aux, destroyOrder, pieceType, source, target, type }) => {
       <HoldOrderText aux={aux} source={source} target={target} type={type} />
     );
   }
+  const className = loading ? 'order disabled' : 'order';
   return (
-    <div className="order">
+    <div className={className}>
       <FontAwesomeIcon className="icon" icon={variables.icons[pieceType]} />{' '}
       {orderText}
-      <IconButton icon={faTimes} onClick={destroyOrder} />
+      {loading ? null : <IconButton icon={faTimes} onClick={destroyOrder} />}
     </div>
   );
 };
