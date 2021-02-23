@@ -1,61 +1,8 @@
 /* eslint-disable no-param-reassign */
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import apiActions from './apiActions';
 
-import {
-  createAsyncThunk,
-  createEntityAdapter,
-  createSlice,
-} from '@reduxjs/toolkit';
-
-import { apiRequest, getOptions, urls } from './api';
-
-const createGame = createAsyncThunk(
-  'games/createGameStatus',
-  async ({ token, data }, thunkApi) => {
-    const url = urls.CREATE_GAME;
-    const options = getOptions(token, 'POST', data);
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const joinGame = createAsyncThunk(
-  'games/joinGameStatus',
-  async ({ token, slug }, thunkApi) => {
-    const url = urls.JOIN_GAME.replace('<game>', slug);
-    const options = getOptions(token, 'PATCH');
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const leaveGame = createAsyncThunk(
-  'games/joinGameStatus',
-  async ({ token, slug }, thunkApi) => {
-    const url = urls.JOIN_GAME.replace('<game>', slug);
-    const options = getOptions(token, 'PATCH');
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const getGameDetail = createAsyncThunk(
-  'games/getGameDetailStatus',
-  async ({ token, slug }, thunkApi) => {
-    const url = urls.GAME_STATE.replace('<game>', slug);
-    const options = getOptions(token);
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const getGames = createAsyncThunk(
-  'games/getGamesStatus',
-  async ({ token, filters }, thunkApi) => {
-    let url = urls.ALL_GAMES;
-    if (filters) {
-      const queryParams = new URLSearchParams(filters).toString();
-      url = url.concat(`?${queryParams}`);
-    }
-    const options = getOptions(token);
-    return apiRequest(url, options, thunkApi);
-  }
-);
+const { createGame, getGameDetail, joinGame, listGames } = apiActions;
 
 const gameAdapter = createEntityAdapter({
   // Sort games by createdAt
@@ -103,10 +50,10 @@ const gameSlice = createSlice({
       const changes = { ...payload, loading: false, detailLoaded: true };
       gameAdapter.upsertOne(state, changes);
     },
-    [getGames.pending]: (state) => {
+    [listGames.pending]: (state) => {
       state.loading = true;
     },
-    [getGames.fulfilled]: (state) => {
+    [listGames.fulfilled]: (state) => {
       state.loading = false;
       state.browseGamesLoaded = true;
     },
@@ -134,7 +81,6 @@ export const gameActions = {
   ...gameSlice.actions,
   createGame,
   getGameDetail,
-  getGames,
+  listGames,
   joinGame,
-  leaveGame,
 };

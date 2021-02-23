@@ -1,40 +1,12 @@
 import {
-  createAsyncThunk,
   createEntityAdapter,
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-
 import { turnSelectors } from './turns';
+import apiActions from './apiActions';
 
-import { apiRequest, getOptions, urls } from './api';
-
-const listOrders = createAsyncThunk(
-  'orders/listOrdersStatus',
-  async ({ token, id }, thunkApi) => {
-    const url = urls.LIST_ORDERS.replace('<pk>', id);
-    const options = getOptions(token);
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const createOrder = createAsyncThunk(
-  'orders/createOrderStatus',
-  async ({ token, slug, data }, thunkApi) => {
-    const url = urls.CREATE_ORDER.replace('<game>', slug);
-    const options = getOptions(token, 'POST', data);
-    return apiRequest(url, options, thunkApi);
-  }
-);
-
-const destroyOrder = createAsyncThunk(
-  'orders/destroyOrderStatus',
-  async ({ token, slug, id }, thunkApi) => {
-    const url = urls.DESTROY_ORDER.replace('<game>', slug).replace('<pk>', id);
-    const options = getOptions(token, 'DELETE');
-    return apiRequest(url, options, thunkApi);
-  }
-);
+const { createOrder, destroyOrder, listOrders } = apiActions;
 
 const orderAdapter = createEntityAdapter();
 
@@ -48,16 +20,17 @@ const ordersSlice = createSlice({
   },
   extraReducers: {
     // Need to remove orders for this turn and set new ones
-    [listOrders.fulfilled]: orderAdapter.upsertMany,
-    [createOrder.fulfilled]: (state, { payload }) => {
-      const { oldOrder, ...newOrder } = payload;
-      orderAdapter.removeOne(state, oldOrder);
-      orderAdapter.addOne(state, newOrder);
+    [destroyOrder.pending]: (state, { meta }) => {
+      const { id } = meta.arg;
+      const changes = { loading: true };
+      orderAdapter.updateOne(state, { id, changes });
     },
-    [destroyOrder.fulfilled]: (state, { meta }) => {
-      const { arg } = meta;
-      const { id } = arg;
-      orderAdapter.removeOne(state, id);
+    [listOrders.fulfilled]: (state, { payload }) => {
+      const changes = payload.map((o) => {
+        o.loading = false;
+        return o;
+      });
+      orderAdapter.upsertMany(state, changes);
     },
   },
 });

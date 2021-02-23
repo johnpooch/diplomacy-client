@@ -54,26 +54,27 @@ const mapDispatchToProps = (dispatch, { history }) => {
           }
         }
       ),
-    login: (setErrors, username, password) =>
-      dispatch(authActions.login({ username, password })).then(
-        ({ payload }) => {
+    login: (setErrors, username, password) => {
+      const data = { username, password };
+      dispatch(authActions.login({ data })).then(({ payload }) => {
+        setErrors(payload);
+      });
+    },
+    register: (setErrors, username, email, password) => {
+      const data = { username, email, password };
+      dispatch(authActions.register({ data })).then(({ error, payload }) => {
+        const message = 'Account created! Log in to continue.';
+        if (error) {
           setErrors(payload);
+        } else {
+          dispatch(alertActions.alertsAdd({ message, category, pending }));
+          history.push('/login');
         }
-      ),
-    register: (setErrors, username, email, password) =>
-      dispatch(authActions.register({ username, email, password })).then(
-        ({ error, payload }) => {
-          const message = 'Account created! Log in to continue.';
-          if (error) {
-            setErrors(payload);
-          } else {
-            dispatch(alertActions.alertsAdd({ message, category, pending }));
-            history.push('/login');
-          }
-        }
-      ),
-    resetPassword: (setErrors, token, password) =>
-      dispatch(authActions.resetPassword({ token, password })).then(
+      });
+    },
+    resetPassword: (setErrors, token, password) => {
+      const data = { password };
+      dispatch(authActions.resetPassword({ token, data })).then(
         ({ error, payload }) => {
           const message = 'Password updated!';
           if (error) {
@@ -83,7 +84,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
             history.push('/login');
           }
         }
-      ),
+      );
+    },
   };
 };
 

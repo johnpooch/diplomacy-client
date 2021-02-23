@@ -12,7 +12,7 @@ import { variantActions } from '../store/variants';
 const BrowseGames = (props) => {
   const {
     choices,
-    getGames,
+    listGames,
     games,
     location,
     prepareBrowseGames,
@@ -27,7 +27,7 @@ const BrowseGames = (props) => {
   }, [location.pathname]);
 
   const filterGames = (filters) => {
-    getGames(token, filters);
+    listGames(token, filters);
   };
 
   return (
@@ -54,14 +54,14 @@ const mapStateToProps = (state, { location }) => {
 
 const mapDispatchToProps = (dispatch) => {
   const prepareBrowseGames = (token) => {
-    dispatch(variantActions.getVariants({ token }));
-    dispatch(gameActions.getGames({ token }));
-    dispatch(choiceActions.getChoices());
+    dispatch(variantActions.listVariants({ token }));
+    dispatch(gameActions.listGames({ token }));
+    dispatch(choiceActions.getGameFilterChoices());
   };
-  const getGames = (token, filters) =>
-    dispatch(gameActions.getGames({ token, filters }));
+  const listGames = (token, queryParams) =>
+    dispatch(gameActions.listGames({ token, queryParams }));
 
-  return { getGames, prepareBrowseGames };
+  return { listGames, prepareBrowseGames };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BrowseGames);

@@ -17,14 +17,7 @@ import { variantActions } from '../store/variants';
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
 const PreGame = (props) => {
-  const {
-    game,
-    joinGame,
-    leaveGame,
-    location,
-    prepareBrowseGames,
-    token,
-  } = props;
+  const { game, joinGame, location, prepareBrowseGames, token } = props;
 
   useEffect(() => {
     // This will only be called on initial page load
@@ -39,11 +32,7 @@ const PreGame = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (userJoined) {
-      leaveGame(token, game.slug);
-    } else {
-      joinGame(token, game.slug);
-    }
+    joinGame(token, game.slug, Boolean(!userJoined));
   };
 
   const formText = userJoined
@@ -80,25 +69,24 @@ const mapStateToProps = (state, { match }) => {
 const mapDispatchToProps = (dispatch) => {
   const category = 'success';
   const prepareBrowseGames = (token) => {
-    dispatch(variantActions.getVariants({ token }));
-    dispatch(gameActions.getGames({ token }));
-    dispatch(choiceActions.getChoices());
+    dispatch(variantActions.listVariants({ token }));
+    dispatch(gameActions.listGames({ token }));
+    dispatch(choiceActions.getGameFilterChoices());
   };
   return {
-    joinGame: (token, slug) =>
-      dispatch(gameActions.joinGame({ token, slug })).then(({ payload }) => {
-        const { name } = payload;
-        const message = `You have joined ${name}!`;
-        dispatch(gameActions.getGames({ token }));
-        dispatch(alertActions.alertsAdd({ message, category }));
-      }),
-    leaveGame: (token, slug) =>
-      dispatch(gameActions.leaveGame({ token, slug })).then(({ payload }) => {
-        const { name } = payload;
-        const message = `You have left ${name}.`;
-        dispatch(gameActions.getGames({ token }));
-        dispatch(alertActions.alertsAdd({ message, category }));
-      }),
+    joinGame: (token, gameSlug, joining) => {
+      const urlParams = { gameSlug };
+      dispatch(gameActions.joinGame({ token, urlParams })).then(
+        ({ payload }) => {
+          const { name } = payload;
+          const message = joining
+            ? `You have joined ${name}!`
+            : `You have left ${name}.`;
+          dispatch(gameActions.listGames({ token }));
+          dispatch(alertActions.alertsAdd({ message, category }));
+        }
+      );
+    },
     prepareBrowseGames,
   };
 };

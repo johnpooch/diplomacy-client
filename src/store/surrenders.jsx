@@ -5,16 +5,17 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import { apiRequest, getOptions, urls } from './api';
+import { apiRequest, getOptions } from './api';
+import { urlConf } from '../urls';
 
 import { nationStateSelectors } from './nationStates';
 
 const cancelSurrender = createAsyncThunk(
   'surrenders/cancelSurrenderStatus',
   async ({ token, turn, id }, thunkApi) => {
-    let url = urls.SURRENDER.replace('<turn>', turn);
+    let url = urlConf.toggleSurrender.urlPattern.replace(':turnId', turn);
     url = `${url}/${id}`;
-    const options = getOptions(token, 'PATCH', {});
+    const options = getOptions(token, urlConf.toggleSurrender.method, {});
     return apiRequest(url, options, thunkApi);
   }
 );
@@ -22,8 +23,8 @@ const cancelSurrender = createAsyncThunk(
 const setSurrender = createAsyncThunk(
   'surrenders/setSurrenderStatus',
   async ({ token, turn }, thunkApi) => {
-    const url = urls.SURRENDER.replace('<turn>', turn);
-    const options = getOptions(token, 'POST', {});
+    const url = urlConf.toggleSurrender.urlPattern.replace(':turnId', turn);
+    const options = getOptions(token, urlConf.toggleSurrender.method, {});
     return apiRequest(url, options, thunkApi);
   }
 );
@@ -55,7 +56,6 @@ const surrenderSlice = createSlice({
       const changes = { loading: false };
       surrenderAdapter.updateOne(state, { id, changes });
     },
-    [setSurrender.fulfilled]: surrenderAdapter.addOne,
   },
 });
 

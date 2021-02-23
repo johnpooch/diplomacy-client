@@ -73,7 +73,7 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(pieceActions.removePiece(id));
   };
   const prepareSandbox = (token) => {
-    dispatch(variantActions.getVariants({ token })).then(() => {
+    dispatch(variantActions.listVariants({ token })).then(() => {
       dispatch(gameActions.getGameDetail.fulfilled(sandboxGameData));
     });
   };
