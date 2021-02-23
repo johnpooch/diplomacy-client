@@ -73,9 +73,6 @@ const Navigation = (props) => {
         <NavLink exact to="/create-game">
           Create game
         </NavLink>
-        <NavLink exact to="/sandbox">
-          Sandbox
-        </NavLink>
       </nav>
       <Logo />
       <nav className="user-nav">
