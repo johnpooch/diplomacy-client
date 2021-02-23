@@ -4,7 +4,6 @@ A client for [@johnpooch](https://github.com/johnpooch)'s Diplomacy service: htt
 
 ## Setting up a development environment
 
-- Run `make` from the project root directory
 - Make sure you have [Yarn](https://classic.yarnpkg.com/en/docs/install) installed
 - Clone repo and enter directory
 - `yarn install`
