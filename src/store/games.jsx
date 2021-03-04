@@ -58,6 +58,10 @@ const gameSlice = createSlice({
       state.browseGamesLoaded = true;
     },
     [getGameDetail.rejected]: (state) => setLoading(state, false),
+    [listGames.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
   },
 });
 

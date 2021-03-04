@@ -22,8 +22,9 @@ const variantSlice = createSlice({
     [listVariants.pending]: (state) => {
       state.loading = true;
     },
-    [listVariants.rejected]: (state) => {
+    [listVariants.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.error = payload;
     },
   },
 });

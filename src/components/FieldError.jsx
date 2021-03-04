@@ -5,7 +5,11 @@ const FieldError = ({ error }) => {
   const errorDivs = error.map((e) => {
     return <div key={e}>{e}</div>;
   });
-  return <div className="field-error">{errorDivs}</div>;
+  return (
+    <div className="field-error" role="alert">
+      {errorDivs}
+    </div>
+  );
 };
 
 export default FieldError;

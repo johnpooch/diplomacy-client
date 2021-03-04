@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
+import { infoMessages } from '../copy';
 import Form, { FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import Players from '../components/Players';
@@ -36,7 +37,7 @@ const PreGame = (props) => {
   };
 
   const formText = userJoined
-    ? `You have already joined this game. The game will begin once all players have joined.`
+    ? infoMessages.alreadyJoinedGame
     : `You are not currently part of this game.`;
 
   return (

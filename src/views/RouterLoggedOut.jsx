@@ -6,32 +6,38 @@ import ForgotPassword from './ForgotPassword';
 import Login from './Login';
 import Register from './Register';
 import ResetPassword from './ResetPassword';
+import { successMessages } from '../copy';
 import { alertActions } from '../store/alerts';
 import { authActions } from '../store/auth';
+import { errorActions } from '../store/errors';
 
 const RouterLoggedOut = (props) => {
-  const { forgotPassword, login, register, resetPassword } = props;
+  const { errors, forgotPassword, login, register, resetPassword } = props;
   return (
     <Switch>
       <Route
         exact
         path={['/', '/login']}
-        component={() => <Login onAuth={login} />}
+        component={() => <Login onAuth={login} errors={errors} />}
       />
       <Route
         exact
         path="/register"
-        component={() => <Register onAuth={register} />}
+        component={() => <Register onAuth={register} errors={errors} />}
       />
       <Route
         exact
         path="/forgot-password"
-        component={() => <ForgotPassword onAuth={forgotPassword} />}
+        component={() => (
+          <ForgotPassword onAuth={forgotPassword} errors={errors} />
+        )}
       />
       <Route
         exact
         path="/reset-password"
-        component={() => <ResetPassword onAuth={resetPassword} />}
+        component={() => (
+          <ResetPassword onAuth={resetPassword} errors={errors} />
+        )}
       />
       <Redirect to="/" />
     </Switch>
@@ -42,43 +48,46 @@ const mapDispatchToProps = (dispatch, { history }) => {
   const category = 'success';
   const pending = true;
   return {
-    forgotPassword: (setErrors, email) =>
-      dispatch(authActions.forgotPassword({ email })).then(
+    forgotPassword: (email) => {
+      const data = { email };
+      dispatch(authActions.resetPassword({ data })).then(
         ({ error, payload }) => {
-          const message = `Thanks! Please check ${email} for a link to reset your password.`;
           if (error) {
-            setErrors(payload);
+            dispatch(errorActions.addError(payload));
           } else {
+            const template = successMessages.passwordResetLinkSent;
+            const message = template.replace('%s', email);
             dispatch(alertActions.alertsAdd({ message, category, pending }));
             history.push('/login');
           }
         }
-      ),
-    login: (setErrors, username, password) => {
+      );
+    },
+    login: (username, password) => {
       const data = { username, password };
       dispatch(authActions.login({ data })).then(({ payload }) => {
-        setErrors(payload);
+        dispatch(errorActions.addError(payload));
       });
     },
-    register: (setErrors, username, email, password) => {
+    register: (username, email, password) => {
       const data = { username, email, password };
       dispatch(authActions.register({ data })).then(({ error, payload }) => {
-        const message = 'Account created! Log in to continue.';
         if (error) {
-          setErrors(payload);
+          dispatch(errorActions.addError(payload));
         } else {
+          const message = successMessages.accountCreated;
           dispatch(alertActions.alertsAdd({ message, category, pending }));
           history.push('/login');
         }
       });
     },
-    resetPassword: (setErrors, token, password) => {
+    resetPassword: (token, password) => {
       const data = { password };
-      dispatch(authActions.resetPassword({ token, data })).then(
+      dispatch(authActions.resetPasswordConfirm({ token, data })).then(
         ({ error, payload }) => {
-          const message = 'Password updated!';
+          const message = successMessages.passwordUpdated;
           if (error) {
-            setErrors(payload);
+            dispatch(errorActions.addError(payload));
           } else {
             dispatch(alertActions.alertsAdd({ message, category, pending }));
             history.push('/login');
@@ -92,6 +101,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.auth.loggedIn,
+    errors: state.errors,
   };
 };
 

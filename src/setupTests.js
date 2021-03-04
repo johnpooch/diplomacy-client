@@ -4,5 +4,4 @@ import fetchMock from 'jest-fetch-mock';
 
 configure({ adapter: new Adapter() });
 
-// Don't use real fetch for all tests
-fetchMock.enableMocks();
+fetchMock.disableMocks();
