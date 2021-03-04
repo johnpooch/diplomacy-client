@@ -79,7 +79,7 @@
     "build": "webpack --config webpack.prod.js && gulp",
     "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
     "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
-    "test": "jest --watchAll"
+    "test": "jest"
   },
   "browserslist": [
     "last 1 version",
