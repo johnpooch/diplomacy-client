@@ -1,7 +1,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { Button, SecondaryButton, IconButton } from './Button';
 import { OrderTypes } from '../game/base';
 import { variables } from '../variables';

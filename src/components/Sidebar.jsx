@@ -2,7 +2,7 @@ import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { BaseButton } from './Button';
 import { variables } from '../variables';
 import Flag from './Flag';

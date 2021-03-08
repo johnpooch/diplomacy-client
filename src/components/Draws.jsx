@@ -1,7 +1,7 @@
 import React from 'react';
 import { faCheck, faStar, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import { variables } from '../variables';
 import { SecondaryButton } from './Button';

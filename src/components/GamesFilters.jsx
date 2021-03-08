@@ -1,13 +1,11 @@
-/** @jsx jsx */
+import React, { useState } from 'react';
 import {
   faChevronDown,
   faChevronUp,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { jsx } from '@emotion/core';
-import { useState } from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import Select from './Select';
 import useForm from '../hooks/useForm';

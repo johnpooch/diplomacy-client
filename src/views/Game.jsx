@@ -1,9 +1,7 @@
-/** @jsx jsx */
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { jsx } from '@emotion/core';
-import { useEffect, useState } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 
 import { BackButton } from '../components/Button';

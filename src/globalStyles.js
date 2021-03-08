@@ -1,8 +1,8 @@
-import { css } from '@emotion/core';
+import { createGlobalStyle } from 'styled-components';
 
 import { variables } from './variables';
 
-export default css`
+export default createGlobalStyle`
   * {
     box-sizing: border-box;
   }

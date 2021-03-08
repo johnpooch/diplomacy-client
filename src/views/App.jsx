@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { ThemeProvider } from '@emotion/react';
+import { ThemeProvider } from 'styled-components';
 
 import RouterLoggedIn from './RouterLoggedIn';
 import RouterLoggedOut from './RouterLoggedOut';
