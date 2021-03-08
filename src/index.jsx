@@ -5,7 +5,6 @@ import { createBrowserHistory } from 'history';
 import { ConnectedRouter } from 'connected-react-router';
 
 import App from './views/App';
-import GlobalStyles from './globalStyles';
 import configureStore from './store/store';
 import { worker } from './mocks/browser';
 
@@ -20,7 +19,6 @@ const store = configureStore(history);
 const app = (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <GlobalStyles />
       <App />
     </ConnectedRouter>
   </Provider>
