@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
 
 import RouterLoggedIn from './RouterLoggedIn';
 import RouterLoggedOut from './RouterLoggedOut';
 
 import Alerts from '../components/Alerts';
+import { theme } from '../theme';
 
 import { alertActions, alertSelectors } from '../store/alerts';
 
@@ -19,12 +21,11 @@ const App = (props) => {
   }, [location.pathname]);
 
   const router = loggedIn ? <RouterLoggedIn /> : <RouterLoggedOut />;
-
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Alerts alerts={alerts} onClick={alertsClear} />
       {router}
-    </div>
+    </ThemeProvider>
   );
 };
 

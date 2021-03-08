@@ -27,7 +27,7 @@ export const colors = {
     // germany
     3: '#777777',
     // austria-hungary
-    4: '#E69F00',
+    4: '#e69f00',
     // italy
     5: '#2ecc40',
     // russia

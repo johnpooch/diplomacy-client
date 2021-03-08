@@ -1,43 +1,47 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { darken, lighten } from 'polished';
+import { useTheme } from '@emotion/react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { BaseButton } from './Button';
-import { colors, sizes, spacing, fontSizes } from '../variables';
 
 const StyledAlert = styled.div`
   align-items: center;
-  background: ${(props) => lighten(0.4, colors[props.category])};
-  border-top: ${sizes.border}px solid
-    ${(props) => lighten(0.2, colors[props.category])};
-  color: ${(props) => colors[props.category]};
+  background: ${(p) => p.theme.colors.status[p.category].background};
+  border-bottom: ${(p) =>
+    `${p.theme.borderWidths[0]} solid ${
+      p.theme.colors.status[p.category].text
+    }`};
+  color: ${(p) => p.theme.colors.status[p.category].text};
   display: grid;
-  font-size: ${fontSizes.sans[2]}px;
-  grid-column-gap: ${spacing[4]}px;
+  font-size: ${(p) => p.theme.fontSizes[2]};
+  grid-column-gap: ${(p) => p.theme.space[4]};
   grid-template-columns: 1fr auto;
 
   p {
-    padding: ${spacing[2]}px;
+    padding: ${(p) => p.theme.space[2]};
   }
 
   button {
-    color: ${(props) => colors[props.category]};
-    min-width: ${sizes.input}px;
-    height: ${sizes.input}px;
+    color: ${(p) => p.theme.colors.status[p.category].text};
+    min-width: ${(p) => p.theme.sizes.inputMinSize};
+    min-height: ${(p) => p.theme.sizes.inputMinSize};
+    border-radius: 0;
 
     &:hover {
-      color: ${(props) => darken(0.2, colors[props.category])};
+      background: ${(p) => p.theme.colors.status[p.category].text};
+      color: ${(p) => p.theme.colors.status[p.category].background};
     }
   }
 `;
 
 export const Alert = (props) => {
   const { text, category, id, onClick } = props;
+  const theme = useTheme();
   if (!text) return null;
   return (
-    <StyledAlert category={category}>
+    <StyledAlert category={category} theme={theme}>
       <p>{text}</p>
       <BaseButton
         type="button"
