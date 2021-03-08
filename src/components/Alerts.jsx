@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
-import { useTheme } from '@emotion/react';
+import styled from 'styled-components';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -38,10 +37,9 @@ const StyledAlert = styled.div`
 
 export const Alert = (props) => {
   const { text, category, id, onClick } = props;
-  const theme = useTheme();
   if (!text) return null;
   return (
-    <StyledAlert category={category} theme={theme}>
+    <StyledAlert category={category}>
       <p>{text}</p>
       <BaseButton
         type="button"

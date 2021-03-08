@@ -1,6 +1,5 @@
-/** @jsx jsx */
-import styled from '@emotion/styled';
-import { jsx } from '@emotion/core';
+import React from 'react';
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 import { variables } from '../variables';

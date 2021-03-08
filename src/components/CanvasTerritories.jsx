@@ -1,8 +1,7 @@
-/** @jsx jsx */
+import React, { useEffect, useState } from 'react';
+
 import { darken } from 'polished';
-import { jsx } from '@emotion/core';
 import { Path, Group } from 'react-konva';
-import { useEffect, useState } from 'react';
 
 import stripes from '../img/stripes.svg';
 import { variables } from '../variables';

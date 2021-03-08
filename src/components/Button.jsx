@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { variables } from '../variables';
 
 export const BaseButton = styled.button`
