@@ -38,7 +38,7 @@ const createOrder = {
 const destroyOrder = {
   name: 'destroyOrder',
   method: methods.DELETE,
-  urlPattern: 'game/:gameSlug/order/:orderId',
+  urlPattern: 'game/order/:orderId',
 };
 const listOrders = {
   name: 'listOrders',

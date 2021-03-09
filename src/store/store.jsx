@@ -2,6 +2,7 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { routerMiddleware } from 'connected-react-router';
 
 import reducer from './reducer';
+import errorMiddleware from './middleware/error';
 import gameMiddleware from './middleware/game';
 import orderMiddleware from './middleware/order';
 import pieceMiddleware from './middleware/piece';
@@ -13,6 +14,7 @@ export default function (history) {
     middleware: [
       routerMiddleware(history), // for dispatching history actions
       ...getDefaultMiddleware(),
+      ...errorMiddleware,
       ...gameMiddleware,
       ...orderMiddleware,
       ...pieceMiddleware,

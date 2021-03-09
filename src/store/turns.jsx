@@ -70,10 +70,17 @@ const selectByNationStateId = (state, nationStateId) => {
   return turns.find((t) => t.nationStates.includes(nationStateId));
 };
 
+const selectByGame = createSelector(
+  (_, id) => id,
+  adapterSelectors.selectAll,
+  (id, turns) => turns.filter((t) => t.game === id)
+);
+
 export const turnSelectors = {
   ...adapterSelectors,
   selectGameCurrentTurn,
   selectByNationStateId,
+  selectByGame,
 };
 
 export default turnSlice.reducer;

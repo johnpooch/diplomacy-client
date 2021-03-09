@@ -11,14 +11,22 @@ import { Grid, GridTemplate } from '../layout';
 
 import { alertActions } from '../store/alerts';
 import { choiceActions } from '../store/choices';
-import { getDenormalizedPreGame } from '../store/denormalizers';
-import { gameActions } from '../store/games';
+import { gameActions, gameSelectors } from '../store/games';
+import { userSelectors } from '../store/users';
 import { variantActions } from '../store/variants';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
 const PreGame = (props) => {
-  const { game, joinGame, location, prepareBrowseGames, token } = props;
+  const {
+    game,
+    joinGame,
+    location,
+    prepareBrowseGames,
+    participants,
+    token,
+    userJoined,
+  } = props;
 
   useEffect(() => {
     // This will only be called on initial page load
@@ -29,7 +37,7 @@ const PreGame = (props) => {
 
   if (!game) return null;
 
-  const { description, userJoined } = game;
+  const { description } = game;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,13 +46,13 @@ const PreGame = (props) => {
 
   const formText = userJoined
     ? infoMessages.alreadyJoinedGame
-    : `You are not currently part of this game.`;
+    : infoMessages.notJoinedGame;
 
   return (
     <Page title={game ? game.name : null}>
       <Grid columns={1}>
         {description ? <p>{description}</p> : null}
-        <Players game={game} />
+        <Players game={game} participants={participants} />
         <FormWrapper>
           <Form onSubmit={handleSubmit}>
             <p>{formText}</p>
@@ -63,8 +71,13 @@ const PreGame = (props) => {
 
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
-  const game = getDenormalizedPreGame(state, slug);
-  return { game, token: state.auth.token };
+  const game = gameSelectors.selectBySlug(state, slug);
+  const { token, user } = state.auth;
+  const participants = game
+    ? game.participants.map((p) => userSelectors.selectById(state, p))
+    : null;
+  const userJoined = game ? game.participants.includes(user.id) : false;
+  return { game, participants, token, userJoined };
 };
 
 const mapDispatchToProps = (dispatch) => {

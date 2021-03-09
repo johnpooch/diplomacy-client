@@ -46,6 +46,8 @@ export const apiRequest = async (url, options, { rejectWithValue }) => {
     let data = {};
     if (response.status === 500) {
       data.non_field_errors = [errorMessages.internalServerError];
+    } else if (response.status === 404) {
+      data.non_field_errors = [errorMessages.notFound];
     } else {
       data = await response.json();
     }
@@ -56,7 +58,9 @@ export const apiRequest = async (url, options, { rejectWithValue }) => {
 export const apiAction = (urlConf) =>
   createAsyncThunk(
     `${urlConf.name}Status`,
-    async ({ token, data, urlParams, queryParams }, thunkApi) => {
+    async ({ data, urlParams, queryParams }, thunkApi) => {
+      const { getState } = thunkApi;
+      const { token } = getState().auth;
       let url = substituteUrlParams(urlConf.urlPattern, urlParams);
       const options = getOptions(token, urlConf.method, data);
       if (queryParams) {

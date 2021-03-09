@@ -21,7 +21,7 @@ const getMinScale = () => {
 };
 
 const Canvas = ({ currentTurn, gameInterface }) => {
-  const { orders, territories, userNation } = currentTurn;
+  const { orders } = currentTurn;
 
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
@@ -163,29 +163,17 @@ const Canvas = ({ currentTurn, gameInterface }) => {
               }}
             >
               <Territories
-                territories={territories}
                 hoverId={
                   hoverTarget.current ? hoverTarget.current.attrs.id : null
                 }
-                userNation={userNation}
-                gameInterface={gameInterface}
-                turnId={currentTurn.id}
+                turn={currentTurn}
               />
             </Layer>
             <Layer>
               <Orders orders={orders} />
             </Layer>
             <Layer>
-              <Pieces
-                territories={territories}
-                hoverId={
-                  hoverTarget.current ? hoverTarget.current.attrs.id : null
-                }
-                selectedId={
-                  gameInterface.source ? gameInterface.source.id : null
-                }
-                userNation={userNation}
-              />
+              <Pieces turn={currentTurn} />
             </Layer>
             <Layer>
               <Tooltip

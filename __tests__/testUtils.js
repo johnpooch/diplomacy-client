@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserHistory } from 'history';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { setupServer } from 'msw/node';
@@ -61,6 +61,12 @@ export const renderApp = () => {
   return history;
 };
 
+export const fillForm = (...labels) =>
+  /* Shortcut function for filling forms with basic data */
+  labels.forEach((l) =>
+    fireEvent.change(screen.getByLabelText(l), { target: { value: 'Value' } })
+  );
+
 export const basicBeforeEach = () => {
   process.env.SERVICE_URI = baseUrl;
   history = createBrowserHistory();
@@ -89,9 +95,13 @@ afterAll(() => basicAfterAll());
 
 export const testElements = {
   componentError500: () => screen.getByText(errorMessages.internalServerError),
+  cancelButton: () => screen.getByText('Cancel', { selector: 'a' }),
+  createGameButton: () =>
+    screen.getByText('Create game', { selector: 'button' }),
   leaveGameButton: () => screen.getByText('Leave game', { selector: 'button' }),
   loginButton: () => screen.getByText('Log in', { selector: 'button' }),
   logoutButton: () => screen.getByText('Log out', { selector: 'button' }),
+  ordersSidebarButton: () => screen.getByTitle('Orders'),
   registerButton: () => screen.getByText('Register', { selector: 'button' }),
   resetPasswordButton: () =>
     screen.getByText('Reset password', { selector: 'button' }),

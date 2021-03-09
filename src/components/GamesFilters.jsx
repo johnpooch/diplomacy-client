@@ -5,8 +5,9 @@ import {
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { connect } from 'react-redux';
 import { jsx } from '@emotion/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import Select from './Select';
@@ -16,6 +17,8 @@ import { Button, SecondaryButton } from './Button';
 import Form, { FormLabel } from './Form';
 import { GridTemplate } from '../layout';
 import { variables } from '../variables';
+import { gameActions } from '../store/games';
+import { choiceActions } from '../store/choices';
 
 const StyledGamesFilters = styled.div`
   border-bottom: ${variables.sizes.border}px solid ${variables.colors.darkgray};
@@ -24,7 +27,9 @@ const StyledGamesFilters = styled.div`
   width: 100%;
 `;
 
-const GamesFilters = ({ callback, choices }) => {
+const GamesFilters = ({ choices, listGames, getChoices }) => {
+  useEffect(() => (choices ? null : getChoices()));
+
   const [values, handleChange] = useForm({
     search: '',
     variant: '',
@@ -39,7 +44,7 @@ const GamesFilters = ({ callback, choices }) => {
 
   const filter = (e) => {
     e.preventDefault();
-    callback(values);
+    listGames(values);
   };
 
   const { error } = choices;
@@ -144,4 +149,16 @@ const GamesFilters = ({ callback, choices }) => {
   );
 };
 
-export default GamesFilters;
+const mapStateToProps = (state) => {
+  const { choices } = state;
+  return { choices };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const getChoices = () => dispatch(choiceActions.getGameFilterChoices({}));
+  const listGames = (token, queryParams) =>
+    dispatch(gameActions.listGames({ token, queryParams }));
+  return { getChoices, listGames };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamesFilters);

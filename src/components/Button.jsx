@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from '@emotion/styled';
@@ -50,8 +52,8 @@ export const TertiaryButton = styled(Button)`
   }
 `;
 
-export const IconButton = ({ icon, onClick, size = '1x' }) => (
-  <BaseButton type="button" onClick={onClick}>
+export const IconButton = ({ icon, size = '1x', ...props }) => (
+  <BaseButton type="button" {...props}>
     <FontAwesomeIcon className="icon" icon={icon} size={size} />
   </BaseButton>
 );

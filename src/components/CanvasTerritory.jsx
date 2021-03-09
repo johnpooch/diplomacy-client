@@ -82,10 +82,10 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
 
 const makeMapStateToProps = () => {
   const selectTerritoryById = makeSelectTerritoryById();
-  const mapStateToProps = (state, { id, turnId }) => {
-    return {
-      territory: selectTerritoryById(state, id, turnId),
-    };
+  const mapStateToProps = (state, { hoverId, id, turnId }) => {
+    const territory = selectTerritoryById(state, id, turnId);
+    const isHovering = Boolean(hoverId !== null && territory.id === hoverId);
+    return { territory, isHovering };
   };
   return mapStateToProps;
 };
