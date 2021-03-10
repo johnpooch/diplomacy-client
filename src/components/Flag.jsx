@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import flags from '../data/standard/flags/flags';
-import { variables } from '../variables';
 import { slugify } from '../utils';
 
 const FlagWrapper = styled.div`
-  width: ${(props) => variables.flagSizes[props.size]}px;
+  width: ${(p) => p.sizes.flag[p.size]};
 `;
 
 const Flag = (props) => {

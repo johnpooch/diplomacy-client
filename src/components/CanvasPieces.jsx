@@ -2,8 +2,6 @@ import React from 'react';
 import { Circle, Group, Path } from 'react-konva';
 import { darken } from 'polished';
 
-import { variables } from '../variables';
-
 const CIRCLERADIUS = 15;
 const ICONSCALES = {
   army: 0.03,
@@ -12,22 +10,20 @@ const ICONSCALES = {
 const CIRCLESTROKEWIDTH = 2;
 const PATHSTROKEWIDTH = 0.25;
 
-const Piece = ({ piece, isHovering, isOrderable, isSelected }) => {
+const Piece = ({ piece, isHovering, isOrderable, isSelected, theme }) => {
   const { x, y, type, dislodged, nation } = piece;
-  const { icons } = variables;
+  const { colors, icons } = theme;
 
   const iconWidth = icons[type].icon[0] * ICONSCALES[type];
   const iconHeight = icons[type].icon[1] * ICONSCALES[type];
 
   const circleFill =
-    (isHovering || isSelected) && isOrderable
-      ? variables.colors.white
-      : variables.colors.base;
+    (isHovering || isSelected) && isOrderable ? colors.white : colors.base;
 
   const circleStroke =
     !(isHovering || isSelected) && isOrderable
-      ? variables.colors.white
-      : darken(0.2, variables.colors.nations[nation]);
+      ? colors.white
+      : darken(0.2, colors.nations[nation]);
 
   return (
     <Group dislodged={dislodged} listening={false} type={type}>
@@ -42,7 +38,7 @@ const Piece = ({ piece, isHovering, isOrderable, isSelected }) => {
       />
       <Path
         data={icons[type].icon[4]}
-        fill={variables.colors.nations[nation]}
+        fill={colors.nations[nation]}
         scaleX={ICONSCALES[type]}
         scaleY={ICONSCALES[type]}
         stroke={circleFill}

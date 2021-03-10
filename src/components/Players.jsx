@@ -4,11 +4,10 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Flag from './Flag';
-import { variables } from '../variables';
 
 const StyledPlayer = styled.div`
   display: grid;
-  grid-column-gap: ${variables.spacing[1]}px;
+  grid-column-gap: ${(p) => p.theme.space[1]};
   grid-template-columns: auto auto;
   justify-content: flex-start;
 
@@ -30,7 +29,7 @@ export const Player = ({ player }) => {
 
 const StyledPlayerCount = styled.div`
   display: grid;
-  grid-column-gap: ${variables.spacing[2]}px;
+  grid-column-gap: ${(p) => p.theme.space[2]};
   grid-template-columns: auto 1fr;
   text-align: left;
 `;
@@ -49,7 +48,7 @@ export const PlayerCount = ({ game }) => {
 
 const StyledPlayerList = styled.div`
   display: grid;
-  grid-row-gap: ${variables.spacing[1]}px;
+  grid-row-gap: ${(p) => p.theme.space[1]};
 `;
 
 export const PlayerList = ({ game }) => {
@@ -62,7 +61,7 @@ export const PlayerList = ({ game }) => {
 
 const StyledPlayers = styled.div`
   display: grid;
-  grid-row-gap: ${variables.spacing[2]}px;
+  grid-row-gap: ${(p) => p.theme.space[2]};
 `;
 
 const Players = ({ game }) => {

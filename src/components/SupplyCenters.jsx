@@ -1,11 +1,9 @@
 import React from 'react';
 import { Star, Group } from 'react-konva';
 
-import { variables } from '../variables';
-
 const SUPPLYCENTERSIZE = 3;
 
-const SupplyCenter = ({ x, y }) => {
+const SupplyCenter = ({ x, y, theme }) => {
   return (
     <Star
       x={x}
@@ -13,8 +11,8 @@ const SupplyCenter = ({ x, y }) => {
       numPoints={5}
       innerRadius={SUPPLYCENTERSIZE * 0.6}
       outerRadius={SUPPLYCENTERSIZE}
-      fill={variables.colors.base}
-      stroke={variables.colors.base}
+      fill={theme.colors.text}
+      stroke={theme.colors.text}
       strokeWidth={4}
     />
   );

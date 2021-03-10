@@ -4,25 +4,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BaseButton } from './Button';
-import { variables } from '../variables';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
 
 const StyledNation = styled.div`
   display: flex;
-  grid-gap: ${variables.spacing[1]}px;
+  grid-gap: ${(p) => p.theme.space[1]};
   justify-content: flex-start;
 
   .name {
-    color: ${(props) => (props.color ? props.color : 'inherit')};
+    color: ${(p) => (p.color ? p.color : 'inherit')};
     font-weight: bold;
   }
 `;
 
-const Nation = ({ nation }) => {
+const Nation = ({ nation, theme }) => {
   return nation ? (
-    <StyledNation color={variables.colors.nations[nation.id]}>
+    <StyledNation color={theme.colors.nations[nation.id]}>
       <Flag nation={nation} size="small" />
       <span className="name">{nation.name}</span>
     </StyledNation>
@@ -40,11 +39,11 @@ const Turn = ({ turn }) => {
 };
 
 const StyledNotification = styled.div`
-  background: ${variables.colors.error};
+  background: ${(p) => p.theme.colors.status.error.background};
   border-radius: 50%;
-  color: ${variables.colors.white};
+  color: ${(p) => p.theme.colors.status.error.text};
   min-width: 26px;
-  padding: ${variables.spacing[0]}px;
+  padding: ${(p) => p.theme.space[0]};
   position: absolute;
   right: -8px;
   top: -8px;
@@ -56,23 +55,23 @@ const Notification = ({ count }) => {
 
 const StyledTab = styled(BaseButton)`
   align-items: center;
-  background: ${variables.colors.white};
-  color: ${variables.colors.base};
+  background: ${(p) => p.theme.colors.muted};
+  color: ${(p) => p.theme.colors.text};
   display: flex;
   flex-direction: column;
-  grid-gap: ${variables.spacing[1]}px;
+  grid-gap: ${(p) => p.theme.space[1]};
   justify-content: center;
-  padding: ${variables.spacing[1]}px;
+  padding: ${(p) => p.theme.space[1]};
   position: relative;
   width: 100%;
 
   &[data-active='true'] {
-    background: ${variables.colors.darkgray};
+    background: ${(p) => p.theme.colors.secondary};
     color: white;
   }
 
   &:hover {
-    background: ${variables.colors.darkgray};
+    background: ${(p) => p.theme.colors.secondary};
   }
 `;
 
@@ -96,10 +95,9 @@ const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
 };
 
 const StyledSidebar = styled.aside`
-  background: ${variables.colors.gray};
-  border-bottom-left-radius: ${(props) =>
-    props.isTabOpen ? '0' : `${variables.sizes.borderRadius[0]}px`};
-  width: 320px;
+  background: ${(p) => p.theme.colors.secondary};
+  border-bottom-left-radius: ${(p) => (p.isTabOpen ? '0' : p.theme.radii[0])};
+  width: ${(p) => p.theme.sizes.sidebarMaxWidth};
   position: absolute;
   right: 0;
   top: 0;
@@ -108,19 +106,18 @@ const StyledSidebar = styled.aside`
   flex-direction: column;
 
   .details {
-    color: ${variables.colors.white};
-    background: ${variables.colors.base};
-    ${(props) => (props.color ? props.color : variables.colors.white)};
+    color: ${(p) => p.theme.colors.muted};
+    background: ${(p) => (p.color ? p.color : p.theme.colors.text)};
     display: flex;
-    grid-gap: ${variables.spacing[1]}px;
+    grid-gap: ${(p) => p.theme.space[1]};
     justify-content: space-between;
-    padding: ${variables.spacing[2]}px;
+    padding: ${(p) => p.theme.space[2]};
   }
 
   .tabs {
     display: flex;
-    grid-gap: ${variables.spacing[2]}px;
-    padding: ${variables.spacing[2]}px;
+    grid-gap: ${(p) => p.theme.space[2]};
+    padding: ${(p) => p.theme.space[2]};
     text-align: center;
   }
 `;

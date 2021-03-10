@@ -4,7 +4,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button, SecondaryButton, IconButton } from './Button';
 import { OrderTypes } from '../game/base';
-import { variables } from '../variables';
 import Draws from './Draws';
 import Pane from './SidebarPane';
 
@@ -99,15 +98,15 @@ const OrdersPane = ({
 
 const StyledStatus = styled.div`
   display: grid;
-  grid-gap: ${variables.spacing[1]}px;
+  grid-gap: ${(p) => p.theme.space[1]};
   grid-template-columns: 20px auto;
   align-items: center;
 `;
 
-const Status = ({ count, label, type }) => {
+const Status = ({ count, label, type, theme }) => {
   return (
     <StyledStatus>
-      <FontAwesomeIcon className="icon" icon={variables.icons[type]} />{' '}
+      <FontAwesomeIcon className="icon" icon={theme.icons[type]} />{' '}
       <span className="text">
         <span className="count">{count}</span>{' '}
         <span className="label">{label}</span>
@@ -119,7 +118,7 @@ const Status = ({ count, label, type }) => {
 const StyledOrders = styled.ul`
   .order {
     display: grid;
-    grid-gap: ${variables.spacing[1]}px;
+    grid-gap: ${(p) => p.theme.space[1]};
     grid-template-columns: 20px auto 20px;
     align-items: center;
   }

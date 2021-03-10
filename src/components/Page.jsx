@@ -1,23 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { variables } from '../variables';
-
 export const PageWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  max-width: ${variables.sizes.innerWidth}px;
-  padding: ${variables.spacing[6]}px ${variables.spacing[3]}px;
+  max-width: ${(p) => p.theme.sizes.pageMaxWidth};
+  padding: ${(p) => `${p.theme.space[6]} ${p.theme.space[3]}`};
   text-align: center;
   width: 100%;
 `;
 
 export const PageTitle = styled.h1`
-  color: ${variables.colors.base};
-  font-size: ${variables.fontSizes.sans[4]}px;
-  margin-bottom: ${variables.spacing[4]}px;
+  color: ${(p) => p.theme.colors.text};
+  font-size: ${(p) => p.theme.fontSizes[4]};
+  margin-bottom: ${(p) => p.theme.space[4]};
 `;
 
 const Page = (props) => {

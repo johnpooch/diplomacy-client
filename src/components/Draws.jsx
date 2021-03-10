@@ -3,7 +3,6 @@ import { faCheck, faStar, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
-import { variables } from '../variables';
 import { SecondaryButton } from './Button';
 import Flag from './Flag';
 
@@ -214,14 +213,14 @@ const Draw = ({
 const StyledDrawsPane = styled.div`
   .text {
     display: block;
-    margin: ${variables.spacing[3]}px 0;
+    margin: ${(p) => p.theme.space[3]} 0;
   }
 
   .actions {
     display: grid;
-    grid-gap: ${variables.spacing[2]}px;
+    grid-gap: ${(p) => p.theme.space[2]};
     grid-template-columns: repeat(2, 1fr);
-    margin: ${variables.spacing[3]}px 0;
+    margin: ${(p) => p.theme.space[3]} 0;
   }
 `;
 

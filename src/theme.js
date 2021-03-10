@@ -9,11 +9,12 @@ import { withUnits } from './utils';
 
 // based on https://theme-ui.com/theme-spec/
 const colors = {
-  text: '#222222',
-  background: 'peru',
-  primary: 'darkgreen',
-  secondary: 'darkorange',
-  muted: 'papayawhip',
+  text: 'midnightblue',
+  background: 'papayawhip',
+  primary: 'peru',
+  secondary: 'slategray',
+  accent: 'slateblue',
+  muted: 'white',
   nations: {
     1: '#ff1103', // England
     2: '#0074d9', // France
@@ -23,18 +24,18 @@ const colors = {
     6: '#b10dc9', // Russia
     7: '#508e59', // Turkey
   },
-  game: {
+  map: {
     land: '#e3d8c4',
     sea: '#79bde1',
   },
   status: {
     error: {
-      text: '#ff1103',
-      background: '#f5dddb',
+      primary: 'firebrick',
+      muted: '#f5dddb',
     },
     success: {
-      text: '#508e59',
-      background: '#c3f5ca',
+      primary: '#508e59',
+      muted: '#c3f5ca',
     },
   },
 };
@@ -42,7 +43,7 @@ const fonts = {
   sans:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
 };
-const fontSizes = [9, 13, 15, 19, 36];
+const fontSizes = withUnits([9, 13, 15, 19, 36], 'px');
 const fontWeights = {
   body: 400,
   heading: 700,
@@ -52,15 +53,14 @@ const lineHeights = {
   body: 1.5,
   heading: 1.125,
 };
-const space = [4, 8, 12, 16, 24, 32, 44, 60];
-const borderWidths = [2];
-const radii = [6, 8, 16];
+const space = withUnits([4, 8, 12, 16, 24, 32, 44, 60], 'px');
+const borderWidths = withUnits([1, 2], 'px');
+const borders = [`${borderWidths[0]} solid ${colors.secondary}`];
+const radii = withUnits([6, 8, 16], 'px');
 const sizes = {
-  innerWidth: '690px',
-  outerWidth: '1260px',
-  statusBarHeight: '72px',
+  pageMaxWidth: '690px',
   inputMinSize: '44px',
-  buttonMinWidth: '160px',
+  sidebarMaxWidth: '320px',
   flag: withUnits([30, 80], 'px'),
 };
 const icons = {
@@ -73,17 +73,19 @@ const icons = {
 export const theme = {
   colors,
   fonts,
-  fontSizes: withUnits(fontSizes, 'px'),
+  fontSizes,
   fontWeights,
   lineHeights,
-  space: withUnits(space, 'px'),
-  borderWidths: withUnits(borderWidths, 'px'),
-  radii: withUnits(radii, 'px'),
+  space,
+  borderWidths,
+  borders,
+  radii,
   sizes,
   icons,
 };
 
 export const darkTheme = produce(theme, (draft) => {
-  draft.colors.text = colors.background;
+  draft.colors.text = 'white';
   draft.colors.background = colors.text;
+  draft.colors.muted = 'black';
 });

@@ -12,12 +12,11 @@ import useForm from '../hooks/useForm';
 import { Button, SecondaryButton } from './Button';
 import Form, { FormLabel } from './Form';
 import { GridTemplate } from '../layout';
-import { variables } from '../variables';
 
 const StyledGamesFilters = styled.div`
-  border-bottom: ${variables.sizes.border}px solid ${variables.colors.darkgray};
-  margin-bottom: ${variables.spacing[5]}px;
-  padding-bottom: ${variables.spacing[5]}px;
+  border-bottom: ${(p) => p.theme.borders[0]};
+  margin-bottom: ${(p) => p.theme.space[5]};
+  padding-bottom: ${(p) => p.theme.space[5]};
   width: 100%;
 `;
 
@@ -45,12 +44,17 @@ const GamesFilters = ({ callback, choices }) => {
     <SecondaryButton
       type="button"
       onClick={() => setOpen(!open)}
-      css={{ display: 'block' }}
+      css={`
+        display: block;
+      `}
     >
       <FontAwesomeIcon
         icon={faSearch}
-        css={{ marginRight: `${variables.spacing[1]}px` }}
+        css={`
+          margin-right: ${(p) => p.theme.spaces[1]};
+        `}
       />
+
       <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
     </SecondaryButton>
   );
@@ -59,7 +63,9 @@ const GamesFilters = ({ callback, choices }) => {
     <Form onSubmit={filter}>
       <GridTemplate
         templateColumns="2fr 1fr 1fr 1fr"
-        css={{ marginTop: `${variables.spacing[4]}px` }}
+        css={`
+          margin-top: ${(p) => p.theme.spaces[4]};
+        `}
       >
         <label htmlFor="search">
           <FormLabel>Search</FormLabel>

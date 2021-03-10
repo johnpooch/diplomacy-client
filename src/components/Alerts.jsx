@@ -7,12 +7,10 @@ import { BaseButton } from './Button';
 
 const StyledAlert = styled.div`
   align-items: center;
-  background: ${(p) => p.theme.colors.status[p.category].background};
-  border-bottom: ${(p) =>
-    `${p.theme.borderWidths[0]} solid ${
-      p.theme.colors.status[p.category].text
-    }`};
-  color: ${(p) => p.theme.colors.status[p.category].text};
+  background: ${(p) => p.theme.colors.status[p.category].muted};
+  border-bottom: ${(p) => p.theme.borders[0]};
+  border-color: ${(p) => p.theme.colors.status[p.category].primary};
+  color: ${(p) => p.theme.colors.status[p.category].primary};
   display: grid;
   font-size: ${(p) => p.theme.fontSizes[2]};
   grid-column-gap: ${(p) => p.theme.space[4]};
@@ -23,24 +21,24 @@ const StyledAlert = styled.div`
   }
 
   button {
-    color: ${(p) => p.theme.colors.status[p.category].text};
+    color: ${(p) => p.theme.colors.status[p.category].primary};
     min-width: ${(p) => p.theme.sizes.inputMinSize};
     min-height: ${(p) => p.theme.sizes.inputMinSize};
     border-radius: 0;
 
     &:hover {
-      background: ${(p) => p.theme.colors.status[p.category].text};
-      color: ${(p) => p.theme.colors.status[p.category].background};
+      background: ${(p) => p.theme.colors.status[p.category].primary};
+      color: ${(p) => p.theme.colors.status[p.category].muted};
     }
   }
 `;
 
 export const Alert = (props) => {
-  const { text, category, id, onClick } = props;
-  if (!text) return null;
+  const { primary, category, id, onClick } = props;
+  if (!primary) return null;
   return (
     <StyledAlert category={category}>
-      <p>{text}</p>
+      <p>{primary}</p>
       <BaseButton
         type="button"
         onClick={() => {
@@ -70,7 +68,7 @@ const Alerts = (props) => {
       <Alert
         key={alert.id}
         id={alert.id}
-        text={alert.message}
+        primary={alert.message}
         category={alert.category}
         onClick={onClick}
       />

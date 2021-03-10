@@ -1,25 +1,25 @@
 import React from 'react';
 import { Arrow, Line, Group, RegularPolygon } from 'react-konva';
 
-import { variables } from '../variables';
 import { OrderTypes } from '../game/base';
 import { Vector } from '../utils';
 
 const OFFSET = 25;
-const FILL = variables.colors.base;
 const HOLDRADIUS = 22;
 const HOLDSTROKEWIDTH = 5;
 const PATHSTROKEWIDTH = 8;
-const ASSUMEDMOVESTROKE = variables.colors.white;
 const SUPPORTDASH = [1, 1, 0.001];
 
-const Hold = ({ order }) => {
+const Hold = ({ order, theme }) => {
+  const { colors } = theme;
+
   const x = order.source.pieceX;
   const y = order.source.pieceY;
+
   return (
     <RegularPolygon
       radius={HOLDRADIUS}
-      stroke={FILL}
+      stroke={colors.text}
       strokeWidth={HOLDSTROKEWIDTH}
       sides={8}
       rotation={22.5}
@@ -29,7 +29,7 @@ const Hold = ({ order }) => {
   );
 };
 
-const Move = ({ order }) => {
+const Move = ({ order, theme }) => {
   const x1 = order.source.pieceX;
   const y1 = order.source.pieceY;
   const x2 = order.target.pieceX;
@@ -40,8 +40,8 @@ const Move = ({ order }) => {
   return (
     <Arrow
       points={points}
-      fill={FILL}
-      stroke={FILL}
+      fill={theme.colors.text}
+      stroke={theme.colors.text}
       strokeWidth={PATHSTROKEWIDTH}
       pointerLength={5}
       pointerWidth={5}
@@ -49,7 +49,7 @@ const Move = ({ order }) => {
   );
 };
 
-const AssumedMove = ({ order }) => {
+const AssumedMove = ({ order, theme }) => {
   // When a move-support or convoy order does not have an associated move, we
   // add an arrow to represent the order which the player is attempting to
   // support/convoy anyways.
@@ -63,7 +63,7 @@ const AssumedMove = ({ order }) => {
   return (
     <Arrow
       points={points}
-      stroke={ASSUMEDMOVESTROKE}
+      stroke={theme.colors.neutral}
       strokeWidth={PATHSTROKEWIDTH}
       pointerLength={5}
       pointerWidth={5}

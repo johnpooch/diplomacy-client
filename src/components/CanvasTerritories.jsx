@@ -4,23 +4,27 @@ import { darken } from 'polished';
 import { Path, Group } from 'react-konva';
 
 import stripes from '../img/stripes.svg';
-import { variables } from '../variables';
 
 const FILLPATTERNSCALE = 0.15;
 const FILLPATTERNOPACITY = 0.1;
 const STROKEWIDTH = 2;
 
-const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
+const Territory = ({
+  territory,
+  isHovering,
+  isOrderable,
+  stripesImage,
+  theme,
+}) => {
   const { controlledBy, path, playable, type, id } = territory;
+  const { colors } = theme;
 
   const getFill = () => {
-    if (controlledBy in variables.colors.nations)
-      return variables.colors.nations[controlledBy];
-    return type === 'sea' ? variables.colors.sea : variables.colors.land;
+    if (controlledBy in colors.nations) return colors.nations[controlledBy];
+    return type === 'sea' ? colors.map.sea : colors.map.land;
   };
 
-  const getStroke = () =>
-    isHovering ? variables.colors.white : darken(0.2, getFill());
+  const getStroke = () => (isHovering ? colors.muted : darken(0.2, getFill()));
 
   return (
     <Group>
@@ -49,7 +53,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   );
 };
 
-const Territories = ({ territories, hoverId, userNation, gameInterface }) => {
+const Territories = ({ territories, hoverId }) => {
   const [stripesImage, setStripesImage] = useState(null);
 
   useEffect(() => {

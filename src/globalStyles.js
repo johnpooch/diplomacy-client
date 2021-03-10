@@ -1,17 +1,17 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { variables } from './variables';
-
 export default createGlobalStyle`
   * {
     box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     margin: 0;
-    font-family: ${variables.fontFamilies.sans};
-    color: ${variables.colors.base};
-    background: ${variables.colors.gray};
+    font-family: ${(p) => p.theme.fonts.sans};
+    color: ${(p) => p.theme.colors.text};
+    background: ${(p) => p.theme.colors.background};
   }
 
   ul,
@@ -38,16 +38,16 @@ export default createGlobalStyle`
   }
 
   a {
-    color: ${variables.colors.darkgray};
+    color: ${(p) => p.theme.colors.accent};
     cursor: pointer;
     text-decoration: none;
 
     &:hover {
-      color: ${variables.colors.base};
+      text-decoration: underline;
     }
   }
 
-  .link-overlay {
+  .overlay {
     bottom: 0;
     left: 0;
     position: absolute;

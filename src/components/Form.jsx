@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { variables } from '../variables';
-
 const StyledForm = styled.form`
   display: grid;
-  grid-row-gap: ${variables.spacing[4]}px;
+  grid-row-gap: ${(p) => p.theme.space[4]};
 
   input,
   select,
   textarea {
-    border-radius: ${variables.sizes.borderRadius[0]}px;
-    border: ${variables.sizes.border}px solid ${variables.colors.darkgray};
+    background: transparent;
+    border-radius: ${(p) => p.theme.radii[0]};
+    border: ${(p) =>
+      `${p.theme.borderWidths[0]} solid ${p.theme.colors.secondary}`};
     display: block;
-    font-family: ${variables.fontFamilies.sans};
+    font-family: ${(p) => p.theme.fonts.sans};
     font-size: inherit;
     line-height: 1;
     margin: 0;
@@ -22,17 +22,17 @@ const StyledForm = styled.form`
 
   input,
   textarea {
-    min-height: ${variables.sizes.input}px;
-    padding: ${variables.spacing[2]}px;
+    min-height: ${(p) => p.theme.sizes.inputMinSize};
+    padding: ${(p) => p.theme.space[2]};
 
     &::placeholder {
-      color: ${variables.colors.darkgray};
+      color: ${(p) => p.theme.colors.secondary};
     }
   }
 
   select {
-    height: ${variables.sizes.input}px;
-    padding: 0 ${variables.spacing[2]}px;
+    min-height: ${(p) => p.theme.sizes.inputMinSize};
+    padding: 0 ${(p) => p.theme.space[2]};
   }
 
   button {
@@ -53,24 +53,24 @@ const StyledForm = styled.form`
   hr {
     width: 100%;
     border: none;
-    border-top: ${variables.sizes.border}px solid ${variables.colors.gray};
+    border-top: ${(p) => p.theme.borders[0]};
     margin: 0;
   }
 
   .field-error,
   .non-field-errors {
-    color: ${variables.colors.error};
+    color: ${(p) => p.theme.colors.status.error.text};
   }
 `;
 
 const StyledFormWrapper = styled.div`
-  background: ${variables.colors.white};
-  border-radius: ${variables.sizes.borderRadius[2]}px;
+  background: ${(p) => p.theme.colors.muted};
+  border-radius: ${(p) => p.theme.radii[2]};
   box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
-  font-size: ${variables.fontSizes.sans[1]}px;
+  font-size: ${(p) => p.theme.fontSizes[1]};
   max-width: 100%;
   width: 350px;
-  padding: ${variables.spacing[4]}px;
+  padding: ${(p) => p.theme.space[4]};
 `;
 
 export const FormWrapper = (props) => {
@@ -80,11 +80,11 @@ export const FormWrapper = (props) => {
 
 export const FormLabel = styled.span`
   display: block;
-  font-size: ${variables.fontSizes.sans[1]}px;
+  font-size: ${(p) => p.theme.fontSizes[1]};
   line-height: 1;
   font-weight: bold;
-  margin-bottom: ${variables.spacing[2]}px;
-  color: ${variables.colors.base};
+  margin-bottom: ${(p) => p.theme.space[2]};
+  color: ${(p) => p.theme.colors.text};
 `;
 
 const Form = (props) => {

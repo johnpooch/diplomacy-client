@@ -12,7 +12,6 @@ import { initialGameFormState } from '../game/base';
 import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
-import { variables } from '../variables';
 import { variantActions } from '../store/variants';
 import Canvas from '../components/Canvas';
 import GameInterface from '../game/gameInterface';
@@ -23,11 +22,11 @@ const HomeNavLinkButton = () => (
   <NavLinkButton
     exact
     to="/"
-    css={{
-      position: 'fixed',
-      top: `${variables.spacing[2]}px`,
-      left: `${variables.spacing[2]}px`,
-    }}
+    css={`
+      position: fixed;
+      top: ${(p) => p.theme.space[2]};
+      left: ${(p) => p.theme.space[2]};
+    `}
   >
     <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
   </NavLinkButton>
