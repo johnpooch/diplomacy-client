@@ -54,7 +54,7 @@ const lineHeights = {
   heading: 1.125,
 };
 const space = withUnits([4, 8, 12, 16, 24, 32, 44, 60], 'px');
-const borderWidths = withUnits([1, 2], 'px');
+const borderWidths = withUnits([2], 'px');
 const borders = [`${borderWidths[0]} solid ${colors.secondary}`];
 const radii = withUnits([6, 8, 16], 'px');
 const sizes = {
