@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import FieldError from '../components/FieldError';
@@ -8,22 +8,16 @@ import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
 import Form, { FormLabel, FormWrapper } from '../components/Form';
 
-const Register = (props) => {
+const Register = ({ errors, onAuth }) => {
   const [{ email, username, password }, handleChange] = useForm({
     email: '',
     username: '',
     password: '',
   });
 
-  const [errors, setErrors] = useState({
-    nonFieldErrors: [],
-  });
-
-  const { onAuth } = props;
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAuth(setErrors, username, email, password);
+    onAuth(username, email, password);
   };
 
   return (

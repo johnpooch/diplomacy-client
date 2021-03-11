@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { errorMessages } from '../copy';
 
-const serviceURI = process.env.SERVICE_URI;
 const re = /:([a-zA-z]+)/g;
 
 export const getOptions = (token = null, method = 'GET', data = {}) => {
@@ -25,7 +25,7 @@ const substituteUrlParams = (urlPattern, urlParams) => {
 };
 
 export const apiRequest = async (url, options, { rejectWithValue }) => {
-  const fullUrl = serviceURI + url;
+  const fullUrl = process.env.SERVICE_URI + url;
   try {
     const response = await fetch(fullUrl, options);
     if (!response.ok) {
@@ -43,7 +43,12 @@ export const apiRequest = async (url, options, { rejectWithValue }) => {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
     }
-    const data = await response.json();
+    let data = {};
+    if (response.status === 500) {
+      data.non_field_errors = [errorMessages.internalServerError];
+    } else {
+      data = await response.json();
+    }
     return rejectWithValue(data);
   }
 };

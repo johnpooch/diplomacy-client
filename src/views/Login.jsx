@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import FieldError from '../components/FieldError';
@@ -8,21 +8,15 @@ import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
 import Form, { FormLabel, FormWrapper } from '../components/Form';
 
-const LoginForm = (props) => {
+const LoginForm = ({ errors, onAuth }) => {
   const [{ username, password }, handleChange] = useForm({
     username: '',
     password: '',
   });
 
-  const [errors, setErrors] = useState({
-    nonFieldErrors: [],
-  });
-
-  const { onAuth } = props;
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAuth(setErrors, username, password);
+    onAuth(username, password);
   };
 
   return (
@@ -73,7 +67,7 @@ const LoginForm = (props) => {
           </p>
 
           <p>
-            Not a member yet? <Link to="/register">Create new account</Link>
+            Not a member yet? <Link to="/register">Create an account</Link>
           </p>
         </Form>
       </FormWrapper>

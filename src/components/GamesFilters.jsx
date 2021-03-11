@@ -11,6 +11,7 @@ import styled from '@emotion/styled';
 
 import Select from './Select';
 import useForm from '../hooks/useForm';
+import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
 import Form, { FormLabel } from './Form';
 import { GridTemplate } from '../layout';
@@ -41,7 +42,7 @@ const GamesFilters = ({ callback, choices }) => {
     callback(values);
   };
 
-  if (!choices) return null;
+  const { error } = choices;
 
   const toggleButton = (
     <SecondaryButton
@@ -57,7 +58,9 @@ const GamesFilters = ({ callback, choices }) => {
     </SecondaryButton>
   );
 
-  const filters = (
+  const filters = error ? (
+    <ComponentError error={error} />
+  ) : (
     <Form onSubmit={filter}>
       <GridTemplate
         templateColumns="2fr 1fr 1fr 1fr"

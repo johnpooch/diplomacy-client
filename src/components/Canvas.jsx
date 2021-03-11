@@ -1,12 +1,11 @@
-import { Stage, Layer, Rect } from 'react-konva';
+import { connect, ReactReduxContext, Provider } from 'react-redux';
+import { Stage, Layer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
 import { clamp, useReferredState } from '../utils';
-import { variables } from '../variables';
 import Orders from './Orders';
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
 import Portal from './Portal';
-import SupplyCenters from './SupplyCenters';
 import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import viewBox from '../data/standard/viewBox.json';
@@ -117,101 +116,104 @@ const Canvas = ({ currentTurn, gameInterface }) => {
   };
 
   return (
-    <Stage
-      ref={stageRef}
-      width={size.current.width}
-      height={size.current.height}
-      x={stagePosition.current.x}
-      y={stagePosition.current.y}
-      scaleX={scale.current}
-      scaleY={scale.current}
-      draggable
-      onDragStart={() => {
-        setIsDragging(true);
-        setHoverTarget(null);
-      }}
-      onDragEnd={(e) => {
-        setIsDragging(false);
-        setStagePosition({
-          x: e.target.x(),
-          y: e.target.y(),
-        });
-      }}
-      onClick={(event) => handleClick(event)}
-      onTouchEnd={(event) => handleClick(event)}
-      dragBoundFunc={(pos) => bounds(pos)}
-      style={{ cursor: getCursor() }}
-    >
-      <Layer>
-        <Rect
-          width={viewBox.width}
-          height={viewBox.height}
-          fill={variables.colors.base}
-        />
-      </Layer>
-      <Layer
-        x={viewBox.territoriesX}
-        y={viewBox.territoriesY}
-        onMouseMove={(event) => {
-          if (!isDragging.current) setHoverTarget(event.target);
-          else setHoverTarget(null);
-          setMousePosition({
-            x: event.evt.clientX,
-            y: event.evt.clientY,
-          });
-        }}
-        onMouseOut={() => {
-          setHoverTarget(null);
-        }}
-        onBlur={() => {
-          setHoverTarget(null);
-        }}
-      >
-        <Territories
-          territories={territories}
-          hoverId={hoverTarget.current ? hoverTarget.current.attrs.id : null}
-          userNation={userNation}
-          gameInterface={gameInterface}
-        />
-      </Layer>
-      <Layer>
-        <SupplyCenters territories={territories} />
-      </Layer>
-      <Layer>
-        <Orders orders={orders} />
-      </Layer>
-      <Layer>
-        <Pieces
-          territories={territories}
-          hoverId={hoverTarget.current ? hoverTarget.current.attrs.id : null}
-          selectedId={gameInterface.source ? gameInterface.source.id : null}
-          userNation={userNation}
-        />
-      </Layer>
-      <Layer>
-        <Tooltip
-          hoverTarget={hoverTarget.current}
-          mousePosition={mousePosition.current}
-          scale={scale.current}
-          stagePosition={stagePosition.current}
-          stageRef={stageRef}
-        />
-      </Layer>
-      <Layer>
-        {gameInterface.showContextMenu() ? (
-          <Portal>
-            <ContextMenu
-              stageRef={stageRef}
-              selectedTarget={gameInterface.source}
-              mousePosition={mousePosition.current}
-              onOptionSelected={gameInterface.onOptionSelected}
-              options={gameInterface.getOptions()}
-            />
-          </Portal>
-        ) : null}
-      </Layer>
-    </Stage>
+    <ReactReduxContext.Consumer>
+      {({ store }) => (
+        <Stage
+          ref={stageRef}
+          width={size.current.width}
+          height={size.current.height}
+          x={stagePosition.current.x}
+          y={stagePosition.current.y}
+          scaleX={scale.current}
+          scaleY={scale.current}
+          draggable
+          onDragStart={() => {
+            setIsDragging(true);
+            setHoverTarget(null);
+          }}
+          onDragEnd={(e) => {
+            setIsDragging(false);
+            setStagePosition({
+              x: e.target.x(),
+              y: e.target.y(),
+            });
+          }}
+          onClick={(event) => handleClick(event)}
+          onTouchEnd={(event) => handleClick(event)}
+          dragBoundFunc={(pos) => bounds(pos)}
+          style={{ cursor: getCursor(), background: 'black' }}
+        >
+          <Provider store={store}>
+            <Layer
+              x={viewBox.territoriesX}
+              y={viewBox.territoriesY}
+              onMouseMove={(event) => {
+                if (!isDragging.current) setHoverTarget(event.target);
+                else setHoverTarget(null);
+                setMousePosition({
+                  x: event.evt.clientX,
+                  y: event.evt.clientY,
+                });
+              }}
+              onMouseOut={() => {
+                setHoverTarget(null);
+              }}
+              onBlur={() => {
+                setHoverTarget(null);
+              }}
+            >
+              <Territories
+                territories={territories}
+                hoverId={
+                  hoverTarget.current ? hoverTarget.current.attrs.id : null
+                }
+                userNation={userNation}
+                gameInterface={gameInterface}
+                turnId={currentTurn.id}
+              />
+            </Layer>
+            <Layer>
+              <Orders orders={orders} />
+            </Layer>
+            <Layer>
+              <Pieces
+                territories={territories}
+                hoverId={
+                  hoverTarget.current ? hoverTarget.current.attrs.id : null
+                }
+                selectedId={
+                  gameInterface.source ? gameInterface.source.id : null
+                }
+                userNation={userNation}
+              />
+            </Layer>
+            <Layer>
+              <Tooltip
+                hoverTarget={hoverTarget.current}
+                mousePosition={mousePosition.current}
+                scale={scale.current}
+                stagePosition={stagePosition.current}
+                stageRef={stageRef}
+              />
+            </Layer>
+            <Layer>
+              {gameInterface.showContextMenu() ? (
+                <Portal>
+                  <ContextMenu
+                    stageRef={stageRef}
+                    selectedTarget={gameInterface.source}
+                    mousePosition={mousePosition.current}
+                    onOptionSelected={gameInterface.onOptionSelected}
+                    options={gameInterface.getOptions()}
+                  />
+                </Portal>
+              ) : null}
+            </Layer>
+          </Provider>
+        </Stage>
+      )}
+    </ReactReduxContext.Consumer>
   );
 };
 
-export default Canvas;
+export default connect(null, null)(Canvas);

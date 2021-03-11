@@ -26,8 +26,9 @@ const choicesSlice = createSlice({
     [getGameFilterChoices.fulfilled]: (_, { payload }) => {
       return { loading: false, ...payload };
     },
-    [getGameFilterChoices.rejected]: (state) => {
+    [getGameFilterChoices.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.error = payload;
     },
   },
 });
