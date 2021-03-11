@@ -1,69 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
 
-import Players from './Players';
+import Game from './Game';
 import { variables } from '../variables';
-
-const StyledGame = styled.div`
-  background: ${variables.colors.white};
-  padding: ${variables.spacing[3]}px;
-  border: solid ${variables.sizes.border}px ${variables.colors.darkgray};
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  position: relative;
-  text-align: left;
-  grid-column-gap: ${variables.spacing[6]}px;
-
-  .link-overlay:hover ~ .details .name {
-    text-decoration: underline;
-  }
-
-  .players {
-    border-left: solid ${variables.sizes.border}px ${variables.colors.gray};
-    height: 100%;
-    padding-left: ${variables.spacing[2]}px;
-  }
-
-  > div {
-    display: grid;
-    grid-row-gap: ${variables.spacing[2]}px;
-    height: max-content;
-  }
-`;
-
-export const Status = ({ game }) => {
-  const { status, currentTurn } = game;
-  let message = 'Unknown status';
-  if (status === 'pending') {
-    message = 'Waiting for players to join';
-  } else if (currentTurn) {
-    const { phase, season, year } = currentTurn;
-    message = `${season} ${year} - ${phase}`;
-  }
-  return <span>{message}</span>;
-};
-
-const Game = (props) => {
-  const { game } = props;
-  const { description, id, name, slug, status, userNation } = game;
-  return (
-    <StyledGame key={id} userNation={userNation}>
-      <Link
-        className="link-overlay"
-        to={status === 'active' ? `/game/${slug}` : `/pre-game/${slug}`}
-      />
-      <div className="details">
-        <Status game={game} />
-        <h2 className="name">{name}</h2>
-        <p className="description">{description}</p>
-      </div>
-      <div className="players">
-        <Players game={game} />
-      </div>
-    </StyledGame>
-  );
-};
 
 const StyledGames = styled.div`
   display: grid;

@@ -1,4 +1,4 @@
-import { baseGameInterface, OrderTypes } from './base';
+import { baseGameInterface } from './base';
 
 export default class GameInterface extends baseGameInterface {
   /*

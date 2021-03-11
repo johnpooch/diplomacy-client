@@ -5,9 +5,10 @@ import { Group } from 'react-konva';
 import { useEffect, useState } from 'react';
 
 import Territory from './CanvasTerritory';
+import territoryData from '../data/standard/territories.json';
 import stripes from '../img/stripes.svg';
 
-const Territories = ({ territories, hoverId, turnId }) => {
+const Territories = ({ hoverId, turn }) => {
   const [stripesImage, setStripesImage] = useState(null);
 
   useEffect(() => {
@@ -18,14 +19,14 @@ const Territories = ({ territories, hoverId, turnId }) => {
 
   return (
     <Group>
-      {territories.map((territory) => {
+      {territoryData.map((t) => {
         return (
           <Territory
-            key={territory.territoryMapDataId}
-            isHovering={hoverId !== null && territory.id === hoverId}
+            key={t.territoryMapDataId}
+            hoverId={hoverId}
             stripesImage={stripesImage}
-            id={territory.territoryMapDataId}
-            turnId={turnId}
+            id={t.territoryMapDataId}
+            turnId={turn.id}
           />
         );
       })}

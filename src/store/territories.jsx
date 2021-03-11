@@ -8,9 +8,7 @@ import {
 
 import { variantSelectors } from './variants';
 
-const territoryAdapter = createEntityAdapter({
-  selectId: (entity) => entity.uid,
-});
+const territoryAdapter = createEntityAdapter();
 
 const territorySlice = createSlice({
   name: 'territories',

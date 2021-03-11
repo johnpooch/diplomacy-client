@@ -52,8 +52,7 @@ const StyledPlayerList = styled.div`
   grid-row-gap: ${variables.spacing[1]}px;
 `;
 
-export const PlayerList = ({ game }) => {
-  const { participants } = game;
+export const PlayerList = ({ participants }) => {
   const elements = participants.map((player) => {
     return player.id ? <Player key={player.id} player={player} /> : null;
   });
@@ -65,11 +64,11 @@ const StyledPlayers = styled.div`
   grid-row-gap: ${variables.spacing[2]}px;
 `;
 
-const Players = ({ game }) => {
+const Players = ({ game, participants }) => {
   return (
     <StyledPlayers>
       <PlayerCount game={game} />
-      <PlayerList game={game} />
+      <PlayerList participants={participants} />
     </StyledPlayers>
   );
 };

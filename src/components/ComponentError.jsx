@@ -10,6 +10,9 @@ const StyledComponentError = styled.div`
   svg {
     margin-bottom: 1rem;
   }
+  .icon {
+    text-align: center;
+  }
 `;
 
 const ComponentError = ({ error }) => {
@@ -17,8 +20,10 @@ const ComponentError = ({ error }) => {
   const message = error.non_field_errors;
   return (
     <StyledComponentError className="component-error" role="alert">
-      <div className="body">
+      <div className="icon">
         <FontAwesomeIcon icon={faExclamationTriangle} />
+      </div>
+      <div className="body">
         <div>{message}</div>
       </div>
     </StyledComponentError>

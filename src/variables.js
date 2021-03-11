@@ -20,20 +20,13 @@ export const colors = {
   sea: '#79bde1',
   land: '#e3d8c4',
   nations: {
-    // england
-    1: '#ff1103',
-    // france
-    2: '#0074d9',
-    // germany
-    3: '#777777',
-    // austria-hungary
-    4: '#E69F00',
-    // italy
-    5: '#2ecc40',
-    // russia
-    6: '#b10dc9',
-    // turkey
-    7: '#508e59',
+    'standard-england': '#ff1103',
+    'standard-france': '#0074d9',
+    'standard-germany': '#777777',
+    'standard-austria-hungary': '#E69F00',
+    'standard-italy': '#2ecc40',
+    'standard-russia': '#b10dc9',
+    'standard-turkey': '#508e59',
   },
   error: '#ff1103',
   success: '#508e59',
@@ -59,6 +52,7 @@ export const sizes = {
   padding: spacing[3],
   border: 2,
   borderRadius: [6, 8, 16],
+  error: 14,
   innerWidth: 690,
   outerWidth: 1260,
   statusBarHeight: 72,

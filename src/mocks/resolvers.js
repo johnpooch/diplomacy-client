@@ -1,7 +1,10 @@
+import createGameData from './data/createGame.json';
 import gameDetailData from './data/gameDetail.json';
 import getGameFilterChoicesData from './data/gameFilterChoices.json';
 import listGamesData from './data/games.json';
 import listVariantsData from './data/variants.json';
+import orderData from './data/orders.json';
+import moreOrderData from './data/orders2.json';
 import userData from './data/user.json';
 
 import { errorMessages } from '../copy';
@@ -9,8 +12,46 @@ import { errorMessages } from '../copy';
 // TODO centralize expected error messages
 
 const errorServerError = (_, res, ctx) => res(ctx.status(500));
+const errorNotFound = (_, res, ctx) => res(ctx.status(404));
 const token =
   'faketokencdd6b6112b47176e410d1d6f0fc0a4b879286e5c93405ce89685929';
+
+export const createGame = {
+  success: (_, res, ctx) => res(ctx.status(201), ctx.json(createGameData)),
+  errorNameTooLong: (_, res, ctx) => {
+    const responseData = {
+      name: [errorMessages.createGameNameTooLong],
+    };
+    return res(ctx.status(400), ctx.json(responseData));
+  },
+  errorServerError,
+};
+
+export const destroyOrder = {
+  success: (_, res, ctx) => res(ctx.status(204)),
+  errorNotFound,
+  errorServerError,
+  randomizer: (_, res, ctx) => {
+    if (Math.random() < 0.5) {
+      return res(ctx.status(204));
+    }
+    return res(ctx.status(500));
+  },
+};
+
+export const finalizeOrders = {
+  success: (_, res, ctx) => res(ctx.status(201), ctx.json({})),
+  errorServerError,
+};
+
+export const listOrders = {
+  success: (_, res, ctx) => res(ctx.status(200), ctx.json(orderData)),
+  successOneDeleted: (_, res, ctx) =>
+    res(ctx.status(200), ctx.json(Array.from(orderData).splice(1))),
+  successMultiple: (_, res, ctx) =>
+    res(ctx.status(200), ctx.json(moreOrderData)),
+  errorServerError,
+};
 
 export const login = {
   success: (_, res, ctx) => {

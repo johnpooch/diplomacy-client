@@ -54,4 +54,10 @@ export default css`
     right: 0;
     top: 0;
   }
+  .field-error,
+  .non-field-errors {
+    text-align: left;
+    color: ${variables.colors.error};
+    font-size: ${variables.sizes.error}px;
+  }
 `;

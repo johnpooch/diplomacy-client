@@ -1,9 +1,13 @@
 import { rest } from 'msw';
 import { methods, urlConf } from '../urls';
 import {
+  createGame,
+  destroyOrder,
+  finalizeOrders,
   getGameDetail,
   getGameFilterChoices,
   listGames,
+  listOrders,
   listVariants,
   login,
   register,
@@ -26,11 +30,18 @@ const handlers = [
   [urlConf.register, register.success],
   [urlConf.resetPassword, resetPassword.success],
   [urlConf.resetPasswordConfirm, resetPasswordConfirm.success],
+
   // Games
-  [urlConf.getGameDetail, getGameDetail.success],
+  [urlConf.createGame, createGame.success],
   [urlConf.getGameFilterChoices, getGameFilterChoices.success],
   [urlConf.listGames, listGames.success],
   [urlConf.listVariants, listVariants.success],
+
+  // GameDetail
+  [urlConf.destroyOrder, destroyOrder.success],
+  [urlConf.finalizeOrders, finalizeOrders.success],
+  [urlConf.getGameDetail, getGameDetail.success],
+  [urlConf.listOrders, listOrders.success],
 ];
 
 export default Object.values(handlers).map(([url, resolver]) => {
