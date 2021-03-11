@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "type": "hold",
+        "nation": "standard-england",
+        "source": "standard-edinburgh",
+        "target": null,
+        "targetCoast": null,
+        "aux": null,
+        "pieceType": null,
+        "viaConvoy": false,
+        "turn": 1
+    },
+    {
+        "id": 2,
+        "type": "move",
+        "nation": "standard-england",
+        "source": "standard-liverpool",
+        "target": "standard-wales",
+        "targetCoast": null,
+        "aux": null,
+        "pieceType": null,
+        "viaConvoy": false,
+        "turn": 1
+    },
+    {
+        "id": 3,
+        "type": "support",
+        "nation": "standard-england",
+        "source": "standard-london",
+        "target": "standard-wales",
+        "targetCoast": null,
+        "aux": "standard-liverpool",
+        "pieceType": null,
+        "viaConvoy": false,
+        "turn": 1
+    }
+]

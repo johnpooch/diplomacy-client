@@ -16,6 +16,8 @@ export const errorMessages = {
 export const successMessages = {
   accountCreated: 'Account created! Log in to continue.',
   gameCreated: 'Game "%s" created!',
+  ordersFinalized: 'Orders finalised',
+  orderCancelled: 'Order cancelled',
   passwordUpdated: 'Password updated!',
   passwordResetLinkSent:
     'Thanks! Please check %s for a link to reset your password.',

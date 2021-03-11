@@ -1,3 +1,5 @@
+import { successMessages } from './copy';
+
 export const methods = {
   DELETE: 'DELETE',
   GET: 'GET',
@@ -39,6 +41,7 @@ const destroyOrder = {
   name: 'destroyOrder',
   method: methods.DELETE,
   urlPattern: 'game/order/:orderId',
+  successMessage: successMessages.orderCancelled,
 };
 const listOrders = {
   name: 'listOrders',
@@ -49,6 +52,7 @@ const finalizeOrders = {
   name: 'finalizeOrders',
   method: methods.PATCH,
   urlPattern: 'game/finalize/:nationStateId',
+  successMessage: successMessages.ordersFinalized,
 };
 const toggleSurrender = {
   name: 'toggleSurrender',

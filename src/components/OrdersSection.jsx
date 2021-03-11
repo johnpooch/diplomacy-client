@@ -7,7 +7,6 @@ import { getErrors } from '../utils';
 import { variables } from '../variables';
 
 import ComponentError from './ComponentError';
-import NonFieldErrors from './NonFieldErrors';
 import OrderItem from './OrderItem';
 import Section from './Section';
 
@@ -17,9 +16,9 @@ import { selectOrdersByTurn } from '../store/selectors';
 
 const OrdersSection = ({
   currentTurn,
-  orderErrors,
-  orders,
+  errors,
   finalizeOrders,
+  orders,
   userNation,
 }) => {
   const { numOrders, ordersFinalized } = userNation;
@@ -36,39 +35,40 @@ const OrdersSection = ({
     }
   `;
 
-  if (Object.keys(orderErrors).length) {
-    return <ComponentError error={orderErrors} />;
-  }
-
   return (
     <Section className="orders" label="Orders">
-      <span className="count">
-        {orders.length} / {numOrders}
-      </span>
-      <StyledOrders>
-        {orders.map((order) => (
-          <li key={order.id}>
-            <OrderItem order={order} currentTurn={currentTurn} />
-          </li>
-        ))}
-      </StyledOrders>
-      <NonFieldErrors errors={orderErrors.non_field_errors} />
-      <Button onClick={finalizeOrders} disabled={userNation.loading}>
-        {ordersFinalized ? `Un-finalize orders` : 'Finalize orders'}
-      </Button>
+      {Object.keys(errors).length ? (
+        <ComponentError error={errors} />
+      ) : (
+        <div>
+          <span className="count">
+            {orders.length} / {numOrders}
+          </span>
+          <StyledOrders>
+            {orders.map((order) => (
+              <li key={order.id}>
+                <OrderItem order={order} currentTurn={currentTurn} />
+              </li>
+            ))}
+          </StyledOrders>
+          <Button onClick={finalizeOrders} disabled={userNation.loading}>
+            {ordersFinalized ? `Un-finalize orders` : 'Finalize orders'}
+          </Button>
+        </div>
+      )}
     </Section>
   );
 };
 
 const mapStateToProps = (state, { currentTurn }) => {
   const orders = selectOrdersByTurn(state, currentTurn.id);
-  const orderErrors = getErrors(
+  const errors = getErrors(
     state.errors,
     orderActions.destroyOrder,
     orderActions.listOrders,
     nationStateActions.finalizeOrders
   );
-  return { orderErrors, orders };
+  return { errors, orders };
 };
 
 const mapDispatchToProps = (dispatch, { userNation }) => {

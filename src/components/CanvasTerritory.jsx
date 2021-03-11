@@ -4,7 +4,7 @@ import { darken } from 'polished';
 import { Path, Star, Group } from 'react-konva';
 
 import { variables } from '../variables';
-import { makeSelectTerritoryById } from '../store/selectors';
+import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
 import viewBox from '../data/standard/viewBox.json';
 
 const FILLPATTERNSCALE = 0.15;
@@ -81,9 +81,9 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
 };
 
 const makeMapStateToProps = () => {
-  const selectTerritoryById = makeSelectTerritoryById();
+  const selectTerritoryStateById = makeSelectTerritoryStateByMapDataId();
   const mapStateToProps = (state, { hoverId, id, turnId }) => {
-    const territory = selectTerritoryById(state, id, turnId);
+    const territory = selectTerritoryStateById(state, id, turnId);
     const isHovering = Boolean(hoverId !== null && territory.id === hoverId);
     return { territory, isHovering };
   };

@@ -4,6 +4,7 @@ import getGameFilterChoicesData from './data/gameFilterChoices.json';
 import listGamesData from './data/games.json';
 import listVariantsData from './data/variants.json';
 import orderData from './data/orders.json';
+import moreOrderData from './data/orders2.json';
 import userData from './data/user.json';
 
 import { errorMessages } from '../copy';
@@ -47,6 +48,8 @@ export const listOrders = {
   success: (_, res, ctx) => res(ctx.status(200), ctx.json(orderData)),
   successOneDeleted: (_, res, ctx) =>
     res(ctx.status(200), ctx.json(Array.from(orderData).splice(1))),
+  successMultiple: (_, res, ctx) =>
+    res(ctx.status(200), ctx.json(moreOrderData)),
   errorServerError,
 };
 

@@ -75,3 +75,8 @@ export const getErrors = (errors, ...types) => {
   });
   return mergedErrors;
 };
+
+export const getTerritoryPieceCoords = (territory, retreating = false) =>
+  retreating
+    ? [territory.dislodgedPieceX, territory.dislodgedPieceY]
+    : [territory.pieceX, territory.pieceY];

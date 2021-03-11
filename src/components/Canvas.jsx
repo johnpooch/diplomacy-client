@@ -21,8 +21,6 @@ const getMinScale = () => {
 };
 
 const Canvas = ({ currentTurn, gameInterface }) => {
-  const { orders } = currentTurn;
-
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
@@ -170,7 +168,7 @@ const Canvas = ({ currentTurn, gameInterface }) => {
               />
             </Layer>
             <Layer>
-              <Orders orders={orders} />
+              <Orders turn={currentTurn} />
             </Layer>
             <Layer>
               <Pieces turn={currentTurn} />

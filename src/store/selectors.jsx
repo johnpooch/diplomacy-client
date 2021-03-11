@@ -11,6 +11,15 @@ import { territoryStateSelectors } from './territoryStates';
 import { turnSelectors } from './turns';
 
 export const makeSelectTerritoryById = () =>
+  createSelector(territorySelectors.selectById, (territory) => {
+    const territoryMapData = territoryData.find(
+      (td) => td.territoryUID === territory.id
+    );
+    const playable = Boolean(territory);
+    return { playable, ...territoryMapData, ...territory };
+  });
+
+export const makeSelectTerritoryStateByMapDataId = () =>
   createSelector(
     (_, id) => territoryData.find((t) => t.territoryMapDataId === id),
     (state) => state.entities.territories.entities,
@@ -30,15 +39,9 @@ export const makeSelectPieceById = () =>
   createSelector(
     pieceStateSelectors.selectById,
     pieceSelectors.selectEntities,
-    territorySelectors.selectAll,
-    (pieceState, pieces, territories) => {
+    (pieceState, pieces) => {
       const piece = pieces[pieceState.piece];
-      const territory = territories.find((t) => t.id === pieceState.territory);
-      // TODO avoid this iteration. Covert territoryData into a map.
-      const { pieceX: x, pieceY: y } = territoryData.find(
-        (tmd) => tmd.territoryUID === territory.id
-      );
-      return { ...pieceState, ...piece, x, y };
+      return { ...pieceState, ...piece };
     }
   );
 
@@ -81,7 +84,7 @@ export const selectCurrentTurnByGame = createSelector(
 export const selectOrdersByTurn = createSelector(
   orderSelectors.selectAll,
   (_, id) => id,
-  (orders, id) => orders.filter((o) => o.turn.id === id)
+  (orders, id) => orders.filter((o) => o.turn === id)
 );
 
 export const selectPieceByTerritory = createSelector(

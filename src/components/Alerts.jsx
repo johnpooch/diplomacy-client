@@ -38,9 +38,10 @@ export const Alert = (props) => {
   if (!text) return null;
   return (
     <StyledAlert category={category}>
-      <p>{text}</p>
+      <p role="alert">{text}</p>
       <BaseButton
         type="button"
+        title="Close alert"
         onClick={() => {
           onClick(id);
         }}
