@@ -2,6 +2,13 @@
   "name": "diplomacy-client",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js && gulp",
+    "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
+    "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
+    "test": "jest"
+  },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.11.0",
     "@testing-library/preact": "^2.0.1",
@@ -74,13 +81,6 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-merge": "^4.2.2"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js && gulp",
-    "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
-    "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
-    "test": "jest"
   },
   "browserslist": [
     "last 1 version",
