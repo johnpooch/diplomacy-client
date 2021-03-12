@@ -20,8 +20,6 @@ export default class GameInterface extends baseGameInterface {
 
   submitForm() {
     // TODO remove
-    console.log('Created Order');
-    console.log(this.gameForm);
     delete this.gameForm.action;
     this.callbacks.postOrder();
   }

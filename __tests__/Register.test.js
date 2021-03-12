@@ -1,9 +1,14 @@
 import { fireEvent, waitFor, screen } from '@testing-library/react';
 
+import {
+  renderApp,
+  successMessages,
+  testElements,
+  useHandlers,
+} from './testUtils';
 import { urlConf } from '../src/urls';
 import { register } from '../src/mocks/resolvers';
-import { errorMessages, successMessages } from '../src/copy';
-import { renderApp, testElements, useHandlers } from './testUtils';
+import { errorMessages } from '../src/copy';
 
 const startingUrl = '/register';
 
@@ -14,7 +19,7 @@ describe('Register', () => {
     fireEvent.click(testElements.registerButton());
     // Expect to be redirected to login page and see success alert
     await waitFor(() => testElements.loginButton());
-    expect(screen.getByText(successMessages.accountCreated));
+    expect(screen.getByText(successMessages.register()));
   });
   it('display error when user with email already exists', async () => {
     useHandlers([urlConf.register, register.errorUserWithEmailExists]);

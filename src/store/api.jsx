@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { alertActions } from './alerts';
-import { errorMessages } from '../copy';
+import { errorMessages, successMessages } from '../copy';
 
 const re = /:([a-zA-z]+)/g;
 
@@ -69,15 +69,17 @@ export const apiAction = (urlConf) =>
   createAsyncThunk(
     `${urlConf.name}Status`,
     async ({ data, urlParams, queryParams }, thunkApi) => {
-      const { getState } = thunkApi;
-      const { token } = getState().auth;
+      const state = thunkApi.getState();
+      const { token } = state.auth;
       let url = substituteUrlParams(urlConf.urlPattern, urlParams);
       const options = getOptions(token, urlConf.method, data);
       if (queryParams) {
         const queryParamsString = new URLSearchParams(queryParams).toString();
         url = url.concat(`?${queryParamsString}`);
       }
-      const successMessage = urlConf.successMessage;
+      const successMessage = urlConf.getSuccessMessage
+        ? urlConf.getSuccessMessage(state, { data, urlParams, queryParams })
+        : null;
       return apiRequest(url, options, thunkApi, successMessage);
     }
   );
