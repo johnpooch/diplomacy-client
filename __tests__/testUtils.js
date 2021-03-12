@@ -119,7 +119,6 @@ const createAction = (data) => {
 export const successMessages = {
   createGame: (name) => {
     const action = createAction({ name });
-    console.log(action);
     return apiSuccessMessages[gameActions.createGame.fulfilled].getMessage(
       null,
       action
@@ -134,7 +133,6 @@ export const successMessages = {
     apiSuccessMessages[authActions.register.fulfilled].getMessage(),
   resetPassword: (email) => {
     const action = createAction({ email });
-    console.log(action);
     return apiSuccessMessages[authActions.resetPassword.fulfilled].getMessage(
       null,
       action
