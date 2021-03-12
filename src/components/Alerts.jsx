@@ -34,13 +34,14 @@ const StyledAlert = styled.div`
 `;
 
 export const Alert = (props) => {
-  const { primary, category, id, onClick } = props;
-  if (!primary) return null;
+  const { text, category, id, onClick } = props;
+  if (!text) return null;
   return (
     <StyledAlert category={category}>
-      <p>{primary}</p>
+      <p role="alert">{text}</p>
       <BaseButton
         type="button"
+        title="Close alert"
         onClick={() => {
           onClick(id);
         }}

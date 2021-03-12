@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 import FieldError from '../components/FieldError';
@@ -8,19 +8,15 @@ import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
 import Form, { FormLabel, FormWrapper } from '../components/Form';
 
-const ResetPassword = ({ history, location, onAuth }) => {
+const ResetPassword = ({ errors, history, location, onAuth }) => {
   const [{ password }, handleChange] = useForm({ password: '' });
-
-  const [errors, setErrors] = useState({
-    nonFieldErrors: [],
-  });
 
   const token = new URLSearchParams(location.search).get('token');
   if (!token) history.push('/');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAuth(setErrors, token, password);
+    onAuth(token, password);
   };
 
   return (
@@ -43,9 +39,7 @@ const ResetPassword = ({ history, location, onAuth }) => {
             />
             <FieldError error={errors.password} />
           </label>
-
           <Button type="submit">Reset password</Button>
-
           <NonFieldErrors errors={errors.non_field_errors} />
         </Form>
       </FormWrapper>

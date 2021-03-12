@@ -85,61 +85,61 @@
                         "username": "testuser",
                         "id": 7
                     },
-                    "nation": 1,
+                    "nation": "standard-england",
                     "surrenders": []
                 },
                 {
                     "id": 2,
                     "user": {
-                        "username": "samuelsaunders",
+                        "username": "amyburns",
                         "id": 1
                     },
-                    "nation": 2,
+                    "nation": "standard-france",
                     "surrenders": []
                 },
                 {
                     "id": 3,
                     "user": {
-                        "username": "codycarrillo",
+                        "username": "mariahawkins",
                         "id": 2
                     },
-                    "nation": 3,
+                    "nation": "standard-germany",
                     "surrenders": []
                 },
                 {
                     "id": 4,
                     "user": {
-                        "username": "juliegilmore",
+                        "username": "stephaniegordon",
                         "id": 3
                     },
-                    "nation": 4,
+                    "nation": "standard-austria-hungary",
                     "surrenders": []
                 },
                 {
                     "id": 5,
                     "user": {
-                        "username": "melissanichols",
+                        "username": "tracygeorge",
                         "id": 4
                     },
-                    "nation": 5,
+                    "nation": "standard-italy",
                     "surrenders": []
                 },
                 {
                     "id": 6,
                     "user": {
-                        "username": "aprilbutler",
+                        "username": "christinaharper",
                         "id": 5
                     },
-                    "nation": 6,
+                    "nation": "standard-russia",
                     "surrenders": []
                 },
                 {
                     "id": 7,
                     "user": {
-                        "username": "daniellerodriguez",
+                        "username": "tammybryant",
                         "id": 6
                     },
-                    "nation": 7,
+                    "nation": "standard-turkey",
                     "surrenders": []
                 }
             ],

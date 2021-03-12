@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import _slugify from 'slugify';
 import { useRef, useState } from 'react';
 
@@ -52,3 +54,31 @@ export class Vector {
     this.y /= length;
   }
 }
+
+export const getErrors = (errors, ...types) => {
+  // Get errors form store based on action types
+  const mergedErrors = {};
+  types.forEach((t) => {
+    const error = errors[t.typePrefix];
+    if (!error) return null;
+    const { non_field_errors, ...otherErrors } = error;
+    if (non_field_errors) {
+      if (mergedErrors.non_field_errors) {
+        mergedErrors.non_field_errors = [
+          ...mergedErrors.non_field_errors,
+          ...non_field_errors,
+        ];
+      } else {
+        mergedErrors.non_field_errors = non_field_errors;
+      }
+      Object.assign(mergedErrors, otherErrors);
+    }
+    return null;
+  });
+  return mergedErrors;
+};
+
+export const getTerritoryPieceCoords = (territory, retreating = false) =>
+  retreating
+    ? [territory.dislodgedPieceX, territory.dislodgedPieceY]
+    : [territory.pieceX, territory.pieceY];

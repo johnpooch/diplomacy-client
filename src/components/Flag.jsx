@@ -8,8 +8,7 @@ const FlagWrapper = styled.div`
   width: ${(p) => p.sizes.flag[p.size]};
 `;
 
-const Flag = (props) => {
-  const { nation, size } = props;
+const Flag = ({ nation, size }) => {
   return (
     <FlagWrapper size={size}>
       {nation ? (

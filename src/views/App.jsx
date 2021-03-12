@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -13,6 +13,10 @@ import GlobalStyles from '../globalStyles';
 import { alertActions, alertSelectors } from '../store/alerts';
 
 const App = (props) => {
+  const [formErrors, setFormErrors] = useState({
+    nonFieldErrors: [],
+  });
+
   const { alerts, alertsClear, clearAndPromoteAlerts, loggedIn } = props;
 
   const location = useLocation();
@@ -21,7 +25,12 @@ const App = (props) => {
     clearAndPromoteAlerts();
   }, [location.pathname]);
 
-  const router = loggedIn ? <RouterLoggedIn /> : <RouterLoggedOut />;
+  const router = loggedIn ? (
+    <RouterLoggedIn formErrors={formErrors} setFormErrors={setFormErrors} />
+  ) : (
+    <RouterLoggedOut formErrors={formErrors} setFormErrors={setFormErrors} />
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

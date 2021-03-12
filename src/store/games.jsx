@@ -17,7 +17,7 @@ const gameSlice = createSlice({
   name: 'games',
   initialState: gameAdapter.getInitialState({
     loading: false,
-    browseGamesLoaded: false,
+    loaded: false,
   }),
   reducers: {
     normalizedGamesReceived: (state, action) => {
@@ -55,9 +55,13 @@ const gameSlice = createSlice({
     },
     [listGames.fulfilled]: (state) => {
       state.loading = false;
-      state.browseGamesLoaded = true;
+      state.loaded = true;
     },
     [getGameDetail.rejected]: (state) => setLoading(state, false),
+    [listGames.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
   },
 });
 

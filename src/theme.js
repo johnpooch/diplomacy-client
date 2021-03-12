@@ -16,13 +16,13 @@ const colors = {
   accent: 'slateblue',
   muted: 'white',
   nations: {
-    1: '#ff1103', // England
-    2: '#0074d9', // France
-    3: '#777777', // Germany
-    4: '#e69f00', // Austria-Hungary
-    5: '#2ecc40', // Italy
-    6: '#b10dc9', // Russia
-    7: '#508e59', // Turkey
+    'standard-england': '#ff1103',
+    'standard-france': '#0074d9',
+    'standard-germany': '#777777',
+    'standard-austria-hungary': '#E69F00',
+    'standard-italy': '#2ecc40',
+    'standard-russia': '#b10dc9',
+    'standard-turkey': '#508e59',
   },
   map: {
     land: '#e3d8c4',

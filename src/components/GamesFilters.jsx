@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import {
   faChevronDown,
   faChevronUp,
@@ -9,9 +10,12 @@ import styled from 'styled-components';
 
 import Select from './Select';
 import useForm from '../hooks/useForm';
+import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
 import Form, { FormLabel } from './Form';
 import { GridTemplate } from '../layout';
+import { gameActions } from '../store/games';
+import { choiceActions } from '../store/choices';
 
 const StyledGamesFilters = styled.div`
   border-bottom: ${(p) => p.theme.borders[0]};
@@ -20,7 +24,9 @@ const StyledGamesFilters = styled.div`
   width: 100%;
 `;
 
-const GamesFilters = ({ callback, choices }) => {
+const GamesFilters = ({ choices, listGames, getChoices }) => {
+  useEffect(() => (choices ? null : getChoices()));
+
   const [values, handleChange] = useForm({
     search: '',
     variant: '',
@@ -35,10 +41,10 @@ const GamesFilters = ({ callback, choices }) => {
 
   const filter = (e) => {
     e.preventDefault();
-    callback(values);
+    listGames(values);
   };
 
-  if (!choices) return null;
+  const { error } = choices;
 
   const toggleButton = (
     <SecondaryButton
@@ -59,7 +65,9 @@ const GamesFilters = ({ callback, choices }) => {
     </SecondaryButton>
   );
 
-  const filters = (
+  const filters = error ? (
+    <ComponentError error={error} />
+  ) : (
     <Form onSubmit={filter}>
       <GridTemplate
         templateColumns="2fr 1fr 1fr 1fr"
@@ -145,4 +153,16 @@ const GamesFilters = ({ callback, choices }) => {
   );
 };
 
-export default GamesFilters;
+const mapStateToProps = (state) => {
+  const { choices } = state;
+  return { choices };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const getChoices = () => dispatch(choiceActions.getGameFilterChoices({}));
+  const listGames = (token, queryParams) =>
+    dispatch(gameActions.listGames({ token, queryParams }));
+  return { getChoices, listGames };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamesFilters);
