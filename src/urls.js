@@ -36,6 +36,7 @@ const createOrder = {
   name: 'createOrder',
   method: methods.POST,
   urlPattern: 'game/:gameSlug/order',
+  successMessage: successMessages.orderCreated,
 };
 const destroyOrder = {
   name: 'destroyOrder',

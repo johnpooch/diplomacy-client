@@ -1,0 +1,12 @@
+{
+    "id": 718,
+    "type": "move",
+    "nation": "standard-england",
+    "source": "standard-london",
+    "target": "standard-english-channel",
+    "targetCoast": null,
+    "aux": null,
+    "pieceType": null,
+    "viaConvoy": false,
+    "turn": 1
+}
