@@ -1,5 +1,6 @@
 // Constants
 import { territorySelectors } from '../store/territories';
+import { selectPieceByTerritory } from '../store/selectors';
 
 export const Phases = {
   ORDER: 'Order',
@@ -52,9 +53,8 @@ export class baseGameInterface {
   correct options depending on the state of the game and the territory that
   the user is interacting with.
   */
-  constructor(callbacks, gameForm, setGameForm, turn, state) {
+  constructor(callbacks, gameForm, setGameForm, turn, userNation, state) {
     const { action, nation, targetCoast, type } = gameForm;
-    const { userNation } = turn;
 
     this.gameForm = gameForm;
     this.setGameForm = setGameForm;
@@ -83,6 +83,10 @@ export class baseGameInterface {
       this.submitForm();
       this.reset();
     }
+  }
+
+  getPiece(territory) {
+    return selectPieceByTerritory(this.state, territory.id, this.turn.id);
   }
 
   createOrder() {
@@ -159,8 +163,9 @@ export class baseGameInterface {
   userCanOrder(territory) {
     if (!this.userNation || !this.turn.currentTurn) return false;
 
+    const piece = this.getPiece(territory);
     if (this.phase === Phases.ORDER) {
-      return territory.piece && territory.piece.nation === this.userNation.id;
+      return piece && piece.nation === this.userNation.nation;
     }
 
     if (this.phase === Phases.RETREAT) {
@@ -177,7 +182,8 @@ export class baseGameInterface {
 
   getOrderTypeChoices() {
     if (!this.source) return null;
-    if (!this.source.piece) return null;
+    const piece = this.getPiece(this.source);
+    if (!piece) return null;
     const { type: territoryType } = this.source;
     if (this.phase === Phases.ORDER) {
       const options = [
@@ -185,8 +191,7 @@ export class baseGameInterface {
         OrderTypeChoices[OrderTypes.MOVE],
         OrderTypeChoices[OrderTypes.SUPPORT],
       ];
-      const { type: pieceType } = this.source.piece;
-      if (pieceType === PieceTypes.FLEET && territoryType === 'sea') {
+      if (piece.type === PieceTypes.FLEET && territoryType === 'sea') {
         options.push(OrderTypeChoices[OrderTypes.CONVOY]);
       }
       return options;
