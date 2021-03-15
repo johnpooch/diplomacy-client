@@ -96,6 +96,6 @@ export const selectPieceByTerritory = createSelector(
     const pieceState = pieceStates.find(
       (ps) => ps.territory === id && !ps.mustRetreat && ps.turn === turn
     );
-    return { ...pieceState, ...pieces[pieceState.piece] };
+    return pieceState ? { ...pieceState, ...pieces[pieceState.piece] } : null;
   }
 );

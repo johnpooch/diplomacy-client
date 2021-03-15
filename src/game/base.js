@@ -85,7 +85,7 @@ export class baseGameInterface {
     }
   }
 
-  getPiece(territory) {
+  _getPiece(territory) {
     return selectPieceByTerritory(this.state, territory.id, this.turn.id);
   }
 
@@ -163,9 +163,9 @@ export class baseGameInterface {
   userCanOrder(territory) {
     if (!this.userNation || !this.turn.currentTurn) return false;
 
-    const piece = this.getPiece(territory);
+    const piece = this._getPiece(territory);
     if (this.phase === Phases.ORDER) {
-      return piece && piece.nation === this.userNation.nation;
+      return Boolean(piece && piece.nation === this.userNation.nation);
     }
 
     if (this.phase === Phases.RETREAT) {
@@ -182,7 +182,7 @@ export class baseGameInterface {
 
   getOrderTypeChoices() {
     if (!this.source) return null;
-    const piece = this.getPiece(this.source);
+    const piece = this._getPiece(this.source);
     if (!piece) return null;
     const { type: territoryType } = this.source;
     if (this.phase === Phases.ORDER) {
