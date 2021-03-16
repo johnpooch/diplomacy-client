@@ -12,21 +12,19 @@ import { turnSelectors } from './turns';
 
 export const makeSelectTerritoryById = () =>
   createSelector(territorySelectors.selectById, (territory) => {
-    const territoryMapData = territoryData.find(
-      (td) => td.territoryUID === territory.id
-    );
+    const territoryMapData = territoryData.find((td) => td.id === territory.id);
     const playable = Boolean(territory);
     return { playable, ...territoryMapData, ...territory };
   });
 
 export const makeSelectTerritoryStateByMapDataId = () =>
   createSelector(
-    (_, id) => territoryData.find((t) => t.territoryMapDataId === id),
+    (_, id) => territoryData.find((t) => t.id === id),
     (state) => state.entities.territories.entities,
     (state, _, turnId) => () =>
       territoryStateSelectors.selectByTurnId(state, turnId),
     (territoryMapData, territories, territoryStates) => {
-      const territory = territories[territoryMapData.territoryUID];
+      const territory = territories[territoryMapData.id];
       const territoryState = territory
         ? territoryStates().find((ts) => ts.territory === territory.id)
         : null;
@@ -95,6 +93,19 @@ export const selectPieceByTerritory = createSelector(
   (pieceStates, pieces, id, turn) => {
     const pieceState = pieceStates.find(
       (ps) => ps.territory === id && !ps.mustRetreat && ps.turn === turn
+    );
+    return pieceState ? { ...pieceState, ...pieces[pieceState.piece] } : null;
+  }
+);
+
+export const selectRetreatingPieceByTerritory = createSelector(
+  pieceStateSelectors.selectAll,
+  pieceSelectors.selectEntities,
+  (_, id) => id,
+  (_, x, turn) => turn,
+  (pieceStates, pieces, id, turn) => {
+    const pieceState = pieceStates.find(
+      (ps) => ps.territory === id && ps.mustRetreat && ps.turn === turn
     );
     return pieceState ? { ...pieceState, ...pieces[pieceState.piece] } : null;
   }

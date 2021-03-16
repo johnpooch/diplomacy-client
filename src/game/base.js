@@ -113,6 +113,12 @@ export class baseGameInterface {
     );
   }
 
+  getOrderTypeChoices() {
+    throw new Error(
+      'Subclasses of baseGameInterface must implement a createOrder method.'
+    );
+  }
+
   orderIsReady() {
     if (this.type === OrderTypes.HOLD) {
       return true;
@@ -137,15 +143,8 @@ export class baseGameInterface {
     // Clicking outside of context menu resets order
     if (this.showContextMenu()) return this.reset();
 
-    if (
-      // If any of the following are true, interaction is not possible
-      Boolean(!territory.id) ||
-      this._tryingToCreateOrderImpossible(territory) ||
-      this._tryingToSupportOrConvoySource(territory) ||
-      this._tryingToMoveToSource(territory)
-    ) {
-      return null;
-    }
+    if (!territory.id || this.interactionNotPossible(territory)) return null;
+
     const attr = this._getOrderAttrToUpdate();
     return this.setGameForm({ ...this.gameForm, [attr]: territory.id });
   }
@@ -167,50 +166,7 @@ export class baseGameInterface {
     if (!this.userNation || !this.turn.currentTurn) return false;
 
     const piece = this._getPiece(territory);
-    if (this.phase === Phases.ORDER) {
-      return Boolean(piece && piece.nation === this.userNation.nation);
-    }
-
-    if (this.phase === Phases.RETREAT) {
-      return (
-        territory.dislodgedPiece &&
-        territory.dislodgedPiece.nation === this.userNation.id
-      );
-    }
-
-    // Build turn
-    // TODO handle disband and build
-    return false;
-  }
-
-  getOrderTypeChoices() {
-    if (!this.source) return null;
-    const piece = this._getPiece(this.source);
-    if (!piece) return null;
-    const { type: territoryType } = this.source;
-    if (this.phase === Phases.ORDER) {
-      const options = [
-        OrderTypeChoices[OrderTypes.HOLD],
-        OrderTypeChoices[OrderTypes.MOVE],
-        OrderTypeChoices[OrderTypes.SUPPORT],
-      ];
-      if (piece.type === PieceTypes.FLEET && territoryType === 'sea') {
-        options.push(OrderTypeChoices[OrderTypes.CONVOY]);
-      }
-      return options;
-    }
-    if (this.phase === Phases.RETREAT) {
-      const options = [
-        OrderTypeChoices[OrderTypes.RETREAT],
-        OrderTypeChoices[OrderTypes.DISBAND],
-      ];
-      return options;
-    }
-    // TODO logic for which build order is available
-    return [
-      OrderTypeChoices[OrderTypes.BUILD],
-      OrderTypeChoices[OrderTypes.DISBAND],
-    ];
+    return Boolean(piece && piece.nation === this.userNation.nation);
   }
 
   getPieceTypeChoices() {

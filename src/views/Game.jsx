@@ -13,13 +13,14 @@ import {
 } from '../store/selectors';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
-import { initialGameFormState } from '../game/base';
 import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
 import { variables } from '../variables';
 import { variantActions } from '../store/variants';
 import Canvas from '../components/Canvas';
+import { initialGameFormState, Phases } from '../game/base';
 import GameInterface from '../game/gameInterface';
+import RetreatPhaseInterface from '../game/RetreatPhaseInterface';
 import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
@@ -36,6 +37,14 @@ const HomeNavLinkButton = () => (
     <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
   </NavLinkButton>
 );
+
+const getInterfaceClass = (phase) => {
+  const interfaceClassMap = {
+    [Phases.ORDER]: GameInterface,
+    [Phases.RETREAT]: RetreatPhaseInterface,
+  };
+  return interfaceClassMap[phase];
+};
 
 const Game = (props) => {
   const {
@@ -71,7 +80,9 @@ const Game = (props) => {
   const postOrder = () => {
     createOrder(slug, currentTurn.id, gameForm);
   };
-  const gameInterface = new GameInterface(
+
+  const InterfaceClass = getInterfaceClass(currentTurn.phase);
+  const gameInterface = new InterfaceClass(
     { postOrder },
     gameForm,
     setGameForm,

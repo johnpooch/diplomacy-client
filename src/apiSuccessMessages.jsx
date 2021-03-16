@@ -19,6 +19,7 @@ export const orderTypeMessageMap = {
   [OrderTypes.MOVE]: moveMessage,
   [OrderTypes.SUPPORT]: supportMessage,
   [OrderTypes.CONVOY]: supportMessage,
+  [OrderTypes.RETREAT]: moveMessage,
 };
 
 export default {

@@ -22,10 +22,10 @@ const Territories = ({ hoverId, turn }) => {
       {territoryData.map((t) => {
         return (
           <Territory
-            key={t.territoryMapDataId}
+            key={t.id}
             hoverId={hoverId}
             stripesImage={stripesImage}
-            id={t.territoryMapDataId}
+            id={t.id}
             turnId={turn.id}
           />
         );

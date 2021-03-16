@@ -49,7 +49,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   };
 
   const getStroke = () =>
-    isHovering ? variables.colors.white : darken(0.2, getFill());
+    isHovering && playable ? variables.colors.white : darken(0.2, getFill());
 
   return (
     <Group>
