@@ -1,3 +1,4 @@
+import { OrderTypeChoices, OrderTypes, PieceTypes } from '../src/game/base';
 import GameInterface from '../src/game/gameInterface';
 import { makeSelectTerritoryStateByMapDataId } from '../src/store/selectors';
 
@@ -54,7 +55,11 @@ describe('Order phase', () => {
     state = {
       entities: {
         territories: {
-          ids: ['standard-london', 'standard-wales'],
+          ids: [
+            'standard-london',
+            'standard-wales',
+            'standard-english-channel',
+          ],
           entities: {
             'standard-london': {
               id: 'standard-london',
@@ -69,6 +74,13 @@ describe('Order phase', () => {
               namedCoasts: [],
               supplyCenter: false,
               type: 'coastal',
+            },
+            'standard-english-channel': {
+              id: 'standard-english-channel',
+              name: 'english channel',
+              namedCoasts: [],
+              supplyCenter: false,
+              type: 'sea',
             },
           },
         },
@@ -133,10 +145,10 @@ describe('Order phase', () => {
     };
   });
 
-  const getGameInterface = () =>
+  const getGameInterface = (form = null) =>
     new GameInterface(
-      { mockPostOrder },
-      gameForm,
+      { postOrder: mockPostOrder },
+      form || gameForm,
       mockSetGameForm,
       turn,
       userNation,
@@ -191,9 +203,266 @@ describe('Order phase', () => {
     gameInterface.onClickTerritory(territory);
     expect(mockSetGameForm.mock.calls).toEqual([]);
   });
-  it('show context menu when source (army land)', async () => {});
-  it('show context menu when source (fleet land)', async () => {});
-  it('show context menu when source (fleet sea)', async () => {});
+  it('show context menu when source (army land, orders)', async () => {
+    gameForm.source = 'standard-london';
+    const gameInterface = getGameInterface();
+    expect(gameInterface.showContextMenu()).toBe(true);
+    expect(gameInterface.getOptions()).toEqual([
+      OrderTypeChoices.hold,
+      OrderTypeChoices.move,
+      OrderTypeChoices.support,
+    ]);
+  });
+  it('show context menu when source (fleet land, orders)', async () => {
+    gameForm.source = 'standard-london';
+    state.entities.pieces.entities[1].type = PieceTypes.FLEET;
+    const gameInterface = getGameInterface();
+    expect(gameInterface.showContextMenu()).toBe(true);
+    expect(gameInterface.getOptions()).toEqual([
+      OrderTypeChoices.hold,
+      OrderTypeChoices.move,
+      OrderTypeChoices.support,
+    ]);
+  });
+  it('show context menu when source (fleet sea, orders)', async () => {
+    gameForm.source = 'standard-english-channel';
+    state.entities.pieces.entities[1].type = PieceTypes.FLEET;
+    state.entities.pieceStates.entities[1].territory =
+      'standard-english-channel';
+    const gameInterface = getGameInterface();
+    expect(gameInterface.showContextMenu()).toBe(true);
+    expect(gameInterface.getOptions()).toEqual([
+      OrderTypeChoices.hold,
+      OrderTypeChoices.move,
+      OrderTypeChoices.support,
+      OrderTypeChoices.convoy,
+    ]);
+  });
 
-  it('set source to null on click territory before order type', async () => {});
+  it('set source to null on click other territory before order type', async () => {
+    gameForm.source = 'standard-london';
+    const territory = selectTerritoryStateById(state, 53, turn.id);
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(territory);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: null,
+      nation: null,
+      source: null,
+      target: null,
+      targetCoast: null,
+      type: null,
+    });
+  });
+  it('set source to null on click same territory before order type', async () => {
+    gameForm.source = 'standard-london';
+    const territory = selectTerritoryStateById(state, 52, turn.id);
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(territory);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: null,
+      nation: null,
+      source: null,
+      target: null,
+      targetCoast: null,
+      type: null,
+    });
+  });
+
+  it('set order type and create order on click order type (hold)', async () => {
+    gameForm.source = 'standard-london';
+    const gameInterface = getGameInterface();
+    gameInterface.onOptionSelected(OrderTypes.HOLD);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: null,
+      nation: null,
+      source: 'standard-london',
+      target: null,
+      targetCoast: null,
+      type: OrderTypes.HOLD,
+    });
+    // re-initialize interface to trigger postOrder
+    getGameInterface({
+      action: null,
+      aux: null,
+      nation: null,
+      source: 'standard-london',
+      target: null,
+      targetCoast: null,
+      type: OrderTypes.HOLD,
+    });
+    expect(mockPostOrder).toHaveBeenCalled();
+  });
+  it('set order type on click order type (move)', async () => {
+    gameForm.source = 'standard-london';
+    const gameInterface = getGameInterface();
+    gameInterface.onOptionSelected(OrderTypes.MOVE);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: null,
+      nation: null,
+      source: 'standard-london',
+      target: null,
+      targetCoast: null,
+      type: OrderTypes.MOVE,
+    });
+  });
+  it('set order type on click order type (support)', async () => {
+    gameForm.source = 'standard-london';
+    const gameInterface = getGameInterface();
+    gameInterface.onOptionSelected(OrderTypes.SUPPORT);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: null,
+      nation: null,
+      source: 'standard-london',
+      target: null,
+      targetCoast: null,
+      type: OrderTypes.SUPPORT,
+    });
+  });
+  it('set order type on click order type (convoy)', async () => {
+    gameForm.source = 'standard-english-channel';
+    const gameInterface = getGameInterface();
+    gameInterface.onOptionSelected(OrderTypes.CONVOY);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: null,
+      nation: null,
+      source: 'standard-english-channel',
+      target: null,
+      targetCoast: null,
+      type: OrderTypes.CONVOY,
+    });
+  });
+  it('set target on click territory after order type choice (move)', async () => {
+    gameForm.source = 'standard-london';
+    gameForm.type = OrderTypes.MOVE;
+    const territory = selectTerritoryStateById(state, 53, turn.id);
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(territory);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: null,
+      nation: null,
+      source: 'standard-london',
+      target: 'standard-wales',
+      targetCoast: null,
+      type: OrderTypes.MOVE,
+    });
+  });
+  it('post order once target (move)', async () => {
+    getGameInterface({
+      action: null,
+      aux: null,
+      nation: null,
+      source: 'standard-london',
+      target: 'standard-wales',
+      targetCoast: null,
+      type: OrderTypes.MOVE,
+    });
+    expect(mockPostOrder).toHaveBeenCalled();
+  });
+  it('set aux on click territory after order type choice (support)', async () => {
+    gameForm.source = 'standard-london';
+    gameForm.type = OrderTypes.SUPPORT;
+    const territory = selectTerritoryStateById(state, 53, turn.id);
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(territory);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: 'standard-wales',
+      nation: null,
+      source: 'standard-london',
+      target: null,
+      targetCoast: null,
+      type: OrderTypes.SUPPORT,
+    });
+  });
+  it('set target on click territory after target choice (support)', async () => {
+    gameForm.source = 'standard-london';
+    gameForm.aux = 'standard-wales';
+    gameForm.type = OrderTypes.SUPPORT;
+    const territory = selectTerritoryStateById(state, 53, turn.id);
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(territory);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: 'standard-wales',
+      nation: null,
+      source: 'standard-london',
+      target: 'standard-wales',
+      targetCoast: null,
+      type: OrderTypes.SUPPORT,
+    });
+  });
+  it('set aux on click territory after order type choice (convoy)', async () => {
+    gameForm.source = 'standard-english-channel';
+    gameForm.type = OrderTypes.CONVOY;
+    const territory = selectTerritoryStateById(state, 53, turn.id);
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(territory);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: 'standard-wales',
+      nation: null,
+      source: 'standard-english-channel',
+      target: null,
+      targetCoast: null,
+      type: OrderTypes.CONVOY,
+    });
+  });
+  it('set target on click territory after target choice (convoy)', async () => {
+    gameForm.source = 'standard-english-channel';
+    gameForm.aux = 'standard-london';
+    gameForm.type = OrderTypes.CONVOY;
+    const territory = selectTerritoryStateById(state, 53, turn.id);
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(territory);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      action: null,
+      aux: 'standard-london',
+      nation: null,
+      source: 'standard-english-channel',
+      target: 'standard-wales',
+      targetCoast: null,
+      type: OrderTypes.CONVOY,
+    });
+  });
+  it('post order once target (support)', async () => {
+    getGameInterface({
+      action: null,
+      aux: 'standard-wales',
+      nation: null,
+      source: 'standard-london',
+      target: 'standard-wales',
+      targetCoast: null,
+      type: OrderTypes.SUPPORT,
+    });
+    expect(mockPostOrder).toHaveBeenCalled();
+  });
+  it('post order once target (convoy)', async () => {
+    getGameInterface({
+      action: null,
+      aux: 'standard-london',
+      nation: null,
+      source: 'standard-english-channel',
+      target: 'standard-london',
+      targetCoast: null,
+      type: OrderTypes.CONVOY,
+    });
+    expect(mockPostOrder).toHaveBeenCalled();
+  });
+
+  // TODO
+  it('show context menu click named coast territory after order type choice (move)', async () => {});
+
+  // TODO in separate test case
+  // it('show context menu when source (army land, must retreat)', async () => {});
+  // it('show context menu when source (fleet land, must retreat)', async () => {});
+  // it('show context menu when source (army land, no retreat)', async () => {});
+  // it('show context menu when source (fleet land, no retreat)', async () => {});
+  // it('show context menu when source (fleet sea, no retreat)', async () => {});
 });

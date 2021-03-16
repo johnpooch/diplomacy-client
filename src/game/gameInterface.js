@@ -19,8 +19,6 @@ export default class GameInterface extends baseGameInterface {
   }
 
   submitForm() {
-    // TODO remove
-    delete this.gameForm.action;
     this.callbacks.postOrder();
   }
 }

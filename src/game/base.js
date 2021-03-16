@@ -19,7 +19,7 @@ export const OrderTypes = {
 };
 
 // I wonder if there is a DRYer way to set up this structure?
-const OrderTypeChoices = {
+export const OrderTypeChoices = {
   [OrderTypes.HOLD]: [OrderTypes.HOLD, 'Hold'],
   [OrderTypes.MOVE]: [OrderTypes.MOVE, 'Move'],
   [OrderTypes.SUPPORT]: [OrderTypes.SUPPORT, 'Support'],
@@ -134,6 +134,9 @@ export class baseGameInterface {
   }
 
   onClickTerritory(territory) {
+    // Clicking outside of context menu resets order
+    if (this.showContextMenu()) return this.reset();
+
     if (
       // If any of the following are true, interaction is not possible
       Boolean(!territory.id) ||
@@ -141,10 +144,10 @@ export class baseGameInterface {
       this._tryingToSupportOrConvoySource(territory) ||
       this._tryingToMoveToSource(territory)
     ) {
-      return;
+      return null;
     }
     const attr = this._getOrderAttrToUpdate();
-    this.setGameForm({ ...this.gameForm, [attr]: territory.id });
+    return this.setGameForm({ ...this.gameForm, [attr]: territory.id });
   }
 
   getOptions() {
