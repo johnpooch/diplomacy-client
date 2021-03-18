@@ -2,11 +2,14 @@ import {
   initialGameFormState,
   OrderTypeChoices,
   OrderTypes,
+  PieceTypeChoices,
   PieceTypes,
   Phases,
 } from '../src/game/base';
 import GameInterface from '../src/game/gameInterface';
-import RetreatPhaseInterface from '../src/game/RetreatPhaseInterface';
+import BuildInterface from '../src/game/BuildInterface';
+import DisbandInterface from '../src/game/DisbandInterface';
+import RetreatInterface from '../src/game/RetreatInterface';
 import { makeSelectTerritoryStateByMapDataId } from '../src/store/selectors';
 
 let mockPostOrder;
@@ -72,6 +75,7 @@ const setUp = () => {
             namedCoasts: [],
             supplyCenter: true,
             type: 'coastal',
+            nationality: 'standard-england',
           },
           'standard-wales': {
             id: 'standard-wales',
@@ -79,6 +83,7 @@ const setUp = () => {
             namedCoasts: [],
             supplyCenter: false,
             type: 'coastal',
+            nationality: 'standard-england',
           },
           'standard-english-channel': {
             id: 'standard-english-channel',
@@ -86,6 +91,7 @@ const setUp = () => {
             namedCoasts: [],
             supplyCenter: false,
             type: 'sea',
+            nationality: null,
           },
         },
       },
@@ -167,7 +173,7 @@ const getGameInterface = (form = null) =>
     state
   );
 
-describe('Order phase', () => {
+describe('Order Interface', () => {
   beforeEach(() => {
     InterfaceClass = GameInterface;
     setUp();
@@ -396,9 +402,9 @@ describe('Order phase', () => {
   });
 });
 
-describe('Retreat phase', () => {
+describe('Retreat Interface', () => {
   beforeEach(() => {
-    InterfaceClass = RetreatPhaseInterface;
+    InterfaceClass = RetreatInterface;
     state = {};
     setUp();
     // Set phase to retreat and set London piece to retreat
@@ -467,3 +473,126 @@ describe('Retreat phase', () => {
     expect(gameInterface.getOptions()).toBeNull();
   });
 });
+
+describe('Build Interface', () => {
+  beforeEach(() => {
+    InterfaceClass = BuildInterface;
+    state = {};
+    setUp();
+    state.entities.pieceStates.ids = [];
+    state.entities.pieceStates.entities = {};
+    userNation.supplyDelta = 1;
+  });
+
+  it('do not show context menu without source', async () => {
+    const gameInterface = getGameInterface();
+    expect(gameInterface.showContextMenu()).toBe(false);
+  });
+
+  it('set source on click empty home territory with supply center when surplus', async () => {
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      ...initialGameFormState,
+      source: LONDON.id,
+    });
+  });
+  it('do nothing on click empty controlled home territory without supply center when surplus', async () => {
+    const gameInterface = getGameInterface();
+    LONDON.supplyCenter = false;
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm).not.toBeCalled();
+  });
+  it('do nothing on click empty controlled non-home territory with supply center when surplus', async () => {
+    const gameInterface = getGameInterface();
+    LONDON.nationality = 'standard-france';
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm).not.toBeCalled();
+  });
+  it('do nothing on click home territory with supply center controlled by other nation when surplus', async () => {
+    const gameInterface = getGameInterface();
+    LONDON.controlledBy = 'standard-france';
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm).not.toBeCalled();
+  });
+  it('do nothing on click home territory with supply center with piece', async () => {
+    state.entities.pieceStates = {
+      ids: [1],
+      entities: {
+        1: {
+          id: 1,
+          turn: 1,
+          piece: 1,
+          territory: 'standard-london',
+        },
+      },
+    };
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm).not.toBeCalled();
+  });
+  it('show army and fleet when source is coastal', async () => {
+    gameForm.source = LONDON.id;
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(LONDON);
+    expect(gameInterface.getOptions()).toEqual([
+      PieceTypeChoices[PieceTypes.ARMY],
+      PieceTypeChoices[PieceTypes.FLEET],
+    ]);
+  });
+  it('show army only when source is inland', async () => {
+    gameForm.source = LONDON.id;
+    state.entities.territories.entities[LONDON.id].type = 'inland';
+    const gameInterface = getGameInterface();
+    gameInterface.onClickTerritory(LONDON);
+    expect(gameInterface.getOptions()).toEqual([
+      PieceTypeChoices[PieceTypes.ARMY],
+    ]);
+  });
+  it('set piece type on click army', async () => {
+    gameForm.source = LONDON.id;
+    const gameInterface = getGameInterface();
+    gameInterface.onOptionSelected(PieceTypes.ARMY);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      ...initialGameFormState,
+      source: LONDON.id,
+      pieceType: PieceTypes.ARMY,
+      type: OrderTypes.BUILD,
+    });
+  });
+  it('set piece type on click fleet', async () => {
+    gameForm.source = LONDON.id;
+    const gameInterface = getGameInterface();
+    gameInterface.onOptionSelected(PieceTypes.FLEET);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      ...initialGameFormState,
+      source: LONDON.id,
+      pieceType: PieceTypes.FLEET,
+      type: OrderTypes.BUILD,
+    });
+  });
+  it('post order once piece type is set', async () => {
+    gameForm.source = LONDON.id;
+    gameForm.type = OrderTypes.BUILD;
+    gameForm.pieceType = PieceTypes.ARMY;
+    getGameInterface();
+    expect(mockPostOrder).toHaveBeenCalled();
+  });
+});
+
+describe('Disband Interface', () => {
+  beforeEach(() => {
+    InterfaceClass = DisbandInterface;
+    state = {};
+    setUp();
+    state.entities.pieceStates.ids = [];
+    state.entities.pieceStates.entities = {};
+    userNation.supplyDelta = 1;
+  });
+
+  it('set source on click territory with friendly piece deficit', async () => {});
+  it('do nothing on click territory with foreign piece deficit', async () => {});
+  it('do nothing on click empty home territory with supply center deficit', async () => {});
+});
+
+describe('Dummy interface', () => {});

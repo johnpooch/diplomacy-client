@@ -34,10 +34,16 @@ export const PieceTypes = {
   FLEET: 'fleet',
 };
 
+export const PieceTypeChoices = {
+  [PieceTypes.ARMY]: [PieceTypes.ARMY, 'Army'],
+  [PieceTypes.FLEET]: [PieceTypes.FLEET, 'Fleet'],
+};
+
 export const initialGameFormState = {
   action: null,
   aux: null,
   nation: null,
+  pieceType: null,
   source: null,
   target: null,
   targetCoast: null,
@@ -54,7 +60,7 @@ export class baseGameInterface {
   the user is interacting with.
   */
   constructor(callbacks, gameForm, setGameForm, turn, userNation, state) {
-    const { action, nation, targetCoast, type } = gameForm;
+    const { action, nation, pieceType, targetCoast, type } = gameForm;
 
     this.gameForm = gameForm;
     this.setGameForm = setGameForm;
@@ -67,6 +73,7 @@ export class baseGameInterface {
     this.target = territorySelectors.selectById(state, gameForm.target);
     this.targetCoast = targetCoast;
     this.type = type;
+    this.pieceType = pieceType;
     this.action = action;
 
     this.turn = turn;

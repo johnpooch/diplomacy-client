@@ -20,7 +20,9 @@ import { variantActions } from '../store/variants';
 import Canvas from '../components/Canvas';
 import { initialGameFormState, Phases } from '../game/base';
 import GameInterface from '../game/gameInterface';
-import RetreatPhaseInterface from '../game/RetreatPhaseInterface';
+import BuildInterface from '../game/BuildInterface';
+import DisbandInterface from '../game/DisbandInterface';
+import RetreatInterface from '../game/RetreatInterface';
 import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
@@ -38,12 +40,18 @@ const HomeNavLinkButton = () => (
   </NavLinkButton>
 );
 
-const getInterfaceClass = (phase) => {
-  const interfaceClassMap = {
-    [Phases.ORDER]: GameInterface,
-    [Phases.RETREAT]: RetreatPhaseInterface,
-  };
-  return interfaceClassMap[phase];
+const getInterfaceClass = (phase, userNation) => {
+  switch (phase) {
+    case Phases.ORDER:
+      return GameInterface;
+    case Phases.RETREAT:
+      return RetreatInterface;
+    default:
+      if (userNation.supplyDelta < 0) {
+        return DisbandInterface;
+      }
+      return BuildInterface;
+  }
 };
 
 const Game = (props) => {
@@ -81,7 +89,8 @@ const Game = (props) => {
     createOrder(slug, currentTurn.id, gameForm);
   };
 
-  const InterfaceClass = getInterfaceClass(currentTurn.phase);
+  const InterfaceClass = getInterfaceClass(currentTurn.phase, userNation);
+  console.log(InterfaceClass);
   const gameInterface = new InterfaceClass(
     { postOrder },
     gameForm,
