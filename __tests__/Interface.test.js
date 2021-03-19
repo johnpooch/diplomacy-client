@@ -6,7 +6,7 @@ import {
   PieceTypes,
   Phases,
 } from '../src/game/base';
-import GameInterface from '../src/game/gameInterface';
+import OrderInterface from '../src/game/OrderInterface';
 import BuildInterface from '../src/game/BuildInterface';
 import DisbandInterface from '../src/game/DisbandInterface';
 import RetreatInterface from '../src/game/RetreatInterface';
@@ -163,7 +163,7 @@ const setUp = () => {
   UNPLAYABLE = getTerritory('standard-unplayable');
 };
 
-const getGameInterface = (form = null) =>
+const getInterface = (form = null) =>
   new InterfaceClass(
     { postOrder: mockPostOrder },
     form || gameForm,
@@ -175,18 +175,18 @@ const getGameInterface = (form = null) =>
 
 describe('Order Interface', () => {
   beforeEach(() => {
-    InterfaceClass = GameInterface;
+    InterfaceClass = OrderInterface;
     setUp();
   });
 
   it('do not show context menu without source', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(false);
     expect(gameInterface.getOptions()).toBe(null);
   });
 
   it('sets source on click territory', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -195,26 +195,26 @@ describe('Order Interface', () => {
   });
 
   it('do nothing on click territory with no piece', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls).toEqual([]);
   });
 
   it('do nothing on click territory with foreign piece', async () => {
     state.entities.pieces.entities[1].nation = 'standard-france';
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm.mock.calls).toEqual([]);
   });
 
   it('do nothing on click non-playable territory', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(UNPLAYABLE);
     expect(mockSetGameForm.mock.calls).toEqual([]);
   });
   it('show context menu when source (army land, orders)', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(true);
     expect(gameInterface.getOptions()).toEqual([
       OrderTypeChoices.hold,
@@ -225,7 +225,7 @@ describe('Order Interface', () => {
   it('show context menu when source (fleet land, orders)', async () => {
     gameForm.source = LONDON.id;
     state.entities.pieces.entities[1].type = PieceTypes.FLEET;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(true);
     expect(gameInterface.getOptions()).toEqual([
       OrderTypeChoices.hold,
@@ -237,7 +237,7 @@ describe('Order Interface', () => {
     gameForm.source = ENGLISH_CHANNEL.id;
     state.entities.pieces.entities[1].type = PieceTypes.FLEET;
     state.entities.pieceStates.entities[1].territory = ENGLISH_CHANNEL.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(true);
     expect(gameInterface.getOptions()).toEqual([
       OrderTypeChoices.hold,
@@ -249,20 +249,20 @@ describe('Order Interface', () => {
 
   it('set source to null on click other territory before order type', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual(initialGameFormState);
   });
   it('set source to null on click same territory before order type', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual(initialGameFormState);
   });
 
   it('set order type and create order on click order type (hold)', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onOptionSelected(OrderTypes.HOLD);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -270,7 +270,7 @@ describe('Order Interface', () => {
       type: OrderTypes.HOLD,
     });
     // re-initialize interface to trigger postOrder
-    getGameInterface({
+    getInterface({
       ...initialGameFormState,
       source: LONDON.id,
       type: OrderTypes.HOLD,
@@ -279,7 +279,7 @@ describe('Order Interface', () => {
   });
   it('set order type on click order type (move)', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onOptionSelected(OrderTypes.MOVE);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -289,7 +289,7 @@ describe('Order Interface', () => {
   });
   it('set order type on click order type (support)', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onOptionSelected(OrderTypes.SUPPORT);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -299,7 +299,7 @@ describe('Order Interface', () => {
   });
   it('set order type on click order type (convoy)', async () => {
     gameForm.source = ENGLISH_CHANNEL.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onOptionSelected(OrderTypes.CONVOY);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -310,7 +310,7 @@ describe('Order Interface', () => {
   it('set target on click territory after order type choice (move)', async () => {
     gameForm.source = LONDON.id;
     gameForm.type = OrderTypes.MOVE;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -320,7 +320,7 @@ describe('Order Interface', () => {
     });
   });
   it('post order once target (move)', async () => {
-    getGameInterface({
+    getInterface({
       ...initialGameFormState,
       source: LONDON.id,
       target: WALES.id,
@@ -331,7 +331,7 @@ describe('Order Interface', () => {
   it('set aux on click territory after order type choice (support)', async () => {
     gameForm.source = LONDON.id;
     gameForm.type = OrderTypes.SUPPORT;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -344,7 +344,7 @@ describe('Order Interface', () => {
     gameForm.source = LONDON.id;
     gameForm.aux = WALES.id;
     gameForm.type = OrderTypes.SUPPORT;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -357,7 +357,7 @@ describe('Order Interface', () => {
   it('set aux on click territory after order type choice (convoy)', async () => {
     gameForm.source = ENGLISH_CHANNEL.id;
     gameForm.type = OrderTypes.CONVOY;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -370,7 +370,7 @@ describe('Order Interface', () => {
     gameForm.source = ENGLISH_CHANNEL.id;
     gameForm.aux = LONDON.id;
     gameForm.type = OrderTypes.CONVOY;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -381,7 +381,7 @@ describe('Order Interface', () => {
     });
   });
   it('post order once target (support)', async () => {
-    getGameInterface({
+    getInterface({
       ...initialGameFormState,
       aux: WALES.id,
       source: LONDON.id,
@@ -391,7 +391,7 @@ describe('Order Interface', () => {
     expect(mockPostOrder).toHaveBeenCalled();
   });
   it('post order once target (convoy)', async () => {
-    getGameInterface({
+    getInterface({
       ...initialGameFormState,
       aux: LONDON.id,
       source: ENGLISH_CHANNEL.id,
@@ -413,13 +413,13 @@ describe('Retreat Interface', () => {
   });
 
   it('do not show context menu without source', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(false);
     expect(gameInterface.getOptions()).toBe(null);
   });
 
   it('set source on click territory with piece must retreat', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -428,28 +428,28 @@ describe('Retreat Interface', () => {
   });
 
   it('do nothing on click territory with no piece', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(WALES);
     expect(mockSetGameForm.mock.calls).toEqual([]);
   });
 
   it('do nothing on click territory with foreign piece', async () => {
     state.entities.pieces.entities[1].nation = 'standard-france';
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm.mock.calls).toEqual([]);
   });
 
   it('do nothing on click territory with non retreating piece', async () => {
     state.entities.pieceStates.entities[1].mustRetreat = false;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm.mock.calls).toEqual([]);
   });
 
   it('show context menu when source (army land, must retreat)', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(true);
     expect(gameInterface.getOptions()).toEqual([
       OrderTypeChoices.retreat,
@@ -459,7 +459,7 @@ describe('Retreat Interface', () => {
   it('show context menu when source (fleet land, must retreat)', async () => {
     gameForm.source = LONDON.id;
     state.entities.pieces.entities[1].type = PieceTypes.FLEET;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(true);
     expect(gameInterface.getOptions()).toEqual([
       OrderTypeChoices.retreat,
@@ -469,7 +469,7 @@ describe('Retreat Interface', () => {
   it('show context menu when source (army land, no retreat)', async () => {
     gameForm.source = LONDON.id;
     state.entities.pieceStates.entities[1].mustRetreat = false;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.getOptions()).toBeNull();
   });
 });
@@ -485,12 +485,12 @@ describe('Build Interface', () => {
   });
 
   it('do not show context menu without source', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     expect(gameInterface.showContextMenu()).toBe(false);
   });
 
   it('set source on click empty home territory with supply center when surplus', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -498,19 +498,19 @@ describe('Build Interface', () => {
     });
   });
   it('do nothing on click empty controlled home territory without supply center when surplus', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     LONDON.supplyCenter = false;
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm).not.toBeCalled();
   });
   it('do nothing on click empty controlled non-home territory with supply center when surplus', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     LONDON.nationality = 'standard-france';
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm).not.toBeCalled();
   });
   it('do nothing on click home territory with supply center controlled by other nation when surplus', async () => {
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     LONDON.controlledBy = 'standard-france';
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm).not.toBeCalled();
@@ -527,13 +527,13 @@ describe('Build Interface', () => {
         },
       },
     };
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(mockSetGameForm).not.toBeCalled();
   });
   it('show army and fleet when source is coastal', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(gameInterface.getOptions()).toEqual([
       PieceTypeChoices[PieceTypes.ARMY],
@@ -543,7 +543,7 @@ describe('Build Interface', () => {
   it('show army only when source is inland', async () => {
     gameForm.source = LONDON.id;
     state.entities.territories.entities[LONDON.id].type = 'inland';
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onClickTerritory(LONDON);
     expect(gameInterface.getOptions()).toEqual([
       PieceTypeChoices[PieceTypes.ARMY],
@@ -551,7 +551,7 @@ describe('Build Interface', () => {
   });
   it('set piece type on click army', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onOptionSelected(PieceTypes.ARMY);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -562,7 +562,7 @@ describe('Build Interface', () => {
   });
   it('set piece type on click fleet', async () => {
     gameForm.source = LONDON.id;
-    const gameInterface = getGameInterface();
+    const gameInterface = getInterface();
     gameInterface.onOptionSelected(PieceTypes.FLEET);
     expect(mockSetGameForm.mock.calls[0][0]).toEqual({
       ...initialGameFormState,
@@ -575,7 +575,7 @@ describe('Build Interface', () => {
     gameForm.source = LONDON.id;
     gameForm.type = OrderTypes.BUILD;
     gameForm.pieceType = PieceTypes.ARMY;
-    getGameInterface();
+    getInterface();
     expect(mockPostOrder).toHaveBeenCalled();
   });
 });
@@ -585,14 +585,36 @@ describe('Disband Interface', () => {
     InterfaceClass = DisbandInterface;
     state = {};
     setUp();
-    state.entities.pieceStates.ids = [];
-    state.entities.pieceStates.entities = {};
-    userNation.supplyDelta = 1;
+    userNation.supplyDelta = -1;
   });
 
-  it('set source on click territory with friendly piece deficit', async () => {});
-  it('do nothing on click territory with foreign piece deficit', async () => {});
-  it('do nothing on click empty home territory with supply center deficit', async () => {});
+  it('set source on click territory with friendly piece deficit', async () => {
+    const gameInterface = getInterface();
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm.mock.calls[0][0]).toEqual({
+      ...initialGameFormState,
+      source: LONDON.id,
+    });
+  });
+  it('do nothing on click territory with foreign piece deficit', async () => {
+    state.entities.pieces.entities[1].nation = 'standard-france';
+    const gameInterface = getInterface();
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm).not.toHaveBeenCalled();
+  });
+  it('do nothing on click empty home territory with supply center deficit', async () => {
+    state.entities.pieceStates.ids = [];
+    state.entities.pieceStates.entities = {};
+    const gameInterface = getInterface();
+    gameInterface.onClickTerritory(LONDON);
+    expect(mockSetGameForm).not.toHaveBeenCalled();
+  });
+  it('show context menu when source', async () => {
+    gameForm.source = LONDON.id;
+    const gameInterface = getInterface();
+    expect(gameInterface.showContextMenu()).toBe(true);
+    expect(gameInterface.getOptions()).toEqual([OrderTypeChoices.disband]);
+  });
 });
 
 describe('Dummy interface', () => {});
