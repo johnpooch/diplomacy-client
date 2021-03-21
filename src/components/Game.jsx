@@ -52,7 +52,7 @@ const Game = ({ game, participants, userNation, turn }) => {
   return (
     <StyledGame key={id} userNation={userNation}>
       <Link
-        className="link-overlay"
+        className="overlay"
         to={status === 'active' ? `/game/${slug}` : `/pre-game/${slug}`}
       />
       <div className="details">

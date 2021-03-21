@@ -54,6 +54,7 @@ export default createGlobalStyle`
     right: 0;
     top: 0;
   }
+
   .field-error,
   .non-field-errors {
     text-align: left;

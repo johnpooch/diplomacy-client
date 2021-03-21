@@ -12,12 +12,10 @@ import GlobalStyles from '../globalStyles';
 
 import { alertActions, alertSelectors } from '../store/alerts';
 
-const App = (props) => {
+const App = ({ alerts, alertsClear, clearAndPromoteAlerts, loggedIn }) => {
   const [formErrors, setFormErrors] = useState({
     nonFieldErrors: [],
   });
-
-  const { alerts, alertsClear, clearAndPromoteAlerts, loggedIn } = props;
 
   const location = useLocation();
 
@@ -25,17 +23,18 @@ const App = (props) => {
     clearAndPromoteAlerts();
   }, [location.pathname]);
 
-  const router = loggedIn ? (
-    <RouterLoggedIn formErrors={formErrors} setFormErrors={setFormErrors} />
-  ) : (
-    <RouterLoggedOut formErrors={formErrors} setFormErrors={setFormErrors} />
-  );
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Alerts alerts={alerts} onClick={alertsClear} />
-      {router}
+      {loggedIn ? (
+        <RouterLoggedIn formErrors={formErrors} setFormErrors={setFormErrors} />
+      ) : (
+        <RouterLoggedOut
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+        />
+      )}
     </ThemeProvider>
   );
 };

@@ -5,7 +5,7 @@ import flags from '../data/standard/flags/flags';
 import { slugify } from '../utils';
 
 const FlagWrapper = styled.div`
-  width: ${(p) => p.sizes.flag[p.size]};
+  /* width: ${(p) => p.sizes.flag[p.size]}; */
 `;
 
 const Flag = ({ nation, size }) => {

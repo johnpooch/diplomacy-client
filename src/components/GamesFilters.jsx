@@ -24,6 +24,15 @@ const StyledGamesFilters = styled.div`
   width: 100%;
 `;
 
+const StyledToggleButton = styled(SecondaryButton)`
+  display: flex;
+  gap: ${(p) => p.theme.space[2]};
+`;
+
+const StyledSearchButton = styled(Button)`
+  margin-top: auto;
+`;
+
 const GamesFilters = ({ choices, listGames, getChoices }) => {
   useEffect(() => (choices ? null : getChoices()));
 
@@ -46,25 +55,6 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
 
   const { error } = choices;
 
-  const toggleButton = (
-    <SecondaryButton
-      type="button"
-      onClick={() => setOpen(!open)}
-      css={`
-        display: block;
-      `}
-    >
-      <FontAwesomeIcon
-        icon={faSearch}
-        css={`
-          margin-right: ${(p) => p.theme.spaces[1]};
-        `}
-      />
-
-      <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
-    </SecondaryButton>
-  );
-
   const filters = error ? (
     <ComponentError error={error} />
   ) : (
@@ -72,7 +62,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
       <GridTemplate
         templateColumns="2fr 1fr 1fr 1fr"
         css={`
-          margin-top: ${(p) => p.theme.spaces[4]};
+          margin-top: ${(p) => p.theme.space[4]};
         `}
       >
         <label htmlFor="search">
@@ -140,14 +130,17 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
           onChange={handleChange}
           options={choices.deadlines}
         />
-        <Button type="submit">Search</Button>
+        <StyledSearchButton type="submit">Search</StyledSearchButton>
       </GridTemplate>
     </Form>
   );
 
   return (
     <StyledGamesFilters>
-      {toggleButton}
+      <StyledToggleButton type="button" onClick={() => setOpen(!open)}>
+        <FontAwesomeIcon icon={faSearch} />
+        <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
+      </StyledToggleButton>
       {open ? filters : null}
     </StyledGamesFilters>
   );
