@@ -12,8 +12,8 @@ import Select from './Select';
 import useForm from '../hooks/useForm';
 import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
-import Form, { FormLabel } from './Form';
-import { GridTemplate } from '../layout';
+import Form, { LabelText } from './Form';
+import { Grid, GridTemplate } from '../layout';
 import { gameActions } from '../store/games';
 import { choiceActions } from '../store/choices';
 
@@ -59,14 +59,19 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
     <ComponentError error={error} />
   ) : (
     <Form onSubmit={filter}>
-      <GridTemplate
-        templateColumns="2fr 1fr 1fr 1fr"
+      <Grid
+        columns={4}
         css={`
           margin-top: ${(p) => p.theme.space[4]};
         `}
       >
-        <label htmlFor="search">
-          <FormLabel>Search</FormLabel>
+        <label
+          htmlFor="search"
+          css={`
+            grid-column: span 2;
+          `}
+        >
+          <LabelText>Search</LabelText>
           <input
             id="search"
             name="search"
@@ -77,7 +82,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
           />
         </label>
         <label htmlFor="numPlayers">
-          <FormLabel>Players</FormLabel>
+          <LabelText>Players</LabelText>
           <input
             id="numPlayers"
             name="numPlayers"
@@ -131,7 +136,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
           options={choices.deadlines}
         />
         <StyledSearchButton type="submit">Search</StyledSearchButton>
-      </GridTemplate>
+      </Grid>
     </Form>
   );
 

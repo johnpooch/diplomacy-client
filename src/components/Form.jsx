@@ -8,7 +8,7 @@ const StyledForm = styled.form`
   input,
   select,
   textarea {
-    background: transparent;
+    background: ${(p) => p.theme.colors.muted};
     border-radius: ${(p) => p.theme.radii[0]};
     border: ${(p) =>
       `${p.theme.borderWidths[0]} solid ${p.theme.colors.secondary}`};
@@ -78,7 +78,7 @@ export const FormWrapper = (props) => {
   return <StyledFormWrapper>{children}</StyledFormWrapper>;
 };
 
-export const FormLabel = styled.span`
+export const LabelText = styled.span`
   display: block;
   font-size: ${(p) => p.theme.fontSizes[1]};
   line-height: 1;

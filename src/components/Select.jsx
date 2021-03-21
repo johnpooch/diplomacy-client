@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormLabel } from './Form';
+import { LabelText } from './Form';
 
 const EMPTY_OPTION_STRING = '-------';
 
@@ -11,7 +11,7 @@ const Select = (props) => {
 
   return (
     <label htmlFor={name}>
-      <FormLabel>{label}</FormLabel>
+      <LabelText>{label}</LabelText>
       <select
         id={name}
         name={name}

@@ -5,7 +5,7 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { successMessages } from '../copy';
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
 import { alertActions } from '../store/alerts';
@@ -32,7 +32,7 @@ const CreateGame = ({ createGame, errors, token }) => {
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <label htmlFor="name">
-            <FormLabel>Name</FormLabel>
+            <LabelText>Name</LabelText>
             <input
               type="text"
               id="name"
@@ -46,7 +46,7 @@ const CreateGame = ({ createGame, errors, token }) => {
             <FieldError error={errors.name} />
           </label>
           <label htmlFor="description">
-            <FormLabel>Description</FormLabel>
+            <LabelText>Description</LabelText>
             <input
               type="text"
               id="description"

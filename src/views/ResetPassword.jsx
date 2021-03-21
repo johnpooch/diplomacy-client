@@ -6,7 +6,7 @@ import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const ResetPassword = ({ errors, history, location, onAuth }) => {
   const [{ password }, handleChange] = useForm({ password: '' });
@@ -26,7 +26,7 @@ const ResetPassword = ({ errors, history, location, onAuth }) => {
           <p>Enter your new password.</p>
 
           <label htmlFor="password">
-            <FormLabel>Password</FormLabel>
+            <LabelText>Password</LabelText>
             <input
               type="password"
               id="password"
