@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import styled, { useTheme } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { BaseButton } from './Button';
@@ -35,6 +34,7 @@ const StyledAlert = styled.div`
 
 export const Alert = (props) => {
   const { text, category, id, onClick } = props;
+  const theme = useTheme();
   if (!text) return null;
   return (
     <StyledAlert category={category}>
@@ -47,7 +47,7 @@ export const Alert = (props) => {
         }}
         category={category}
       >
-        <FontAwesomeIcon icon={faTimes} />
+        <FontAwesomeIcon icon={theme.icons.cancel} />
       </BaseButton>
     </StyledAlert>
   );

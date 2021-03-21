@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import styled, { useTheme } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Flag from './Flag';
@@ -36,9 +35,10 @@ const StyledPlayerCount = styled.div`
 
 export const PlayerCount = ({ game }) => {
   const { numPlayers, participants } = game;
+  const theme = useTheme();
   return (
     <StyledPlayerCount>
-      <FontAwesomeIcon icon={faUser} />
+      <FontAwesomeIcon icon={theme.icons.player} />
       <span className="count">
         {participants.length} / {numPlayers}
       </span>

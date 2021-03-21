@@ -1,9 +1,13 @@
 import produce from 'immer';
 import {
   faAnchor,
-  faIndustry,
+  faCheck,
+  faExclamationTriangle,
   faMapMarkerAlt,
+  faStar,
+  faTimes,
   faTruckMoving,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { withUnits } from './utils';
 
@@ -64,10 +68,14 @@ const sizes = {
   flag: withUnits([30, 80], 'px'),
 };
 const icons = {
+  accept: faCheck,
   army: faTruckMoving,
+  cancel: faTimes,
   fleet: faAnchor,
-  supplyCenter: faIndustry,
+  player: faUser,
+  supplyCenter: faStar,
   territory: faMapMarkerAlt,
+  warning: faExclamationTriangle,
 };
 
 export const theme = {

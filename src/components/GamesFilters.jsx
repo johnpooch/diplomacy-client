@@ -13,7 +13,7 @@ import useForm from '../hooks/useForm';
 import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
 import Form, { LabelText } from './Form';
-import { Grid, GridTemplate } from '../layout';
+import { Grid } from '../layout';
 import { gameActions } from '../store/games';
 import { choiceActions } from '../store/choices';
 

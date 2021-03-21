@@ -1,4 +1,3 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -69,7 +68,7 @@ const OrderItem = ({
       <FontAwesomeIcon className="icon" icon={theme.icons[piece.type]} />{' '}
       {orderText}
       <IconButton
-        icon={faTimes}
+        icon={theme.icons.cancel}
         onClick={destroyOrder}
         disabled={loading}
         title="Cancel order"

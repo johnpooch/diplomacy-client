@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import styled, { useTheme } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const StyledComponentError = styled.div`
@@ -17,11 +16,12 @@ const StyledComponentError = styled.div`
 
 const ComponentError = ({ error }) => {
   if (!error) return null;
+  const theme = useTheme();
   const message = error.non_field_errors;
   return (
     <StyledComponentError className="component-error" role="alert">
       <div className="icon">
-        <FontAwesomeIcon icon={faExclamationTriangle} />
+        <FontAwesomeIcon icon={theme.icons.warning} />
       </div>
       <div className="body">
         <div>{message}</div>
