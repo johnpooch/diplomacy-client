@@ -66,7 +66,7 @@ const StyledForm = styled.form`
 const StyledFormWrapper = styled.div`
   background: ${(p) => p.theme.colors.muted};
   border-radius: ${(p) => p.theme.radii[2]};
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
+  box-shadow: ${(p) => p.theme.shadows[0]};
   font-size: ${(p) => p.theme.fontSizes[1]};
   max-width: 100%;
   width: 350px;

@@ -61,6 +61,7 @@ const space = [4, 8, 12, 16, 24, 32, 44, 60];
 const borderWidths = [1];
 const borders = [`${borderWidths[0]}px solid ${colors.secondary}`];
 const radii = [6, 8, 16];
+const shadows = [`rgba(0, 0, 0, 0.15) 0px 1px 3px 1px`];
 const sizes = {
   pageMaxWidth: '690px',
   inputMinSize: '44px',
@@ -92,6 +93,7 @@ export const theme = {
   borders,
   radii: withUnits(radii, 'px'),
   radiiUnitless: radii,
+  shadows,
   sizes,
   icons,
 };
