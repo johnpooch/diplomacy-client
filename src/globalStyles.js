@@ -54,4 +54,11 @@ export default createGlobalStyle`
     right: 0;
     top: 0;
   }
+
+  .field-error,
+  .non-field-errors {
+    text-align: left;
+    color: ${(p) => p.theme.colors.error};
+    font-size: ${(p) => p.theme.fontSizes[1]};
+  }
 `;

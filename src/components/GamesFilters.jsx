@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import {
   faChevronDown,
   faChevronUp,
@@ -9,9 +10,12 @@ import styled from 'styled-components';
 
 import Select from './Select';
 import useForm from '../hooks/useForm';
+import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
-import Form, { FormLabel } from './Form';
-import { GridTemplate } from '../layout';
+import Form, { LabelText } from './Form';
+import { Grid } from '../layout';
+import { gameActions } from '../store/games';
+import { choiceActions } from '../store/choices';
 
 const StyledGamesFilters = styled.div`
   border-bottom: ${(p) => p.theme.borders[0]};
@@ -20,7 +24,18 @@ const StyledGamesFilters = styled.div`
   width: 100%;
 `;
 
-const GamesFilters = ({ callback, choices }) => {
+const StyledToggleButton = styled(SecondaryButton)`
+  display: flex;
+  gap: ${(p) => p.theme.space[2]};
+`;
+
+const StyledSearchButton = styled(Button)`
+  margin-top: auto;
+`;
+
+const GamesFilters = ({ choices, listGames, getChoices }) => {
+  useEffect(() => (choices ? null : getChoices()));
+
   const [values, handleChange] = useForm({
     search: '',
     variant: '',
@@ -35,40 +50,28 @@ const GamesFilters = ({ callback, choices }) => {
 
   const filter = (e) => {
     e.preventDefault();
-    callback(values);
+    listGames(values);
   };
 
-  if (!choices) return null;
+  const { error } = choices;
 
-  const toggleButton = (
-    <SecondaryButton
-      type="button"
-      onClick={() => setOpen(!open)}
-      css={`
-        display: block;
-      `}
-    >
-      <FontAwesomeIcon
-        icon={faSearch}
-        css={`
-          margin-right: ${(p) => p.theme.spaces[1]};
-        `}
-      />
-
-      <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
-    </SecondaryButton>
-  );
-
-  const filters = (
+  const filters = error ? (
+    <ComponentError error={error} />
+  ) : (
     <Form onSubmit={filter}>
-      <GridTemplate
-        templateColumns="2fr 1fr 1fr 1fr"
+      <Grid
+        columns={4}
         css={`
-          margin-top: ${(p) => p.theme.spaces[4]};
+          margin-top: ${(p) => p.theme.space[4]};
         `}
       >
-        <label htmlFor="search">
-          <FormLabel>Search</FormLabel>
+        <label
+          htmlFor="search"
+          css={`
+            grid-column: span 2;
+          `}
+        >
+          <LabelText>Search</LabelText>
           <input
             id="search"
             name="search"
@@ -79,7 +82,7 @@ const GamesFilters = ({ callback, choices }) => {
           />
         </label>
         <label htmlFor="numPlayers">
-          <FormLabel>Players</FormLabel>
+          <LabelText>Players</LabelText>
           <input
             id="numPlayers"
             name="numPlayers"
@@ -132,17 +135,32 @@ const GamesFilters = ({ callback, choices }) => {
           onChange={handleChange}
           options={choices.deadlines}
         />
-        <Button type="submit">Search</Button>
-      </GridTemplate>
+        <StyledSearchButton type="submit">Search</StyledSearchButton>
+      </Grid>
     </Form>
   );
 
   return (
     <StyledGamesFilters>
-      {toggleButton}
+      <StyledToggleButton type="button" onClick={() => setOpen(!open)}>
+        <FontAwesomeIcon icon={faSearch} />
+        <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
+      </StyledToggleButton>
       {open ? filters : null}
     </StyledGamesFilters>
   );
 };
 
-export default GamesFilters;
+const mapStateToProps = (state) => {
+  const { choices } = state;
+  return { choices };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const getChoices = () => dispatch(choiceActions.getGameFilterChoices({}));
+  const listGames = (token, queryParams) =>
+    dispatch(gameActions.listGames({ token, queryParams }));
+  return { getChoices, listGames };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamesFilters);

@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import styled, { useTheme } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Flag from './Flag';
@@ -21,7 +20,7 @@ export const Player = ({ player }) => {
   const { isCurrentUser, nation, username } = player;
   return (
     <StyledPlayer isCurrentUser={isCurrentUser}>
-      <Flag nation={nation} size="small" />
+      <Flag nation={nation} size={0} />
       <span className="username">{username}</span>
     </StyledPlayer>
   );
@@ -36,9 +35,10 @@ const StyledPlayerCount = styled.div`
 
 export const PlayerCount = ({ game }) => {
   const { numPlayers, participants } = game;
+  const theme = useTheme();
   return (
     <StyledPlayerCount>
-      <FontAwesomeIcon icon={faUser} />
+      <FontAwesomeIcon icon={theme.icons.player} />
       <span className="count">
         {participants.length} / {numPlayers}
       </span>
@@ -51,8 +51,7 @@ const StyledPlayerList = styled.div`
   grid-row-gap: ${(p) => p.theme.space[1]};
 `;
 
-export const PlayerList = ({ game }) => {
-  const { participants } = game;
+export const PlayerList = ({ participants }) => {
   const elements = participants.map((player) => {
     return player.id ? <Player key={player.id} player={player} /> : null;
   });
@@ -64,11 +63,11 @@ const StyledPlayers = styled.div`
   grid-row-gap: ${(p) => p.theme.space[2]};
 `;
 
-const Players = ({ game }) => {
+const Players = ({ game, participants }) => {
   return (
     <StyledPlayers>
       <PlayerCount game={game} />
-      <PlayerList game={game} />
+      <PlayerList participants={participants} />
     </StyledPlayers>
   );
 };

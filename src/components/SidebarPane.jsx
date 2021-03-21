@@ -18,7 +18,7 @@ const StyledPane = styled.div`
   }
 
   section + section {
-    border: ${(p) => p.theme.borders[0]};
+    border-top: ${(p) => p.theme.borders[0]};
   }
 
   li {

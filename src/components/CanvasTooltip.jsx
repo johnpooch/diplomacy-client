@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Label, Tag, Text } from 'react-konva';
+import { useTheme } from 'styled-components';
 
 const Tooltip = ({
   hoverTarget,
@@ -7,18 +8,17 @@ const Tooltip = ({
   scale,
   stagePosition,
   stageRef,
-  theme,
 }) => {
-  const { colors, fontSizes, space } = theme;
+  const theme = useTheme();
 
-  const FONTSIZE = fontSizes.sans[2];
-  const OFFSET = space[1];
-  const PADDING = space[0];
-  const STROKEWIDTH = 1;
+  const FONT_SIZE = theme.fontSizesUnitless[2];
+  const OFFSET = theme.spaceUnitless[1];
+  const PADDING = theme.spaceUnitless[0];
+  const STROKE_WIDTH = theme.borderWidthsUnitless[0];
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [text, setText] = useState('');
-  const [textFill, setTextFill] = useState(colors.text);
+  const [textFill, setTextFill] = useState(theme.colors.text);
 
   const labelRef = useRef();
 
@@ -46,14 +46,14 @@ const Tooltip = ({
 
   useEffect(() => {
     setText('');
-    setTextFill(colors.text);
+    setTextFill(theme.colors.text);
 
     if (hoverTarget && hoverTarget.attrs.territory.name) {
       const { territory } = hoverTarget.attrs;
       setText(territory.name.toUpperCase());
 
       if (territory.controlledBy) {
-        setTextFill(colors.nations[territory.controlledBy]);
+        setTextFill(theme.colors.nations[territory.controlledBy]);
       }
     }
   }, [hoverTarget]);
@@ -61,13 +61,13 @@ const Tooltip = ({
   return text ? (
     <Label listening={false} ref={labelRef} x={position.x} y={position.y}>
       <Tag
-        fill={colors.muted}
-        stroke={colors.text}
-        strokeWidth={STROKEWIDTH / scale}
+        fill={theme.colors.muted}
+        stroke={theme.colors.text}
+        strokeWidth={STROKE_WIDTH / scale}
       />
       <Text
-        fontFamily={(p) => p.theme.fonts.sans}
-        fontSize={FONTSIZE / scale}
+        fontFamily={theme.fonts.sans}
+        fontSize={FONT_SIZE / scale}
         padding={PADDING / scale}
         text={text}
         fill={textFill}

@@ -1,12 +1,15 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import { connect } from 'react-redux';
+
 import { BaseButton } from './Button';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
+import { selectUserNationByTurn } from '../store/selectors';
 
 const StyledNation = styled.div`
   display: flex;
@@ -14,15 +17,15 @@ const StyledNation = styled.div`
   justify-content: flex-start;
 
   .name {
-    color: ${(p) => (p.color ? p.color : 'inherit')};
+    color: ${(p) => (p.nation ? p.theme.colors.nations[p.nation] : 'inherit')};
     font-weight: bold;
   }
 `;
 
-const Nation = ({ nation, theme }) => {
+const Nation = ({ nation }) => {
   return nation ? (
-    <StyledNation color={theme.colors.nations[nation.id]}>
-      <Flag nation={nation} size="small" />
+    <StyledNation nation={nation.nation}>
+      <Flag nation={nation} size={0} />
       <span className="name">{nation.name}</span>
     </StyledNation>
   ) : null;
@@ -38,20 +41,20 @@ const Turn = ({ turn }) => {
   );
 };
 
-const StyledNotification = styled.div`
-  background: ${(p) => p.theme.colors.status.error.background};
-  border-radius: 50%;
-  color: ${(p) => p.theme.colors.status.error.text};
-  min-width: 26px;
-  padding: ${(p) => p.theme.space[0]};
-  position: absolute;
-  right: -8px;
-  top: -8px;
-`;
+// const StyledNotification = styled.div`
+//   background: ${(p) => p.theme.colors.status.error.background};
+//   border-radius: 50%;
+//   color: ${(p) => p.theme.colors.status.error.text};
+//   min-width: 26px;
+//   padding: ${(p) => p.theme.space[0]};
+//   position: absolute;
+//   right: -8px;
+//   top: -8px;
+// `;
 
-const Notification = ({ count }) => {
-  return count ? <StyledNotification>{count}</StyledNotification> : null;
-};
+// const Notification = ({ count }) => {
+//   return count ? <StyledNotification>{count}</StyledNotification> : null;
+// };
 
 const StyledTab = styled(BaseButton)`
   align-items: center;
@@ -66,12 +69,12 @@ const StyledTab = styled(BaseButton)`
   width: 100%;
 
   &[data-active='true'] {
-    background: ${(p) => p.theme.colors.secondary};
+    background: ${(p) => p.theme.colors.primary};
     color: white;
   }
 
   &:hover {
-    background: ${(p) => p.theme.colors.secondary};
+    background: ${(p) => p.theme.colors.primary};
   }
 `;
 
@@ -124,17 +127,16 @@ const StyledSidebar = styled.aside`
 
 const Sidebar = ({
   currentTurn,
-  cancelDrawResponse,
   drawResponseLoading,
   destroyOrder,
   finalizeOrders,
   participants,
-  setDrawResponse,
   toggleSurrender,
+  userNation,
   variant,
 }) => {
   const [activeTab, setActiveTab] = useState(null);
-  const { draws, orders, userNation } = currentTurn;
+  const { draws, orders } = currentTurn;
 
   const renderPane = () => {
     switch (activeTab) {
@@ -147,15 +149,13 @@ const Sidebar = ({
       case 'orders':
         return (
           <OrdersPane
-            cancelDrawResponse={cancelDrawResponse}
+            currentTurn={currentTurn}
             destroyOrder={destroyOrder}
             draws={draws}
             drawResponseLoading={drawResponseLoading}
             finalizeOrders={finalizeOrders}
-            orders={orders}
             userNation={userNation}
             participants={participants}
-            setDrawResponse={setDrawResponse}
             toggleSurrender={toggleSurrender}
             variant={variant}
           />
@@ -201,4 +201,9 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+const mapStateToProps = (state, { currentTurn }) => {
+  const userNation = selectUserNationByTurn(state, currentTurn.id);
+  return { userNation };
+};
+
+export default connect(mapStateToProps, null)(Sidebar);

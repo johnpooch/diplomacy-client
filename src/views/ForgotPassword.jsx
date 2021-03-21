@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import FieldError from '../components/FieldError';
@@ -6,18 +6,14 @@ import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 
-const ForgotPassword = ({ onAuth }) => {
+const ForgotPassword = ({ errors, onAuth }) => {
   const [{ email }, handleChange] = useForm({ email: '' });
-
-  const [errors, setErrors] = useState({
-    nonFieldErrors: [],
-  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAuth(setErrors, email);
+    onAuth(email);
   };
 
   return (
@@ -30,7 +26,7 @@ const ForgotPassword = ({ onAuth }) => {
           </p>
 
           <label htmlFor="email">
-            <FormLabel>Email</FormLabel>
+            <LabelText>Email</LabelText>
             <input
               type="text"
               id="email"

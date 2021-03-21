@@ -1,9 +1,13 @@
 import produce from 'immer';
 import {
   faAnchor,
-  faIndustry,
+  faCheck,
+  faExclamationTriangle,
   faMapMarkerAlt,
+  faStar,
+  faTimes,
   faTruckMoving,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { withUnits } from './utils';
 
@@ -11,18 +15,18 @@ import { withUnits } from './utils';
 const colors = {
   text: 'midnightblue',
   background: 'papayawhip',
-  primary: 'peru',
+  primary: 'dodgerblue',
   secondary: 'slategray',
   accent: 'slateblue',
   muted: 'white',
   nations: {
-    1: '#ff1103', // England
-    2: '#0074d9', // France
-    3: '#777777', // Germany
-    4: '#e69f00', // Austria-Hungary
-    5: '#2ecc40', // Italy
-    6: '#b10dc9', // Russia
-    7: '#508e59', // Turkey
+    'standard-england': '#ff1103',
+    'standard-france': '#0074d9',
+    'standard-germany': '#777777',
+    'standard-austria-hungary': '#E69F00',
+    'standard-italy': '#2ecc40',
+    'standard-russia': '#b10dc9',
+    'standard-turkey': '#508e59',
   },
   map: {
     land: '#e3d8c4',
@@ -43,7 +47,7 @@ const fonts = {
   sans:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
 };
-const fontSizes = withUnits([9, 13, 15, 19, 36], 'px');
+const fontSizes = [9, 13, 15, 19, 36];
 const fontWeights = {
   body: 400,
   heading: 700,
@@ -53,10 +57,11 @@ const lineHeights = {
   body: 1.5,
   heading: 1.125,
 };
-const space = withUnits([4, 8, 12, 16, 24, 32, 44, 60], 'px');
-const borderWidths = withUnits([2], 'px');
-const borders = [`${borderWidths[0]} solid ${colors.secondary}`];
-const radii = withUnits([6, 8, 16], 'px');
+const space = [4, 8, 12, 16, 24, 32, 44, 60];
+const borderWidths = [1];
+const borders = [`${borderWidths[0]}px solid ${colors.secondary}`];
+const radii = [6, 8, 16];
+const shadows = [`rgba(0, 0, 0, 0.15) 0px 1px 3px 1px`];
 const sizes = {
   pageMaxWidth: '690px',
   inputMinSize: '44px',
@@ -64,22 +69,31 @@ const sizes = {
   flag: withUnits([30, 80], 'px'),
 };
 const icons = {
+  accept: faCheck,
   army: faTruckMoving,
+  cancel: faTimes,
   fleet: faAnchor,
-  supplyCenter: faIndustry,
+  player: faUser,
+  supplyCenter: faStar,
   territory: faMapMarkerAlt,
+  warning: faExclamationTriangle,
 };
 
 export const theme = {
   colors,
   fonts,
-  fontSizes,
+  fontSizes: withUnits(fontSizes, 'px'),
+  fontSizesUnitless: fontSizes,
   fontWeights,
   lineHeights,
-  space,
-  borderWidths,
+  space: withUnits(space, 'px'),
+  spaceUnitless: space,
+  borderWidths: withUnits(borderWidths, 'px'),
+  borderWidthsUnitless: borderWidths,
   borders,
-  radii,
+  radii: withUnits(radii, 'px'),
+  radiiUnitless: radii,
+  shadows,
   sizes,
   icons,
 };

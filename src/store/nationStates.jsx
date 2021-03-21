@@ -11,8 +11,6 @@ import apiActions from './apiActions';
 
 const { finalizeOrders } = apiActions;
 
-const SET_SURRENDER_FULFILLED = 'surrenders/setSurrender/fulfilled';
-
 const nationStateAdapter = createEntityAdapter();
 
 const nationStateSlice = createSlice({
@@ -23,25 +21,25 @@ const nationStateSlice = createSlice({
   },
   extraReducers: {
     [finalizeOrders.pending]: (state, { meta }) => {
-      const { id } = meta.arg;
+      const { nationStateId } = meta.arg.urlParams;
       const changes = { loading: true };
-      nationStateAdapter.updateOne(state, { id, changes });
+      nationStateAdapter.updateOne(state, { id: nationStateId, changes });
     },
-    [finalizeOrders.fulfilled]: (state, { payload }) => {
-      const { id, ...nationState } = payload;
-      const changes = { ...nationState, loading: false };
-      nationStateAdapter.updateOne(state, { id, changes });
+    [finalizeOrders.fulfilled]: (state, { meta }) => {
+      const { nationStateId } = meta.arg.urlParams;
+      const changes = { loading: false };
+      nationStateAdapter.updateOne(state, { id: nationStateId, changes });
     },
     [finalizeOrders.rejected]: (state, { meta }) => {
-      const { id } = meta.arg;
+      const { nationStateId } = meta.arg.urlParams;
       const changes = { loading: false };
-      nationStateAdapter.updateOne(state, { id, changes });
+      nationStateAdapter.updateOne(state, { id: nationStateId, changes });
     },
-    [SET_SURRENDER_FULFILLED]: (state, { payload }) => {
-      const { nationState, id } = payload;
-      const nationStateToUpdate = state.entities[nationState];
-      nationStateToUpdate.surrenders.push(id);
-    },
+    // [toggleSurrender.fulfilled]: (state, { payload }) => {
+    //   const { nationState, id } = payload;
+    //   const nationStateToUpdate = state.entities[nationState];
+    //   nationStateToUpdate.surrenders.push(id);
+    // },
   },
 });
 
@@ -61,9 +59,16 @@ const selectByTurnId = createSelector(
     nationStates.filter((n) => turn.nationStates.includes(n.id))
 );
 
+const selectByUserId = createSelector(
+  adapterSelectors.selectAll,
+  (_, id) => id,
+  (nationStates, id) => nationStates.find((n) => n.user === id)
+);
+
 export const nationStateSelectors = {
   ...adapterSelectors,
   selectByTurnId,
+  selectByUserId,
 };
 
 export default nationStateSlice.reducer;

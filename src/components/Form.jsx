@@ -8,7 +8,7 @@ const StyledForm = styled.form`
   input,
   select,
   textarea {
-    background: transparent;
+    background: ${(p) => p.theme.colors.muted};
     border-radius: ${(p) => p.theme.radii[0]};
     border: ${(p) =>
       `${p.theme.borderWidths[0]} solid ${p.theme.colors.secondary}`};
@@ -66,7 +66,7 @@ const StyledForm = styled.form`
 const StyledFormWrapper = styled.div`
   background: ${(p) => p.theme.colors.muted};
   border-radius: ${(p) => p.theme.radii[2]};
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
+  box-shadow: ${(p) => p.theme.shadows[0]};
   font-size: ${(p) => p.theme.fontSizes[1]};
   max-width: 100%;
   width: 350px;
@@ -78,7 +78,7 @@ export const FormWrapper = (props) => {
   return <StyledFormWrapper>{children}</StyledFormWrapper>;
 };
 
-export const FormLabel = styled.span`
+export const LabelText = styled.span`
   display: block;
   font-size: ${(p) => p.theme.fontSizes[1]};
   line-height: 1;

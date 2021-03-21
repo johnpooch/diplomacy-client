@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useStore } from 'react-redux';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter, NavLink } from 'react-router-dom';
 
 import { BackButton } from '../components/Button';
-import { drawResponseActions } from '../store/drawResponses';
-import { gameActions, gameSelectors } from '../store/games';
-import { getDenormalizedGameDetail } from '../store/denormalizers';
+import { selectCurrentTurnByGame } from '../store/selectors';
+import { gameDetailActions } from '../store/gameDetail';
+import { gameActions } from '../store/games';
 import { initialGameFormState } from '../game/base';
-import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
@@ -33,15 +32,11 @@ const HomeNavLinkButton = () => (
 );
 
 const Game = (props) => {
-  /* Game board view. Calls the API to grab the detail data for the given game.
-   * The view loads until the game detail data is in the store. */
   const {
-    cancelDrawResponse,
-    setDrawResponse,
+    clearGameDetail,
+    currentTurn,
     drawResponseLoading,
     createOrder,
-    destroyOrder,
-    finalizeOrders,
     game,
     location,
     prepareGameDetail,
@@ -53,52 +48,40 @@ const Game = (props) => {
   const [gameForm, setGameForm] = useState(initialGameFormState);
   const [activeTurnId, setActiveTurn] = useState();
 
+  const state = useStore().getState();
+
   useEffect(() => {
-    prepareGameDetail(token, slug);
+    prepareGameDetail(slug);
+    return clearGameDetail;
   }, [location.pathname]);
 
-  if (!game) return null; // return <Loading />;
-  const currentTurn = game.turns.find((t) => t.currentTurn === true);
+  if (!game || !game.loaded) return null; // return <Loading />;
 
   // Set the active turn to the current turn on initial load
-  let turn = null;
   if (!activeTurnId) {
-    turn = currentTurn;
-    setActiveTurn(turn.id);
-  } else {
-    turn = game.turns.find((t) => t.id === activeTurnId);
+    setActiveTurn(currentTurn.id);
   }
 
   const postOrder = () => {
-    createOrder(token, slug, turn.id, gameForm);
+    createOrder(token, slug, currentTurn.id, gameForm);
   };
-
   const gameInterface = new GameInterface(
     { postOrder },
     gameForm,
     setGameForm,
-    currentTurn
+    currentTurn,
+    state
   );
-  const { userNation } = turn;
 
   return (
     <div>
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
         currentTurn={currentTurn}
-        finalizeOrders={() => finalizeOrders(token, userNation.nationStateId)}
         toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
-        cancelDrawResponse={(draw, response) =>
-          cancelDrawResponse(token, draw, response)
-        }
         drawResponseLoading={drawResponseLoading}
-        destroyOrder={(id) => destroyOrder(token, slug, id, turn.id)}
         participants={game.participants}
-        setDrawResponse={(draw, response) =>
-          setDrawResponse(token, draw, response)
-        }
-        draws={turn.draws}
-        userNation={userNation}
+        draws={currentTurn.draws}
         variant={game.variant}
         // TODO: clean this up
       />
@@ -110,29 +93,26 @@ const Game = (props) => {
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
   const { token } = state.auth;
-  let game = gameSelectors.selectBySlug(state, slug);
-  const gameDetailInStore = game && game.detailLoaded;
-  game = gameDetailInStore ? getDenormalizedGameDetail(state, game.id) : null;
+  const game = state.entities.gameDetail;
+  const currentTurn = game.loaded
+    ? selectCurrentTurnByGame(state, game.id)
+    : null;
   const { loading: drawResponseLoading } = state.entities.drawResponses;
-  return { drawResponseLoading, game, slug, token };
+  return { drawResponseLoading, game, slug, token, currentTurn };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const prepareGameDetail = (token, gameSlug) => {
-    dispatch(variantActions.listVariants({ token })).then(() => {
-      const urlParams = { gameSlug };
-      dispatch(gameActions.getGameDetail({ token, urlParams })).then(
-        ({ payload }) => {
-          const { id: turnId } = payload.turns.find(
-            (t) => t.currentTurn === true
-          );
-          dispatch(orderActions.listOrders({ token, turnId }));
-        }
-      );
+  const prepareGameDetail = (gameSlug) => {
+    dispatch(variantActions.listVariants({})).then(() => {
+      let urlParams = { gameSlug };
+      dispatch(gameActions.getGameDetail({ urlParams })).then(({ payload }) => {
+        const { id: turnId } = payload.turns.find(
+          (t) => t.currentTurn === true
+        );
+        urlParams = { turnId };
+        dispatch(orderActions.listOrders({ urlParams }));
+      });
     });
-  };
-  const finalizeOrders = (token, id) => {
-    dispatch(nationStateActions.finalizeOrders({ token, id }));
   };
   const toggleSurrender = (token, turn, id) => {
     if (id) dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
@@ -145,27 +125,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(orderActions.listOrders({ token, urlParams }));
     });
   };
-  const destroyOrder = (token, gameSlug, orderId, turnId) => {
-    let urlParams = { gameSlug, orderId };
-    dispatch(orderActions.destroyOrder({ token, urlParams })).then(() => {
-      urlParams = { turnId };
-      dispatch(orderActions.listOrders({ token, urlParams }));
-    });
-  };
-  const cancelDrawResponse = (token, draw, response) => {
-    dispatch(drawResponseActions.cancelDrawResponse({ token, draw, response }));
-  };
-  const setDrawResponse = (token, draw, response) => {
-    dispatch(drawResponseActions.setDrawResponse({ token, draw, response }));
-  };
+  const clearGameDetail = () => dispatch(gameDetailActions.clearGameDetail());
 
   return {
-    cancelDrawResponse,
+    clearGameDetail,
     createOrder,
-    destroyOrder,
-    finalizeOrders,
     prepareGameDetail,
-    setDrawResponse,
     toggleSurrender,
   };
 };

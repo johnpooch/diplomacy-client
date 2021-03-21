@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import draws from './draws';
 import drawResponses from './drawResponses';
+import gameDetail from './gameDetail';
 import games from './games';
 import namedCoasts from './namedCoasts';
 import nationStates from './nationStates';
@@ -19,6 +20,7 @@ import variants from './variants';
 export default combineReducers({
   draws,
   drawResponses,
+  gameDetail,
   games,
   namedCoasts,
   nationStates,

@@ -1,10 +1,10 @@
-import { gameActions } from '../games';
-
 import gameListNormalizer from '../normalizers/gameListNormalizer';
 import gameDetailNormalizer from '../normalizers/gameDetailNormalizer';
 
 import { drawActions } from '../draws';
 import { drawResponseActions } from '../drawResponses';
+import { gameDetailActions } from '../gameDetail';
+import { gameActions } from '../games';
 import { nationStateActions } from '../nationStates';
 import { orderActions } from '../orders';
 import { pieceActions } from '../pieces';
@@ -70,10 +70,7 @@ const normalizeGameDetail = ({ dispatch }) => (next) => (action) => {
     dispatch(territoryStateActions.territoryStatesReceived(territoryStates));
     dispatch(turnActions.turnDetailsReceived(turns));
     dispatch(userActions.usersReceived(users || []));
-    next({
-      type: gameActions.getGameDetail.fulfilled.type,
-      payload: Object.values(game)[0],
-    });
+    next(gameDetailActions.setGameDetail(Object.values(game)[0]));
   } else {
     next(action);
   }

@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
+import ComponentError from '../components/ComponentError';
 import Games from '../components/Games';
 import GamesFilters from '../components/GamesFilters';
 import Page from '../components/Page';
-import { choiceActions } from '../store/choices';
-import { gameActions } from '../store/games';
-import { getDenormalizedGamesList } from '../store/denormalizers';
+import { gameActions, gameSelectors } from '../store/games';
 import { variantActions } from '../store/variants';
 
 const BrowseGames = (props) => {
   const {
-    choices,
-    listGames,
+    listGamesError,
+    listVariantsError,
+    loaded,
+    loading,
     games,
     location,
     prepareBrowseGames,
@@ -21,34 +22,36 @@ const BrowseGames = (props) => {
 
   useEffect(() => {
     // This will only be called on initial page load
-    if (!games) {
+    if (!loaded) {
       prepareBrowseGames(token);
     }
   }, [location.pathname]);
 
-  const filterGames = (filters) => {
-    listGames(token, filters);
-  };
+  const gameComponent = loading || !loaded ? null : <Games games={games} />;
+  const error = listGamesError || listVariantsError;
 
   return (
     <Page>
-      <GamesFilters callback={filterGames} choices={choices} />
-      <Games games={games} />
+      <GamesFilters />
+      {error ? <ComponentError error={error} /> : gameComponent}
     </Page>
   );
 };
 
 const mapStateToProps = (state, { location }) => {
-  const { loaded: variantsLoaded } = state.entities.variants;
-  const { browseGamesLoaded, loading } = state.entities.games;
-  let games = null;
-  if (browseGamesLoaded && variantsLoaded && !loading)
-    games = getDenormalizedGamesList(state);
+  const listGamesError = state.entities.games.error;
+  const listVariantsError = state.entities.variants.error;
+  const { token } = state.auth;
+  const { loading, loaded } = state.entities.games;
+  const games = gameSelectors.selectAll(state);
   return {
-    choices: state.choices,
     games,
+    loaded,
+    loading,
     location,
-    token: state.auth.token,
+    token,
+    listVariantsError,
+    listGamesError,
   };
 };
 
@@ -56,12 +59,9 @@ const mapDispatchToProps = (dispatch) => {
   const prepareBrowseGames = (token) => {
     dispatch(variantActions.listVariants({ token }));
     dispatch(gameActions.listGames({ token }));
-    dispatch(choiceActions.getGameFilterChoices());
   };
-  const listGames = (token, queryParams) =>
-    dispatch(gameActions.listGames({ token, queryParams }));
 
-  return { listGames, prepareBrowseGames };
+  return { prepareBrowseGames };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BrowseGames);

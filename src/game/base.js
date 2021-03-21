@@ -1,4 +1,5 @@
 // Constants
+import { territorySelectors } from '../store/territories';
 
 export const Phases = {
   ORDER: 'Order',
@@ -51,21 +52,19 @@ export class baseGameInterface {
   correct options depending on the state of the game and the territory that
   the user is interacting with.
   */
-  constructor(callbacks, gameForm, setGameForm, turn) {
-    const { action, aux, nation, source, target, targetCoast, type } = gameForm;
-    const { territories, userNation } = turn;
+  constructor(callbacks, gameForm, setGameForm, turn, state) {
+    const { action, nation, targetCoast, type } = gameForm;
+    const { userNation } = turn;
 
     this.gameForm = gameForm;
     this.setGameForm = setGameForm;
+    this.state = state;
 
     this.callbacks = callbacks;
 
-    // Unpack the gameForm and get territory objects using IDs Is there a
-    // cleaner way to do this? This is a lot of iteration for every single time
-    // this class is instantiated.
-    this.aux = territories.find((t) => t.id && t.id === aux) || null;
-    this.source = territories.find((t) => t.id && t.id === source) || null;
-    this.target = territories.find((t) => t.id && t.id === target) || null;
+    this.aux = territorySelectors.selectById(state, gameForm.aux);
+    this.source = territorySelectors.selectById(state, gameForm.source);
+    this.target = territorySelectors.selectById(state, gameForm.target);
     this.targetCoast = targetCoast;
     this.type = type;
     this.action = action;
@@ -74,8 +73,6 @@ export class baseGameInterface {
     this.phase = turn.phase;
     this.userNation = userNation;
     this.nation = nation;
-
-    this.nations = turn.nations.map((n) => [n.id, n.name]);
 
     // Is there really no way to avoid doing this cruft?
     this.onOptionSelected = this.onOptionSelected.bind(this);

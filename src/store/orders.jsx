@@ -1,9 +1,4 @@
-import {
-  createEntityAdapter,
-  createSelector,
-  createSlice,
-} from '@reduxjs/toolkit';
-import { turnSelectors } from './turns';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import apiActions from './apiActions';
 
 const { createOrder, destroyOrder, listOrders } = apiActions;
@@ -21,16 +16,21 @@ const ordersSlice = createSlice({
   extraReducers: {
     // Need to remove orders for this turn and set new ones
     [destroyOrder.pending]: (state, { meta }) => {
-      const { id } = meta.arg;
+      const { orderId } = meta.arg.urlParams;
       const changes = { loading: true };
-      orderAdapter.updateOne(state, { id, changes });
+      orderAdapter.updateOne(state, { id: orderId, changes });
+    },
+    [destroyOrder.rejected]: (state, { meta }) => {
+      const { orderId } = meta.arg.urlParams;
+      const changes = { loading: false };
+      orderAdapter.updateOne(state, { id: orderId, changes });
     },
     [listOrders.fulfilled]: (state, { payload }) => {
       const changes = payload.map((o) => {
         o.loading = false;
         return o;
       });
-      orderAdapter.upsertMany(state, changes);
+      orderAdapter.setAll(state, changes);
     },
   },
 });
@@ -46,15 +46,8 @@ const adapterSelectors = orderAdapter.getSelectors(
   (state) => state.entities.orders
 );
 
-const selectByTurnId = createSelector(
-  turnSelectors.selectById,
-  adapterSelectors.selectAll,
-  (turn, orders) => orders.filter((o) => turn.orders.includes(o.id))
-);
-
 export const orderSelectors = {
   ...adapterSelectors,
-  selectByTurnId,
 };
 
 export default ordersSlice.reducer;

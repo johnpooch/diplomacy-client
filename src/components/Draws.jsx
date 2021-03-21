@@ -1,7 +1,6 @@
 import React from 'react';
-import { faCheck, faStar, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { SecondaryButton } from './Button';
 import Flag from './Flag';
@@ -26,24 +25,21 @@ const StyledDiv = styled.div`
   }
 `;
 
-const StyledDrawPanel = styled.div`
-  background: white;
-  padding: 0.5rem;
-`;
-
 const SupplyCenterCount = ({ count }) => {
+  const theme = useTheme();
   return (
     <div>
-      <FontAwesomeIcon icon={faStar} />
+      <FontAwesomeIcon icon={theme.icons.supplyCenter} />
       {count}
     </div>
   );
 };
 
 const SupplyCentersRequirement = ({ drawStrength, numSupplyCentersToWin }) => {
+  const theme = useTheme();
   return (
     <StyledDiv>
-      <FontAwesomeIcon icon={faStar} />
+      <FontAwesomeIcon icon={theme.icons.supplyCenter} />
       <p>
         {drawStrength}/{numSupplyCentersToWin}
       </p>
@@ -53,17 +49,18 @@ const SupplyCentersRequirement = ({ drawStrength, numSupplyCentersToWin }) => {
 
 const DrawResponse = (props) => {
   const { nation, response, proposedWinner } = props;
+  const theme = useTheme();
 
   const responseIconMap = {
-    accepted: faCheck,
-    rejected: faTimes,
+    accepted: theme.icons.accept,
+    rejected: theme.icons.cancel,
   };
   const icon = responseIconMap[response];
   const { id, numSupplyCenters } = nation;
 
   return (
     <StyledLi key={id}>
-      <Flag nation={nation} size="small" />
+      <Flag nation={nation} size={0} />
       {proposedWinner ? <SupplyCenterCount count={numSupplyCenters} /> : null}
       {icon ? <FontAwesomeIcon icon={icon} /> : null}
     </StyledLi>
@@ -85,7 +82,7 @@ const DrawProposedMessage = ({ user }) => {
     <div>
       <strong>{user.username}</strong>
       <div>
-        <Flag nation={user.nation} size="small" />
+        <Flag nation={user.nation} size={0} />
       </div>
       <p>has proposed a draw</p>
     </div>
