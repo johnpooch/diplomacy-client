@@ -52,7 +52,7 @@ const OrdersSection = ({
             ))}
           </StyledOrders>
           <Button onClick={finalizeOrders} disabled={userNation.loading}>
-            {ordersFinalized ? `Edit orders` : 'Lock in orders'}
+            {ordersFinalized ? `Un-finalize orders` : 'Finalize orders'}
           </Button>
         </div>
       )}
