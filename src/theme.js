@@ -65,7 +65,7 @@ const sizes = {
   pageMaxWidth: '690px',
   inputMinSize: '44px',
   sidebarMaxWidth: '320px',
-  flag: [30, 80],
+  flag: withUnits([30, 80], 'px'),
 };
 const icons = {
   accept: faCheck,
