@@ -10,7 +10,6 @@ const StyledFlag = styled.div`
 `;
 
 const Flag = ({ nation, size }) => {
-  console.log(size);
   return (
     <StyledFlag size={size}>
       {nation ? (
