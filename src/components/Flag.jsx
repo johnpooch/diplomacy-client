@@ -2,19 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 import flags from '../data/standard/flags/flags';
-import { slugify } from '../utils';
 
-const FlagWrapper = styled.div`
-  /* width: ${(p) => p.sizes.flag[p.size]}; */
+const StyledFlag = styled.div`
+  width: ${(p) => p.theme.sizes.flag[p.size]};
+  height: calc(${(p) => p.theme.sizes.flag[p.size]} * 2 / 3);
+  border: ${(p) => p.theme.borders[0]};
 `;
 
 const Flag = ({ nation, size }) => {
   return (
-    <FlagWrapper size={size}>
+    <StyledFlag size={size}>
       {nation ? (
-        <img src={flags[slugify(nation.name)]} alt={`${nation.name} flag`} />
+        <img src={flags[nation.nation]} alt={`${nation.name} flag`} />
       ) : null}
-    </FlagWrapper>
+    </StyledFlag>
   );
 };
 

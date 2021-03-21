@@ -8,6 +8,7 @@ import StatusSection from './StatusSection';
 import Pane from './SidebarPane';
 
 import { drawResponseActions } from '../store/drawResponses';
+import Section from './Section';
 
 const OrdersPane = ({
   currentTurn,
@@ -26,11 +27,13 @@ const OrdersPane = ({
     <Pane>
       <StatusSection userNation={userNation} />
       <OrdersSection currentTurn={currentTurn} userNation={userNation} />
-      <SecondaryButton
-        onClick={() => toggleSurrender(surrender ? surrender.id : null)}
-      >
-        {surrender ? `Cancel surrender` : 'Surrender'}
-      </SecondaryButton>
+      <Section>
+        <SecondaryButton
+          onClick={() => toggleSurrender(surrender ? surrender.id : null)}
+        >
+          {surrender ? `Cancel surrender` : 'Surrender'}
+        </SecondaryButton>
+      </Section>
       {draws.length ? (
         <Draws
           cancelDrawResponse={cancelDrawResponse}

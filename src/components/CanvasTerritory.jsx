@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { darken } from 'polished';
 import { Path, Star, Group } from 'react-konva';
+import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
 import viewBox from '../data/standard/viewBox.json';
@@ -11,7 +12,8 @@ const FILLPATTERNOPACITY = 0.1;
 const STROKEWIDTH = 2;
 const SUPPLYCENTERSIZE = 3;
 
-const SupplyCenter = ({ x, y, theme }) => {
+const SupplyCenter = ({ x, y }) => {
+  const theme = useTheme();
   return (
     <Star
       x={x - viewBox.territoriesX}
@@ -27,13 +29,7 @@ const SupplyCenter = ({ x, y, theme }) => {
   );
 };
 
-const Territory = ({
-  territory,
-  isHovering,
-  isOrderable,
-  stripesImage,
-  theme,
-}) => {
+const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   const {
     controlledBy,
     path,
@@ -44,16 +40,18 @@ const Territory = ({
     supplyCenterX: scx,
     supplyCenterY: scy,
   } = territory;
-  const { colors } = theme;
 
+  const theme = useTheme();
   const territoryRef = useRef(null);
 
   const getFill = () => {
-    if (controlledBy in colors.nations) return colors.nations[controlledBy];
-    return type === 'sea' ? colors.map.sea : colors.map.land;
+    if (controlledBy in theme.colors.nations)
+      return theme.colors.nations[controlledBy];
+    return type === 'sea' ? theme.colors.map.sea : theme.colors.map.land;
   };
 
-  const getStroke = () => (isHovering ? colors.muted : darken(0.2, getFill()));
+  const getStroke = () =>
+    isHovering ? theme.colors.muted : darken(0.2, getFill());
 
   return (
     <Group>

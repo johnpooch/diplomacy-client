@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Section from './Section';
@@ -11,8 +11,9 @@ const StyledStatus = styled.div`
   align-items: center;
 `;
 
-const StatusSection = ({ userNation, theme }) => {
+const StatusSection = ({ userNation }) => {
   const { numSupplyCenters } = userNation;
+  const theme = useTheme();
 
   const Status = ({ count, label, type }) => {
     return (

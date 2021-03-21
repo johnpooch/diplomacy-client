@@ -21,7 +21,7 @@ export const Player = ({ player }) => {
   const { isCurrentUser, nation, username } = player;
   return (
     <StyledPlayer isCurrentUser={isCurrentUser}>
-      <Flag nation={nation} size="small" />
+      <Flag nation={nation} size={0} />
       <span className="username">{username}</span>
     </StyledPlayer>
   );

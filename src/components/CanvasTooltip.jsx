@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Label, Tag, Text } from 'react-konva';
+import { useTheme } from 'styled-components';
 
 const Tooltip = ({
   hoverTarget,
@@ -7,18 +8,18 @@ const Tooltip = ({
   scale,
   stagePosition,
   stageRef,
-  theme,
 }) => {
-  const { colors, fontSizes, space } = theme;
+  const theme = useTheme();
+  return null;
 
-  const FONTSIZE = fontSizes.sans[2];
-  const OFFSET = space[1];
-  const PADDING = space[0];
+  const FONTSIZE = theme.fontSizes[2];
+  const OFFSET = theme.space[1];
+  const PADDING = theme.space[0];
   const STROKEWIDTH = 1;
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [text, setText] = useState('');
-  const [textFill, setTextFill] = useState(colors.text);
+  const [textFill, setTextFill] = useState(theme.colors.text);
 
   const labelRef = useRef();
 
@@ -46,14 +47,14 @@ const Tooltip = ({
 
   useEffect(() => {
     setText('');
-    setTextFill(colors.text);
+    setTextFill(theme.colors.text);
 
     if (hoverTarget && hoverTarget.attrs.territory.name) {
       const { territory } = hoverTarget.attrs;
       setText(territory.name.toUpperCase());
 
       if (territory.controlledBy) {
-        setTextFill(colors.nations[territory.controlledBy]);
+        setTextFill(theme.colors.nations[territory.controlledBy]);
       }
     }
   }, [hoverTarget]);
@@ -61,12 +62,12 @@ const Tooltip = ({
   return text ? (
     <Label listening={false} ref={labelRef} x={position.x} y={position.y}>
       <Tag
-        fill={colors.muted}
-        stroke={colors.text}
+        fill={theme.colors.muted}
+        stroke={theme.colors.text}
         strokeWidth={STROKEWIDTH / scale}
       />
       <Text
-        fontFamily={(p) => p.theme.fonts.sans}
+        fontFamily={theme.fonts.sans}
         fontSize={FONTSIZE / scale}
         padding={PADDING / scale}
         text={text}

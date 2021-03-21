@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Arrow } from 'react-konva';
+import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
@@ -8,9 +9,11 @@ import { getTerritoryPieceCoords, Vector } from '../utils';
 const OFFSET = 25;
 const PATHSTROKEWIDTH = 8;
 
-const Move = ({ source, target, theme }) => {
+const Move = ({ source, target }) => {
   const [sx, sy] = getTerritoryPieceCoords(source);
   const [tx, ty] = getTerritoryPieceCoords(target);
+  const theme = useTheme();
+  return null;
   const v = new Vector(tx - sx, ty - sy);
   v.normalize();
   const points = [sx, sy, tx - OFFSET * v.x, ty - OFFSET * v.y];

@@ -42,12 +42,12 @@ export const IconButton = ({ icon, size = '1x', ...props }) => (
 );
 
 export const BackButton = styled(IconButton)`
-  background: ${(p) => p.theme.colors.secondary};
+  background: ${(p) => p.theme.colors.text};
   border-radius: 50%;
-  color: ${(p) => p.theme.colors.primary};
+  color: ${(p) => p.theme.colors.secondary};
 
   &:hover {
-    background: ${(p) => p.theme.colors.primary};
-    color: ${(p) => p.theme.colors.secondary};
+    /* background: ${(p) => p.theme.colors.primary}; */
+    color: ${(p) => p.theme.colors.primary};
   }
 `;

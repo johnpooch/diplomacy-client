@@ -2,6 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { connect } from 'react-redux';
+import { useTheme } from 'styled-components';
 
 import { IconButton } from './Button';
 import { OrderTypes } from '../game/base';
@@ -47,8 +48,9 @@ const OrderItem = ({
   source,
   target,
   type,
-  theme,
 }) => {
+  const theme = useTheme();
+
   let orderText = null;
   if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(type)) {
     orderText = <MoveOrderText source={source} target={target} type={type} />;

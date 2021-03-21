@@ -63,7 +63,7 @@ const DrawResponse = (props) => {
 
   return (
     <StyledLi key={id}>
-      <Flag nation={nation} size="small" />
+      <Flag nation={nation} size={0} />
       {proposedWinner ? <SupplyCenterCount count={numSupplyCenters} /> : null}
       {icon ? <FontAwesomeIcon icon={icon} /> : null}
     </StyledLi>
@@ -85,7 +85,7 @@ const DrawProposedMessage = ({ user }) => {
     <div>
       <strong>{user.username}</strong>
       <div>
-        <Flag nation={user.nation} size="small" />
+        <Flag nation={user.nation} size={0} />
       </div>
       <p>has proposed a draw</p>
     </div>
