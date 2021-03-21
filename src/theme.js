@@ -59,7 +59,7 @@ const lineHeights = {
 };
 const space = [4, 8, 12, 16, 24, 32, 44, 60];
 const borderWidths = [1];
-const borders = [`${borderWidths[0]} solid ${colors.secondary}`];
+const borders = [`${borderWidths[0]}px solid ${colors.secondary}`];
 const radii = [6, 8, 16];
 const sizes = {
   pageMaxWidth: '690px',
