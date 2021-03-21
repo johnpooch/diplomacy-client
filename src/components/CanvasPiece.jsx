@@ -24,8 +24,6 @@ const Piece = ({ piece, territory, isHovering, isOrderable, isSelected }) => {
   const iconWidth = theme.icons[type].icon[0] * ICON_SCALES[type];
   const iconHeight = theme.icons[type].icon[1] * ICON_SCALES[type];
 
-  console.log(theme.colors.nations[nation]);
-
   const circleFill =
     (isHovering || isSelected) && isOrderable
       ? theme.colors.neutral

@@ -47,7 +47,7 @@ const fonts = {
   sans:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
 };
-const fontSizes = withUnits([9, 13, 15, 19, 36], 'px');
+const fontSizes = [9, 13, 15, 19, 36];
 const fontWeights = {
   body: 400,
   heading: 700,
@@ -57,15 +57,15 @@ const lineHeights = {
   body: 1.5,
   heading: 1.125,
 };
-const space = withUnits([4, 8, 12, 16, 24, 32, 44, 60], 'px');
-const borderWidths = withUnits([1], 'px');
+const space = [4, 8, 12, 16, 24, 32, 44, 60];
+const borderWidths = [1];
 const borders = [`${borderWidths[0]} solid ${colors.secondary}`];
-const radii = withUnits([6, 8, 16], 'px');
+const radii = [6, 8, 16];
 const sizes = {
   pageMaxWidth: '690px',
   inputMinSize: '44px',
   sidebarMaxWidth: '320px',
-  flag: withUnits([30, 80], 'px'),
+  flag: [30, 80],
 };
 const icons = {
   accept: faCheck,
@@ -81,13 +81,17 @@ const icons = {
 export const theme = {
   colors,
   fonts,
-  fontSizes,
+  fontSizes: withUnits(fontSizes, 'px'),
+  fontSizesUnitless: fontSizes,
   fontWeights,
   lineHeights,
-  space,
-  borderWidths,
+  space: withUnits(space, 'px'),
+  spaceUnitless: space,
+  borderWidths: withUnits(borderWidths, 'px'),
+  borderWidthsUnitless: borderWidths,
   borders,
-  radii,
+  radii: withUnits(radii, 'px'),
+  radiiUnitless: radii,
   sizes,
   icons,
 };

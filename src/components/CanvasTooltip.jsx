@@ -10,12 +10,11 @@ const Tooltip = ({
   stageRef,
 }) => {
   const theme = useTheme();
-  return null;
 
-  const FONTSIZE = theme.fontSizes[2];
-  const OFFSET = theme.space[1];
-  const PADDING = theme.space[0];
-  const STROKEWIDTH = 1;
+  const FONT_SIZE = theme.fontSizesUnitless[2];
+  const OFFSET = theme.spaceUnitless[1];
+  const PADDING = theme.spaceUnitless[0];
+  const STROKE_WIDTH = theme.borderWidthsUnitless[0];
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [text, setText] = useState('');
@@ -64,11 +63,11 @@ const Tooltip = ({
       <Tag
         fill={theme.colors.muted}
         stroke={theme.colors.text}
-        strokeWidth={STROKEWIDTH / scale}
+        strokeWidth={STROKE_WIDTH / scale}
       />
       <Text
         fontFamily={theme.fonts.sans}
-        fontSize={FONTSIZE / scale}
+        fontSize={FONT_SIZE / scale}
         padding={PADDING / scale}
         text={text}
         fill={textFill}
