@@ -7,7 +7,6 @@ import Login from './Login';
 import Register from './Register';
 import ResetPassword from './ResetPassword';
 import { successMessages } from '../copy';
-import { alertActions } from '../store/alerts';
 import { authActions } from '../store/auth';
 import { errorActions } from '../store/errors';
 
@@ -45,8 +44,6 @@ const RouterLoggedOut = (props) => {
 };
 
 const mapDispatchToProps = (dispatch, { history }) => {
-  const category = 'success';
-  const pending = true;
   return {
     forgotPassword: (email) => {
       const data = { email };
@@ -55,9 +52,6 @@ const mapDispatchToProps = (dispatch, { history }) => {
           if (error) {
             dispatch(errorActions.addError(payload));
           } else {
-            const template = successMessages.passwordResetLinkSent;
-            const message = template.replace('%s', email);
-            dispatch(alertActions.alertsAdd({ message, category, pending }));
             history.push('/login');
           }
         }
@@ -75,8 +69,6 @@ const mapDispatchToProps = (dispatch, { history }) => {
         if (error) {
           dispatch(errorActions.addError(payload));
         } else {
-          const message = successMessages.accountCreated;
-          dispatch(alertActions.alertsAdd({ message, category, pending }));
           history.push('/login');
         }
       });
@@ -85,11 +77,9 @@ const mapDispatchToProps = (dispatch, { history }) => {
       const data = { password };
       dispatch(authActions.resetPasswordConfirm({ token, data })).then(
         ({ error, payload }) => {
-          const message = successMessages.passwordUpdated;
           if (error) {
             dispatch(errorActions.addError(payload));
           } else {
-            dispatch(alertActions.alertsAdd({ message, category, pending }));
             history.push('/login');
           }
         }

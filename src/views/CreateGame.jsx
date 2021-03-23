@@ -2,13 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 
-import { successMessages } from '../copy';
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Form, { FormLabel, FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
-import { alertActions } from '../store/alerts';
 import { Button, SecondaryButton } from '../components/Button';
 import { errorActions } from '../store/errors';
 import { gameActions } from '../store/games';
@@ -88,12 +86,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
           if (error) {
             dispatch(errorActions.addError(payload));
           } else {
-            const { name, slug } = payload;
-            const message = successMessages.gameCreated.replace('%s', name);
-            const category = 'success';
-            dispatch(
-              alertActions.alertsAdd({ message, category, pending: true })
-            );
+            const { slug } = payload;
             history.push(`/pre-game/${slug}`);
           }
         }

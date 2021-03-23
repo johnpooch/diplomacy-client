@@ -1,9 +1,14 @@
 import { fireEvent, waitFor, screen } from '@testing-library/react';
 
-import { errorMessages, successMessages } from '../src/copy';
+import { errorMessages } from '../src/copy';
 import { urlConf } from '../src/urls';
 import { resetPassword } from '../src/mocks/resolvers';
-import { renderApp, testElements, useHandlers } from './testUtils';
+import {
+  renderApp,
+  successMessages,
+  testElements,
+  useHandlers,
+} from './testUtils';
 
 const email = 'fakeaddress@fake.com';
 const startingUrl = '/forgot-password';
@@ -17,11 +22,7 @@ describe('Forgot Password', () => {
     fireEvent.click(testElements.sendResetLinkButton());
     // Expect to be redirected to login page and see success alert
     await waitFor(testElements.loginButton);
-    await waitFor(() =>
-      screen.getByText(
-        successMessages.passwordResetLinkSent.replace('%s', email)
-      )
-    );
+    await waitFor(() => screen.getByText(successMessages.resetPassword(email)));
   });
 
   it('display error when no matching email exists', async () => {

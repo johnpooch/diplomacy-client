@@ -1,5 +1,9 @@
 /* eslint-disable no-param-reassign */
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
 import apiActions from './apiActions';
 
 const { createGame, getGameDetail, joinGame, listGames } = apiActions;
@@ -71,10 +75,13 @@ const adapterSelectors = gameAdapter.getSelectors(
   (state) => state.entities.games
 );
 
-const selectBySlug = (state, slug) => {
-  const allGames = adapterSelectors.selectAll(state);
-  return allGames.find((g) => g.slug === slug);
-};
+const selectBySlug = createSelector(
+  (_, slug) => slug,
+  adapterSelectors.selectAll,
+  (slug, games) => {
+    return games.find((g) => g.slug === slug);
+  }
+);
 
 export const gameSelectors = {
   ...adapterSelectors,

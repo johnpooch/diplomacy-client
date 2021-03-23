@@ -7,7 +7,10 @@ import { useEffect, useState } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 
 import { BackButton } from '../components/Button';
-import { selectCurrentTurnByGame } from '../store/selectors';
+import {
+  selectCurrentTurnByGame,
+  selectUserNationByTurn,
+} from '../store/selectors';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
 import { initialGameFormState } from '../game/base';
@@ -45,7 +48,7 @@ const Game = (props) => {
     prepareGameDetail,
     slug,
     toggleSurrender,
-    token,
+    userNation,
   } = props;
 
   const [gameForm, setGameForm] = useState(initialGameFormState);
@@ -66,13 +69,14 @@ const Game = (props) => {
   }
 
   const postOrder = () => {
-    createOrder(token, slug, currentTurn.id, gameForm);
+    createOrder(slug, currentTurn.id, gameForm);
   };
   const gameInterface = new GameInterface(
     { postOrder },
     gameForm,
     setGameForm,
     currentTurn,
+    userNation,
     state
   );
 
@@ -81,7 +85,7 @@ const Game = (props) => {
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
         currentTurn={currentTurn}
-        toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
+        toggleSurrender={(id) => toggleSurrender(currentTurn.id, id)}
         drawResponseLoading={drawResponseLoading}
         participants={game.participants}
         draws={currentTurn.draws}
@@ -95,13 +99,15 @@ const Game = (props) => {
 
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
-  const { token } = state.auth;
   const game = state.entities.gameDetail;
   const currentTurn = game.loaded
     ? selectCurrentTurnByGame(state, game.id)
     : null;
+  const userNation = currentTurn
+    ? selectUserNationByTurn(state, currentTurn.id)
+    : null;
   const { loading: drawResponseLoading } = state.entities.drawResponses;
-  return { drawResponseLoading, game, slug, token, currentTurn };
+  return { drawResponseLoading, game, slug, userNation, currentTurn };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -117,15 +123,15 @@ const mapDispatchToProps = (dispatch) => {
       });
     });
   };
-  const toggleSurrender = (token, turn, id) => {
-    if (id) dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
-    else dispatch(surrenderActions.setSurrender({ token, turn }));
+  const toggleSurrender = (turn, id) => {
+    if (id) dispatch(surrenderActions.cancelSurrender({ turn, id }));
+    else dispatch(surrenderActions.setSurrender({ turn }));
   };
-  const createOrder = (token, gameSlug, turnId, data) => {
+  const createOrder = (gameSlug, turnId, data) => {
     let urlParams = { gameSlug };
-    dispatch(orderActions.createOrder({ token, urlParams, data })).then(() => {
+    dispatch(orderActions.createOrder({ urlParams, data })).then(() => {
       urlParams = { turnId };
-      dispatch(orderActions.listOrders({ token, urlParams }));
+      dispatch(orderActions.listOrders({ urlParams }));
     });
   };
   const clearGameDetail = () => dispatch(gameDetailActions.clearGameDetail());

@@ -1,4 +1,5 @@
 import createGameData from './data/createGame.json';
+import createOrderData from './data/createOrder.json';
 import gameDetailData from './data/gameDetail.json';
 import getGameFilterChoicesData from './data/gameFilterChoices.json';
 import listGamesData from './data/games.json';
@@ -24,6 +25,11 @@ export const createGame = {
     };
     return res(ctx.status(400), ctx.json(responseData));
   },
+  errorServerError,
+};
+
+export const createOrder = {
+  success: (_, res, ctx) => res(ctx.status(201), ctx.json(createOrderData)),
   errorServerError,
 };
 
