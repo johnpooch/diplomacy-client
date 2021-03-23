@@ -1,0 +1,55 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { Circle, Group, Path } from 'react-konva';
+
+import { variables } from '../variables';
+import { makeSelectTerritoryById } from '../store/selectors';
+import { getTerritoryPieceCoords } from '../utils';
+
+const CIRCLERADIUS = 15;
+const ICONSCALES = {
+  army: 0.03,
+  fleet: 0.04,
+};
+const CIRCLESTROKEWIDTH = 2;
+const PATHSTROKEWIDTH = 0.25;
+
+const Build = ({ source, pieceType }) => {
+  const { icons } = variables;
+  const iconWidth = icons[pieceType].icon[0] * ICONSCALES[pieceType];
+  const iconHeight = icons[pieceType].icon[1] * ICONSCALES[pieceType];
+  const [sx, sy] = getTerritoryPieceCoords(source);
+  return (
+    <Group>
+      <Circle
+        fill={variables.colors.white}
+        radius={CIRCLERADIUS}
+        stroke={variables.colors.white}
+        strokeWidth={CIRCLESTROKEWIDTH}
+        shadowForStrokeEnabled={false}
+        x={sx}
+        y={sy}
+      />
+      <Path
+        data={icons[pieceType].icon[4]}
+        fill={variables.colors.base}
+        scaleX={ICONSCALES[pieceType]}
+        scaleY={ICONSCALES[pieceType]}
+        stroke={variables.colors.white}
+        strokeWidth={PATHSTROKEWIDTH / ICONSCALES[pieceType]}
+        shadowForStrokeEnabled={false}
+        x={sx - iconWidth / 2}
+        y={sy - iconHeight / 2}
+      />
+    </Group>
+  );
+};
+
+const mapStateToProps = (state, { order }) => {
+  const selectTerritoryById = makeSelectTerritoryById();
+  const source = selectTerritoryById(state, order.source);
+  const { pieceType } = order;
+  return { source, pieceType };
+};
+
+export default connect(mapStateToProps, null)(Build);

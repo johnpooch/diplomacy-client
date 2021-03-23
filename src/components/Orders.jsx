@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Group } from 'react-konva';
 
+import Build from './Build';
 import Convoy from './Convoy';
 import Hold from './Hold';
 import Move from './Move';
@@ -16,6 +17,8 @@ const OrderTypeMap = {
   [OrderTypes.SUPPORT]: Support,
   [OrderTypes.CONVOY]: Convoy,
   [OrderTypes.RETREAT]: Retreat,
+  [OrderTypes.BUILD]: Build,
+  [OrderTypes.DISBAND]: Hold,
 };
 
 const Orders = ({ orders }) => {

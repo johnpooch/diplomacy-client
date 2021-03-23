@@ -13,12 +13,16 @@ const moveMessage = ({ piece, source, target, type }) =>
   `${piece.type} ${source.name} will ${type} to ${target.name}`;
 const supportMessage = ({ aux, piece, source, target, type }) =>
   `${piece.type} ${source.name} will ${type} ${aux.name} to ${target.name}`;
+const buildMessage = ({ source, pieceType }) =>
+  `${pieceType} will be built in ${source.name}`;
 
 export const orderTypeMessageMap = {
   [OrderTypes.HOLD]: holdMessage,
   [OrderTypes.MOVE]: moveMessage,
   [OrderTypes.SUPPORT]: supportMessage,
   [OrderTypes.CONVOY]: supportMessage,
+  [OrderTypes.RETREAT]: moveMessage,
+  [OrderTypes.BUILD]: buildMessage,
 };
 
 export default {
@@ -53,7 +57,7 @@ export default {
   [orderActions.createOrder.fulfilled]: {
     getMessage: (state, action) => {
       const { data } = action.meta.arg;
-      const { type } = data;
+      const { pieceType, type } = data;
       const game = state.entities.gameDetail;
       const turn = turnSelectors
         .selectByGame(state, game.id)
@@ -62,7 +66,14 @@ export default {
       const source = territorySelectors.selectById(state, data.source);
       const target = territorySelectors.selectById(state, data.target);
       const piece = selectPieceByTerritory(state, source.id, turn.id);
-      return orderTypeMessageMap[type]({ aux, source, piece, target, type });
+      return orderTypeMessageMap[type]({
+        aux,
+        source,
+        piece,
+        pieceType,
+        target,
+        type,
+      });
     },
     pending: false,
   },

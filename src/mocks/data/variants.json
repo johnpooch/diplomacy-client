@@ -8,504 +8,112 @@
                 "name": "adriatic sea",
                 "type": "sea",
                 "supplyCenter": false,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": null
             },
             {
                 "id": "standard-aegean-sea",
                 "name": "aegean sea",
                 "type": "sea",
                 "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-baltic-sea",
-                "name": "baltic sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-barents-sea",
-                "name": "barents sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-black-sea",
-                "name": "black sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-gulf-of-bothnia",
-                "name": "gulf of bothnia",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-eastern-mediterranean",
-                "name": "eastern mediterranean",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-english-channel",
-                "name": "english channel",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-gulf-of-lyon",
-                "name": "gulf of lyon",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-helgoland-bight",
-                "name": "helgoland bight",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-ionian-sea",
-                "name": "ionian sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-irish-sea",
-                "name": "irish sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-mid-atlantic-ocean",
-                "name": "mid-atlantic ocean",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-north-atlantic-ocean",
-                "name": "north atlantic ocean",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-norwegian-sea",
-                "name": "norwegian sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-north-sea",
-                "name": "north sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-skagerrak",
-                "name": "skagerrak",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-tyrrhenian-sea",
-                "name": "tyrrhenian sea",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-western-mediterranean",
-                "name": "western mediterranean",
-                "type": "sea",
-                "supplyCenter": false,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": null
             },
             {
                 "id": "standard-albania",
                 "name": "albania",
                 "type": "coastal",
                 "supplyCenter": false,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": null
             },
             {
                 "id": "standard-ankara",
                 "name": "ankara",
                 "type": "coastal",
                 "supplyCenter": true,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": "standard-turkey"
             },
             {
                 "id": "standard-apulia",
                 "name": "apulia",
                 "type": "coastal",
                 "supplyCenter": false,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": "standard-italy"
             },
             {
                 "id": "standard-armenia",
                 "name": "armenia",
                 "type": "coastal",
                 "supplyCenter": false,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": "standard-turkey"
             },
             {
-                "id": "standard-berlin",
-                "name": "berlin",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
+                "id": "standard-baltic-sea",
+                "name": "baltic sea",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-barents-sea",
+                "name": "barents sea",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
             },
             {
                 "id": "standard-belgium",
                 "name": "belgium",
                 "type": "coastal",
                 "supplyCenter": true,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": null
             },
             {
-                "id": "standard-brest",
-                "name": "brest",
+                "id": "standard-berlin",
+                "name": "berlin",
                 "type": "coastal",
                 "supplyCenter": true,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": "standard-germany"
             },
             {
-                "id": "standard-clyde",
-                "name": "clyde",
-                "type": "coastal",
+                "id": "standard-black-sea",
+                "name": "black sea",
+                "type": "sea",
                 "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-constantinople",
-                "name": "constantinople",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-denmark",
-                "name": "denmark",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-edinburgh",
-                "name": "edinburgh",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-finland",
-                "name": "finland",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-gascony",
-                "name": "gascony",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-greece",
-                "name": "greece",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-holland",
-                "name": "holland",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-kiel",
-                "name": "kiel",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-london",
-                "name": "london",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-livonia",
-                "name": "livonia",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-liverpool",
-                "name": "liverpool",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-marseilles",
-                "name": "marseilles",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-north-africa",
-                "name": "north africa",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-naples",
-                "name": "naples",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-norway",
-                "name": "norway",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-picardy",
-                "name": "picardy",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-piedmont",
-                "name": "piedmont",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-portugal",
-                "name": "portugal",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-rome",
-                "name": "rome",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-rumania",
-                "name": "rumania",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-prussia",
-                "name": "prussia",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-sevastopol",
-                "name": "sevastopol",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-smyrna",
-                "name": "smyrna",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-sweden",
-                "name": "sweden",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-syria",
-                "name": "syria",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-trieste",
-                "name": "trieste",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-tunis",
-                "name": "tunis",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-tuscany",
-                "name": "tuscany",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-venice",
-                "name": "venice",
-                "type": "coastal",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-wales",
-                "name": "wales",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-yorkshire",
-                "name": "yorkshire",
-                "type": "coastal",
-                "supplyCenter": false,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": null
             },
             {
                 "id": "standard-bohemia",
                 "name": "bohemia",
                 "type": "inland",
                 "supplyCenter": false,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": "standard-austria-hungary"
+            },
+            {
+                "id": "standard-brest",
+                "name": "brest",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-france"
             },
             {
                 "id": "standard-budapest",
                 "name": "budapest",
                 "type": "inland",
                 "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-burgundy",
-                "name": "burgundy",
-                "type": "inland",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-galicia",
-                "name": "galicia",
-                "type": "inland",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-moscow",
-                "name": "moscow",
-                "type": "inland",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-munich",
-                "name": "munich",
-                "type": "inland",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-paris",
-                "name": "paris",
-                "type": "inland",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-ruhr",
-                "name": "ruhr",
-                "type": "inland",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-serbia",
-                "name": "serbia",
-                "type": "inland",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-silesia",
-                "name": "silesia",
-                "type": "inland",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-tyrolia",
-                "name": "tyrolia",
-                "type": "inland",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-ukraine",
-                "name": "ukraine",
-                "type": "inland",
-                "supplyCenter": false,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-vienna",
-                "name": "vienna",
-                "type": "inland",
-                "supplyCenter": true,
-                "namedCoasts": []
-            },
-            {
-                "id": "standard-warsaw",
-                "name": "warsaw",
-                "type": "inland",
-                "supplyCenter": true,
-                "namedCoasts": []
+                "namedCoasts": [],
+                "nationality": "standard-austria-hungary"
             },
             {
                 "id": "standard-bulgaria",
@@ -523,7 +131,360 @@
                         "parent": "standard-bulgaria",
                         "name": "bulgaria south coast"
                     }
-                ]
+                ],
+                "nationality": null
+            },
+            {
+                "id": "standard-burgundy",
+                "name": "burgundy",
+                "type": "inland",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-france"
+            },
+            {
+                "id": "standard-clyde",
+                "name": "clyde",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-england"
+            },
+            {
+                "id": "standard-constantinople",
+                "name": "constantinople",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-turkey"
+            },
+            {
+                "id": "standard-denmark",
+                "name": "denmark",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-eastern-mediterranean",
+                "name": "eastern mediterranean",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-edinburgh",
+                "name": "edinburgh",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-england"
+            },
+            {
+                "id": "standard-english-channel",
+                "name": "english channel",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-finland",
+                "name": "finland",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-galicia",
+                "name": "galicia",
+                "type": "inland",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-austria-hungary"
+            },
+            {
+                "id": "standard-gascony",
+                "name": "gascony",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-france"
+            },
+            {
+                "id": "standard-greece",
+                "name": "greece",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-gulf-of-bothnia",
+                "name": "gulf of bothnia",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-gulf-of-lyon",
+                "name": "gulf of lyon",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-helgoland-bight",
+                "name": "helgoland bight",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-holland",
+                "name": "holland",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-ionian-sea",
+                "name": "ionian sea",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-irish-sea",
+                "name": "irish sea",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-kiel",
+                "name": "kiel",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-germany"
+            },
+            {
+                "id": "standard-liverpool",
+                "name": "liverpool",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-england"
+            },
+            {
+                "id": "standard-livonia",
+                "name": "livonia",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-russia"
+            },
+            {
+                "id": "standard-london",
+                "name": "london",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-england"
+            },
+            {
+                "id": "standard-marseilles",
+                "name": "marseilles",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-france"
+            },
+            {
+                "id": "standard-mid-atlantic-ocean",
+                "name": "mid-atlantic ocean",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-moscow",
+                "name": "moscow",
+                "type": "inland",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-russia"
+            },
+            {
+                "id": "standard-munich",
+                "name": "munich",
+                "type": "inland",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-germany"
+            },
+            {
+                "id": "standard-naples",
+                "name": "naples",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-italy"
+            },
+            {
+                "id": "standard-north-africa",
+                "name": "north africa",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-north-atlantic-ocean",
+                "name": "north atlantic ocean",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-north-sea",
+                "name": "north sea",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-norway",
+                "name": "norway",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-norwegian-sea",
+                "name": "norwegian sea",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-paris",
+                "name": "paris",
+                "type": "inland",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-france"
+            },
+            {
+                "id": "standard-picardy",
+                "name": "picardy",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-france"
+            },
+            {
+                "id": "standard-piedmont",
+                "name": "piedmont",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-italy"
+            },
+            {
+                "id": "standard-portugal",
+                "name": "portugal",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-prussia",
+                "name": "prussia",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-germany"
+            },
+            {
+                "id": "standard-rome",
+                "name": "rome",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-italy"
+            },
+            {
+                "id": "standard-ruhr",
+                "name": "ruhr",
+                "type": "inland",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-germany"
+            },
+            {
+                "id": "standard-rumania",
+                "name": "rumania",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-serbia",
+                "name": "serbia",
+                "type": "inland",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-sevastopol",
+                "name": "sevastopol",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-russia"
+            },
+            {
+                "id": "standard-silesia",
+                "name": "silesia",
+                "type": "inland",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-germany"
+            },
+            {
+                "id": "standard-skagerrak",
+                "name": "skagerrak",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-smyrna",
+                "name": "smyrna",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-turkey"
             },
             {
                 "id": "standard-spain",
@@ -541,7 +502,8 @@
                         "parent": "standard-spain",
                         "name": "spain south coast"
                     }
-                ]
+                ],
+                "nationality": null
             },
             {
                 "id": "standard-st-petersburg",
@@ -559,7 +521,120 @@
                         "parent": "standard-st-petersburg",
                         "name": "st. petersburg south coast"
                     }
-                ]
+                ],
+                "nationality": "standard-russia"
+            },
+            {
+                "id": "standard-sweden",
+                "name": "sweden",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-syria",
+                "name": "syria",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-turkey"
+            },
+            {
+                "id": "standard-trieste",
+                "name": "trieste",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-austria-hungary"
+            },
+            {
+                "id": "standard-tunis",
+                "name": "tunis",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-tuscany",
+                "name": "tuscany",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-italy"
+            },
+            {
+                "id": "standard-tyrolia",
+                "name": "tyrolia",
+                "type": "inland",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-austria-hungary"
+            },
+            {
+                "id": "standard-tyrrhenian-sea",
+                "name": "tyrrhenian sea",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-ukraine",
+                "name": "ukraine",
+                "type": "inland",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-russia"
+            },
+            {
+                "id": "standard-venice",
+                "name": "venice",
+                "type": "coastal",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-italy"
+            },
+            {
+                "id": "standard-vienna",
+                "name": "vienna",
+                "type": "inland",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-austria-hungary"
+            },
+            {
+                "id": "standard-wales",
+                "name": "wales",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-england"
+            },
+            {
+                "id": "standard-warsaw",
+                "name": "warsaw",
+                "type": "inland",
+                "supplyCenter": true,
+                "namedCoasts": [],
+                "nationality": "standard-russia"
+            },
+            {
+                "id": "standard-western-mediterranean",
+                "name": "western mediterranean",
+                "type": "sea",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": null
+            },
+            {
+                "id": "standard-yorkshire",
+                "name": "yorkshire",
+                "type": "coastal",
+                "supplyCenter": false,
+                "namedCoasts": [],
+                "nationality": "standard-england"
             }
         ],
         "nations": [

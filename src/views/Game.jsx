@@ -13,13 +13,18 @@ import {
 } from '../store/selectors';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
-import { initialGameFormState } from '../game/base';
 import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
 import { variables } from '../variables';
 import { variantActions } from '../store/variants';
 import Canvas from '../components/Canvas';
-import GameInterface from '../game/gameInterface';
+import { initialGameFormState, Phases } from '../game/base';
+
+import DummyInterface from '../game/DummyInterface';
+import OrderInterface from '../game/OrderInterface';
+import BuildInterface from '../game/BuildInterface';
+import DisbandInterface from '../game/DisbandInterface';
+import RetreatInterface from '../game/RetreatInterface';
 import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
@@ -36,6 +41,23 @@ const HomeNavLinkButton = () => (
     <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
   </NavLinkButton>
 );
+
+const getInterfaceClass = (phase, userNation) => {
+  switch (phase) {
+    case Phases.ORDER:
+      return OrderInterface;
+    case Phases.RETREAT:
+      return RetreatInterface;
+    default:
+      if (userNation.supplyDelta < 0) {
+        return DisbandInterface;
+      }
+      if (userNation.supplyDelta > 1) {
+        return BuildInterface;
+      }
+      return DummyInterface;
+  }
+};
 
 const Game = (props) => {
   const {
@@ -71,7 +93,9 @@ const Game = (props) => {
   const postOrder = () => {
     createOrder(slug, currentTurn.id, gameForm);
   };
-  const gameInterface = new GameInterface(
+
+  const InterfaceClass = getInterfaceClass(currentTurn.phase, userNation);
+  const gameInterface = new InterfaceClass(
     { postOrder },
     gameForm,
     setGameForm,
