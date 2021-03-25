@@ -1,5 +1,5 @@
-import React from 'react';
 import styled from '@emotion/styled';
+import React from 'react';
 
 import { variables } from '../variables';
 
@@ -62,21 +62,6 @@ const StyledForm = styled.form`
     color: ${variables.colors.error};
   }
 `;
-
-const StyledFormWrapper = styled.div`
-  background: ${variables.colors.white};
-  border-radius: ${variables.sizes.borderRadius[2]}px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 3px 1px;
-  font-size: ${variables.fontSizes.sans[1]}px;
-  max-width: 100%;
-  width: 350px;
-  padding: ${variables.spacing[4]}px;
-`;
-
-export const FormWrapper = (props) => {
-  const { children } = props;
-  return <StyledFormWrapper>{children}</StyledFormWrapper>;
-};
 
 export const FormLabel = styled.span`
   display: block;
