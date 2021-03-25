@@ -40,6 +40,8 @@ module.exports = {
       template: './src/index.html',
     }),
     new webpack.DefinePlugin({
+      'process.env.USE_MOCK_SERVICE_WORKER':
+        process.env.USE_MOCK_SERVICE_WORKER || true,
       'process.env.SERVICE_URI': JSON.stringify(
         process.env.SERVICE_URI || 'http://127.0.0.1:8082/api/v1/'
       ),
