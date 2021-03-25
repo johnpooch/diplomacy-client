@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import { infoMessages } from '../copy';
-import Form, { FormWrapper } from '../components/Form';
+import Form from '../components/Form';
+import FormWrapper from '../components/FormWrapper';
 import Page from '../components/Page';
 import Players from '../components/Players';
 import { Button, SecondaryButton } from '../components/Button';

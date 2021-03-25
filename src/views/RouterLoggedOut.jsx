@@ -6,7 +6,6 @@ import ForgotPassword from './ForgotPassword';
 import Login from './Login';
 import Register from './Register';
 import ResetPassword from './ResetPassword';
-import { successMessages } from '../copy';
 import { authActions } from '../store/auth';
 import { errorActions } from '../store/errors';
 

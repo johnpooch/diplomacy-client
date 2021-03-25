@@ -4,7 +4,8 @@ import { withRouter, NavLink } from 'react-router-dom';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { FormLabel } from '../components/Form';
+import FormWrapper from '../components/FormWrapper';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
 import { Button, SecondaryButton } from '../components/Button';
