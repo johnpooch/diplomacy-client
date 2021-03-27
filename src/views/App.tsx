@@ -9,11 +9,11 @@ import Alerts from '../components/Alerts';
 
 import { alertActions, alertSelectors } from '../store/alerts';
 
-const App = (props) => {
-  const [formErrors, setFormErrors] = useState({
-    nonFieldErrors: [],
-  });
+interface IFormErrors {
+  nonFieldErrors: Array<any>;
+}
 
+const App = (props) => {
   const { alerts, alertsClear, clearAndPromoteAlerts, loggedIn } = props;
 
   const location = useLocation();
@@ -22,11 +22,7 @@ const App = (props) => {
     clearAndPromoteAlerts();
   }, [location.pathname]);
 
-  const router = loggedIn ? (
-    <RouterLoggedIn formErrors={formErrors} setFormErrors={setFormErrors} />
-  ) : (
-    <RouterLoggedOut formErrors={formErrors} setFormErrors={setFormErrors} />
-  );
+  const router = loggedIn ? <RouterLoggedIn /> : <RouterLoggedOut />;
 
   return (
     <div>

@@ -9,9 +9,9 @@ import { connect } from 'react-redux';
 import { jsx } from '@emotion/core';
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import { useForm } from 'react-hook-form';
 
 import Select from './Select';
-import useForm from '../hooks/useForm';
 import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
 import Form, { FormLabel } from './Form';
@@ -30,21 +30,11 @@ const StyledGamesFilters = styled.div`
 const GamesFilters = ({ choices, listGames, getChoices }) => {
   useEffect(() => (choices ? null : getChoices()));
 
-  const [values, handleChange] = useForm({
-    search: '',
-    variant: '',
-    status: '',
-    numPlayers: '',
-    nationChoiceMode: '',
-    orderDeadline: '',
-    retreatDeadline: '',
-    buildDeadline: '',
-  });
+  const { register, handleSubmit } = useForm();
   const [open, setOpen] = useState(false);
 
-  const filter = (e) => {
-    e.preventDefault();
-    listGames(values);
+  const onSubmit = (data) => {
+    listGames(data);
   };
 
   const { error } = choices;
@@ -66,7 +56,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
   const filters = error ? (
     <ComponentError error={error} />
   ) : (
-    <Form onSubmit={filter}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <GridTemplate
         templateColumns="2fr 1fr 1fr 1fr"
         css={{ marginTop: `${variables.spacing[4]}px` }}
@@ -77,9 +67,8 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
             id="search"
             name="search"
             type="search"
-            value={values.search}
-            onChange={handleChange}
             placeholder="Search by game name"
+            ref={register}
           />
         </label>
         <label htmlFor="numPlayers">
@@ -88,8 +77,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
             id="numPlayers"
             name="numPlayers"
             type="number"
-            value={values.numPlayers}
-            onChange={handleChange}
+            ref={register}
             min={1}
             max={7}
           />
@@ -97,44 +85,38 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
         <Select
           name="variant"
           label="Variant"
-          value={values.variant}
-          onChange={handleChange}
           options={choices.variants}
+          ref={register}
         />
         <Select
           name="status"
           label="Status"
-          value={values.status}
-          onChange={handleChange}
           options={choices.gameStatuses}
+          ref={register}
         />
         <Select
           name="nationChoiceMode"
           label="Nation choice mode"
-          value={values.nationChoiceMode}
-          onChange={handleChange}
           options={choices.nationChoiceModes}
+          ref={register}
         />
         <Select
           name="orderDeadline"
           label="Order deadline"
-          value={values.orderDeadline}
-          onChange={handleChange}
           options={choices.deadlines}
+          ref={register}
         />
         <Select
           name="retreatDeadline"
           label="Retreat deadline"
-          value={values.retreatDeadline}
-          onChange={handleChange}
           options={choices.deadlines}
+          ref={register}
         />
         <Select
           name="buildDeadline"
           label="Build deadline"
-          value={values.buildDeadline}
-          onChange={handleChange}
           options={choices.deadlines}
+          ref={register}
         />
         <Button type="submit">Search</Button>
       </GridTemplate>

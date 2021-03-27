@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Form, { FormLabel } from '../components/Form';
 import FormWrapper from '../components/FormWrapper';
 import Page from '../components/Page';
-import useForm from '../hooks/useForm';
 import { Button, SecondaryButton } from '../components/Button';
 import { errorActions } from '../store/errors';
 import { gameActions } from '../store/games';
@@ -15,23 +15,13 @@ import { GridTemplate } from '../layout';
 
 const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
-const CreateGame = ({ createGame, errors, token }) => {
-  const [values, handleChange] = useForm({ name: '', description: '' });
-
-  const { name, description } = values;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!e.target.checkValidity()) {
-      return;
-    }
-    createGame(token, { name, description });
-  };
+const CreateGame = ({ createGame, errors }) => {
+  const { register, handleSubmit } = useForm();
 
   return (
     <Page title="Create game">
       <FormWrapper>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(createGame)}>
           <label htmlFor="name">
             <FormLabel>Name</FormLabel>
             <input
@@ -40,8 +30,7 @@ const CreateGame = ({ createGame, errors, token }) => {
               name="name"
               placeholder="Name"
               autoComplete="name"
-              value={name}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.name} />
@@ -54,8 +43,7 @@ const CreateGame = ({ createGame, errors, token }) => {
               name="description"
               placeholder="Description"
               autoComplete="description"
-              onChange={handleChange}
-              value={description}
+              ref={register}
               required
               rows={1}
             />
@@ -74,24 +62,21 @@ const CreateGame = ({ createGame, errors, token }) => {
 };
 
 const mapStateToProps = (state) => {
-  const { token } = state.auth;
   const { errors } = state;
-  return { errors, token };
+  return { errors };
 };
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    createGame: (token, data) =>
-      dispatch(gameActions.createGame({ token, data })).then(
-        ({ error, payload }) => {
-          if (error) {
-            dispatch(errorActions.addError(payload));
-          } else {
-            const { slug } = payload;
-            history.push(`/pre-game/${slug}`);
-          }
+    createGame: (data) =>
+      dispatch(gameActions.createGame({ data })).then(({ error, payload }) => {
+        if (error) {
+          dispatch(errorActions.addError(payload));
+        } else {
+          const { slug } = payload;
+          history.push(`/pre-game/${slug}`);
         }
-      ),
+      }),
   };
 };
 

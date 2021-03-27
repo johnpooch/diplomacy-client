@@ -4,8 +4,12 @@
   "private": true,
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-typescript": "^7.13.0",
     "@testing-library/preact": "^2.0.1",
     "@testing-library/react": "^11.2.5",
+    "@types/jest": "^26.0.22",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.3.0",
     "babel-plugin-transform-runtime": "6.23.0",
@@ -22,6 +26,8 @@
     "jest-css-modules": "^2.1.0",
     "prettier": "^2.0.4",
     "prettier-eslint-cli": "^5.0.0",
+    "ts-loader": "^8.0.18",
+    "typescript": "^4.2.3",
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
@@ -37,6 +43,7 @@
     "@reduxjs/toolkit": "1.5.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/user-event": "^12.8.3",
+    "@types/react-router-dom": "^5.1.7",
     "axios": "^0.19.2",
     "babel-loader": "^8.1.0",
     "babel-plugin-emotion": "^10.0.33",
@@ -61,6 +68,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-hook-form": "^6.15.5",
     "react-konva": "^17.0.0-0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
@@ -80,8 +88,8 @@
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js && gulp",
-    "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx}'",
-    "lint": "eslint $PWD/'src/**/*.{js,jsx}' --fix",
+    "format": "prettier-eslint --write $PWD/'src/**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint $PWD/'src/**/*.{js,jsx,ts,tsx}' --fix",
     "test": "jest"
   },
   "browserslist": [

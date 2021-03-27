@@ -1,29 +1,28 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
-import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
 import Form, { FormLabel } from '../components/Form';
 import FormWrapper from '../components/FormWrapper';
 
 const ResetPassword = ({ errors, history, location, onAuth }) => {
-  const [{ password }, handleChange] = useForm({ password: '' });
+  const { register, handleSubmit } = useForm();
 
   const token = new URLSearchParams(location.search).get('token');
   if (!token) history.push('/');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onAuth(token, password);
+  const onSubmit = ({ password }) => {
+    onAuth(password);
   };
 
   return (
     <Page title="Reset Password">
       <FormWrapper>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <p>Enter your new password.</p>
 
           <label htmlFor="password">
@@ -34,8 +33,7 @@ const ResetPassword = ({ errors, history, location, onAuth }) => {
               name="password"
               placeholder="Password"
               autoComplete="password"
-              value={password}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.password} />

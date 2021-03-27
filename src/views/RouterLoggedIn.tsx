@@ -43,7 +43,7 @@ const RouterLoggedIn = (props) => {
         component={PreGame}
         loggedIn={loggedIn}
       />
-      <Route exact path="/game/:slug" component={Game} loggedIn={loggedIn} />
+      <Route exact path="/game/:slug" component={Game} />
       <RouteWithNavigation
         exact
         path="/"

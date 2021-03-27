@@ -1,29 +1,25 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
-import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
 import Form, { FormLabel } from '../components/Form';
 import FormWrapper from '../components/FormWrapper';
 
 const LoginForm = ({ errors, onAuth }) => {
-  const [{ username, password }, handleChange] = useForm({
-    username: '',
-    password: '',
-  });
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = ({ username, password }) => {
     onAuth(username, password);
   };
 
   return (
     <Page title="Log in">
       <FormWrapper>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="username">
             <FormLabel>Username</FormLabel>
             <input
@@ -32,8 +28,7 @@ const LoginForm = ({ errors, onAuth }) => {
               name="username"
               placeholder="Username"
               autoComplete="username"
-              value={username}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.username} />
@@ -47,8 +42,7 @@ const LoginForm = ({ errors, onAuth }) => {
               name="password"
               placeholder="Password"
               autoComplete="current-password"
-              value={password}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.password} />

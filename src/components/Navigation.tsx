@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import { variables } from '../variables';
 import { SecondaryButton } from './Button';
+import DropdownMenu from './DropdownMenu';
 
 const Header = styled.header`
   align-items: center;
@@ -76,6 +77,7 @@ const Navigation = (props) => {
       </nav>
       <Logo />
       <nav className="user-nav">
+        <DropdownMenu text="hello" />
         <div>
           Logged in as <span className="username">{user.username}</span>
         </div>
