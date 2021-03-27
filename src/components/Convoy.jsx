@@ -6,8 +6,8 @@ import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
 
 const OFFSET = 15;
-const PATHSTROKEWIDTH = 8;
-const CONVOYDASH = [1, 1, 0.001];
+const PATH_STROKE_WIDTH = 8;
+const CONVOY_DASH = [1, 1, 0.001];
 
 const Convoy = ({ aux, source, target, theme }) => {
   const [ax, ay] = getTerritoryPieceCoords(aux);
@@ -25,15 +25,15 @@ const Convoy = ({ aux, source, target, theme }) => {
         points={auxPoints}
         fill={theme.colors.text}
         stroke={theme.colors.text}
-        strokeWidth={PATHSTROKEWIDTH}
-        dash={CONVOYDASH}
+        strokeWidth={PATH_STROKE_WIDTH}
+        dash={CONVOY_DASH}
       />
       <Arrow
         points={targetPoints}
         fill={theme.colors.text}
         stroke={theme.colors.text}
-        strokeWidth={PATHSTROKEWIDTH}
-        dash={CONVOYDASH}
+        strokeWidth={PATH_STROKE_WIDTH}
+        dash={CONVOY_DASH}
       />
     </Group>
   );

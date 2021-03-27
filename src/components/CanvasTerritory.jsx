@@ -7,10 +7,10 @@ import { useTheme } from 'styled-components';
 import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
 import viewBox from '../data/standard/viewBox.json';
 
-const FILLPATTERNSCALE = 0.15;
-const FILLPATTERNOPACITY = 0.1;
-const STROKEWIDTH = 2;
-const SUPPLYCENTERSIZE = 3;
+const FILL_PATTERN_SCALE = 0.15;
+const FILL_PATTERN_OPACITY = 0.1;
+const STROKE_WIDTH = 2;
+const SUPPLY_CENTER_SIZE = 3;
 
 const SupplyCenter = ({ x, y }) => {
   const theme = useTheme();
@@ -19,8 +19,8 @@ const SupplyCenter = ({ x, y }) => {
       x={x - viewBox.territoriesX}
       y={y - viewBox.territoriesY}
       numPoints={5}
-      innerRadius={SUPPLYCENTERSIZE * 0.6}
-      outerRadius={SUPPLYCENTERSIZE}
+      innerRadius={SUPPLY_CENTER_SIZE * 0.6}
+      outerRadius={SUPPLY_CENTER_SIZE}
       listening={false}
       fill={theme.colors.text}
       stroke={theme.colors.text}
@@ -64,7 +64,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
         isOrderable={isOrderable}
         shadowForStrokeEnabled={false}
         stroke={getStroke()}
-        strokeWidth={STROKEWIDTH}
+        strokeWidth={STROKE_WIDTH}
         territory={territory}
       />
       {playable ? null : (
@@ -72,9 +72,9 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
           data={path}
           fillPatternImage={stripesImage}
           fillPatternRotation={45}
-          fillPatternScale={{ x: FILLPATTERNSCALE, y: FILLPATTERNSCALE }}
+          fill_Pattern_Scale={{ x: FILL_PATTERN_SCALE, y: FILL_PATTERN_SCALE }}
           listening={false}
-          opacity={FILLPATTERNOPACITY}
+          opacity={FILL_PATTERN_OPACITY}
         />
       )}
       {supplyCenter ? <SupplyCenter x={scx} y={scy} /> : null}
