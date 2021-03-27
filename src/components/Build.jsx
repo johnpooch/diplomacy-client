@@ -12,7 +12,7 @@ const ICONSCALES = {
   fleet: 0.04,
 };
 const CIRCLESTROKEWIDTH = 2;
-const PATHSTROKEWIDTH = 0.25;
+const PATH_STROKE_WIDTH = 0.25;
 
 const Build = ({ source, pieceType }) => {
   const theme = useTheme();
@@ -37,7 +37,7 @@ const Build = ({ source, pieceType }) => {
         scaleX={ICONSCALES[pieceType]}
         scaleY={ICONSCALES[pieceType]}
         stroke={theme.colors.white}
-        strokeWidth={PATHSTROKEWIDTH / ICONSCALES[pieceType]}
+        strokeWidth={PATH_STROKE_WIDTH / ICONSCALES[pieceType]}
         shadowForStrokeEnabled={false}
         x={sx - iconWidth / 2}
         y={sy - iconHeight / 2}

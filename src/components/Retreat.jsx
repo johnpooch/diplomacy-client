@@ -6,7 +6,7 @@ import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
 
 const OFFSET = 25;
-const PATHSTROKEWIDTH = 8;
+const PATH_STROKE_WIDTH = 8;
 
 const Retreat = ({ source, target, theme }) => {
   const [sx, sy] = getTerritoryPieceCoords(source, true);
@@ -19,7 +19,7 @@ const Retreat = ({ source, target, theme }) => {
       points={points}
       fill={theme.colors.text1}
       stroke={theme.colors.text1}
-      strokeWidth={PATHSTROKEWIDTH}
+      strokeWidth={PATH_STROKE_WIDTH}
       pointerLength={5}
       pointerWidth={5}
     />
