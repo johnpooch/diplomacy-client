@@ -10,9 +10,12 @@ import userData from '../src/mocks/data/user.json';
 import { restMethods } from '../src/mocks/handlers';
 import { login } from '../src/mocks/resolvers';
 import { authActions } from '../src/store/auth';
+import { gameActions } from '../src/store/games';
+import { orderActions } from '../src/store/orders';
 import configureStore from '../src/store/store';
 import { urlConf } from '../src/urls';
 import App from '../src/views/App';
+import apiSuccessMessages from '../src/apiSuccessMessages';
 
 const server = setupServer();
 
@@ -107,4 +110,34 @@ export const testElements = {
     screen.getByText('Reset password', { selector: 'button' }),
   sendResetLinkButton: () =>
     screen.getByText('Send reset link', { selector: 'button' }),
+};
+
+const createAction = (data) => {
+  return { meta: { arg: { data } } };
+};
+
+export const successMessages = {
+  createGame: (name) => {
+    const action = createAction({ name });
+    return apiSuccessMessages[gameActions.createGame.fulfilled].getMessage(
+      null,
+      action
+    );
+  },
+  createOrder: () => null,
+  destroyOrder: () =>
+    apiSuccessMessages[orderActions.destroyOrder.fulfilled].getMessage(),
+  finalizeOrders: () =>
+    apiSuccessMessages[orderActions.finalizeOrders.fulfilled].getMessage(),
+  register: () =>
+    apiSuccessMessages[authActions.register.fulfilled].getMessage(),
+  resetPassword: (email) => {
+    const action = createAction({ email });
+    return apiSuccessMessages[authActions.resetPassword.fulfilled].getMessage(
+      null,
+      action
+    );
+  },
+  resetPasswordConfirm: () =>
+    apiSuccessMessages[authActions.resetPasswordConfirm.fulfilled].getMessage(),
 };

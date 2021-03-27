@@ -13,16 +13,6 @@ export const errorMessages = {
     'There is no active user associated with this e-mail address or the password can not be changed',
 };
 
-export const successMessages = {
-  accountCreated: 'Account created! Log in to continue.',
-  gameCreated: 'Game "%s" created!',
-  ordersFinalized: 'Orders finalised',
-  orderCancelled: 'Order cancelled',
-  passwordUpdated: 'Password updated!',
-  passwordResetLinkSent:
-    'Thanks! Please check %s for a link to reset your password.',
-};
-
 export const infoMessages = {
   waitingForPlayers: 'Waiting for players to join',
   alreadyJoinedGame:

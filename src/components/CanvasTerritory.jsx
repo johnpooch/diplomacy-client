@@ -51,7 +51,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   };
 
   const getStroke = () =>
-    isHovering ? theme.colors.muted : darken(0.2, getFill());
+    isHovering && playable ? theme.colors.muted : darken(0.2, getFill());
 
   return (
     <Group>

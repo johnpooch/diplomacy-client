@@ -4,8 +4,9 @@ import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
 const alertAdapter = createEntityAdapter();
 
-const getNextId = (state) =>
-  state.ids.length !== 0 ? state[state.length - 1].id + 1 : 1;
+const getNextId = (state) => {
+  return state.ids.length !== 0 ? state.ids[state.ids.length - 1] + 1 : 1;
+};
 
 const alertsSlice = createSlice({
   name: 'alert',

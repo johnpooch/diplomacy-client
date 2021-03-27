@@ -8,7 +8,7 @@ import App from './views/App';
 import configureStore from './store/store';
 import { worker } from './mocks/browser';
 
-const USE_MOCK_SERVICE_WORKER = true;
+const USE_MOCK_SERVICE_WORKER = false;
 if (USE_MOCK_SERVICE_WORKER) {
   worker.start();
 }

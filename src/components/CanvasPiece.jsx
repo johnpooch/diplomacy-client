@@ -64,9 +64,7 @@ const makeMapStateToProps = () => {
   const selectPieceById = makeSelectPieceById();
   return (state, { id, turnId }) => {
     const piece = selectPieceById(state, id, turnId);
-    const territory = territoryData.find(
-      (td) => td.territoryUID === piece.territory
-    );
+    const territory = territoryData.find((td) => td.id === piece.territory);
     return {
       piece,
       territory,

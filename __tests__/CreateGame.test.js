@@ -7,12 +7,13 @@ import {
   listGames,
   listVariants,
 } from '../src/mocks/resolvers';
-import { errorMessages, infoMessages, successMessages } from '../src/copy';
+import { errorMessages, infoMessages } from '../src/copy';
 import {
   basicBeforeEach,
   fillForm,
   logIn,
   renderApp,
+  successMessages,
   testElements,
   useHandlers,
 } from './testUtils';
@@ -28,9 +29,7 @@ describe('Create game', () => {
     renderApp().push('/create-game');
     fillForm('Name', 'Description');
     fireEvent.click(testElements.createGameButton());
-    await waitFor(() =>
-      screen.getByText(successMessages.gameCreated.replace('%s', 'New game'))
-    );
+    await waitFor(() => screen.getByText(successMessages.createGame('Value')));
   });
 
   it('redirect to browse games on cancel', async () => {

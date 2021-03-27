@@ -9,34 +9,60 @@ import { orderActions } from '../store/orders';
 import { selectPieceByTerritory } from '../store/selectors';
 import { territorySelectors } from '../store/territories';
 
+const StyledOrderText = styled.div`
+  span:first-of-type {
+    text-transform: capitalize;
+  }
+`;
+
+const BuildOrderText = ({ pieceType, source, type }) => {
+  return (
+    <StyledOrderText className="text">
+      <span className="action">{type}</span>{' '}
+      <span className="pieceType">{pieceType}</span>{' '}
+      <span className="action">in</span>{' '}
+      <span className="source">{source}</span>{' '}
+    </StyledOrderText>
+  );
+};
+
 const HoldOrderText = ({ source, type }) => {
   return (
-    <span className="text">
+    <StyledOrderText className="text">
       <span className="source">{source}</span>{' '}
       <span className="action">{type}</span>
-    </span>
+    </StyledOrderText>
   );
 };
 
 const MoveOrderText = ({ source, target, type }) => {
   return (
-    <span className="text">
+    <StyledOrderText className="text">
       <span className="source">{source}</span>{' '}
       <span className="action">{type} to</span>{' '}
       <span className="target">{target}</span>
-    </span>
+    </StyledOrderText>
   );
 };
 
 const AuxOrderText = ({ aux, source, target, type }) => {
   return (
-    <span className="text">
+    <StyledOrderText className="text">
       <span className="source">{source}</span>{' '}
       <span className="action">{type}</span>{' '}
       <span className="target">{target}</span>{' '}
       <span className="action">to</span> <span className="aux">{aux}</span>
-    </span>
+    </StyledOrderText>
   );
+};
+
+const OrderTypeMap = {
+  [OrderTypes.MOVE]: MoveOrderText,
+  [OrderTypes.HOLD]: HoldOrderText,
+  [OrderTypes.SUPPORT]: AuxOrderText,
+  [OrderTypes.CONVOY]: AuxOrderText,
+  [OrderTypes.RETREAT]: MoveOrderText,
+  [OrderTypes.BUILD]: BuildOrderText,
 };
 
 const OrderItem = ({
@@ -44,6 +70,7 @@ const OrderItem = ({
   destroyOrder,
   loading,
   piece,
+  pieceType,
   source,
   target,
   type,
@@ -51,21 +78,23 @@ const OrderItem = ({
   const theme = useTheme();
 
   let orderText = null;
-  if ([OrderTypes.MOVE, OrderTypes.RETREAT].includes(type)) {
-    orderText = <MoveOrderText source={source} target={target} type={type} />;
-  } else if ([OrderTypes.SUPPORT, OrderTypes.CONVOY].includes(type)) {
-    orderText = (
-      <AuxOrderText aux={aux} source={source} target={target} type={type} />
-    );
-  } else {
-    orderText = (
-      <HoldOrderText aux={aux} source={source} target={target} type={type} />
-    );
-  }
+  const OrderTextElement = OrderTypeMap[type];
+  orderText = (
+    <OrderTextElement
+      aux={aux}
+      pieceType={pieceType}
+      source={source}
+      target={target}
+      type={type}
+    />
+  );
   const className = loading ? 'order disabled' : 'order';
   return (
     <div className={className}>
-      <FontAwesomeIcon className="icon" icon={theme.icons[piece.type]} />{' '}
+      <FontAwesomeIcon
+        className="icon"
+        icon={theme.icons[pieceType || piece.type]}
+      />{' '}
       {orderText}
       <IconButton
         icon={theme.icons.cancel}
@@ -83,12 +112,12 @@ const getTerritoryName = (state, id) => {
 };
 
 const mapStateToProps = (state, { currentTurn, order }) => {
-  const { loading, type } = order;
+  const { loading, pieceType, type } = order;
   const aux = getTerritoryName(state, order.aux);
   const source = getTerritoryName(state, order.source);
   const target = getTerritoryName(state, order.target);
   const piece = selectPieceByTerritory(state, order.source, currentTurn.id);
-  return { aux, loading, piece, source, target, type };
+  return { aux, loading, piece, pieceType, source, target, type };
 };
 
 const mapDispatchToProps = (dispatch, { order, currentTurn }) => {

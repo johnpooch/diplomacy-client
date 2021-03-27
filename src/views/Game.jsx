@@ -5,15 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withRouter, NavLink } from 'react-router-dom';
 
 import { BackButton } from '../components/Button';
-import { selectCurrentTurnByGame } from '../store/selectors';
+import {
+  selectCurrentTurnByGame,
+  selectUserNationByTurn,
+} from '../store/selectors';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
-import { initialGameFormState } from '../game/base';
 import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
 import Canvas from '../components/Canvas';
-import GameInterface from '../game/gameInterface';
+import { initialGameFormState, Phases } from '../game/base';
+
+import DummyInterface from '../game/DummyInterface';
+import OrderInterface from '../game/OrderInterface';
+import BuildInterface from '../game/BuildInterface';
+import DisbandInterface from '../game/DisbandInterface';
+import RetreatInterface from '../game/RetreatInterface';
 import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
@@ -31,6 +39,23 @@ const HomeNavLinkButton = () => (
   </NavLinkButton>
 );
 
+const getInterfaceClass = (phase, userNation) => {
+  switch (phase) {
+    case Phases.ORDER:
+      return OrderInterface;
+    case Phases.RETREAT:
+      return RetreatInterface;
+    default:
+      if (userNation.supplyDelta < 0) {
+        return DisbandInterface;
+      }
+      if (userNation.supplyDelta > 1) {
+        return BuildInterface;
+      }
+      return DummyInterface;
+  }
+};
+
 const Game = (props) => {
   const {
     clearGameDetail,
@@ -42,7 +67,7 @@ const Game = (props) => {
     prepareGameDetail,
     slug,
     toggleSurrender,
-    token,
+    userNation,
   } = props;
 
   const [gameForm, setGameForm] = useState(initialGameFormState);
@@ -63,13 +88,16 @@ const Game = (props) => {
   }
 
   const postOrder = () => {
-    createOrder(token, slug, currentTurn.id, gameForm);
+    createOrder(slug, currentTurn.id, gameForm);
   };
-  const gameInterface = new GameInterface(
+
+  const InterfaceClass = getInterfaceClass(currentTurn.phase, userNation);
+  const gameInterface = new InterfaceClass(
     { postOrder },
     gameForm,
     setGameForm,
     currentTurn,
+    userNation,
     state
   );
 
@@ -78,7 +106,7 @@ const Game = (props) => {
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
         currentTurn={currentTurn}
-        toggleSurrender={(id) => toggleSurrender(token, currentTurn.id, id)}
+        toggleSurrender={(id) => toggleSurrender(currentTurn.id, id)}
         drawResponseLoading={drawResponseLoading}
         participants={game.participants}
         draws={currentTurn.draws}
@@ -92,13 +120,15 @@ const Game = (props) => {
 
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
-  const { token } = state.auth;
   const game = state.entities.gameDetail;
   const currentTurn = game.loaded
     ? selectCurrentTurnByGame(state, game.id)
     : null;
+  const userNation = currentTurn
+    ? selectUserNationByTurn(state, currentTurn.id)
+    : null;
   const { loading: drawResponseLoading } = state.entities.drawResponses;
-  return { drawResponseLoading, game, slug, token, currentTurn };
+  return { drawResponseLoading, game, slug, userNation, currentTurn };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -114,15 +144,15 @@ const mapDispatchToProps = (dispatch) => {
       });
     });
   };
-  const toggleSurrender = (token, turn, id) => {
-    if (id) dispatch(surrenderActions.cancelSurrender({ token, turn, id }));
-    else dispatch(surrenderActions.setSurrender({ token, turn }));
+  const toggleSurrender = (turn, id) => {
+    if (id) dispatch(surrenderActions.cancelSurrender({ turn, id }));
+    else dispatch(surrenderActions.setSurrender({ turn }));
   };
-  const createOrder = (token, gameSlug, turnId, data) => {
+  const createOrder = (gameSlug, turnId, data) => {
     let urlParams = { gameSlug };
-    dispatch(orderActions.createOrder({ token, urlParams, data })).then(() => {
+    dispatch(orderActions.createOrder({ urlParams, data })).then(() => {
       urlParams = { turnId };
-      dispatch(orderActions.listOrders({ token, urlParams }));
+      dispatch(orderActions.listOrders({ urlParams }));
     });
   };
   const clearGameDetail = () => dispatch(gameDetailActions.clearGameDetail());

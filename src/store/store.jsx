@@ -6,6 +6,7 @@ import errorMiddleware from './middleware/error';
 import gameMiddleware from './middleware/game';
 import orderMiddleware from './middleware/order';
 import pieceMiddleware from './middleware/piece';
+import successMiddleware from './middleware/success';
 import variantMiddleware from './middleware/variant';
 
 export default function (history) {
@@ -18,6 +19,7 @@ export default function (history) {
       ...gameMiddleware,
       ...orderMiddleware,
       ...pieceMiddleware,
+      ...successMiddleware,
       ...variantMiddleware,
     ],
   });

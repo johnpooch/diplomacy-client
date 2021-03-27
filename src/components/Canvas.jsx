@@ -108,8 +108,6 @@ const Canvas = ({ currentTurn, gameInterface }) => {
 
   const handleClick = (e) => {
     if (!e.target) return gameInterface.reset();
-    // Clicking outside of context menu resets order
-    if (gameInterface.showContextMenu()) return gameInterface.reset();
 
     const { territory } = e.target.attrs;
     if (territory) {

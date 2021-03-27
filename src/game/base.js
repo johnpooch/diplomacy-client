@@ -1,5 +1,6 @@
 // Constants
 import { territorySelectors } from '../store/territories';
+import { selectPieceByTerritory } from '../store/selectors';
 
 export const Phases = {
   ORDER: 'Order',
@@ -18,7 +19,7 @@ export const OrderTypes = {
 };
 
 // I wonder if there is a DRYer way to set up this structure?
-const OrderTypeChoices = {
+export const OrderTypeChoices = {
   [OrderTypes.HOLD]: [OrderTypes.HOLD, 'Hold'],
   [OrderTypes.MOVE]: [OrderTypes.MOVE, 'Move'],
   [OrderTypes.SUPPORT]: [OrderTypes.SUPPORT, 'Support'],
@@ -33,10 +34,16 @@ export const PieceTypes = {
   FLEET: 'fleet',
 };
 
+export const PieceTypeChoices = {
+  [PieceTypes.ARMY]: [PieceTypes.ARMY, 'Army'],
+  [PieceTypes.FLEET]: [PieceTypes.FLEET, 'Fleet'],
+};
+
 export const initialGameFormState = {
   action: null,
   aux: null,
   nation: null,
+  pieceType: null,
   source: null,
   target: null,
   targetCoast: null,
@@ -52,9 +59,8 @@ export class baseGameInterface {
   correct options depending on the state of the game and the territory that
   the user is interacting with.
   */
-  constructor(callbacks, gameForm, setGameForm, turn, state) {
-    const { action, nation, targetCoast, type } = gameForm;
-    const { userNation } = turn;
+  constructor(callbacks, gameForm, setGameForm, turn, userNation, state) {
+    const { action, nation, pieceType, targetCoast, type } = gameForm;
 
     this.gameForm = gameForm;
     this.setGameForm = setGameForm;
@@ -67,6 +73,7 @@ export class baseGameInterface {
     this.target = territorySelectors.selectById(state, gameForm.target);
     this.targetCoast = targetCoast;
     this.type = type;
+    this.pieceType = pieceType;
     this.action = action;
 
     this.turn = turn;
@@ -83,6 +90,10 @@ export class baseGameInterface {
       this.submitForm();
       this.reset();
     }
+  }
+
+  _getPiece(territory) {
+    return selectPieceByTerritory(this.state, territory.id, this.turn.id);
   }
 
   createOrder() {
@@ -109,6 +120,12 @@ export class baseGameInterface {
     );
   }
 
+  getOrderTypeChoices() {
+    throw new Error(
+      'Subclasses of baseGameInterface must implement a createOrder method.'
+    );
+  }
+
   orderIsReady() {
     if (this.type === OrderTypes.HOLD) {
       return true;
@@ -130,17 +147,13 @@ export class baseGameInterface {
   }
 
   onClickTerritory(territory) {
-    if (
-      // If any of the following are true, interaction is not possible
-      Boolean(!territory.id) ||
-      this._tryingToCreateOrderImpossible(territory) ||
-      this._tryingToSupportOrConvoySource(territory) ||
-      this._tryingToMoveToSource(territory)
-    ) {
-      return;
-    }
+    // Clicking outside of context menu resets order
+    if (this.showContextMenu()) return this.reset();
+
+    if (!territory.id || this.interactionNotPossible(territory)) return null;
+
     const attr = this._getOrderAttrToUpdate();
-    this.setGameForm({ ...this.gameForm, [attr]: territory.id });
+    return this.setGameForm({ ...this.gameForm, [attr]: territory.id });
   }
 
   getOptions() {
@@ -159,50 +172,8 @@ export class baseGameInterface {
   userCanOrder(territory) {
     if (!this.userNation || !this.turn.currentTurn) return false;
 
-    if (this.phase === Phases.ORDER) {
-      return territory.piece && territory.piece.nation === this.userNation.id;
-    }
-
-    if (this.phase === Phases.RETREAT) {
-      return (
-        territory.dislodgedPiece &&
-        territory.dislodgedPiece.nation === this.userNation.id
-      );
-    }
-
-    // Build turn
-    // TODO handle disband and build
-    return false;
-  }
-
-  getOrderTypeChoices() {
-    if (!this.source) return null;
-    if (!this.source.piece) return null;
-    const { type: territoryType } = this.source;
-    if (this.phase === Phases.ORDER) {
-      const options = [
-        OrderTypeChoices[OrderTypes.HOLD],
-        OrderTypeChoices[OrderTypes.MOVE],
-        OrderTypeChoices[OrderTypes.SUPPORT],
-      ];
-      const { type: pieceType } = this.source.piece;
-      if (pieceType === PieceTypes.FLEET && territoryType === 'sea') {
-        options.push(OrderTypeChoices[OrderTypes.CONVOY]);
-      }
-      return options;
-    }
-    if (this.phase === Phases.RETREAT) {
-      const options = [
-        OrderTypeChoices[OrderTypes.RETREAT],
-        OrderTypeChoices[OrderTypes.DISBAND],
-      ];
-      return options;
-    }
-    // TODO logic for which build order is available
-    return [
-      OrderTypeChoices[OrderTypes.BUILD],
-      OrderTypeChoices[OrderTypes.DISBAND],
-    ];
+    const piece = this._getPiece(territory);
+    return Boolean(piece && piece.nation === this.userNation.nation);
   }
 
   getPieceTypeChoices() {

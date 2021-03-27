@@ -1,13 +1,9 @@
-import {
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import Konva from 'konva-node';
 
-import { errorMessages, successMessages } from '../src/copy';
+import { errorMessages } from '../src/copy';
 import { urlConf } from '../src/urls';
 import {
   destroyOrder,
@@ -20,6 +16,7 @@ import {
   basicBeforeEach,
   logIn,
   renderApp,
+  successMessages,
   testElements,
   useHandlers,
 } from './testUtils';
@@ -46,7 +43,7 @@ describe('Game Detail', () => {
     cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
     expect(cancelButton).toHaveAttribute('disabled');
     const successMessage = await waitFor(() => screen.getByRole('alert'));
-    expect(successMessage.textContent).toBe(successMessages.orderCancelled);
+    expect(successMessage.textContent).toBe(successMessages.destroyOrder());
   });
 
   it('display error on server error delete order', async () => {
