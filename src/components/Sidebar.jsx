@@ -136,7 +136,7 @@ const Sidebar = ({
   variant,
 }) => {
   const [activeTab, setActiveTab] = useState(null);
-  const { draws, orders } = currentTurn;
+  const { draws } = currentTurn;
 
   const renderPane = () => {
     switch (activeTab) {
