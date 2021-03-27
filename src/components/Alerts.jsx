@@ -69,7 +69,7 @@ const Alerts = (props) => {
       <Alert
         key={alert.id}
         id={alert.id}
-        primary={alert.message}
+        text={alert.message}
         category={alert.category}
         onClick={onClick}
       />
