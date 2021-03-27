@@ -1,8 +1,7 @@
 import { connect, ReactReduxContext, Provider } from 'react-redux';
 import { Stage, Layer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { theme } from '../theme';
+import { ThemeProvider, useTheme } from 'styled-components';
 
 import { clamp, useReferredState } from '../utils';
 import Orders from './Orders';
@@ -32,6 +31,7 @@ const Canvas = ({ currentTurn, gameInterface }) => {
   const [stagePosition, setStagePosition] = useReferredState({ x: 0, y: 0 });
 
   const stageRef = useRef();
+  const theme = useTheme();
 
   const bounds = ({ x, y }) => {
     return {
@@ -189,7 +189,7 @@ const Canvas = ({ currentTurn, gameInterface }) => {
               </Layer>
               <Layer>
                 {gameInterface.showContextMenu() ? (
-                  <Portal>
+                  <Portal theme={theme}>
                     <ContextMenu
                       stageRef={stageRef}
                       selectedTarget={gameInterface.source}
