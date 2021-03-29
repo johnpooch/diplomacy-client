@@ -1,48 +1,53 @@
 /** @jsx jsx */
 import styled from '@emotion/styled';
 import { jsx } from '@emotion/core';
-import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { NavLink, withRouter } from 'react-router-dom';
 
 import { variables } from '../variables';
-import { SecondaryButton } from './Button';
-import DropdownMenu from './DropdownMenu';
+import UserDropdownMenu from './UserDropdownMenu';
 
 const Header = styled.header`
   align-items: center;
   background: white;
   border-bottom: solid ${variables.sizes.border}px ${variables.colors.darkgray};
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
   left: 0;
   position: sticky;
   right: 0;
   top: 0;
   z-index: 1;
 
-  nav {
+  .inner-div {
     display: grid;
-    grid-template-rows: auto;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-    column-gap: ${variables.spacing[3]}px;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-  }
+    margin: 0 auto;
+    max-width: ${variables.sizes.innerWidth}px;
+    width: 100%;
+    > *:last-child {
+      justify-content: flex-end;
+    }
 
-  > * {
-    padding: ${variables.spacing[2]}px ${variables.spacing[3]}px;
-  }
+    nav {
+      display: grid;
+      grid-template-rows: auto;
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
+      column-gap: ${variables.spacing[3]}px;
+      align-items: center;
+    }
 
-  > *:last-child {
-    justify-content: flex-end;
+    > * {
+      padding: ${variables.spacing[2]}px ${variables.spacing[3]}px;
+    }
   }
 
   a {
-    border-bottom: solid ${variables.sizes.border}px transparent;
     padding: ${variables.spacing[0]}px 0;
 
     &.active {
       color: ${variables.colors.base};
-      border-color: ${variables.colors.darkgray};
     }
   }
 
@@ -63,30 +68,24 @@ const Logo = () => {
   );
 };
 
-const Navigation = (props) => {
-  const { onLogout, user } = props;
+const Navigation = () => {
   return (
     <Header>
-      <nav className="primary-nav">
-        <NavLink exact to="/">
-          Browse games
-        </NavLink>
-        <NavLink exact to="/create-game">
-          Create game
-        </NavLink>
-      </nav>
-      <Logo />
-      <nav className="user-nav">
-        <DropdownMenu text="hello" />
-        <div>
-          Logged in as <span className="username">{user.username}</span>
-        </div>
-        <SecondaryButton type="button" onClick={onLogout} role="link">
-          Log out
-        </SecondaryButton>
-      </nav>
+      <div className="inner-div">
+        <nav className="primary-nav">
+          <NavLink exact to="/">
+            <Logo />
+          </NavLink>
+        </nav>
+        <nav className="secondary-nav">
+          <NavLink exact to="/create-game">
+            <FontAwesomeIcon icon={faPlusCircle} size="lg" />
+          </NavLink>
+          <UserDropdownMenu />
+        </nav>
+      </div>
     </Header>
   );
 };
 
-export default Navigation;
+export default withRouter(Navigation);

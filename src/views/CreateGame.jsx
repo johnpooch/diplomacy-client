@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
-import Form, { FormLabel } from '../components/Form';
-import FormWrapper from '../components/FormWrapper';
+import Form, { FormLabel, FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import { Button, SecondaryButton } from '../components/Button';
 import { errorActions } from '../store/errors';

@@ -99,15 +99,13 @@ const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
 
 const StyledSidebar = styled.aside`
   background: ${variables.colors.gray};
+  bottom: 0;
   border-bottom-left-radius: ${(props) =>
     props.isTabOpen ? '0' : `${variables.sizes.borderRadius[0]}px`};
-  width: 320px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
   display: flex;
   flex-direction: column;
+  position: absolute;
+  width: 100%;
 
   .details {
     color: ${variables.colors.white};
@@ -124,6 +122,13 @@ const StyledSidebar = styled.aside`
     grid-gap: ${variables.spacing[2]}px;
     padding: ${variables.spacing[2]}px;
     text-align: center;
+  }
+
+  @media only screen and (min-width: ${variables.breakpoints.extraSmall}px) {
+    right: 0;
+    top: 0;
+    bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
+    width: 320px;
   }
 `;
 

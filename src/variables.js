@@ -12,6 +12,13 @@ export const icons = {
   territory: faMapMarkerAlt,
 };
 
+export const breakpoints = {
+  extraSmall: 480,
+  small: 768,
+  medium: 992,
+  large: 1200,
+};
+
 export const colors = {
   white: '#ffffff',
   base: '#111111',
@@ -62,6 +69,7 @@ export const sizes = {
 };
 
 export const variables = {
+  breakpoints,
   colors,
   flagSizes,
   fontFamilies,

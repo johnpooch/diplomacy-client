@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OrderTypes } from '../game/base';
 import { variables } from '../variables';
-import { Button, IconButton, SecondaryButton } from './Button';
-import DrawsPane from './Draws';
 
 const StyledPane = styled.div`
   background: white;

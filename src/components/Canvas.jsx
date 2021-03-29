@@ -20,7 +20,7 @@ const getMinScale = () => {
   );
 };
 
-const Canvas = ({ currentTurn, gameInterface }) => {
+const Canvas = ({ browser, currentTurn, gameInterface }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
@@ -111,6 +111,8 @@ const Canvas = ({ currentTurn, gameInterface }) => {
     return gameInterface.reset();
   };
 
+  const isMobile = browser.lessThan.small;
+
   return (
     <ReactReduxContext.Consumer>
       {({ store }) => (
@@ -181,7 +183,8 @@ const Canvas = ({ currentTurn, gameInterface }) => {
               />
             </Layer>
             <Layer>
-              {gameInterface.showContextMenu() ? (
+              {/* MobileContextMenu is used for mobile devices */}
+              {gameInterface.showContextMenu() && !isMobile ? (
                 <Portal>
                   <ContextMenu
                     stageRef={stageRef}
@@ -200,4 +203,9 @@ const Canvas = ({ currentTurn, gameInterface }) => {
   );
 };
 
-export default connect(null, null)(Canvas);
+const mapStateToProps = (state) => {
+  const { browser } = state;
+  return { browser };
+};
+
+export default connect(mapStateToProps, null)(Canvas);

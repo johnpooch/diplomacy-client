@@ -1,7 +1,8 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { connect } from 'react-redux';
 
 import Flag from './Flag';
 import { variables } from '../variables';
@@ -64,13 +65,19 @@ const StyledPlayers = styled.div`
   grid-row-gap: ${variables.spacing[2]}px;
 `;
 
-const Players = ({ game, participants }) => {
+const Players = ({ browser, game, participants }) => {
+  const isMobile = browser.lessThan.small;
   return (
     <StyledPlayers>
       <PlayerCount game={game} />
-      <PlayerList participants={participants} />
+      {!isMobile && <PlayerList participants={participants} />}
     </StyledPlayers>
   );
 };
 
-export default Players;
+const mapStateToProps = (state) => {
+  const { browser } = state;
+  return { browser };
+};
+
+export default connect(mapStateToProps, null)(Players);

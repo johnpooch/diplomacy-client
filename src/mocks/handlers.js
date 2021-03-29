@@ -2,6 +2,7 @@ import { rest } from 'msw';
 import { methods, urlConf } from '../urls';
 import {
   createGame,
+  createOrder,
   destroyOrder,
   finalizeOrders,
   getGameDetail,
@@ -38,6 +39,7 @@ const handlers = [
   [urlConf.listVariants, listVariants.success],
 
   // GameDetail
+  [urlConf.createOrder, createOrder.success],
   [urlConf.destroyOrder, destroyOrder.success],
   [urlConf.finalizeOrders, finalizeOrders.success],
   [urlConf.getGameDetail, getGameDetail.success],

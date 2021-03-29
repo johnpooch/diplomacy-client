@@ -6,8 +6,7 @@ import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import { Button } from '../components/Button';
-import Form, { FormLabel } from '../components/Form';
-import FormWrapper from '../components/FormWrapper';
+import Form, { FormLabel, FormWrapper } from '../components/Form';
 
 const ForgotPassword = ({ errors, onAuth }) => {
   const { register, handleSubmit } = useForm();
