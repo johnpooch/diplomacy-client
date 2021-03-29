@@ -47,6 +47,7 @@ export const StyledDropdownMenu = styled.div`
 interface IIconDropdownMenu {
   icon: IconDefinition;
   menuItems: IDropDownMenuItem[];
+  title?: string;
 }
 
 interface IDropDownMenuItem {
@@ -80,31 +81,43 @@ export const DropDownMenuItem = ({
 };
 
 DropDownMenuItem.defaultProps = {
-  onClick: null,
   icon: null,
+  onClick: null,
 };
 
 const IconDropdownMenu: React.FC<IIconDropdownMenu> = ({
   icon,
   menuItems,
+  title,
 }): ReactElement => {
   const [open, setOpen] = useState<boolean>(false);
   const ref = useRef(null);
 
   onClickOutside(ref, () => setOpen(false));
+  const onClick = () => setOpen(!open);
 
   const active = open ? 'active' : '';
   return (
-    <div ref={ref}>
-      <IconButton
+    <div
+      ref={ref}
+      title={title}
+      onClick={onClick}
+      role="button"
+      onKeyDown={onClick}
+      tabIndex={-1}
+    >
+      <FontAwesomeIcon
         icon={icon}
-        onClick={() => setOpen(!open)}
         size="lg"
         className={`dropdown-menu-icon ${active}`}
       />
       {open && <div className="dropdown-menu">{menuItems}</div>}
     </div>
   );
+};
+
+IconDropdownMenu.defaultProps = {
+  title: null,
 };
 
 export default IconDropdownMenu;

@@ -24,12 +24,15 @@ beforeEach(() => {
 
 Konva.isBrowser = false;
 
-const gameTitle = () => screen.getByRole('heading', { level: 2 });
+const pendingGameTitle = 'New game';
+const activeGameTitle = 'First turn';
 
 describe('Browse Games', () => {
   it('redirect user to log in and remove from storage on log out', async () => {
     renderApp();
-    fireEvent.click(testElements.logoutButton());
+    fireEvent.click(screen.getByTitle('user menu'));
+    const logoutButton = await waitFor(() => screen.getByText('Logout'));
+    fireEvent.click(logoutButton);
     await waitFor(() => testElements.loginButton());
   });
 
@@ -40,9 +43,8 @@ describe('Browse Games', () => {
       [urlConf.getGameFilterChoices, getGameFilterChoices.success]
     );
     renderApp();
-    const links = screen.getAllByRole('link');
-    expect(links[0].textContent === 'Browse games');
-    expect(links[1].textContent === 'Create game');
+    screen.getByTitle('home');
+    screen.getByTitle('create game');
   });
 
   it('display pending game correctly', async () => {
@@ -52,8 +54,7 @@ describe('Browse Games', () => {
       [urlConf.getGameFilterChoices, getGameFilterChoices.success]
     );
     renderApp();
-    const title = await waitFor(gameTitle);
-    expect(title.textContent === 'New game');
+    await waitFor(() => screen.getByTitle(pendingGameTitle));
     expect(screen.getByText(infoMessages.waitingForPlayers));
     expect(screen.getByText('1 / 7'));
   });
@@ -65,8 +66,7 @@ describe('Browse Games', () => {
       [urlConf.getGameFilterChoices, getGameFilterChoices.success]
     );
     renderApp();
-    const title = await waitFor(gameTitle);
-    expect(title.textContent === 'First turn');
+    await waitFor(() => screen.getByTitle(activeGameTitle));
     expect(screen.getByText('spring 1901 - Order'));
     expect(screen.getByText('7 / 7'));
   });
@@ -79,9 +79,8 @@ describe('Browse Games', () => {
       [urlConf.listVariants, listVariants.success]
     );
     renderApp();
-    await waitFor(gameTitle);
-    const links = screen.getAllByRole('link');
-    fireEvent.click(links[3]);
+    const gameLink = await waitFor(() => screen.getByTitle(activeGameTitle));
+    fireEvent.click(gameLink);
     await waitFor(() => screen.getByText('England'));
   });
 
@@ -92,9 +91,9 @@ describe('Browse Games', () => {
       [urlConf.listVariants, listVariants.success]
     );
     renderApp();
-    await waitFor(gameTitle);
-    const links = screen.getAllByRole('link');
-    fireEvent.click(links[3]);
+    const gameLink = await waitFor(() => screen.getByTitle(pendingGameTitle));
+    fireEvent.click(gameLink);
+    fireEvent.click(gameLink);
     await waitFor(testElements.leaveGameButton);
   });
 

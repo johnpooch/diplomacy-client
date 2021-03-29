@@ -56,6 +56,7 @@ const Game = ({ browser, game, participants, userNation, turn }) => {
       <Link
         className="link-overlay"
         to={status === 'active' ? `/game/${slug}` : `/pre-game/${slug}`}
+        title={name}
       />
       <div className="details">
         <Status game={game} turn={turn} />

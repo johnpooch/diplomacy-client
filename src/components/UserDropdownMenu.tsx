@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { faCog, faUserCog } from '@fortawesome/free-solid-svg-icons';
 import React, { ReactElement } from 'react';
 import { connect } from 'react-redux';
@@ -12,12 +11,12 @@ import { authActions } from '../store/auth';
 
 interface IUserDropdownMenu {
   history: any;
-  onLogout: () => (dispatch: any) => void;
+  logout: () => (dispatch: any) => void;
 }
 
 const UserDropdownMenu: React.FC<IUserDropdownMenu & RouteComponentProps> = ({
   history,
-  onLogout,
+  logout,
 }): ReactElement => {
   const menuItems = [
     <DropDownMenuItem
@@ -26,11 +25,15 @@ const UserDropdownMenu: React.FC<IUserDropdownMenu & RouteComponentProps> = ({
       onClick={() => history.push('user-settings')}
       key="settings"
     />,
-    <DropDownMenuItem label="Logout" onClick={onLogout} key="logout" />,
+    <DropDownMenuItem label="Logout" onClick={logout} key="logout" />,
   ];
   return (
     <StyledDropdownMenu>
-      <IconDropdownMenu icon={faUserCog} menuItems={menuItems} />
+      <IconDropdownMenu
+        icon={faUserCog}
+        menuItems={menuItems}
+        title="user menu"
+      />
     </StyledDropdownMenu>
   );
 };

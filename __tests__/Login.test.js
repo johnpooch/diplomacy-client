@@ -10,7 +10,7 @@ describe('Login', () => {
     useHandlers([urlConf.login, login.success]);
     renderApp();
     fireEvent.click(testElements.loginButton());
-    await waitFor(testElements.logoutButton);
+    await waitFor(() => screen.getByTitle('home'));
   });
 
   it('display error when no matching account', async () => {
