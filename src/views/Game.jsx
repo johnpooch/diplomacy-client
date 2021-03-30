@@ -1,9 +1,7 @@
-/** @jsx jsx */
+import React, { useEffect, useState } from 'react';
 import { connect, useStore } from 'react-redux';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { jsx } from '@emotion/core';
-import { useEffect, useState } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 
 import { BackButton } from '../components/Button';
@@ -15,7 +13,6 @@ import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
 import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
-import { variables } from '../variables';
 import { variantActions } from '../store/variants';
 import { initialGameFormState, Phases } from '../game/base';
 
@@ -33,11 +30,11 @@ const HomeNavLinkButton = () => (
   <NavLinkButton
     exact
     to="/"
-    css={{
-      position: 'fixed',
-      top: `${variables.spacing[2]}px`,
-      left: `${variables.spacing[2]}px`,
-    }}
+    css={`
+      position: fixed;
+      top: ${(p) => p.theme.space[2]};
+      left: ${(p) => p.theme.space[2]};
+    `}
   >
     <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
   </NavLinkButton>

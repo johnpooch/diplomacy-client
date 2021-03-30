@@ -1,17 +1,15 @@
-/** @jsx jsx */
-import styled from '@emotion/styled';
-import { jsx } from '@emotion/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { variables } from '../variables';
 import UserDropdownMenu from './UserDropdownMenu';
 
 const Header = styled.header`
   align-items: center;
   background: white;
-  border-bottom: solid ${variables.sizes.border}px ${variables.colors.darkgray};
+  border-bottom: ${(p) => p.theme.borders[0]};
   left: 0;
   position: sticky;
   right: 0;
@@ -23,7 +21,7 @@ const Header = styled.header`
     grid-template-columns: 1fr 1fr;
     align-items: center;
     margin: 0 auto;
-    max-width: ${variables.sizes.innerWidth}px;
+    max-width: ${(p) => p.theme.sizes.pageMaxWidth};
     width: 100%;
     > *:last-child {
       justify-content: flex-end;
@@ -34,25 +32,25 @@ const Header = styled.header`
       grid-template-rows: auto;
       grid-auto-flow: column;
       grid-auto-columns: max-content;
-      column-gap: ${variables.spacing[3]}px;
+      column-gap: ${(p) => p.theme.space[3]};
       align-items: center;
     }
 
     > * {
-      padding: ${variables.spacing[2]}px ${variables.spacing[3]}px;
+      padding: ${(p) => `${p.theme.space[2]} ${p.theme.space[3]}`};
     }
   }
 
   a {
-    padding: ${variables.spacing[0]}px 0;
+    padding: ${(p) => p.theme.space[0]} 0;
 
     &.active {
-      color: ${variables.colors.base};
+      color: ${(p) => p.theme.colors.text};
     }
   }
 
   nav {
-    font-size: ${variables.fontSizes.sans[2]}px;
+    font-size: ${(p) => p.theme.fontSizes[2]};
   }
 
   .username {
@@ -62,7 +60,12 @@ const Header = styled.header`
 
 const Logo = () => {
   return (
-    <span css={{ fontWeight: 'bold', fontSize: variables.fontSizes.sans[3] }}>
+    <span
+      css={`
+        font-weight: ${(p) => p.theme.fontWeights.heading};
+        font-size: ${(p) => p.theme.fontSizes[3]};
+      `}
+    >
       Diplomacy
     </span>
   );

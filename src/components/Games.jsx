@@ -1,14 +1,13 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import Game from './Game';
-import { variables } from '../variables';
 
 const StyledGames = styled.div`
   display: grid;
   grid-template-columns: auto;
-  grid-row-gap: ${variables.spacing[5]}px;
-  grid-column-gap: ${variables.spacing[5]}px;
+  grid-row-gap: ${(p) => p.theme.space[5]};
+  grid-column-gap: ${(p) => p.theme.space[5]};
 `;
 
 const Games = ({ games }) => {

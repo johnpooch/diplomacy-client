@@ -6,7 +6,7 @@ import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import { Button } from '../components/Button';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const ForgotPassword = ({ errors, onAuth }) => {
   const { register, handleSubmit } = useForm();
@@ -23,7 +23,7 @@ const ForgotPassword = ({ errors, onAuth }) => {
           </p>
 
           <label htmlFor="email">
-            <FormLabel>Email</FormLabel>
+            <LabelText>Email</LabelText>
             <input
               type="text"
               id="email"

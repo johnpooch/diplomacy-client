@@ -2,54 +2,37 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import styled from '@emotion/styled';
-import { variables } from '../variables';
+import styled from 'styled-components';
 
 export const BaseButton = styled.button`
-  cursor: pointer;
+  background: transparent;
+  border-radius: ${(p) => p.theme.radii[0]};
   border: none;
-  border-radius: ${variables.sizes.borderRadius[0]}px;
+  cursor: pointer;
+  font-size: inherit;
   margin: 0;
   padding: 0;
-  font-size: inherit;
   text-decoration: none;
-  background: transparent;
 
   &[disabled] {
-    opacity: 0.5;
     cursor: initial;
+    opacity: 0.5;
   }
 `;
 
 export const Button = styled(BaseButton)`
-  background: ${variables.colors.base};
-  border: ${variables.sizes.border}px solid ${variables.colors.base};
+  background: ${(p) => p.theme.colors.primary};
   color: white;
-  font-size: ${variables.fontSizes.sans[2]}px;
-  padding: ${variables.spacing[1]}px ${variables.spacing[3]}px;
+  font-size: ${(p) => p.theme.fontSizes[2]};
+  padding: ${(p) => `${p.theme.space[2]} ${p.theme.space[3]}`};
 
   &:hover {
-    background: ${variables.colors.darkgray};
-    color: white;
+    background: ${(p) => p.theme.colors.accent};
   }
 `;
 
 export const SecondaryButton = styled(Button)`
-  background: ${variables.colors.white};
-  color: ${variables.colors.base};
-`;
-
-export const TertiaryButton = styled(Button)`
-  background: transparent;
-  color: ${variables.colors.darkgray};
-  font-size: ${variables.fontSizes.sans[2]}px;
-  padding: 0;
-
-  &:hover {
-    background: transparent;
-    color: ${variables.colors.darkgray};
-    text-decoration: underline;
-  }
+  background: ${(p) => p.theme.colors.secondary};
 `;
 
 export const IconButton = ({ icon, size = '1x', ...props }) => (
@@ -59,11 +42,12 @@ export const IconButton = ({ icon, size = '1x', ...props }) => (
 );
 
 export const BackButton = styled(IconButton)`
-  background: ${variables.colors.base};
+  background: ${(p) => p.theme.colors.text};
   border-radius: 50%;
-  color: ${variables.colors.white};
+  color: ${(p) => p.theme.colors.secondary};
 
   &:hover {
-    color: ${variables.colors.darkgray};
+    /* background: ${(p) => p.theme.colors.primary}; */
+    color: ${(p) => p.theme.colors.primary};
   }
 `;

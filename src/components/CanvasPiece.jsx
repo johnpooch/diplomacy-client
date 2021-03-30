@@ -2,56 +2,56 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Circle, Group, Path } from 'react-konva';
 import { darken } from 'polished';
+import { useTheme } from 'styled-components';
 
 import territoryData from '../data/standard/territories.json';
 import { makeSelectPieceById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
-import { variables } from '../variables';
 
-const CIRCLERADIUS = 15;
-const ICONSCALES = {
+const CIRCLE_RADIUS = 15;
+const ICON_SCALES = {
   army: 0.03,
   fleet: 0.04,
 };
-const CIRCLESTROKEWIDTH = 2;
-const PATHSTROKEWIDTH = 0.25;
+const CIRCLE_STROKE_WIDTH = 2;
+const PATH_STROKE_WIDTH = 0.25;
 
 const Piece = ({ piece, territory, isHovering, isOrderable, isSelected }) => {
   const { type, mustRetreat, nation } = piece;
   const [x, y] = getTerritoryPieceCoords(territory, mustRetreat);
-  const { icons } = variables;
+  const theme = useTheme();
 
-  const iconWidth = icons[type].icon[0] * ICONSCALES[type];
-  const iconHeight = icons[type].icon[1] * ICONSCALES[type];
+  const iconWidth = theme.icons[type].icon[0] * ICON_SCALES[type];
+  const iconHeight = theme.icons[type].icon[1] * ICON_SCALES[type];
 
   const circleFill =
     (isHovering || isSelected) && isOrderable
-      ? variables.colors.white
-      : variables.colors.base;
+      ? theme.colors.neutral
+      : theme.colors.text;
 
   const circleStroke =
     !(isHovering || isSelected) && isOrderable
-      ? variables.colors.white
-      : darken(0.2, variables.colors.nations[nation]);
+      ? theme.colors.neutral
+      : darken(0.2, theme.colors.nations[nation]);
 
   return (
     <Group mustRetreat={mustRetreat} listening={false} type={type}>
       <Circle
         fill={circleFill}
-        radius={CIRCLERADIUS}
+        radius={CIRCLE_RADIUS}
         stroke={circleStroke}
-        strokeWidth={CIRCLESTROKEWIDTH}
+        strokeWidth={CIRCLE_STROKE_WIDTH}
         shadowForStrokeEnabled={false}
         x={x}
         y={y}
       />
       <Path
-        data={icons[type].icon[4]}
-        fill={variables.colors.nations[nation]}
-        scaleX={ICONSCALES[type]}
-        scaleY={ICONSCALES[type]}
+        data={theme.icons[type].icon[4]}
+        fill={theme.colors.nations[nation]}
+        scaleX={ICON_SCALES[type]}
+        scaleY={ICON_SCALES[type]}
         stroke={circleFill}
-        strokeWidth={PATHSTROKEWIDTH / ICONSCALES[type]}
+        _stroke_Width={PATH_STROKE_WIDTH / ICON_SCALES[type]}
         shadowForStrokeEnabled={false}
         x={x - iconWidth / 2}
         y={y - iconHeight / 2}

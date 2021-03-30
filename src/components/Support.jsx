@@ -2,16 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Arrow, Group, Line } from 'react-konva';
 
-import { variables } from '../variables';
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
 
 const OFFSET = 15;
-const FILL = variables.colors.base;
-const PATHSTROKEWIDTH = 8;
-const SUPPORTDASH = [1, 1, 0.001];
+const PATH_STROKE_WIDTH = 8;
+const SUPPORT_DASH = [1, 1, 0.001];
 
-const Support = ({ aux, isHoldSupport, source, target }) => {
+const Support = ({ aux, isHoldSupport, source, target, theme }) => {
   const [ax, ay] = getTerritoryPieceCoords(aux);
   const [sx, sy] = getTerritoryPieceCoords(source);
   const [tx, ty] = getTerritoryPieceCoords(target);
@@ -25,18 +23,18 @@ const Support = ({ aux, isHoldSupport, source, target }) => {
     <Group>
       <Line
         points={auxPoints}
-        fill={FILL}
-        stroke={FILL}
-        strokeWidth={PATHSTROKEWIDTH}
-        dash={SUPPORTDASH}
+        fill={theme.colors.text}
+        stroke={theme.colors.text}
+        strokeWidth={PATH_STROKE_WIDTH}
+        dash={SUPPORT_DASH}
       />
       {!isHoldSupport ? (
         <Arrow
           points={targetPoints}
-          fill={FILL}
-          stroke={FILL}
-          strokeWidth={PATHSTROKEWIDTH}
-          dash={SUPPORTDASH}
+          fill={theme.colors.text}
+          stroke={theme.colors.text}
+          strokeWidth={PATH_STROKE_WIDTH}
+          dash={SUPPORT_DASH}
         />
       ) : null}
     </Group>

@@ -1,17 +1,16 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import { Button } from './Button';
-import { variables } from '../variables';
 
 const StyledContextMenu = styled.nav`
-  background: ${variables.colors.white};
-  border-radius: ${variables.sizes.borderRadius[0]}px;
+  background: ${(p) => p.theme.colors.background};
+  border-radius: ${(p) => p.theme.borderRadii[0]};
   bottom: 0;
   display: grid;
   display: grid;
-  grid-row-gap: ${variables.spacing[0]}px;
-  padding: ${variables.spacing[0]}px;
+  grid-row-gap: ${(p) => p.theme.spacing[0]};
+  padding: ${(p) => p.theme.spacing[0]};
   position: absolute;
   width: 100%;
 `;

@@ -1,30 +1,28 @@
-import styled from '@emotion/styled';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ReactElement, useRef, useState } from 'react';
+import styled from 'styled-components';
 
-import { IconButton } from './Button';
 import { onClickOutside } from '../utils';
-import { colors, spacing } from '../variables';
 
 export const StyledDropdownMenu = styled.div`
   .dropdown-menu {
     position: absolute;
-    background: white;
-    border-radius: 6px;
-    box-shadow: rgb(0 0 0 / 15%) 0px 1px 3px 1px;
+    color: ${(p) => p.theme.colors.muted};
+    border-radius: ${(p) => p.theme.radii[2]};
+    box-shadow: ${(p) => p.theme.shadows[0]};
     cursor: pointer;
     transform: translateX(-200px);
     width: 230px;
   }
   .dropdown-menu-item {
-    padding: ${spacing[2]}px;
+    padding: ${(p) => p.theme.spacing[2]}px;
     &:hover {
       text-decoration: underline;
     }
   }
   .dropdown-menu-item-icon {
-    margin-right: ${spacing[1]}px;
+    margin-right: ${(p) => p.theme.spacing[1]}px;
   }
   button {
     border: none;
@@ -36,11 +34,11 @@ export const StyledDropdownMenu = styled.div`
     }
   }
   .dropdown-menu-icon {
-    color: ${colors.darkgray};
+    color: ${(p) => p.theme.colors.secondary};
   }
 
   .dropdown-menu-icon.active {
-    color: ${colors.base};
+    color: ${(p) => p.theme.colors.primary};
   }
 `;
 

@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
 import { Button } from './Button';
-import { variables } from '../variables';
 
 const StyledContextMenu = styled.nav`
-  background: ${variables.colors.white};
-  border-radius: ${variables.sizes.borderRadius[0]}px;
+  background: ${(p) => p.theme.colors.muted};
+  border-radius: ${(p) => p.theme.radii[0]};
   display: grid;
-  grid-row-gap: ${variables.spacing[0]}px;
-  left: ${(props) => props.position.x}px;
-  padding: ${variables.spacing[0]}px;
+  grid-row-gap: ${(p) => p.theme.space[0]};
+  left: ${(p) => p.position.x}px;
+  padding: ${(p) => p.theme.space[0]};
   position: absolute;
-  top: ${(props) => props.position.y}px;
+  top: ${(p) => p.position.y}px;
 `;
 
 const ContextMenu = ({

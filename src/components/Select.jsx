@@ -1,30 +1,17 @@
 import React from 'react';
 
-import { FormLabel } from './Form';
+import { LabelText } from './Form';
 
-const DipSelect = (props) => {
+const EMPTY_OPTION_STRING = '-------';
+
+const Select = (props) => {
   const { name, label, value, onChange, options, required } = props;
 
-  const emptyOptionString = '-------';
-
-  const formattedOptions = options.map((o) => {
-    return (
-      <option key={name + o[0]} value={o[0]}>
-        {o[1]}
-      </option>
-    );
-  });
-  if (!required) {
-    formattedOptions.unshift(
-      <option key="empty" value="">
-        {emptyOptionString}
-      </option>
-    );
-  }
+  if (!options) return null;
 
   return (
     <label htmlFor={name}>
-      <FormLabel>{label}</FormLabel>
+      <LabelText>{label}</LabelText>
       <select
         id={name}
         name={name}
@@ -32,10 +19,19 @@ const DipSelect = (props) => {
         onChange={onChange}
         options={options}
       >
-        {formattedOptions}
+        {required ? null : (
+          <option key="empty" value="">
+            {EMPTY_OPTION_STRING}
+          </option>
+        )}
+        {options.map((o) => (
+          <option key={name + o[0]} value={o[0]}>
+            {o[1]}
+          </option>
+        ))}
       </select>
     </label>
   );
 };
 
-export default DipSelect;
+export default Select;

@@ -7,11 +7,11 @@ import russia from './russia.svg';
 import turkey from './turkey.svg';
 
 export default {
-  austriahungary,
-  england,
-  france,
-  germany,
-  italy,
-  russia,
-  turkey,
+  'standard-austria-hungary': austriahungary,
+  'standard-england': england,
+  'standard-france': france,
+  'standard-germany': germany,
+  'standard-italy': italy,
+  'standard-russia': russia,
+  'standard-turkey': turkey,
 };

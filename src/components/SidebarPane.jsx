@@ -1,29 +1,28 @@
 import React from 'react';
-import styled from '@emotion/styled';
-import { variables } from '../variables';
+import styled from 'styled-components';
 
 const StyledPane = styled.div`
   background: white;
   display: flow-root;
   flex-grow: 1;
-  font-size: ${variables.fontSizes.sans[2]}px;
-  padding: 0 ${variables.spacing[2]}px;
+  font-size: ${(p) => p.theme.fontSizes[2]};
+  padding: 0 ${(p) => p.theme.space[2]};
   overflow-y: auto;
 
   section {
-    margin: ${variables.spacing[3]}px 0;
+    margin: ${(p) => p.theme.space[3]} 0;
 
     > * {
-      margin: ${variables.spacing[3]}px 0;
+      margin: ${(p) => p.theme.space[3]} 0;
     }
   }
 
   section + section {
-    border-top: ${variables.sizes.border}px solid ${variables.colors.base};
+    border-top: ${(p) => p.theme.borders[0]};
   }
 
   li {
-    margin: ${variables.spacing[1]}px 0;
+    margin: ${(p) => p.theme.space[1]} 0;
   }
 
   button {
@@ -33,7 +32,7 @@ const StyledPane = styled.div`
 
   .heading {
     display: flex;
-    grid-gap: ${variables.spacing[3]}px;
+    grid-gap: ${(p) => p.theme.space[3]};
     justify-content: space-between;
 
     .text {

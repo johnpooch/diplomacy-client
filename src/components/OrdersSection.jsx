@@ -1,10 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled';
 
 import { Button } from './Button';
 import { getErrors } from '../utils';
-import { variables } from '../variables';
 
 import ComponentError from './ComponentError';
 import OrderItem from './OrderItem';
@@ -14,6 +13,19 @@ import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { selectOrdersByTurn } from '../store/selectors';
 
+const StyledOrders = styled.ul`
+  .order {
+    display: grid;
+    grid-gap: ${(p) => p.theme.space[1]};
+    grid-template-columns: 20px auto 20px;
+    align-items: center;
+  }
+
+  .disabled {
+    color: gray;
+  }
+`;
+
 const OrdersSection = ({
   currentTurn,
   errors,
@@ -22,18 +34,6 @@ const OrdersSection = ({
   userNation,
 }) => {
   const { numOrders, ordersFinalized } = userNation;
-
-  const StyledOrders = styled.ul`
-    .order {
-      display: grid;
-      grid-gap: ${variables.spacing[1]}px;
-      grid-template-columns: 20px auto 20px;
-      align-items: center;
-    }
-    .disabled {
-      color: gray;
-    }
-  `;
 
   return (
     <Section className="orders" label="Orders">

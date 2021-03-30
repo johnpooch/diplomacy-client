@@ -6,7 +6,7 @@ import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import { Button } from '../components/Button';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const LoginForm = ({ errors, onAuth }) => {
   const { register, handleSubmit } = useForm();
@@ -20,7 +20,7 @@ const LoginForm = ({ errors, onAuth }) => {
       <FormWrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="username">
-            <FormLabel>Username</FormLabel>
+            <LabelText>Username</LabelText>
             <input
               type="text"
               id="username"
@@ -34,7 +34,7 @@ const LoginForm = ({ errors, onAuth }) => {
           </label>
 
           <label htmlFor="password">
-            <FormLabel>Password</FormLabel>
+            <LabelText>Password</LabelText>
             <input
               type="password"
               id="password"

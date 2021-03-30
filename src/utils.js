@@ -27,6 +27,8 @@ export const clamp = (n, min, max) => {
   return Math.max(min, Math.min(n, max));
 };
 
+export const withUnits = (vals, unit) => vals.map((val) => `${val}${unit}`);
+
 export const dateDisplayFormat = {
   year: 'numeric',
   month: 'long',

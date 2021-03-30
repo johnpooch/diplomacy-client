@@ -1,15 +1,13 @@
-import styled from '@emotion/styled';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { connect } from 'react-redux';
+import styled, { useTheme } from 'styled-components';
 
 import { IconButton } from './Button';
 import { OrderTypes } from '../game/base';
 import { orderActions } from '../store/orders';
 import { selectPieceByTerritory } from '../store/selectors';
 import { territorySelectors } from '../store/territories';
-import { variables } from '../variables';
 
 const StyledOrderText = styled.div`
   span:first-of-type {
@@ -77,6 +75,8 @@ const OrderItem = ({
   target,
   type,
 }) => {
+  const theme = useTheme();
+
   let orderText = null;
   const OrderTextElement = OrderTypeMap[type];
   orderText = (
@@ -93,11 +93,11 @@ const OrderItem = ({
     <div className={className}>
       <FontAwesomeIcon
         className="icon"
-        icon={variables.icons[pieceType || piece.type]}
+        icon={theme.icons[pieceType || piece.type]}
       />{' '}
       {orderText}
       <IconButton
-        icon={faTimes}
+        icon={theme.icons.cancel}
         onClick={destroyOrder}
         disabled={loading}
         title="Cancel order"

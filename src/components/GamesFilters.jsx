@@ -1,30 +1,38 @@
-/** @jsx jsx */
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import {
   faChevronDown,
   faChevronUp,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { connect } from 'react-redux';
-import { jsx } from '@emotion/core';
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 import Select from './Select';
 import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
-import Form, { FormLabel } from './Form';
-import { GridTemplate } from '../layout';
-import { variables } from '../variables';
+import Form, { LabelText } from './Form';
+import { Grid } from '../layout';
 import { gameActions } from '../store/games';
 import { choiceActions } from '../store/choices';
 
 const StyledGamesFilters = styled.div`
-  border-bottom: ${variables.sizes.border}px solid ${variables.colors.darkgray};
-  margin-bottom: ${variables.spacing[5]}px;
-  padding-bottom: ${variables.spacing[5]}px;
+  border-bottom: ${(p) => p.theme.borders[0]};
+  margin-bottom: ${(p) => p.theme.space[5]};
+  padding-bottom: ${(p) => p.theme.space[5]};
   width: 100%;
+`;
+
+const StyledToggleButton = styled(SecondaryButton)`
+  display: flex;
+  gap: ${(p) => p.theme.space[2]};
+`;
+
+const StyledSearchButton = styled(Button)`
+  margin-top: auto;
 `;
 
 const GamesFilters = ({ choices, listGames, getChoices }) => {
@@ -39,30 +47,23 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
 
   const { error } = choices;
 
-  const toggleButton = (
-    <SecondaryButton
-      type="button"
-      onClick={() => setOpen(!open)}
-      css={{ display: 'block' }}
-    >
-      <FontAwesomeIcon
-        icon={faSearch}
-        css={{ marginRight: `${variables.spacing[1]}px` }}
-      />
-      <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
-    </SecondaryButton>
-  );
-
   const filters = error ? (
     <ComponentError error={error} />
   ) : (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <GridTemplate
-        templateColumns="2fr 1fr 1fr 1fr"
-        css={{ marginTop: `${variables.spacing[4]}px` }}
+      <Grid
+        columns={4}
+        css={`
+          margin-top: ${(p) => p.theme.space[4]};
+        `}
       >
-        <label htmlFor="search">
-          <FormLabel>Search</FormLabel>
+        <label
+          htmlFor="search"
+          css={`
+            grid-column: span 2;
+          `}
+        >
+          <LabelText>Search</LabelText>
           <input
             id="search"
             name="search"
@@ -72,7 +73,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
           />
         </label>
         <label htmlFor="numPlayers">
-          <FormLabel>Players</FormLabel>
+          <LabelText>Players</LabelText>
           <input
             id="numPlayers"
             name="numPlayers"
@@ -118,14 +119,17 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
           options={choices.deadlines}
           ref={register}
         />
-        <Button type="submit">Search</Button>
-      </GridTemplate>
+        <StyledSearchButton type="submit">Search</StyledSearchButton>
+      </Grid>
     </Form>
   );
 
   return (
     <StyledGamesFilters>
-      {toggleButton}
+      <StyledToggleButton type="button" onClick={() => setOpen(!open)}>
+        <FontAwesomeIcon icon={faSearch} />
+        <FontAwesomeIcon icon={open ? faChevronUp : faChevronDown} />
+      </StyledToggleButton>
       {open ? filters : null}
     </StyledGamesFilters>
   );
