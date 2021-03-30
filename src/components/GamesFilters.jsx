@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import {
   faChevronDown,
   faChevronUp,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import styled from 'styled-components';

@@ -6,23 +6,26 @@ import styled from 'styled-components';
 import { onClickOutside } from '../utils';
 
 export const StyledDropdownMenu = styled.div`
+  div:focus {
+    outline: none;
+  }
   .dropdown-menu {
-    position: absolute;
-    color: ${(p) => p.theme.colors.muted};
+    background: ${(p) => p.theme.colors.muted};
     border-radius: ${(p) => p.theme.radii[2]};
     box-shadow: ${(p) => p.theme.shadows[0]};
     cursor: pointer;
+    position: absolute;
     transform: translateX(-200px);
     width: 230px;
   }
   .dropdown-menu-item {
-    padding: ${(p) => p.theme.spacing[2]}px;
+    padding: ${(p) => p.theme.space[2]};
     &:hover {
       text-decoration: underline;
     }
   }
   .dropdown-menu-item-icon {
-    margin-right: ${(p) => p.theme.spacing[1]}px;
+    margin-right: ${(p) => p.theme.space[1]};
   }
   button {
     border: none;
@@ -33,12 +36,13 @@ export const StyledDropdownMenu = styled.div`
       outline: none;
     }
   }
+
   .dropdown-menu-icon {
-    color: ${(p) => p.theme.colors.secondary};
+    color: ${(p) => p.theme.colors.accent};
   }
 
   .dropdown-menu-icon.active {
-    color: ${(p) => p.theme.colors.primary};
+    color: ${(p) => p.theme.colors.text};
   }
 `;
 

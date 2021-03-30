@@ -8,7 +8,7 @@ import UserDropdownMenu from './UserDropdownMenu';
 
 const Header = styled.header`
   align-items: center;
-  background: white;
+  background: ${(p) => p.theme.colors.muted};
   border-bottom: ${(p) => p.theme.borders[0]};
   left: 0;
   position: sticky;

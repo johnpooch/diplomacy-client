@@ -77,7 +77,7 @@ const StyledFormWrapper = styled.div`
   padding: ${(p) => p.theme.space[4]};
   width: 100%;
 
-  @media only screen and (min-width: ${p.theme.breakpoints[0]}) {
+  @media only screen and (min-width: ${(p) => p.theme.breakpoints[0]}) {
     background: ${(p) => p.theme.colors.muted};
     border-radius: ${(p) => p.theme.radii[2]};
     box-shadow: ${(p) => p.theme.shadows[0]};

@@ -125,7 +125,7 @@ const StyledSidebar = styled.aside`
     text-align: center;
   }
 
-  @media only screen and (min-width: ${p.theme.breakpoints[0]}) {
+  @media only screen and (min-width: ${(p) => p.theme.breakpoints[0]}) {
     right: 0;
     top: 0;
     bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
