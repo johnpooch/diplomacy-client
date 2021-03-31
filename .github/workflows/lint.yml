@@ -8,4 +8,4 @@ jobs:
       - name: Install modules
         run: yarn install -g --dev
       - name: Run ESLint
-        run: eslint 'src/**/*.{js,jsx,ts,tsx}'
+        run: yarn run eslint 'src/**/*.{js,jsx,ts,tsx}'
