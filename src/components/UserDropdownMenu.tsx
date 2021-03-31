@@ -9,9 +9,8 @@ import IconDropdownMenu, {
 } from './DropdownMenu';
 import { authActions } from '../store/auth';
 
-interface IUserDropdownMenu {
-  history: any;
-  logout: () => (dispatch: any) => void;
+interface IUserDropdownMenu extends RouteComponentProps {
+  logout: () => void;
 }
 
 const UserDropdownMenu: React.FC<IUserDropdownMenu & RouteComponentProps> = ({

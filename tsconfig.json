@@ -3,7 +3,7 @@
     // Which file should be run through the compiler. We will include our 'src' directory.
   "include": [
     "src"
-  ],
+, "__tests__/setupTests.js"  ],
     // Compiler Options - The bulk of our config.
   "compilerOptions": {
     //  First Section - Project Options

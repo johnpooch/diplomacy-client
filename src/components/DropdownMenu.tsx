@@ -48,7 +48,7 @@ export const StyledDropdownMenu = styled.div`
 
 interface IIconDropdownMenu {
   icon: IconDefinition;
-  menuItems: IDropDownMenuItem[];
+  menuItems: ReactElement[];
   title?: string;
 }
 

@@ -190,7 +190,7 @@ const Canvas = ({ browser, currentTurn, gameInterface }) => {
                 />
               </Layer>
               <Layer>
-              {gameInterface.showContextMenu() && !isMobile && (
+                {gameInterface.showContextMenu() && !isMobile && (
                   <Portal theme={theme}>
                     <ContextMenu
                       stageRef={stageRef}

@@ -36,7 +36,6 @@
     "jest": "^25.5.4",
     "jest-css-modules": "^2.1.0",
     "jest-fetch-mock": "^3.0.3",
-    "msw": "^0.26.2",
     "prettier": "^2.0.4",
     "prettier-eslint-cli": "^5.0.0",
     "ts-loader": "^8.0.18",
@@ -67,6 +66,7 @@
     "interweave": "12.5.0",
     "konva": "^7.1.4",
     "konva-node": "^0.11.2",
+    "msw": "^0.26.2",
     "node-fetch": "^2.6.1",
     "node-sass": "^4.13.1",
     "normalizr": "3.6.0",
@@ -100,7 +100,7 @@
   ],
   "jest": {
     "setupFiles": [
-      "./src/setupTests.js"
+      "./__tests__/setupTests.js"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"

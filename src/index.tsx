@@ -6,7 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import App from './views/App';
 import configureStore from './store/store';
-import { worker } from './mocks/browser';
+import worker from './mocks/browser';
 
 if (process.env.USE_MOCK_SERVICE_WORKER) {
   worker.start();
