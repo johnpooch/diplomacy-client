@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ReactElement, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { onClickOutside, getErrors } from '../utils';
+import { onClickOutside } from '../utils';
 
 export const StyledDropdownMenu = styled.div`
   div:focus {
