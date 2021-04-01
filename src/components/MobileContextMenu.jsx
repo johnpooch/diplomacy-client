@@ -5,12 +5,12 @@ import { Button } from './Button';
 
 const StyledContextMenu = styled.nav`
   background: ${(p) => p.theme.colors.background};
-  border-radius: ${(p) => p.theme.borderRadii[0]};
+  border-radius: ${(p) => p.theme.radii[0]};
   bottom: 0;
   display: grid;
   display: grid;
-  grid-row-gap: ${(p) => p.theme.spacing[0]};
-  padding: ${(p) => p.theme.spacing[0]};
+  grid-row-gap: ${(p) => p.theme.space[0]};
+  padding: ${(p) => p.theme.space[0]};
   position: absolute;
   width: 100%;
 `;
