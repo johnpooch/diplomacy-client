@@ -1,6 +1,8 @@
 // Note, some of these messages mirror messages that the server returns and are
 // only used for testing purposes
 export const errorMessages = {
+  changePasswordIncorrectPassword: 'Password is not correct',
+  changePasswordPasswordsDoNotMatch: "Password fields didn't match",
   createGameNameTooLong: 'Ensure this field has no more than 50 characters.',
   loginNoMatchingAccount:
     'The username or password you entered do not match an account. Please try again.',
