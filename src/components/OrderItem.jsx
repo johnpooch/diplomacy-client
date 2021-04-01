@@ -3,11 +3,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled, { useTheme } from 'styled-components';
 
-import { IconButton } from './Button';
 import { OrderTypes } from '../game/base';
 import { orderActions } from '../store/orders';
 import { selectPieceByTerritory } from '../store/selectors';
 import { territorySelectors } from '../store/territories';
+
+import { IconButton } from './Button';
 
 const StyledOrderText = styled.div`
   span:first-of-type {

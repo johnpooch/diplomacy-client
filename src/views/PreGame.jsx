@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import { infoMessages } from '../copy';
+import { Button, SecondaryButton } from '../components/Button';
 import Form, { FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import Players from '../components/Players';
-import { Button, SecondaryButton } from '../components/Button';
+import { infoMessages } from '../copy';
 import { Grid, GridTemplate } from '../layout';
-
 import { alertActions } from '../store/alerts';
 import { choiceActions } from '../store/choices';
 import { gameActions, gameSelectors } from '../store/games';

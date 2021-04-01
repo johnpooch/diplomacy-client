@@ -1,7 +1,6 @@
-import variantNormalizer from '../normalizers/variantNormalizer';
-
 import { namedCoastActions } from '../namedCoasts';
 import { nationActions } from '../nations';
+import variantNormalizer from '../normalizers/variantNormalizer';
 import { territoryActions } from '../territories';
 import { variantActions } from '../variants';
 

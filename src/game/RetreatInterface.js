@@ -1,5 +1,6 @@
-import { baseGameInterface, OrderTypes, OrderTypeChoices } from './base';
 import { selectRetreatingPieceByTerritory } from '../store/selectors';
+
+import { baseGameInterface, OrderTypes, OrderTypeChoices } from './base';
 
 export default class RetreatPhaseInterface extends baseGameInterface {
   showContextMenu() {
