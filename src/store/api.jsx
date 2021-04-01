@@ -10,7 +10,7 @@ export const getOptions = (token = null, method = 'GET', data = {}) => {
     headers.Authorization = `token ${token}`;
   }
   const options = { method, headers };
-  if (['POST', 'PATCH'].includes(method)) {
+  if (['POST', 'PATCH', 'PUT'].includes(method)) {
     options.body = JSON.stringify(data);
   }
   return options;
