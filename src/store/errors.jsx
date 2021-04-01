@@ -11,9 +11,8 @@ const reducer = createReducer(initialState, (builder) => {
     state = payload;
     return state;
   });
-  builder.addCase(clearErrors, (state, { payload }) => {
-    delete state[payload];
-    return state;
+  builder.addCase(clearErrors, () => {
+    return initialState;
   });
 });
 
