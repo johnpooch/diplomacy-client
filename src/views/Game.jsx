@@ -59,6 +59,7 @@ const getInterfaceClass = (phase, userNation) => {
 
 const Game = (props) => {
   const {
+    browser,
     clearGameDetail,
     currentTurn,
     drawResponseLoading,
@@ -102,6 +103,8 @@ const Game = (props) => {
     state
   );
 
+  const isMobile = browser.lessThan.small;
+
   return (
     <div>
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
@@ -114,7 +117,7 @@ const Game = (props) => {
         variant={game.variant}
         // TODO: clean this up
       />
-      {gameInterface.showContextMenu() && (
+      {gameInterface.showContextMenu() && isMobile && (
         <MobileContextMenu
           onOptionSelected={gameInterface.onOptionSelected}
           options={gameInterface.getOptions()}
@@ -127,6 +130,7 @@ const Game = (props) => {
 
 const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
+  const { browser } = state;
   const game = state.entities.gameDetail;
   const currentTurn = game.loaded
     ? selectCurrentTurnByGame(state, game.id)
@@ -135,7 +139,7 @@ const mapStateToProps = (state, { match }) => {
     ? selectUserNationByTurn(state, currentTurn.id)
     : null;
   const { loading: drawResponseLoading } = state.entities.drawResponses;
-  return { drawResponseLoading, game, slug, userNation, currentTurn };
+  return { browser, drawResponseLoading, game, slug, userNation, currentTurn };
 };
 
 const mapDispatchToProps = (dispatch) => {
