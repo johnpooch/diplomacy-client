@@ -10,9 +10,10 @@ const OFFSET = 25;
 const PATH_STROKE_WIDTH = 8;
 
 const Move = ({ source, target }) => {
+  const theme = useTheme();
+
   const [sx, sy] = getTerritoryPieceCoords(source);
   const [tx, ty] = getTerritoryPieceCoords(target);
-  const theme = useTheme();
   const v = new Vector(tx - sx, ty - sy);
   v.normalize();
   const points = [sx, sy, tx - OFFSET * v.x, ty - OFFSET * v.y];
