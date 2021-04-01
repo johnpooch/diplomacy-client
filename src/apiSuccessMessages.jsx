@@ -42,6 +42,10 @@ export default {
     getMessage: () => 'Password updated!',
     pending: true,
   },
+  [authActions.changePassword.fulfilled]: {
+    getMessage: () => 'Password updated!',
+    pending: true,
+  },
   [gameActions.createGame.fulfilled]: {
     getMessage: (_, action) => {
       const { data } = action.meta.arg;
