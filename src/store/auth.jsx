@@ -3,7 +3,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import apiActions from './apiActions';
 
-const { login, register, resetPassword, resetPasswordConfirm } = apiActions;
+const {
+  changePassword,
+  login,
+  register,
+  resetPassword,
+  resetPasswordConfirm,
+} = apiActions;
 
 const userInStorage = JSON.parse(localStorage.getItem('user'));
 const tokenInStorage = JSON.parse(localStorage.getItem('token'));
@@ -61,6 +67,7 @@ const logout = () => {
 
 export const authActions = {
   ...authSlice.actions,
+  changePassword,
   login,
   logout,
   register,
