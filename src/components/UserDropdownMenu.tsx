@@ -39,7 +39,7 @@ const UserDropdownMenu: React.FC<IUserDropdownMenu & RouteComponentProps> = ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch(authActions.authLogout()),
+    logout: () => dispatch(authActions.logout()),
   };
 };
 

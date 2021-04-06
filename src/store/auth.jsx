@@ -27,7 +27,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    authLogout: () => {
+    logout: () => {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       return {
@@ -59,17 +59,10 @@ const authSlice = createSlice({
 
 export default authSlice.reducer;
 
-const logout = () => {
-  return (dispatch) => {
-    dispatch(authSlice.actions.authLogout());
-  };
-};
-
 export const authActions = {
-  ...authSlice.actions,
+  logout: authSlice.logout,
   changePassword,
   login,
-  logout,
   register,
   resetPassword,
   resetPasswordConfirm,

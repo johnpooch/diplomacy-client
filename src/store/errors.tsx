@@ -2,8 +2,12 @@
 
 import { createAction, createReducer } from '@reduxjs/toolkit';
 
+interface error {
+  [key: string]: string;
+}
+
 const initialState = {};
-const addError = createAction('addError');
+const addError = createAction<error>('addError');
 const clearErrors = createAction('clearErrors');
 
 const reducer = createReducer(initialState, (builder) => {
