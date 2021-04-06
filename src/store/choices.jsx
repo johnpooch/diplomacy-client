@@ -10,15 +10,6 @@ const initialState = { loading: false };
 const choicesSlice = createSlice({
   name: 'choices',
   initialState,
-  reducers: {
-    authLogout: () => {
-      return {
-        loggedIn: false,
-        user: {},
-        token: null,
-      };
-    },
-  },
   extraReducers: {
     [getGameFilterChoices.pending]: (state) => {
       state.loading = true;

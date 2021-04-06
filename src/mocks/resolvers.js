@@ -64,7 +64,10 @@ export const destroyOrder = {
 };
 
 export const finalizeOrders = {
-  success: (_, res, ctx) => res(ctx.status(201), ctx.json({})),
+  success: (_, res, ctx) =>
+    res(ctx.status(201), ctx.json({ ordersFinalized: true })),
+  successUnFinalized: (_, res, ctx) =>
+    res(ctx.status(201), ctx.json({ ordersFinalized: false })),
   errorServerError,
 };
 
@@ -136,6 +139,15 @@ export const resetPasswordConfirm = {
 export const getGameDetail = {
   success: (req, res, ctx) =>
     res(ctx.status(200), ctx.json(gameDetailData[req.params.gameSlug])),
+  successUnFinalized: (req, res, ctx) => {
+    const data = { ...gameDetailData[req.params.gameSlug] };
+    data.turns
+      .find((t) => t.currentTurn)
+      .nationStates.find(
+        (ns) => ns.nation === 'standard-england'
+      ).ordersFinalized = true;
+    return res(ctx.status(200), ctx.json(data));
+  },
   errorServerError,
 };
 

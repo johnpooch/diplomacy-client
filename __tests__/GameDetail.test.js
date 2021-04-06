@@ -9,6 +9,7 @@ import {
   destroyOrder,
   finalizeOrders,
   getGameDetail,
+  listGames,
   listOrders,
   listVariants,
 } from '../src/mocks/resolvers';
@@ -30,13 +31,14 @@ Konva.isBrowser = false;
 
 describe('Game Detail', () => {
   it('delete order succesfully', async () => {
-    renderApp().push('/game/first-turn');
     useHandlers(
       [urlConf.destroyOrder, destroyOrder.success],
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
     );
+    renderApp().push('/game/first-turn');
     userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
     let cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
     userEvent.click(cancelButton);
@@ -47,13 +49,14 @@ describe('Game Detail', () => {
   });
 
   it('display error on server error delete order', async () => {
-    renderApp().push('/game/first-turn');
     useHandlers(
       [urlConf.destroyOrder, destroyOrder.errorServerError],
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
     );
+    renderApp().push('/game/first-turn');
     userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
     const cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
     userEvent.click(cancelButton);
@@ -61,24 +64,26 @@ describe('Game Detail', () => {
   });
 
   it('display error on server error list orders', async () => {
-    renderApp().push('/game/first-turn');
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.errorServerError]
     );
+    renderApp().push('/game/first-turn');
     userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
     await waitFor(() => screen.getByText(errorMessages.internalServerError));
   });
 
   it('display error on not found delete order', async () => {
-    renderApp().push('/game/first-turn');
     useHandlers(
       [urlConf.destroyOrder, destroyOrder.errorNotFound],
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
     );
+    renderApp().push('/game/first-turn');
     userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
     const cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
     userEvent.click(cancelButton);
@@ -86,13 +91,14 @@ describe('Game Detail', () => {
   });
 
   it('finalize orders success', async () => {
-    renderApp().push('/game/first-turn');
     useHandlers(
       [urlConf.finalizeOrders, finalizeOrders.success],
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
     );
+    renderApp().push('/game/first-turn');
     userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
     const finalizeOrdersButton = await waitFor(() =>
       screen.getByText('Finalize orders')
@@ -100,22 +106,27 @@ describe('Game Detail', () => {
     userEvent.click(finalizeOrdersButton);
     expect(screen.getByText('Finalize orders')).toHaveAttribute('disabled');
     await waitFor(() => screen.getByRole('alert'));
-    expect(screen.getByText('Finalize orders')).not.toHaveAttribute('disabled');
+    expect(screen.getByText('Un-finalize orders')).not.toHaveAttribute(
+      'disabled'
+    );
   });
 
-  it('display error on server error', async () => {
-    renderApp().push('/game/first-turn');
+  it('un-finalize orders success', async () => {
     useHandlers(
-      [urlConf.finalizeOrders, finalizeOrders.errorServerError],
-      [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.finalizeOrders, finalizeOrders.successUnFinalized],
+      [urlConf.getGameDetail, getGameDetail.successUnFinalized],
+      [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
     );
+    renderApp().push('/game/first-turn');
     userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
     const finalizeOrdersButton = await waitFor(() =>
-      screen.getByText('Finalize orders')
+      screen.getByText('Un-finalize orders')
     );
     userEvent.click(finalizeOrdersButton);
-    await waitFor(() => screen.getByText(errorMessages.internalServerError));
+    expect(screen.getByText('Un-finalize orders')).toHaveAttribute('disabled');
+    await waitFor(() => screen.getByText('Orders un-finalized'));
+    expect(screen.getByText('Finalize orders')).not.toHaveAttribute('disabled');
   });
 });

@@ -640,7 +640,7 @@
                     "id": 1,
                     "user": 7,
                     "nation": "standard-england",
-                    "ordersFinalized": null,
+                    "ordersFinalized": false,
                     "numOrders": 3,
                     "numSupplyCenters": 3,
                     "supplyDelta": 0,
