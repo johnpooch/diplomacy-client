@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { push } from 'connected-react-router';
 import { alertActions } from './alerts';
 import { errorMessages } from '../copy';
 
@@ -50,8 +51,8 @@ export const apiRequest = async (url, options, thunkApi, successMessage) => {
   } catch (response) {
     // Logout if 401
     if (response.status === 401) {
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
+      // NOTE using string to avoid import loop
+      dispatch({ type: 'auth/authLogout' });
     }
     let data = {};
     if (response.status === 500) {
