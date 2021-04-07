@@ -9,7 +9,10 @@ import { BaseButton } from './Button';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
+import Turn from './Turn';
+import TurnNav from './TurnNav';
 import { selectUserNationByTurn } from '../store/selectors';
+import { turnSelectors } from '../store/turns';
 
 const StyledNation = styled.div`
   display: flex;
@@ -29,16 +32,6 @@ const Nation = ({ nation }) => {
       <span className="name">{nation.name}</span>
     </StyledNation>
   ) : null;
-};
-
-const Turn = ({ turn }) => {
-  return (
-    <div className="turn">
-      <span className="phase">{turn.phase}</span>,{' '}
-      <span className="season">{turn.season}</span>{' '}
-      <span className="year">{turn.year}</span>
-    </div>
-  );
 };
 
 // const StyledNotification = styled.div`
@@ -134,11 +127,13 @@ const StyledSidebar = styled.aside`
 `;
 
 const Sidebar = ({
+  activeTurn,
   currentTurn,
   drawResponseLoading,
   destroyOrder,
   finalizeOrders,
   participants,
+  setTurn,
   toggleSurrender,
   userNation,
   variant,
@@ -180,6 +175,7 @@ const Sidebar = ({
         <Nation nation={userNation} />
         <Turn turn={currentTurn} />
       </div>
+      <TurnNav setTurn={setTurn} turn={activeTurn} />
       <div className="tabs">
         <Tab
           activeTab={activeTab}
@@ -209,9 +205,10 @@ const Sidebar = ({
   );
 };
 
-const mapStateToProps = (state, { currentTurn }) => {
+const mapStateToProps = (state, { activeTurnId, currentTurn }) => {
   const userNation = selectUserNationByTurn(state, currentTurn.id);
-  return { userNation };
+  const activeTurn = turnSelectors.selectById(state, activeTurnId);
+  return { activeTurn, userNation };
 };
 
 export default connect(mapStateToProps, null)(Sidebar);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Arrow } from 'react-konva';
+import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
@@ -8,7 +9,8 @@ import { getTerritoryPieceCoords, Vector } from '../utils';
 const OFFSET = 25;
 const PATH_STROKE_WIDTH = 8;
 
-const Retreat = ({ source, target, theme }) => {
+const Retreat = ({ source, target }) => {
+  const theme = useTheme();
   const [sx, sy] = getTerritoryPieceCoords(source, true);
   const [tx, ty] = getTerritoryPieceCoords(target);
   const v = new Vector(tx - sx, ty - sy);
@@ -17,8 +19,8 @@ const Retreat = ({ source, target, theme }) => {
   return (
     <Arrow
       points={points}
-      fill={theme.colors.text1}
-      stroke={theme.colors.text1}
+      fill={theme.colors.text}
+      stroke={theme.colors.text}
       strokeWidth={PATH_STROKE_WIDTH}
       pointerLength={5}
       pointerWidth={5}

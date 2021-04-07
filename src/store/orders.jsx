@@ -26,10 +26,10 @@ const ordersSlice = createSlice({
       orderAdapter.updateOne(state, { id: orderId, changes });
     },
     [listOrders.fulfilled]: (state, { payload }) => {
-      const changes = payload.map((o) => {
+      const entities = payload.map((o) => {
         return { ...o, loading: false };
       });
-      orderAdapter.setAll(state, changes);
+      orderAdapter.addMany(state, entities);
     },
   },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RegularPolygon } from 'react-konva';
+import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
@@ -8,7 +9,8 @@ import { getTerritoryPieceCoords } from '../utils';
 const HOLD_RADIUS = 22;
 const HOLD_STROKE_WIDTH = 5;
 
-const Hold = ({ source, theme }) => {
+const Hold = ({ source }) => {
+  const theme = useTheme();
   const [sx, sy] = getTerritoryPieceCoords(source);
   return (
     <RegularPolygon

@@ -79,6 +79,11 @@ export const selectCurrentTurnByGame = createSelector(
   (turns) => turns.find((t) => t.currentTurn)
 );
 
+export const selectFirstTurnByGame = createSelector(
+  turnSelectors.selectByGame,
+  (turns) => turns.reduce((min, t) => (t.id < min ? t.id : min), turns[0].id)
+);
+
 export const selectOrdersByTurn = createSelector(
   orderSelectors.selectAll,
   (_, id) => id,

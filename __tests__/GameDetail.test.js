@@ -121,12 +121,15 @@ describe('Game Detail', () => {
     );
     renderApp().push('/game/first-turn');
     userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
-    const finalizeOrdersButton = await waitFor(() =>
+    let finalizeOrdersButton = await waitFor(() =>
       screen.getByText('Un-finalize orders')
     );
     userEvent.click(finalizeOrdersButton);
     expect(screen.getByText('Un-finalize orders')).toHaveAttribute('disabled');
     await waitFor(() => screen.getByText('Orders un-finalized'));
-    expect(screen.getByText('Finalize orders')).not.toHaveAttribute('disabled');
+    finalizeOrdersButton = await waitFor(() =>
+      screen.getByText('Finalize orders')
+    );
+    expect(finalizeOrdersButton).not.toHaveAttribute('disabled');
   });
 });
