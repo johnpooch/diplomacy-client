@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import { Group } from 'react-konva';
+import { connect } from 'react-redux';
 
-import Territory from './CanvasTerritory';
 import territoryData from '../data/standard/territories.json';
 import stripes from '../img/stripes.svg';
+
+import Territory from './CanvasTerritory';
 
 const Territories = ({ hoverId, turn }) => {
   const [stripesImage, setStripesImage] = useState(null);

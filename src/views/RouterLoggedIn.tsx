@@ -3,11 +3,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Switch, withRouter, Redirect, Route } from 'react-router-dom';
 
+import Navigation from '../components/Navigation';
+
 import BrowseGames from './BrowseGames';
 import CreateGame from './CreateGame';
 import Error from './Error';
 import Game from './Game';
-import Navigation from '../components/Navigation';
 import PreGame from './PreGame';
 import UserSettings from './UserSettings';
 

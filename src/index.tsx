@@ -1,12 +1,12 @@
+import { ConnectedRouter } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createBrowserHistory } from 'history';
-import { ConnectedRouter } from 'connected-react-router';
 
-import App from './views/App';
-import configureStore from './store/store';
 import worker from './mocks/browser';
+import configureStore from './store/store';
+import App from './views/App';
 
 if (process.env.USE_MOCK_SERVICE_WORKER) {
   worker.start();

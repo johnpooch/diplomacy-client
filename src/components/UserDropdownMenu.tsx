@@ -3,11 +3,12 @@ import React, { ReactElement } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
+import { authActions } from '../store/auth';
+
 import IconDropdownMenu, {
   DropDownMenuItem,
   StyledDropdownMenu,
 } from './DropdownMenu';
-import { authActions } from '../store/auth';
 
 interface IUserDropdownMenu extends RouteComponentProps {
   logout: () => void;

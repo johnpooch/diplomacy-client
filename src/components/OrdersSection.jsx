@@ -1,18 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
-
-import { Button } from './Button';
-import { getErrors } from '../utils';
-
-import ComponentError from './ComponentError';
-import OrderItem from './OrderItem';
-import Section from './Section';
+import styled from 'styled-components';
 
 import { gameActions } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { selectOrdersByTurn } from '../store/selectors';
+import { getErrors } from '../utils';
+
+import { Button } from './Button';
+import ComponentError from './ComponentError';
+import OrderItem from './OrderItem';
+import Section from './Section';
 
 const StyledOrders = styled.ul`
   .order {

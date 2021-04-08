@@ -1,12 +1,12 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { withRouter } from 'react-router-dom';
 
+import { Button } from '../components/Button';
 import FieldError from '../components/FieldError';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
-import { Button } from '../components/Button';
-import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const ResetPassword = ({ errors, history, location, onAuth }) => {
   const { register, handleSubmit } = useForm();

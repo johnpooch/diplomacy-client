@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { push } from 'connected-react-router';
-import { alertActions } from './alerts';
+
 import { errorMessages } from '../copy';
+
+import { alertActions } from './alerts';
 
 const re = /:([a-zA-z]+)/g;
 

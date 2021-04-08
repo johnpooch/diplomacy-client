@@ -1,9 +1,9 @@
+import { OrderTypes } from './game/base';
 import { authActions } from './store/auth';
 import { gameActions } from './store/games';
 import { nationStateActions } from './store/nationStates';
 import { orderActions } from './store/orders';
 import { selectPieceByTerritory } from './store/selectors';
-import { OrderTypes } from './game/base';
 import { territorySelectors } from './store/territories';
 import { turnSelectors } from './store/turns';
 

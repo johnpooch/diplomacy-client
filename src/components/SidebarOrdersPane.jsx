@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { drawResponseActions } from '../store/drawResponses';
+
 import { SecondaryButton } from './Button';
 import Draws from './Draws';
 import OrdersSection from './OrdersSection';
-import StatusSection from './StatusSection';
-import Pane from './SidebarPane';
-
-import { drawResponseActions } from '../store/drawResponses';
 import Section from './Section';
+import Pane from './SidebarPane';
+import StatusSection from './StatusSection';
 
 const OrdersPane = ({
   currentTurn,

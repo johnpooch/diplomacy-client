@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
-import _slugify from 'slugify';
 import { useEffect, useRef, useState } from 'react';
+import _slugify from 'slugify';
 
 export const useReferredState = (initialValue) => {
   const [state, setState] = useState(initialValue);

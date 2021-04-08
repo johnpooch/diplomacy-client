@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Circle, Group, Path } from 'react-konva';
 import { darken } from 'polished';
+import React from 'react';
+import { Circle, Group, Path } from 'react-konva';
+import { connect } from 'react-redux';
 import { useTheme } from 'styled-components';
 
 import territoryData from '../data/standard/territories.json';
