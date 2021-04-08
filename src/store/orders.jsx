@@ -25,7 +25,14 @@ const ordersSlice = createSlice({
       const changes = { loading: false };
       orderAdapter.updateOne(state, { id: orderId, changes });
     },
-    [listOrders.fulfilled]: (state, { payload }) => {
+    [listOrders.fulfilled]: (state, { meta, payload }) => {
+      // Remove current turn orders before adding
+      const { turnId } = meta.arg.urlParams;
+      const ordersToRemove = Object.values(state.entities)
+        .filter((o) => o.turn === turnId)
+        .map((o) => o.id);
+      orderAdapter.removeMany(state, ordersToRemove);
+
       const entities = payload.map((o) => {
         return { ...o, loading: false };
       });

@@ -98,11 +98,16 @@ const Game = (props) => {
     return setActiveTurn(id);
   };
 
+  const activeTurnIsCurrent = activeTurnId === currentTurn.id;
+
   const postOrder = () => {
     createOrder(slug, currentTurn.id, gameForm);
   };
 
-  const InterfaceClass = getInterfaceClass(currentTurn.phase, userNation);
+  const InterfaceClass = activeTurnIsCurrent
+    ? getInterfaceClass(currentTurn.phase, userNation)
+    : DummyInterface; // Use dummy interface if user is looking at previous turn
+
   const gameInterface = new InterfaceClass(
     { postOrder },
     gameForm,

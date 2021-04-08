@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Circle, Group, Path } from 'react-konva';
-
+import { darken } from 'polished';
 import { useTheme } from 'styled-components';
+
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
 
@@ -14,18 +15,21 @@ const ICONSCALES = {
 const CIRCLESTROKEWIDTH = 2;
 const PATH_STROKE_WIDTH = 0.25;
 
-const Build = ({ source, pieceType }) => {
+// TODO dry this and CanvasPiece
+const Build = ({ nation, source, pieceType }) => {
   const theme = useTheme();
   const { icons } = theme;
   const iconWidth = icons[pieceType].icon[0] * ICONSCALES[pieceType];
   const iconHeight = icons[pieceType].icon[1] * ICONSCALES[pieceType];
   const [sx, sy] = getTerritoryPieceCoords(source);
+
+  const circleStroke = darken(0.2, theme.colors.nations[nation]);
   return (
     <Group>
       <Circle
-        fill={theme.colors.white}
+        fill={theme.colors.muted}
         radius={CIRCLERADIUS}
-        stroke={theme.colors.white}
+        stroke={circleStroke}
         strokeWidth={CIRCLESTROKEWIDTH}
         shadowForStrokeEnabled={false}
         x={sx}
@@ -33,7 +37,7 @@ const Build = ({ source, pieceType }) => {
       />
       <Path
         data={icons[pieceType].icon[4]}
-        fill={theme.colors.text}
+        fill={darken(0.2, theme.colors.nations[nation])}
         scaleX={ICONSCALES[pieceType]}
         scaleY={ICONSCALES[pieceType]}
         stroke={theme.colors.white}
@@ -49,8 +53,8 @@ const Build = ({ source, pieceType }) => {
 const mapStateToProps = (state, { order }) => {
   const selectTerritoryById = makeSelectTerritoryById();
   const source = selectTerritoryById(state, order.source);
-  const { pieceType } = order;
-  return { source, pieceType };
+  const { nation, pieceType } = order;
+  return { nation, source, pieceType };
 };
 
 export default connect(mapStateToProps, null)(Build);
