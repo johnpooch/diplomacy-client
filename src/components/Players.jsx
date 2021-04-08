@@ -1,6 +1,7 @@
-import React from 'react';
-import styled, { useTheme } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { connect } from 'react-redux';
+import styled, { useTheme } from 'styled-components';
 
 import Flag from './Flag';
 
@@ -63,13 +64,19 @@ const StyledPlayers = styled.div`
   grid-row-gap: ${(p) => p.theme.space[2]};
 `;
 
-const Players = ({ game, participants }) => {
+const Players = ({ browser, game, participants }) => {
+  const isMobile = browser.lessThan.small;
   return (
     <StyledPlayers>
       <PlayerCount game={game} />
-      <PlayerList participants={participants} />
+      {!isMobile && <PlayerList participants={participants} />}
     </StyledPlayers>
   );
 };
 
-export default Players;
+const mapStateToProps = (state) => {
+  const { browser } = state;
+  return { browser };
+};
+
+export default connect(mapStateToProps, null)(Players);

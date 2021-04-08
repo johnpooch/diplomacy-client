@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { alertActions } from './alerts';
-import { errorMessages, successMessages } from '../copy';
+import { errorMessages } from '../copy';
 
 const re = /:([a-zA-z]+)/g;
 

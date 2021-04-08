@@ -95,5 +95,5 @@ export default {
   getOrderData,
   getRegisterData,
   getResetPasswordConfirm,
-  getCreateGameData,
+  getVariantsData,
 };

@@ -10,10 +10,8 @@ import Game from './Game';
 import Navigation from '../components/Navigation';
 import PreGame from './PreGame';
 
-import { authActions } from '../store/auth';
-
 const RouterLoggedIn = (props) => {
-  const { loggedIn, logout, user } = props;
+  const { loggedIn } = props;
 
   const RouteWithNavigation = ({ component: Component, ...routeProps }) => {
     return (
@@ -21,7 +19,7 @@ const RouterLoggedIn = (props) => {
         {...routeProps}
         render={(componentProps) => (
           <div>
-            <Navigation loggedIn={loggedIn} onLogout={logout} user={user} />
+            <Navigation />
             <Component {...componentProps} />
           </div>
         )}
@@ -43,7 +41,7 @@ const RouterLoggedIn = (props) => {
         component={PreGame}
         loggedIn={loggedIn}
       />
-      <Route exact path="/game/:slug" component={Game} loggedIn={loggedIn} />
+      <Route exact path="/game/:slug" component={Game} />
       <RouteWithNavigation
         exact
         path="/"
@@ -58,23 +56,11 @@ const RouterLoggedIn = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: () => {
-      dispatch(authActions.logout());
-    },
-  };
-};
-
 const mapStateToProps = (state) => {
-  const { loggedIn, user } = state.auth;
+  const { loggedIn } = state.auth;
   return {
     loggedIn,
-    user,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(RouterLoggedIn));
+export default connect(mapStateToProps, null)(withRouter(RouterLoggedIn));

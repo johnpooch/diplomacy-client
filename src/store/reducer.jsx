@@ -1,5 +1,6 @@
-import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux';
+import { responsiveStateReducer } from 'redux-responsive';
 
 import auth from './auth';
 import alerts from './alerts';
@@ -12,6 +13,7 @@ export default (history) =>
     router: connectRouter(history),
     auth,
     alerts,
+    browser: responsiveStateReducer,
     choices,
     entities,
     errors,

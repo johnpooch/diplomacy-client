@@ -1,25 +1,22 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
-import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
 import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const ForgotPassword = ({ errors, onAuth }) => {
-  const [{ email }, handleChange] = useForm({ email: '' });
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onAuth(email);
-  };
+  const onSubmit = ({ email }) => onAuth(email);
 
   return (
     <Page title="Forgot password">
       <FormWrapper>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <p>
             Enter your email and we&apos;ll send you a link to get back into
             your account.
@@ -33,8 +30,7 @@ const ForgotPassword = ({ errors, onAuth }) => {
               name="email"
               placeholder="Email"
               autoComplete="email"
-              value={email}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.email} />

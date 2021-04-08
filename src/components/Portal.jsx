@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeConsumer, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
 export default class Portal extends React.Component {
   componentDidMount() {

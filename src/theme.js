@@ -12,6 +12,8 @@ import {
 import { withUnits } from './utils';
 
 // based on https://theme-ui.com/theme-spec/
+const breakpoints = ['480px', '768px', '992px', '1200'];
+
 const colors = {
   text: 'midnightblue',
   background: 'papayawhip',
@@ -80,6 +82,7 @@ const icons = {
 };
 
 export const theme = {
+  breakpoints,
   colors,
   fonts,
   fontSizes: withUnits(fontSizes, 'px'),

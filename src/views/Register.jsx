@@ -1,29 +1,23 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
-import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
 import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const Register = ({ errors, onAuth }) => {
-  const [{ email, username, password }, handleChange] = useForm({
-    email: '',
-    username: '',
-    password: '',
-  });
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = ({ username, email, password }) =>
     onAuth(username, email, password);
-  };
 
   return (
     <Page title="Register">
       <FormWrapper>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="email">
             <LabelText>Email address</LabelText>
             <input
@@ -32,8 +26,7 @@ const Register = ({ errors, onAuth }) => {
               name="email"
               placeholder="Email address"
               autoComplete="email"
-              value={email}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.email} />
@@ -47,8 +40,7 @@ const Register = ({ errors, onAuth }) => {
               name="username"
               placeholder="Username"
               autoComplete="username"
-              value={username}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.username} />
@@ -62,8 +54,7 @@ const Register = ({ errors, onAuth }) => {
               name="password"
               placeholder="Password"
               autoComplete="current-password"
-              value={password}
-              onChange={handleChange}
+              ref={register}
               required
             />
             <FieldError error={errors.password} />

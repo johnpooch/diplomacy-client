@@ -22,7 +22,7 @@ const getMinScale = () => {
   );
 };
 
-const Canvas = ({ currentTurn, gameInterface }) => {
+const Canvas = ({ browser, currentTurn, gameInterface }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
@@ -116,6 +116,8 @@ const Canvas = ({ currentTurn, gameInterface }) => {
     return gameInterface.reset();
   };
 
+  const isMobile = browser.lessThan.small;
+
   return (
     <ReactReduxContext.Consumer>
       {/* See https://github.com/konvajs/react-konva/issues/311#issuecomment-536634446 */}
@@ -188,7 +190,7 @@ const Canvas = ({ currentTurn, gameInterface }) => {
                 />
               </Layer>
               <Layer>
-                {gameInterface.showContextMenu() ? (
+                {gameInterface.showContextMenu() && !isMobile && (
                   <Portal theme={theme}>
                     <ContextMenu
                       stageRef={stageRef}
@@ -198,7 +200,7 @@ const Canvas = ({ currentTurn, gameInterface }) => {
                       options={gameInterface.getOptions()}
                     />
                   </Portal>
-                ) : null}
+                )}
               </Layer>
             </ThemeProvider>
           </Provider>
@@ -208,4 +210,9 @@ const Canvas = ({ currentTurn, gameInterface }) => {
   );
 };
 
-export default connect(null, null)(Canvas);
+const mapStateToProps = (state) => {
+  const { browser } = state;
+  return { browser };
+};
+
+export default connect(mapStateToProps, null)(Canvas);

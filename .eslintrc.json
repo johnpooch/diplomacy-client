@@ -1,5 +1,19 @@
 {
-  "extends": ["airbnb", "plugin:prettier/recommended", "prettier/react"],
+  "extends": [
+    "airbnb",
+    "plugin:prettier/recommended",
+    "prettier/react",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx"],
+        "rules": {
+            "@typescript-eslint/explicit-module-boundary-types": "off"
+        }
+    }
+  ],
   "env": {
     "browser": true,
     "commonjs": true,
@@ -11,10 +25,29 @@
     "jsx-a11y/href-no-hash": ["off"],
     "no-underscore-dangle": ["off"],
     "class-methods-use-this": ["off"],
-    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "react/prop-types": 0,
     "no-console": "off",
-    "linebreak-style": 0
-    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["draft"] }]
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["draft"] }],
+    "linebreak-style": 0,
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+     "import/extensions": [
+       "error",
+       "ignorePackages",
+       {
+         "js": "never",
+         "jsx": "never",
+         "ts": "never",
+         "tsx": "never"
+       }
+      ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }

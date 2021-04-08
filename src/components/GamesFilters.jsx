@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import {
   faChevronDown,
   faChevronUp,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import Select from './Select';
-import useForm from '../hooks/useForm';
 import ComponentError from './ComponentError';
 import { Button, SecondaryButton } from './Button';
 import Form, { LabelText } from './Form';
@@ -36,21 +36,11 @@ const StyledSearchButton = styled(Button)`
 const GamesFilters = ({ choices, listGames, getChoices }) => {
   useEffect(() => (choices ? null : getChoices()));
 
-  const [values, handleChange] = useForm({
-    search: '',
-    variant: '',
-    status: '',
-    numPlayers: '',
-    nationChoiceMode: '',
-    orderDeadline: '',
-    retreatDeadline: '',
-    buildDeadline: '',
-  });
+  const { register, handleSubmit } = useForm();
   const [open, setOpen] = useState(false);
 
-  const filter = (e) => {
-    e.preventDefault();
-    listGames(values);
+  const onSubmit = (data) => {
+    listGames(data);
   };
 
   const { error } = choices;
@@ -58,7 +48,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
   const filters = error ? (
     <ComponentError error={error} />
   ) : (
-    <Form onSubmit={filter}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Grid
         columns={4}
         css={`
@@ -76,9 +66,8 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
             id="search"
             name="search"
             type="search"
-            value={values.search}
-            onChange={handleChange}
             placeholder="Search by game name"
+            ref={register}
           />
         </label>
         <label htmlFor="numPlayers">
@@ -87,8 +76,7 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
             id="numPlayers"
             name="numPlayers"
             type="number"
-            value={values.numPlayers}
-            onChange={handleChange}
+            ref={register}
             min={1}
             max={7}
           />
@@ -96,44 +84,38 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
         <Select
           name="variant"
           label="Variant"
-          value={values.variant}
-          onChange={handleChange}
           options={choices.variants}
+          ref={register}
         />
         <Select
           name="status"
           label="Status"
-          value={values.status}
-          onChange={handleChange}
           options={choices.gameStatuses}
+          ref={register}
         />
         <Select
           name="nationChoiceMode"
           label="Nation choice mode"
-          value={values.nationChoiceMode}
-          onChange={handleChange}
           options={choices.nationChoiceModes}
+          ref={register}
         />
         <Select
           name="orderDeadline"
           label="Order deadline"
-          value={values.orderDeadline}
-          onChange={handleChange}
           options={choices.deadlines}
+          ref={register}
         />
         <Select
           name="retreatDeadline"
           label="Retreat deadline"
-          value={values.retreatDeadline}
-          onChange={handleChange}
           options={choices.deadlines}
+          ref={register}
         />
         <Select
           name="buildDeadline"
           label="Build deadline"
-          value={values.buildDeadline}
-          onChange={handleChange}
           options={choices.deadlines}
+          ref={register}
         />
         <StyledSearchButton type="submit">Search</StyledSearchButton>
       </Grid>

@@ -102,11 +102,12 @@ const StyledSidebar = styled.aside`
   border-bottom-left-radius: ${(p) => (p.isTabOpen ? '0' : p.theme.radii[0])};
   width: ${(p) => p.theme.sizes.sidebarMaxWidth};
   position: absolute;
-  right: 0;
-  top: 0;
-  bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
+  bottom: 0;
+
   display: flex;
   flex-direction: column;
+  position: absolute;
+  width: 100%;
 
   .details {
     color: ${(p) => p.theme.colors.muted};
@@ -122,6 +123,13 @@ const StyledSidebar = styled.aside`
     grid-gap: ${(p) => p.theme.space[2]};
     padding: ${(p) => p.theme.space[2]};
     text-align: center;
+  }
+
+  @media only screen and (min-width: ${(p) => p.theme.breakpoints[0]}) {
+    right: 0;
+    top: 0;
+    bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
+    width: 320px;
   }
 `;
 

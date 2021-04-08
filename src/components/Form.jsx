@@ -63,21 +63,6 @@ const StyledForm = styled.form`
   }
 `;
 
-const StyledFormWrapper = styled.div`
-  background: ${(p) => p.theme.colors.muted};
-  border-radius: ${(p) => p.theme.radii[2]};
-  box-shadow: ${(p) => p.theme.shadows[0]};
-  font-size: ${(p) => p.theme.fontSizes[1]};
-  max-width: 100%;
-  width: 350px;
-  padding: ${(p) => p.theme.space[4]};
-`;
-
-export const FormWrapper = (props) => {
-  const { children } = props;
-  return <StyledFormWrapper>{children}</StyledFormWrapper>;
-};
-
 export const LabelText = styled.span`
   display: block;
   font-size: ${(p) => p.theme.fontSizes[1]};
@@ -86,6 +71,23 @@ export const LabelText = styled.span`
   margin-bottom: ${(p) => p.theme.space[2]};
   color: ${(p) => p.theme.colors.text};
 `;
+
+const StyledFormWrapper = styled.div`
+  font-size: ${(p) => p.theme.fontSizes[1]};
+  padding: ${(p) => p.theme.space[4]};
+  width: 100%;
+
+  @media only screen and (min-width: ${(p) => p.theme.breakpoints[0]}) {
+    background: ${(p) => p.theme.colors.muted};
+    border-radius: ${(p) => p.theme.radii[2]};
+    box-shadow: ${(p) => p.theme.shadows[0]};
+    width: 350px;
+  }
+`;
+
+export const FormWrapper = ({ children }) => {
+  return <StyledFormWrapper>{children}</StyledFormWrapper>;
+};
 
 const Form = (props) => {
   const { children, onSubmit } = props;

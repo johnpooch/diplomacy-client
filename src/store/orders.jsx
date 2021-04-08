@@ -27,8 +27,7 @@ const ordersSlice = createSlice({
     },
     [listOrders.fulfilled]: (state, { payload }) => {
       const changes = payload.map((o) => {
-        o.loading = false;
-        return o;
+        return { ...o, loading: false };
       });
       orderAdapter.setAll(state, changes);
     },

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import _slugify from 'slugify';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const useReferredState = (initialValue) => {
   const [state, setState] = useState(initialValue);
@@ -82,3 +82,14 @@ export const getTerritoryPieceCoords = (territory, retreating = false) =>
   retreating
     ? [territory.dislodgedPieceX, territory.dislodgedPieceY]
     : [territory.pieceX, territory.pieceY];
+
+export const onClickOutside = (ref, func) => {
+  /* Calls the given function when the user clicks outside of the given component (ref) */
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) func();
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [ref]);
+};

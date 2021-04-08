@@ -14,7 +14,6 @@ import { gameActions } from '../store/games';
 import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
-import Canvas from '../components/Canvas';
 import { initialGameFormState, Phases } from '../game/base';
 
 import DummyInterface from '../game/DummyInterface';
@@ -22,6 +21,8 @@ import OrderInterface from '../game/OrderInterface';
 import BuildInterface from '../game/BuildInterface';
 import DisbandInterface from '../game/DisbandInterface';
 import RetreatInterface from '../game/RetreatInterface';
+import Canvas from '../components/Canvas';
+import MobileContextMenu from '../components/MobileContextMenu';
 import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
@@ -113,6 +114,12 @@ const Game = (props) => {
         variant={game.variant}
         // TODO: clean this up
       />
+      {gameInterface.showContextMenu() && (
+        <MobileContextMenu
+          onOptionSelected={gameInterface.onOptionSelected}
+          options={gameInterface.getOptions()}
+        />
+      )}
       <HomeNavLinkButton />
     </div>
   );
