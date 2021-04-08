@@ -9,13 +9,14 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import Select from './Select';
-import ComponentError from './ComponentError';
-import { Button, SecondaryButton } from './Button';
-import Form, { LabelText } from './Form';
 import { Grid } from '../layout';
-import { gameActions } from '../store/games';
 import { choiceActions } from '../store/choices';
+import { gameActions } from '../store/games';
+
+import { Button, SecondaryButton } from './Button';
+import ComponentError from './ComponentError';
+import Form, { LabelText } from './Form';
+import Select from './Select';
 
 const StyledGamesFilters = styled.div`
   border-bottom: ${(p) => p.theme.borders[0]};

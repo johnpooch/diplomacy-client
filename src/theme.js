@@ -1,4 +1,3 @@
-import produce from 'immer';
 import {
   faAnchor,
   faCheck,
@@ -9,6 +8,8 @@ import {
   faTruckMoving,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import produce from 'immer';
+
 import { withUnits } from './utils';
 
 // based on https://theme-ui.com/theme-spec/

@@ -1,5 +1,7 @@
 import { rest } from 'msw';
+
 import { methods, urlConf } from '../urls';
+
 import {
   changePassword,
   createGame,

@@ -2,8 +2,8 @@ import { connectRouter } from 'connected-react-router';
 import { combineReducers } from 'redux';
 import { responsiveStateReducer } from 'redux-responsive';
 
-import auth from './auth';
 import alerts from './alerts';
+import auth from './auth';
 import choices from './choices';
 import entities from './entities';
 import errors from './errors';

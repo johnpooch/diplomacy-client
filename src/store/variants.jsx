@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+
 import apiActions from './apiActions';
 
 const { listVariants } = apiActions;

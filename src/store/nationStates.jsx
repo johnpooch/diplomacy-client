@@ -6,8 +6,8 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import { turnSelectors } from './turns';
 import apiActions from './apiActions';
+import { turnSelectors } from './turns';
 
 const { finalizeOrders } = apiActions;
 

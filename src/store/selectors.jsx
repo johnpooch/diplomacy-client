@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import territoryData from '../data/standard/territories.json';
+
 import { nationSelectors } from './nations';
 import { nationStateSelectors } from './nationStates';
 import { orderSelectors } from './orders';

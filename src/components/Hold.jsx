@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { RegularPolygon } from 'react-konva';
+import { connect } from 'react-redux';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
