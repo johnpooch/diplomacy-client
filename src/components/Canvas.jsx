@@ -4,6 +4,7 @@ import { connect, ReactReduxContext, Provider } from 'react-redux';
 import { ThemeProvider, useTheme } from 'styled-components';
 
 import viewBox from '../data/standard/viewBox.json';
+import { turnSelectors } from '../store/turns';
 import { clamp, useReferredState } from '../utils';
 
 import ContextMenu from './CanvasContextMenu';
@@ -23,7 +24,7 @@ const getMinScale = () => {
   );
 };
 
-const Canvas = ({ browser, currentTurn, gameInterface }) => {
+const Canvas = ({ browser, turn, gameInterface }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
@@ -172,14 +173,14 @@ const Canvas = ({ browser, currentTurn, gameInterface }) => {
                   hoverId={
                     hoverTarget.current ? hoverTarget.current.attrs.id : null
                   }
-                  turn={currentTurn}
+                  turn={turn}
                 />
               </Layer>
               <Layer>
-                <Orders turn={currentTurn} />
+                <Orders turn={turn} />
               </Layer>
               <Layer>
-                <Pieces turn={currentTurn} />
+                <Pieces turn={turn} />
               </Layer>
               <Layer>
                 <Tooltip
@@ -211,9 +212,10 @@ const Canvas = ({ browser, currentTurn, gameInterface }) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, { turn: turnId }) => {
   const { browser } = state;
-  return { browser };
+  const turn = turnSelectors.selectById(state, turnId);
+  return { browser, turn };
 };
 
 export default connect(mapStateToProps, null)(Canvas);

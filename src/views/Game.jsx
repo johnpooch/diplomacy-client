@@ -19,6 +19,7 @@ import { gameActions } from '../store/games';
 import { orderActions } from '../store/orders';
 import {
   selectCurrentTurnByGame,
+  selectFirstTurnByGame,
   selectUserNationByTurn,
 } from '../store/selectors';
 import { surrenderActions } from '../store/surrenders';
@@ -62,6 +63,7 @@ const Game = (props) => {
     clearGameDetail,
     currentTurn,
     drawResponseLoading,
+    firstTurnId,
     createOrder,
     game,
     location,
@@ -88,11 +90,23 @@ const Game = (props) => {
     setActiveTurn(currentTurn.id);
   }
 
+  const setTurn = (id) => {
+    /* Used by the TurnNav component to update the active turn */
+    if (id === 'FIRST') return setActiveTurn(firstTurnId);
+    if (id === 'CURRENT') return setActiveTurn(currentTurn.id);
+    return setActiveTurn(id);
+  };
+
+  const activeTurnIsCurrent = activeTurnId === currentTurn.id;
+
   const postOrder = () => {
     createOrder(slug, currentTurn.id, gameForm);
   };
 
-  const InterfaceClass = getInterfaceClass(currentTurn.phase, userNation);
+  const InterfaceClass = activeTurnIsCurrent
+    ? getInterfaceClass(currentTurn.phase, userNation)
+    : DummyInterface; // Use dummy interface if user is looking at previous turn
+
   const gameInterface = new InterfaceClass(
     { postOrder },
     gameForm,
@@ -106,14 +120,16 @@ const Game = (props) => {
 
   return (
     <div>
-      <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
+      <Canvas turn={activeTurnId} gameInterface={gameInterface} />
       <Sidebar
+        activeTurnId={activeTurnId}
         currentTurn={currentTurn}
-        game={game}
-        toggleSurrender={(id) => toggleSurrender(currentTurn.id, id)}
         drawResponseLoading={drawResponseLoading}
-        participants={game.participants}
         draws={currentTurn.draws}
+        game={game}
+        participants={game.participants}
+        setTurn={setTurn}
+        toggleSurrender={(id) => toggleSurrender(currentTurn.id, id)}
         variant={game.variant}
         // TODO: clean this up
       />
@@ -132,14 +148,29 @@ const mapStateToProps = (state, { match }) => {
   const { slug } = match.params;
   const { browser } = state;
   const game = state.entities.gameDetail;
+
+  const firstTurnId = game.loaded
+    ? selectFirstTurnByGame(state, game.id)
+    : null;
+
   const currentTurn = game.loaded
     ? selectCurrentTurnByGame(state, game.id)
     : null;
+
   const userNation = currentTurn
     ? selectUserNationByTurn(state, currentTurn.id)
     : null;
+
   const { loading: drawResponseLoading } = state.entities.drawResponses;
-  return { browser, drawResponseLoading, game, slug, userNation, currentTurn };
+  return {
+    browser,
+    currentTurn,
+    drawResponseLoading,
+    firstTurnId,
+    game,
+    slug,
+    userNation,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

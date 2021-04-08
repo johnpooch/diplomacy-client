@@ -6,11 +6,14 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { selectUserNationByTurn } from '../store/selectors';
+import { turnSelectors } from '../store/turns';
 
 import { BaseButton } from './Button';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
+import Turn from './Turn';
+import TurnNav from './TurnNav';
 
 const StyledNation = styled.div`
   display: flex;
@@ -31,31 +34,6 @@ const Nation = ({ nation }) => {
     </StyledNation>
   ) : null;
 };
-
-const Turn = ({ turn }) => {
-  return (
-    <div className="turn">
-      <span className="phase">{turn.phase}</span>,{' '}
-      <span className="season">{turn.season}</span>{' '}
-      <span className="year">{turn.year}</span>
-    </div>
-  );
-};
-
-// const StyledNotification = styled.div`
-//   background: ${(p) => p.theme.colors.status.error.background};
-//   border-radius: 50%;
-//   color: ${(p) => p.theme.colors.status.error.text};
-//   min-width: 26px;
-//   padding: ${(p) => p.theme.space[0]};
-//   position: absolute;
-//   right: -8px;
-//   top: -8px;
-// `;
-
-// const Notification = ({ count }) => {
-//   return count ? <StyledNotification>{count}</StyledNotification> : null;
-// };
 
 const StyledTab = styled(BaseButton)`
   align-items: center;
@@ -135,11 +113,13 @@ const StyledSidebar = styled.aside`
 `;
 
 const Sidebar = ({
+  activeTurn,
   currentTurn,
   drawResponseLoading,
   destroyOrder,
   finalizeOrders,
   participants,
+  setTurn,
   toggleSurrender,
   userNation,
   variant,
@@ -181,6 +161,7 @@ const Sidebar = ({
         <Nation nation={userNation} />
         <Turn turn={currentTurn} />
       </div>
+      <TurnNav setTurn={setTurn} turn={activeTurn} />
       <div className="tabs">
         <Tab
           activeTab={activeTab}
@@ -210,9 +191,10 @@ const Sidebar = ({
   );
 };
 
-const mapStateToProps = (state, { currentTurn }) => {
+const mapStateToProps = (state, { activeTurnId, currentTurn }) => {
   const userNation = selectUserNationByTurn(state, currentTurn.id);
-  return { userNation };
+  const activeTurn = turnSelectors.selectById(state, activeTurnId);
+  return { activeTurn, userNation };
 };
 
 export default connect(mapStateToProps, null)(Sidebar);

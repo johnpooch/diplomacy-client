@@ -16,8 +16,19 @@ const ICON_SCALES = {
 const CIRCLE_STROKE_WIDTH = 2;
 const PATH_STROKE_WIDTH = 0.25;
 
-const Piece = ({ piece, territory, isHovering, isOrderable, isSelected }) => {
-  const { type, mustRetreat, nation } = piece;
+const Piece = ({
+  piece,
+  territory,
+  turnId,
+  isHovering,
+  isOrderable,
+  isSelected,
+}) => {
+  const { mustRetreat, nation, turnCreated, type } = piece;
+
+  // Don't show a piece if it was created this turn (build order shown instead)
+  if (turnCreated === turnId) return null;
+
   const [x, y] = getTerritoryPieceCoords(territory, mustRetreat);
   const theme = useTheme();
 
@@ -68,6 +79,7 @@ const makeMapStateToProps = () => {
     return {
       piece,
       territory,
+      turnId,
     };
   };
 };

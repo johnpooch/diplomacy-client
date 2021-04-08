@@ -7,7 +7,7 @@ const Pieces = ({ turn }) => {
   return (
     <Group>
       {turn.pieceStates.map((ps) => {
-        return <Piece key={ps} id={ps} turnId={ps} />;
+        return <Piece key={ps} id={ps} turnId={turn.id} />;
       })}
     </Group>
   );
