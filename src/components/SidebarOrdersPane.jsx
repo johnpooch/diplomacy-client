@@ -32,13 +32,6 @@ const OrdersPane = ({
         game={game}
         userNation={userNation}
       />
-      <Section>
-        <SecondaryButton
-          onClick={() => toggleSurrender(surrender ? surrender.id : null)}
-        >
-          {surrender ? `Cancel surrender` : 'Surrender'}
-        </SecondaryButton>
-      </Section>
       {draws.length ? (
         <Draws
           cancelDrawResponse={cancelDrawResponse}
