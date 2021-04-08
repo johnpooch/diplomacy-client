@@ -1,6 +1,6 @@
 // Constants
-import { territorySelectors } from '../store/territories';
 import { selectPieceByTerritory } from '../store/selectors';
+import { territorySelectors } from '../store/territories';
 
 export const Phases = {
   ORDER: 'Order',

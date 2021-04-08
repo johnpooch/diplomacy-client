@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Arrow } from 'react-konva';
+import { connect } from 'react-redux';
 import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryById } from '../store/selectors';

@@ -6,9 +6,8 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import { drawSelectors } from './draws';
-
 import apiActions from './apiActions';
+import { drawSelectors } from './draws';
 
 const { cancelDrawResponse, setDrawResponse } = apiActions;
 

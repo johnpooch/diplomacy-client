@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import RouterLoggedIn from './RouterLoggedIn';
-import RouterLoggedOut from './RouterLoggedOut';
-
 import Alerts from '../components/Alerts';
-import { theme } from '../theme';
 import GlobalStyles from '../globalStyles';
-
 import { alertActions, alertSelectors } from '../store/alerts';
 import { errorActions } from '../store/errors';
+import { theme } from '../theme';
+
+import RouterLoggedIn from './RouterLoggedIn';
+import RouterLoggedOut from './RouterLoggedOut';
 
 const App = ({
   alerts,

@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
-import { connect } from 'react-redux';
 import { darken } from 'polished';
+import React, { useRef } from 'react';
 import { Path, Star, Group } from 'react-konva';
+import { connect } from 'react-redux';
 import { useTheme } from 'styled-components';
 
-import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
 import viewBox from '../data/standard/viewBox.json';
+import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
 
 const FILL_PATTERN_SCALE = 0.15;
 const FILL_PATTERN_OPACITY = 0.1;

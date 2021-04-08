@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useStore } from 'react-redux';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { connect, useStore } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 
 import { BackButton } from '../components/Button';
+import Canvas from '../components/Canvas';
+import MobileContextMenu from '../components/MobileContextMenu';
+import Sidebar from '../components/Sidebar';
+import { initialGameFormState, Phases } from '../game/base';
+import BuildInterface from '../game/BuildInterface';
+import DisbandInterface from '../game/DisbandInterface';
+import DummyInterface from '../game/DummyInterface';
+import OrderInterface from '../game/OrderInterface';
+import RetreatInterface from '../game/RetreatInterface';
+import { gameDetailActions } from '../store/gameDetail';
+import { gameActions } from '../store/games';
+import { orderActions } from '../store/orders';
 import {
   selectCurrentTurnByGame,
   selectUserNationByTurn,
 } from '../store/selectors';
-import { gameDetailActions } from '../store/gameDetail';
-import { gameActions } from '../store/games';
-import { orderActions } from '../store/orders';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
-import { initialGameFormState, Phases } from '../game/base';
-
-import DummyInterface from '../game/DummyInterface';
-import OrderInterface from '../game/OrderInterface';
-import BuildInterface from '../game/BuildInterface';
-import DisbandInterface from '../game/DisbandInterface';
-import RetreatInterface from '../game/RetreatInterface';
-import Canvas from '../components/Canvas';
-import MobileContextMenu from '../components/MobileContextMenu';
-import Sidebar from '../components/Sidebar';
 
 const NavLinkButton = BackButton.withComponent(NavLink);
 const HomeNavLinkButton = () => (

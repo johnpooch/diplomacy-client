@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Circle, Group, Path } from 'react-konva';
-
+import { connect } from 'react-redux';
 import { useTheme } from 'styled-components';
+
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
 
