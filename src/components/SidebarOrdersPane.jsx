@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 
 import { drawResponseActions } from '../store/drawResponses';
 
-import { SecondaryButton } from './Button';
 import Draws from './Draws';
 import OrdersSection from './OrdersSection';
-import Section from './Section';
 import Pane from './SidebarPane';
 import StatusSection from './StatusSection';
 
 const OrdersPane = ({
   currentTurn,
-  toggleSurrender,
   game,
   userNation,
   cancelDrawResponse,
@@ -22,8 +19,6 @@ const OrdersPane = ({
   participants,
   variant,
 }) => {
-  const { surrender } = userNation;
-
   return (
     <Pane>
       <StatusSection userNation={userNation} />
