@@ -6,7 +6,7 @@ import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const LoginForm = ({ errors, onAuth }) => {
   const [{ username, password }, handleChange] = useForm({
@@ -24,7 +24,7 @@ const LoginForm = ({ errors, onAuth }) => {
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <label htmlFor="username">
-            <FormLabel>Username</FormLabel>
+            <LabelText>Username</LabelText>
             <input
               type="text"
               id="username"
@@ -39,7 +39,7 @@ const LoginForm = ({ errors, onAuth }) => {
           </label>
 
           <label htmlFor="password">
-            <FormLabel>Password</FormLabel>
+            <LabelText>Password</LabelText>
             <input
               type="password"
               id="password"

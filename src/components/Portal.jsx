@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ThemeConsumer, ThemeProvider } from 'styled-components';
 
 export default class Portal extends React.Component {
   componentDidMount() {
@@ -26,7 +27,8 @@ export default class Portal extends React.Component {
     let { children } = this.props;
     if (!children) return;
 
-    const { node } = this.props;
+    const { node, theme } = this.props;
+
     if (!node && !this.defaultNode) {
       this.defaultNode = document.createElement('div');
       document.body.appendChild(this.defaultNode);
@@ -37,7 +39,10 @@ export default class Portal extends React.Component {
       children = React.cloneElement(children);
     }
 
-    ReactDOM.render(children, node || this.defaultNode);
+    ReactDOM.render(
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>,
+      node || this.defaultNode
+    );
   }
 
   render() {

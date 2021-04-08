@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Circle, Group, Path } from 'react-konva';
 
-import { variables } from '../variables';
+import { useTheme } from 'styled-components';
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
 
@@ -12,19 +12,20 @@ const ICONSCALES = {
   fleet: 0.04,
 };
 const CIRCLESTROKEWIDTH = 2;
-const PATHSTROKEWIDTH = 0.25;
+const PATH_STROKE_WIDTH = 0.25;
 
 const Build = ({ source, pieceType }) => {
-  const { icons } = variables;
+  const theme = useTheme();
+  const { icons } = theme;
   const iconWidth = icons[pieceType].icon[0] * ICONSCALES[pieceType];
   const iconHeight = icons[pieceType].icon[1] * ICONSCALES[pieceType];
   const [sx, sy] = getTerritoryPieceCoords(source);
   return (
     <Group>
       <Circle
-        fill={variables.colors.white}
+        fill={theme.colors.white}
         radius={CIRCLERADIUS}
-        stroke={variables.colors.white}
+        stroke={theme.colors.white}
         strokeWidth={CIRCLESTROKEWIDTH}
         shadowForStrokeEnabled={false}
         x={sx}
@@ -32,11 +33,11 @@ const Build = ({ source, pieceType }) => {
       />
       <Path
         data={icons[pieceType].icon[4]}
-        fill={variables.colors.base}
+        fill={theme.colors.text}
         scaleX={ICONSCALES[pieceType]}
         scaleY={ICONSCALES[pieceType]}
-        stroke={variables.colors.white}
-        strokeWidth={PATHSTROKEWIDTH / ICONSCALES[pieceType]}
+        stroke={theme.colors.white}
+        strokeWidth={PATH_STROKE_WIDTH / ICONSCALES[pieceType]}
         shadowForStrokeEnabled={false}
         x={sx - iconWidth / 2}
         y={sy - iconHeight / 2}

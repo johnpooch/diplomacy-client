@@ -6,7 +6,7 @@ import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
 import { Button } from '../components/Button';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 
 const Register = ({ errors, onAuth }) => {
   const [{ email, username, password }, handleChange] = useForm({
@@ -25,7 +25,7 @@ const Register = ({ errors, onAuth }) => {
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <label htmlFor="email">
-            <FormLabel>Email address</FormLabel>
+            <LabelText>Email address</LabelText>
             <input
               type="email"
               id="email"
@@ -40,7 +40,7 @@ const Register = ({ errors, onAuth }) => {
           </label>
 
           <label htmlFor="username">
-            <FormLabel>Username</FormLabel>
+            <LabelText>Username</LabelText>
             <input
               type="text"
               id="username"
@@ -55,7 +55,7 @@ const Register = ({ errors, onAuth }) => {
           </label>
 
           <label htmlFor="password">
-            <FormLabel>Password</FormLabel>
+            <LabelText>Password</LabelText>
             <input
               type="password"
               id="password"

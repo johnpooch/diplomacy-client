@@ -4,15 +4,13 @@ import { withRouter, NavLink } from 'react-router-dom';
 
 import FieldError from '../components/FieldError';
 import NonFieldErrors from '../components/NonFieldErrors';
-import Form, { FormLabel, FormWrapper } from '../components/Form';
+import Form, { LabelText, FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import useForm from '../hooks/useForm';
 import { Button, SecondaryButton } from '../components/Button';
 import { errorActions } from '../store/errors';
 import { gameActions } from '../store/games';
 import { GridTemplate } from '../layout';
-
-const NavLinkButton = SecondaryButton.withComponent(NavLink);
 
 const CreateGame = ({ createGame, errors, token }) => {
   const [values, handleChange] = useForm({ name: '', description: '' });
@@ -32,7 +30,7 @@ const CreateGame = ({ createGame, errors, token }) => {
       <FormWrapper>
         <Form onSubmit={handleSubmit}>
           <label htmlFor="name">
-            <FormLabel>Name</FormLabel>
+            <LabelText>Name</LabelText>
             <input
               type="text"
               id="name"
@@ -46,7 +44,7 @@ const CreateGame = ({ createGame, errors, token }) => {
             <FieldError error={errors.name} />
           </label>
           <label htmlFor="description">
-            <FormLabel>Description</FormLabel>
+            <LabelText>Description</LabelText>
             <input
               type="text"
               id="description"
@@ -62,9 +60,10 @@ const CreateGame = ({ createGame, errors, token }) => {
           </label>
           <GridTemplate templateColumns="2fr 1fr">
             <Button type="submit">Create game</Button>
-            <NavLinkButton to="/">Cancel</NavLinkButton>
+            <SecondaryButton as={NavLink} to="/">
+              Cancel
+            </SecondaryButton>
           </GridTemplate>
-
           <NonFieldErrors errors={errors.non_field_errors} />
         </Form>
       </FormWrapper>

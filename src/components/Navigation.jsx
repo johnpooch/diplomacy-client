@@ -1,15 +1,13 @@
-/** @jsx jsx */
-import styled from '@emotion/styled';
-import { jsx } from '@emotion/core';
+import React from 'react';
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-import { variables } from '../variables';
 import { SecondaryButton } from './Button';
 
 const Header = styled.header`
   align-items: center;
   background: white;
-  border-bottom: solid ${variables.sizes.border}px ${variables.colors.darkgray};
+  border-bottom: ${(p) => p.theme.borders[0]};
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   left: 0;
@@ -23,12 +21,12 @@ const Header = styled.header`
     grid-template-rows: auto;
     grid-auto-flow: column;
     grid-auto-columns: max-content;
-    column-gap: ${variables.spacing[3]}px;
+    column-gap: ${(p) => p.theme.space[3]};
     align-items: center;
   }
 
   > * {
-    padding: ${variables.spacing[2]}px ${variables.spacing[3]}px;
+    padding: ${(p) => `${p.theme.space[2]} ${p.theme.space[3]}`};
   }
 
   > *:last-child {
@@ -36,17 +34,20 @@ const Header = styled.header`
   }
 
   a {
-    border-bottom: solid ${variables.sizes.border}px transparent;
-    padding: ${variables.spacing[0]}px 0;
+    border-bottom: ${(p) => p.theme.borders[0]};
+    padding: ${(p) => p.theme.space[0]} 0;
 
     &.active {
-      color: ${variables.colors.base};
-      border-color: ${variables.colors.darkgray};
+      color: ${(p) => p.theme.colors.text};
+    }
+
+    &:not(.active) {
+      border-color: transparent;
     }
   }
 
   nav {
-    font-size: ${variables.fontSizes.sans[2]}px;
+    font-size: ${(p) => p.theme.fontSizes[2]};
   }
 
   .username {
@@ -56,7 +57,12 @@ const Header = styled.header`
 
 const Logo = () => {
   return (
-    <span css={{ fontWeight: 'bold', fontSize: variables.fontSizes.sans[3] }}>
+    <span
+      css={`
+        font-weight: ${(p) => p.theme.fontWeights.heading};
+        font-size: ${(p) => p.theme.fontSizes[3]};
+      `}
+    >
       Diplomacy
     </span>
   );
