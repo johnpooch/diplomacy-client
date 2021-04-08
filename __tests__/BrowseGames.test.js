@@ -117,6 +117,16 @@ describe('Browse Games', () => {
     await waitFor(testElements.componentError500);
   });
 
+  it('redirect to login on unauthorized', async () => {
+    useHandlers(
+      [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+      [urlConf.listGames, listGames.errorUnauthorized],
+      [urlConf.listVariants, listVariants.success]
+    );
+    renderApp();
+    await waitFor(testElements.loginButton);
+  });
+
   // TODO
   it('filter games using filters', async () => {
     return true;

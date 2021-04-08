@@ -13,6 +13,7 @@ import listVariantsData from './data/variants.json';
 // TODO centralize expected error messages
 
 const errorServerError = (_, res, ctx) => res(ctx.status(500));
+const errorUnauthorized = (_, res, ctx) => res(ctx.status(401));
 const errorNotFound = (_, res, ctx) => res(ctx.status(404));
 const token =
   'faketokencdd6b6112b47176e410d1d6f0fc0a4b879286e5c93405ce89685929';
@@ -156,6 +157,7 @@ export const listGames = {
       ctx.status(200),
       ctx.json(listGamesData.filter((g) => g.slug === 'first-turn'))
     ),
+  errorUnauthorized,
   errorServerError,
 };
 
