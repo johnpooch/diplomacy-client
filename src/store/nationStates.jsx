@@ -25,9 +25,10 @@ const nationStateSlice = createSlice({
       const changes = { loading: true };
       nationStateAdapter.updateOne(state, { id: nationStateId, changes });
     },
-    [finalizeOrders.fulfilled]: (state, { meta }) => {
+    [finalizeOrders.fulfilled]: (state, { meta, payload }) => {
       const { nationStateId } = meta.arg.urlParams;
-      const changes = { loading: false };
+      const { ordersFinalized } = payload;
+      const changes = { loading: false, ordersFinalized };
       nationStateAdapter.updateOne(state, { id: nationStateId, changes });
     },
     [finalizeOrders.rejected]: (state, { meta }) => {

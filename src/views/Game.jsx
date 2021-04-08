@@ -109,6 +109,7 @@ const Game = (props) => {
       <Canvas currentTurn={currentTurn} gameInterface={gameInterface} />
       <Sidebar
         currentTurn={currentTurn}
+        game={game}
         toggleSurrender={(id) => toggleSurrender(currentTurn.id, id)}
         drawResponseLoading={drawResponseLoading}
         participants={game.participants}

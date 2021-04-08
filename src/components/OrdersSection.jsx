@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { gameActions } from '../store/games';
 import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import { selectOrdersByTurn } from '../store/selectors';
@@ -70,10 +71,13 @@ const mapStateToProps = (state, { currentTurn }) => {
   return { errors, orders };
 };
 
-const mapDispatchToProps = (dispatch, { userNation }) => {
+const mapDispatchToProps = (dispatch, { game, userNation }) => {
   const finalizeOrders = () => {
-    const urlParams = { nationStateId: userNation.id };
-    dispatch(nationStateActions.finalizeOrders({ urlParams }));
+    let urlParams = { nationStateId: userNation.id };
+    dispatch(nationStateActions.finalizeOrders({ urlParams })).then(() => {
+      urlParams = { gameSlug: game.slug };
+      dispatch(gameActions.getGameDetail({ urlParams }));
+    });
   };
   return { finalizeOrders };
 };

@@ -55,7 +55,10 @@ export default {
     pending: true,
   },
   [nationStateActions.finalizeOrders.fulfilled]: {
-    getMessage: () => 'Orders finalized',
+    getMessage: (_, { payload }) => {
+      const { ordersFinalized } = payload;
+      return ordersFinalized ? 'Orders finalized' : 'Orders un-finalized';
+    },
     pending: false,
   },
   [orderActions.createOrder.fulfilled]: {

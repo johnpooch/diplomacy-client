@@ -13,6 +13,7 @@ import StatusSection from './StatusSection';
 const OrdersPane = ({
   currentTurn,
   toggleSurrender,
+  game,
   userNation,
   cancelDrawResponse,
   setDrawResponse,
@@ -26,7 +27,11 @@ const OrdersPane = ({
   return (
     <Pane>
       <StatusSection userNation={userNation} />
-      <OrdersSection currentTurn={currentTurn} userNation={userNation} />
+      <OrdersSection
+        currentTurn={currentTurn}
+        game={game}
+        userNation={userNation}
+      />
       <Section>
         <SecondaryButton
           onClick={() => toggleSurrender(surrender ? surrender.id : null)}
@@ -50,6 +55,12 @@ const OrdersPane = ({
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    game: state.entities.gameDetail,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   const cancelDrawResponse = (draw, response) => {
     dispatch(drawResponseActions.cancelDrawResponse({ draw, response }));
@@ -60,4 +71,4 @@ const mapDispatchToProps = (dispatch) => {
   return { cancelDrawResponse, setDrawResponse };
 };
 
-export default connect(null, mapDispatchToProps)(OrdersPane);
+export default connect(mapStateToProps, mapDispatchToProps)(OrdersPane);
