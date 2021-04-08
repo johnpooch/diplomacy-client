@@ -1,27 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Arrow } from 'react-konva';
+import { useTheme } from 'styled-components';
 
-import { variables } from '../variables';
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
 
 const OFFSET = 25;
-const FILL = variables.colors.base;
-const PATHSTROKEWIDTH = 8;
+const PATH_STROKE_WIDTH = 8;
 
 const Move = ({ source, target }) => {
   const [sx, sy] = getTerritoryPieceCoords(source);
   const [tx, ty] = getTerritoryPieceCoords(target);
+  const theme = useTheme();
   const v = new Vector(tx - sx, ty - sy);
   v.normalize();
   const points = [sx, sy, tx - OFFSET * v.x, ty - OFFSET * v.y];
   return (
     <Arrow
       points={points}
-      fill={FILL}
-      stroke={FILL}
-      strokeWidth={PATHSTROKEWIDTH}
+      fill={theme.colors.text}
+      stroke={theme.colors.text}
+      strokeWidth={PATH_STROKE_WIDTH}
       pointerLength={5}
       pointerWidth={5}
     />

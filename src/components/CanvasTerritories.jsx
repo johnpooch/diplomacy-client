@@ -1,8 +1,6 @@
-/** @jsx jsx */
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { jsx } from '@emotion/core';
 import { Group } from 'react-konva';
-import { useEffect, useState } from 'react';
 
 import Territory from './CanvasTerritory';
 import territoryData from '../data/standard/territories.json';

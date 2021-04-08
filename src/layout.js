@@ -1,14 +1,11 @@
-import styled from '@emotion/styled';
-
-import { spacing } from './variables';
+import styled from 'styled-components';
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: ${(props) =>
-    props.columns ? `repeat(${props.columns}, 1fr)` : 'auto'};
-  grid-column-gap: ${(props) =>
-    props.columnGap ? props.columnGap : `${spacing[4]}px`};
-  grid-row-gap: ${(props) => (props.rowGap ? props.rowGap : `${spacing[4]}px`)};
+  grid-template-columns: ${(p) =>
+    p.columns ? `repeat(${p.columns}, 1fr)` : 'auto'};
+  grid-column-gap: ${(p) => (p.columnGap ? p.columnGap : p.theme.space[4])};
+  grid-row-gap: ${(p) => (p.rowGap ? p.rowGap : p.theme.space[4])};
 
   label,
   input {
@@ -18,6 +15,6 @@ export const Grid = styled.div`
 `;
 
 export const GridTemplate = styled(Grid)`
-  grid-template-columns: ${(props) =>
-    props.templateColumns ? props.templateColumns : 'auto'};
+  grid-template-columns: ${(p) =>
+    p.templateColumns ? p.templateColumns : 'auto'};
 `;

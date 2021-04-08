@@ -15,8 +15,6 @@ import { gameActions, gameSelectors } from '../store/games';
 import { userSelectors } from '../store/users';
 import { variantActions } from '../store/variants';
 
-const NavLinkButton = SecondaryButton.withComponent(NavLink);
-
 const PreGame = (props) => {
   const {
     game,
@@ -60,7 +58,9 @@ const PreGame = (props) => {
               <Button type="submit">
                 {userJoined ? 'Leave game' : 'Join game'}
               </Button>
-              <NavLinkButton to="/">Cancel</NavLinkButton>
+              <SecondaryButton as={NavLink} to="/">
+                Cancel
+              </SecondaryButton>
             </GridTemplate>
           </Form>
         </FormWrapper>

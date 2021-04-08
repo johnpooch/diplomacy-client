@@ -1,11 +1,11 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled';
+
 import { BaseButton } from './Button';
-import { variables } from '../variables';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
@@ -13,19 +13,19 @@ import { selectUserNationByTurn } from '../store/selectors';
 
 const StyledNation = styled.div`
   display: flex;
-  grid-gap: ${variables.spacing[1]}px;
+  grid-gap: ${(p) => p.theme.space[1]};
   justify-content: flex-start;
 
   .name {
-    color: ${(props) => (props.color ? props.color : 'inherit')};
+    color: ${(p) => (p.nation ? p.theme.colors.nations[p.nation] : 'inherit')};
     font-weight: bold;
   }
 `;
 
 const Nation = ({ nation }) => {
   return nation ? (
-    <StyledNation color={variables.colors.nations[nation.id]}>
-      <Flag nation={nation} size="small" />
+    <StyledNation nation={nation.nation}>
+      <Flag nation={nation} size={0} />
       <span className="name">{nation.name}</span>
     </StyledNation>
   ) : null;
@@ -41,40 +41,40 @@ const Turn = ({ turn }) => {
   );
 };
 
-const StyledNotification = styled.div`
-  background: ${variables.colors.error};
-  border-radius: 50%;
-  color: ${variables.colors.white};
-  min-width: 26px;
-  padding: ${variables.spacing[0]}px;
-  position: absolute;
-  right: -8px;
-  top: -8px;
-`;
+// const StyledNotification = styled.div`
+//   background: ${(p) => p.theme.colors.status.error.background};
+//   border-radius: 50%;
+//   color: ${(p) => p.theme.colors.status.error.text};
+//   min-width: 26px;
+//   padding: ${(p) => p.theme.space[0]};
+//   position: absolute;
+//   right: -8px;
+//   top: -8px;
+// `;
 
-const Notification = ({ count }) => {
-  return count ? <StyledNotification>{count}</StyledNotification> : null;
-};
+// const Notification = ({ count }) => {
+//   return count ? <StyledNotification>{count}</StyledNotification> : null;
+// };
 
 const StyledTab = styled(BaseButton)`
   align-items: center;
-  background: ${variables.colors.white};
-  color: ${variables.colors.base};
+  background: ${(p) => p.theme.colors.muted};
+  color: ${(p) => p.theme.colors.text};
   display: flex;
   flex-direction: column;
-  grid-gap: ${variables.spacing[1]}px;
+  grid-gap: ${(p) => p.theme.space[1]};
   justify-content: center;
-  padding: ${variables.spacing[1]}px;
+  padding: ${(p) => p.theme.space[1]};
   position: relative;
   width: 100%;
 
   &[data-active='true'] {
-    background: ${variables.colors.darkgray};
+    background: ${(p) => p.theme.colors.primary};
     color: white;
   }
 
   &:hover {
-    background: ${variables.colors.darkgray};
+    background: ${(p) => p.theme.colors.primary};
   }
 `;
 
@@ -98,10 +98,9 @@ const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
 };
 
 const StyledSidebar = styled.aside`
-  background: ${variables.colors.gray};
-  border-bottom-left-radius: ${(props) =>
-    props.isTabOpen ? '0' : `${variables.sizes.borderRadius[0]}px`};
-  width: 320px;
+  background: ${(p) => p.theme.colors.secondary};
+  border-bottom-left-radius: ${(p) => (p.isTabOpen ? '0' : p.theme.radii[0])};
+  width: ${(p) => p.theme.sizes.sidebarMaxWidth};
   position: absolute;
   right: 0;
   top: 0;
@@ -110,19 +109,18 @@ const StyledSidebar = styled.aside`
   flex-direction: column;
 
   .details {
-    color: ${variables.colors.white};
-    background: ${variables.colors.base};
-    ${(props) => (props.color ? props.color : variables.colors.white)};
+    color: ${(p) => p.theme.colors.muted};
+    background: ${(p) => (p.color ? p.color : p.theme.colors.text)};
     display: flex;
-    grid-gap: ${variables.spacing[1]}px;
+    grid-gap: ${(p) => p.theme.space[1]};
     justify-content: space-between;
-    padding: ${variables.spacing[2]}px;
+    padding: ${(p) => p.theme.space[2]};
   }
 
   .tabs {
     display: flex;
-    grid-gap: ${variables.spacing[2]}px;
-    padding: ${variables.spacing[2]}px;
+    grid-gap: ${(p) => p.theme.space[2]};
+    padding: ${(p) => p.theme.space[2]};
     text-align: center;
   }
 `;
@@ -138,7 +136,7 @@ const Sidebar = ({
   variant,
 }) => {
   const [activeTab, setActiveTab] = useState(null);
-  const { draws, orders } = currentTurn;
+  const { draws } = currentTurn;
 
   const renderPane = () => {
     switch (activeTab) {

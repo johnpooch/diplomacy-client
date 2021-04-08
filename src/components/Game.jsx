@@ -1,37 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import Players from './Players';
-import { variables } from '../variables';
 import { selectNationsByTurn, selectNationByUser } from '../store/selectors';
 import { turnSelectors } from '../store/turns';
 import { userSelectors } from '../store/users';
 
 const StyledGame = styled.div`
-  background: ${variables.colors.white};
-  padding: ${variables.spacing[3]}px;
-  border: solid ${variables.sizes.border}px ${variables.colors.darkgray};
+  background: ${(p) => p.theme.colors.muted};
+  padding: ${(p) => p.theme.space[3]};
+  border: ${(p) => p.theme.borders[0]};
   display: grid;
   grid-template-columns: 3fr 2fr;
   position: relative;
   text-align: left;
-  grid-column-gap: ${variables.spacing[6]}px;
+  grid-column-gap: ${(p) => p.theme.space[6]};
 
-  .link-overlay:hover ~ .details .name {
+  .overlay:hover ~ .details .name {
     text-decoration: underline;
   }
 
   .players {
-    border-left: solid ${variables.sizes.border}px ${variables.colors.gray};
+    border-left: ${(p) => p.theme.borders[0]};
     height: 100%;
-    padding-left: ${variables.spacing[2]}px;
+    padding-left: ${(p) => p.theme.space[2]};
   }
 
   > div {
     display: grid;
-    grid-row-gap: ${variables.spacing[2]}px;
+    grid-row-gap: ${(p) => p.theme.space[2]};
     height: max-content;
   }
 `;
@@ -53,7 +52,7 @@ const Game = ({ game, participants, userNation, turn }) => {
   return (
     <StyledGame key={id} userNation={userNation}>
       <Link
-        className="link-overlay"
+        className="overlay"
         to={status === 'active' ? `/game/${slug}` : `/pre-game/${slug}`}
       />
       <div className="details">

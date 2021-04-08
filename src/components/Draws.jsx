@@ -1,9 +1,7 @@
 import React from 'react';
-import { faCheck, faStar, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from '@emotion/styled';
+import styled, { useTheme } from 'styled-components';
 
-import { variables } from '../variables';
 import { SecondaryButton } from './Button';
 import Flag from './Flag';
 
@@ -27,24 +25,21 @@ const StyledDiv = styled.div`
   }
 `;
 
-const StyledDrawPanel = styled.div`
-  background: white;
-  padding: 0.5rem;
-`;
-
 const SupplyCenterCount = ({ count }) => {
+  const theme = useTheme();
   return (
     <div>
-      <FontAwesomeIcon icon={faStar} />
+      <FontAwesomeIcon icon={theme.icons.supplyCenter} />
       {count}
     </div>
   );
 };
 
 const SupplyCentersRequirement = ({ drawStrength, numSupplyCentersToWin }) => {
+  const theme = useTheme();
   return (
     <StyledDiv>
-      <FontAwesomeIcon icon={faStar} />
+      <FontAwesomeIcon icon={theme.icons.supplyCenter} />
       <p>
         {drawStrength}/{numSupplyCentersToWin}
       </p>
@@ -54,17 +49,18 @@ const SupplyCentersRequirement = ({ drawStrength, numSupplyCentersToWin }) => {
 
 const DrawResponse = (props) => {
   const { nation, response, proposedWinner } = props;
+  const theme = useTheme();
 
   const responseIconMap = {
-    accepted: faCheck,
-    rejected: faTimes,
+    accepted: theme.icons.accept,
+    rejected: theme.icons.cancel,
   };
   const icon = responseIconMap[response];
   const { id, numSupplyCenters } = nation;
 
   return (
     <StyledLi key={id}>
-      <Flag nation={nation} size="small" />
+      <Flag nation={nation} size={0} />
       {proposedWinner ? <SupplyCenterCount count={numSupplyCenters} /> : null}
       {icon ? <FontAwesomeIcon icon={icon} /> : null}
     </StyledLi>
@@ -86,7 +82,7 @@ const DrawProposedMessage = ({ user }) => {
     <div>
       <strong>{user.username}</strong>
       <div>
-        <Flag nation={user.nation} size="small" />
+        <Flag nation={user.nation} size={0} />
       </div>
       <p>has proposed a draw</p>
     </div>
@@ -214,14 +210,14 @@ const Draw = ({
 const StyledDrawsPane = styled.div`
   .text {
     display: block;
-    margin: ${variables.spacing[3]}px 0;
+    margin: ${(p) => p.theme.space[3]} 0;
   }
 
   .actions {
     display: grid;
-    grid-gap: ${variables.spacing[2]}px;
+    grid-gap: ${(p) => p.theme.space[2]};
     grid-template-columns: repeat(2, 1fr);
-    margin: ${variables.spacing[3]}px 0;
+    margin: ${(p) => p.theme.space[3]} 0;
   }
 `;
 

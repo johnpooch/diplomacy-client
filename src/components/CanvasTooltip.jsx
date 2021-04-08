@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Label, Tag, Text } from 'react-konva';
-
-import { variables } from '../variables';
-
-const FONTSIZE = variables.fontSizes.sans[2];
-const OFFSET = variables.spacing[1];
-const PADDING = variables.spacing[0];
-const STROKEWIDTH = 1;
+import { useTheme } from 'styled-components';
 
 const Tooltip = ({
   hoverTarget,
@@ -15,9 +9,16 @@ const Tooltip = ({
   stagePosition,
   stageRef,
 }) => {
+  const theme = useTheme();
+
+  const FONT_SIZE = theme.fontSizesUnitless[2];
+  const OFFSET = theme.spaceUnitless[1];
+  const PADDING = theme.spaceUnitless[0];
+  const STROKE_WIDTH = theme.borderWidthsUnitless[0];
+
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [text, setText] = useState('');
-  const [textFill, setTextFill] = useState(variables.colors.base);
+  const [textFill, setTextFill] = useState(theme.colors.text);
 
   const labelRef = useRef();
 
@@ -45,14 +46,14 @@ const Tooltip = ({
 
   useEffect(() => {
     setText('');
-    setTextFill(variables.colors.base);
+    setTextFill(theme.colors.text);
 
     if (hoverTarget && hoverTarget.attrs.territory.name) {
       const { territory } = hoverTarget.attrs;
       setText(territory.name.toUpperCase());
 
       if (territory.controlledBy) {
-        setTextFill(variables.colors.nations[territory.controlledBy]);
+        setTextFill(theme.colors.nations[territory.controlledBy]);
       }
     }
   }, [hoverTarget]);
@@ -60,13 +61,13 @@ const Tooltip = ({
   return text ? (
     <Label listening={false} ref={labelRef} x={position.x} y={position.y}>
       <Tag
-        fill={variables.colors.white}
-        stroke={variables.colors.base}
-        strokeWidth={STROKEWIDTH / scale}
+        fill={theme.colors.muted}
+        stroke={theme.colors.text}
+        strokeWidth={STROKE_WIDTH / scale}
       />
       <Text
-        fontFamily={variables.fontFamilies.sans}
-        fontSize={FONTSIZE / scale}
+        fontFamily={theme.fonts.sans}
+        fontSize={FONT_SIZE / scale}
         padding={PADDING / scale}
         text={text}
         fill={textFill}

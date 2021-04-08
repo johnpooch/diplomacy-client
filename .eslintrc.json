@@ -15,5 +15,6 @@
     "react/prop-types": 0,
     "no-console": "off",
     "linebreak-style": 0
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["draft"] }]
   }
 }

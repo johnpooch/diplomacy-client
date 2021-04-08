@@ -1,6 +1,8 @@
 import { connect, ReactReduxContext, Provider } from 'react-redux';
 import { Stage, Layer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
+import { ThemeProvider, useTheme } from 'styled-components';
+
 import { clamp, useReferredState } from '../utils';
 import Orders from './Orders';
 import ContextMenu from './CanvasContextMenu';
@@ -10,8 +12,8 @@ import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import viewBox from '../data/standard/viewBox.json';
 
-const ZOOMFACTOR = 1.1;
-const ZOOMMAX = 3;
+const ZOOM_FACTOR = 1.1;
+const ZOOM_MAX = 3;
 
 const getMinScale = () => {
   return Math.max(
@@ -29,6 +31,7 @@ const Canvas = ({ currentTurn, gameInterface }) => {
   const [stagePosition, setStagePosition] = useReferredState({ x: 0, y: 0 });
 
   const stageRef = useRef();
+  const theme = useTheme();
 
   const bounds = ({ x, y }) => {
     return {
@@ -68,9 +71,11 @@ const Canvas = ({ currentTurn, gameInterface }) => {
       if (isDragging.current) return;
 
       const newScale = clamp(
-        e.deltaY > 0 ? scale.current / ZOOMFACTOR : scale.current * ZOOMFACTOR,
+        e.deltaY > 0
+          ? scale.current / ZOOM_FACTOR
+          : scale.current * ZOOM_FACTOR,
         getMinScale(),
-        ZOOMMAX
+        ZOOM_MAX
       );
 
       const pointer = stageRef.current.getPointerPosition();
@@ -113,6 +118,7 @@ const Canvas = ({ currentTurn, gameInterface }) => {
 
   return (
     <ReactReduxContext.Consumer>
+      {/* See https://github.com/konvajs/react-konva/issues/311#issuecomment-536634446 */}
       {({ store }) => (
         <Stage
           ref={stageRef}
@@ -140,59 +146,61 @@ const Canvas = ({ currentTurn, gameInterface }) => {
           style={{ cursor: getCursor(), background: 'black' }}
         >
           <Provider store={store}>
-            <Layer
-              x={viewBox.territoriesX}
-              y={viewBox.territoriesY}
-              onMouseMove={(event) => {
-                if (!isDragging.current) setHoverTarget(event.target);
-                else setHoverTarget(null);
-                setMousePosition({
-                  x: event.evt.clientX,
-                  y: event.evt.clientY,
-                });
-              }}
-              onMouseOut={() => {
-                setHoverTarget(null);
-              }}
-              onBlur={() => {
-                setHoverTarget(null);
-              }}
-            >
-              <Territories
-                hoverId={
-                  hoverTarget.current ? hoverTarget.current.attrs.id : null
-                }
-                turn={currentTurn}
-              />
-            </Layer>
-            <Layer>
-              <Orders turn={currentTurn} />
-            </Layer>
-            <Layer>
-              <Pieces turn={currentTurn} />
-            </Layer>
-            <Layer>
-              <Tooltip
-                hoverTarget={hoverTarget.current}
-                mousePosition={mousePosition.current}
-                scale={scale.current}
-                stagePosition={stagePosition.current}
-                stageRef={stageRef}
-              />
-            </Layer>
-            <Layer>
-              {gameInterface.showContextMenu() ? (
-                <Portal>
-                  <ContextMenu
-                    stageRef={stageRef}
-                    selectedTarget={gameInterface.source}
-                    mousePosition={mousePosition.current}
-                    onOptionSelected={gameInterface.onOptionSelected}
-                    options={gameInterface.getOptions()}
-                  />
-                </Portal>
-              ) : null}
-            </Layer>
+            <ThemeProvider theme={theme}>
+              <Layer
+                x={viewBox.territoriesX}
+                y={viewBox.territoriesY}
+                onMouseMove={(event) => {
+                  if (!isDragging.current) setHoverTarget(event.target);
+                  else setHoverTarget(null);
+                  setMousePosition({
+                    x: event.evt.clientX,
+                    y: event.evt.clientY,
+                  });
+                }}
+                onMouseOut={() => {
+                  setHoverTarget(null);
+                }}
+                onBlur={() => {
+                  setHoverTarget(null);
+                }}
+              >
+                <Territories
+                  hoverId={
+                    hoverTarget.current ? hoverTarget.current.attrs.id : null
+                  }
+                  turn={currentTurn}
+                />
+              </Layer>
+              <Layer>
+                <Orders turn={currentTurn} />
+              </Layer>
+              <Layer>
+                <Pieces turn={currentTurn} />
+              </Layer>
+              <Layer>
+                <Tooltip
+                  hoverTarget={hoverTarget.current}
+                  mousePosition={mousePosition.current}
+                  scale={scale.current}
+                  stagePosition={stagePosition.current}
+                  stageRef={stageRef}
+                />
+              </Layer>
+              <Layer>
+                {gameInterface.showContextMenu() ? (
+                  <Portal theme={theme}>
+                    <ContextMenu
+                      stageRef={stageRef}
+                      selectedTarget={gameInterface.source}
+                      mousePosition={mousePosition.current}
+                      onOptionSelected={gameInterface.onOptionSelected}
+                      options={gameInterface.getOptions()}
+                    />
+                  </Portal>
+                ) : null}
+              </Layer>
+            </ThemeProvider>
           </Provider>
         </Stage>
       )}

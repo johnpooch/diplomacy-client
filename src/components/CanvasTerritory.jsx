@@ -2,27 +2,28 @@ import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { darken } from 'polished';
 import { Path, Star, Group } from 'react-konva';
+import { useTheme } from 'styled-components';
 
-import { variables } from '../variables';
 import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
 import viewBox from '../data/standard/viewBox.json';
 
-const FILLPATTERNSCALE = 0.15;
-const FILLPATTERNOPACITY = 0.1;
-const STROKEWIDTH = 2;
-const SUPPLYCENTERSIZE = 3;
+const FILL_PATTERN_SCALE = 0.15;
+const FILL_PATTERN_OPACITY = 0.1;
+const STROKE_WIDTH = 2;
+const SUPPLY_CENTER_SIZE = 3;
 
 const SupplyCenter = ({ x, y }) => {
+  const theme = useTheme();
   return (
     <Star
       x={x - viewBox.territoriesX}
       y={y - viewBox.territoriesY}
       numPoints={5}
-      innerRadius={SUPPLYCENTERSIZE * 0.6}
-      outerRadius={SUPPLYCENTERSIZE}
-      fill={variables.colors.base}
+      innerRadius={SUPPLY_CENTER_SIZE * 0.6}
+      outerRadius={SUPPLY_CENTER_SIZE}
       listening={false}
-      stroke={variables.colors.base}
+      fill={theme.colors.text}
+      stroke={theme.colors.text}
       strokeWidth={4}
     />
   );
@@ -40,16 +41,17 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
     supplyCenterY: scy,
   } = territory;
 
+  const theme = useTheme();
   const territoryRef = useRef(null);
 
   const getFill = () => {
-    if (controlledBy in variables.colors.nations)
-      return variables.colors.nations[controlledBy];
-    return type === 'sea' ? variables.colors.sea : variables.colors.land;
+    if (controlledBy in theme.colors.nations)
+      return theme.colors.nations[controlledBy];
+    return type === 'sea' ? theme.colors.map.sea : theme.colors.map.land;
   };
 
   const getStroke = () =>
-    isHovering && playable ? variables.colors.white : darken(0.2, getFill());
+    isHovering && playable ? theme.colors.muted : darken(0.2, getFill());
 
   return (
     <Group>
@@ -62,7 +64,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
         isOrderable={isOrderable}
         shadowForStrokeEnabled={false}
         stroke={getStroke()}
-        strokeWidth={STROKEWIDTH}
+        strokeWidth={STROKE_WIDTH}
         territory={territory}
       />
       {playable ? null : (
@@ -70,9 +72,9 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
           data={path}
           fillPatternImage={stripesImage}
           fillPatternRotation={45}
-          fillPatternScale={{ x: FILLPATTERNSCALE, y: FILLPATTERNSCALE }}
+          fill_Pattern_Scale={{ x: FILL_PATTERN_SCALE, y: FILL_PATTERN_SCALE }}
           listening={false}
-          opacity={FILLPATTERNOPACITY}
+          opacity={FILL_PATTERN_OPACITY}
         />
       )}
       {supplyCenter ? <SupplyCenter x={scx} y={scy} /> : null}
