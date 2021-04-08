@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import { methods, urlConf } from '../urls';
 import {
+  changePassword,
   createGame,
   createOrder,
   destroyOrder,
@@ -23,10 +24,12 @@ export const restMethods = {
   [methods.GET]: rest.get,
   [methods.POST]: rest.post,
   [methods.PATCH]: rest.patch,
+  [methods.PUT]: rest.put,
 };
 
 const handlers = [
   // Auth
+  [urlConf.changePassword, changePassword.success],
   [urlConf.login, login.success],
   [urlConf.register, register.success],
   [urlConf.resetPassword, resetPassword.success],

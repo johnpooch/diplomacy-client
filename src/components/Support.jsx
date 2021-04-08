@@ -1,6 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Arrow, Group, Line } from 'react-konva';
+import { connect } from 'react-redux';
+import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
@@ -9,7 +10,9 @@ const OFFSET = 15;
 const PATH_STROKE_WIDTH = 8;
 const SUPPORT_DASH = [1, 1, 0.001];
 
-const Support = ({ aux, isHoldSupport, source, target, theme }) => {
+const Support = ({ aux, isHoldSupport, source, target }) => {
+  const theme = useTheme();
+
   const [ax, ay] = getTerritoryPieceCoords(aux);
   const [sx, sy] = getTerritoryPieceCoords(source);
   const [tx, ty] = getTerritoryPieceCoords(target);

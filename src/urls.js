@@ -3,6 +3,7 @@ export const methods = {
   GET: 'GET',
   POST: 'POST',
   PATCH: 'PATCH',
+  PUT: 'PUT',
 };
 
 const listGames = {
@@ -80,6 +81,11 @@ const register = {
   method: methods.POST,
   urlPattern: 'auth/register',
 };
+const changePassword = {
+  name: 'changePassword',
+  method: methods.PUT,
+  urlPattern: 'auth/change_password',
+};
 const cancelDrawResponse = {
   name: 'cancelDrawResponse',
   method: methods.DELETE,
@@ -93,6 +99,7 @@ const setDrawResponse = {
 
 export const urlConf = {
   cancelDrawResponse,
+  changePassword,
   createGame,
   createOrder,
   destroyOrder,

@@ -17,6 +17,23 @@ const errorNotFound = (_, res, ctx) => res(ctx.status(404));
 const token =
   'faketokencdd6b6112b47176e410d1d6f0fc0a4b879286e5c93405ce89685929';
 
+export const changePassword = {
+  success: (_, res, ctx) => res(ctx.status(200), ctx.json({})),
+  errorIncorrectPassword: (_, res, ctx) => {
+    const responseData = {
+      current_password: [errorMessages.changePasswordIncorrectPassword],
+    };
+    return res(ctx.status(400), ctx.json(responseData));
+  },
+  errorPasswordsDoNotMatch: (_, res, ctx) => {
+    const responseData = {
+      non_field_errors: [errorMessages.changePasswordPasswordsDoNotMatch],
+    };
+    return res(ctx.status(400), ctx.json(responseData));
+  },
+  errorServerError,
+};
+
 export const createGame = {
   success: (_, res, ctx) => res(ctx.status(201), ctx.json(createGameData)),
   errorNameTooLong: (_, res, ctx) => {

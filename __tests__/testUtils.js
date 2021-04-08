@@ -45,6 +45,11 @@ export const logIn = () => {
   store.dispatch(authActions.login.fulfilled({ user, token }));
 };
 
+// export const logOut = () => {
+//   store.dispatch(authActions.logout);
+//   console.log(store.getState());
+// };
+
 export const useHandlers = (...handlers) => {
   handlers.forEach(([url, resolver]) => {
     const { method, urlPattern } = url;
@@ -124,6 +129,8 @@ export const successMessages = {
       action
     );
   },
+  changePassword: () =>
+    apiSuccessMessages[authActions.changePassword.fulfilled].getMessage(),
   createOrder: () => null,
   destroyOrder: () =>
     apiSuccessMessages[orderActions.destroyOrder.fulfilled].getMessage(),

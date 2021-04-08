@@ -9,6 +9,7 @@ import Error from './Error';
 import Game from './Game';
 import Navigation from '../components/Navigation';
 import PreGame from './PreGame';
+import UserSettings from './UserSettings';
 
 const RouterLoggedIn = (props) => {
   const { loggedIn } = props;
@@ -46,6 +47,12 @@ const RouterLoggedIn = (props) => {
         exact
         path="/"
         component={BrowseGames}
+        loggedIn={loggedIn}
+      />
+      <RouteWithNavigation
+        exact
+        path="/user-settings"
+        component={UserSettings}
         loggedIn={loggedIn}
       />
       <Route exact path={['/forgot-password', '/login', '/register']}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -11,15 +11,19 @@ import { theme } from '../theme';
 import GlobalStyles from '../globalStyles';
 
 import { alertActions, alertSelectors } from '../store/alerts';
+import { errorActions } from '../store/errors';
 
-const App = ({ alerts, alertsClear, clearAndPromoteAlerts, loggedIn }) => {
-  const [formErrors, setFormErrors] = useState({
-    nonFieldErrors: [],
-  });
-
+const App = ({
+  alerts,
+  alertsClear,
+  clearAndPromoteAlerts,
+  clearErrors,
+  loggedIn,
+}) => {
   const location = useLocation();
 
   useEffect(() => {
+    clearErrors();
     clearAndPromoteAlerts();
   }, [location.pathname]);
 
@@ -27,14 +31,7 @@ const App = ({ alerts, alertsClear, clearAndPromoteAlerts, loggedIn }) => {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Alerts alerts={alerts} onClick={alertsClear} />
-      {loggedIn ? (
-        <RouterLoggedIn formErrors={formErrors} setFormErrors={setFormErrors} />
-      ) : (
-        <RouterLoggedOut
-          formErrors={formErrors}
-          setFormErrors={setFormErrors}
-        />
-      )}
+      {loggedIn ? <RouterLoggedIn /> : <RouterLoggedOut />}
     </ThemeProvider>
   );
 };
@@ -55,9 +52,11 @@ const mapDispatchToProps = (dispatch) => {
     dispatch(alertActions.alertsClearActive());
     dispatch(alertActions.alertsPromotePending());
   };
+  const clearErrors = () => dispatch(errorActions.clearErrors());
   return {
     alertsClear,
     clearAndPromoteAlerts,
+    clearErrors,
   };
 };
 
