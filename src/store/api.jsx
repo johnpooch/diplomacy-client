@@ -53,7 +53,7 @@ export const apiRequest = async (url, options, thunkApi, successMessage) => {
     // Logout if 401
     if (response.status === 401) {
       // NOTE using string to avoid import loop
-      dispatch({ type: 'auth/authLogout' });
+      dispatch({ type: 'auth/logout' });
     }
     let data = {};
     if (response.status === 500) {

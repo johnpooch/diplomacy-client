@@ -58,17 +58,13 @@ const Header = styled.header`
   }
 `;
 
+const StyledLogo = styled.span`
+  font-weight: ${(p) => p.theme.fontWeights.heading};
+  font-size: ${(p) => p.theme.fontSizes[3]};
+`;
+
 const Logo = () => {
-  return (
-    <span
-      css={`
-        font-weight: ${(p) => p.theme.fontWeights.heading};
-        font-size: ${(p) => p.theme.fontSizes[3]};
-      `}
-    >
-      Diplomacy
-    </span>
-  );
+  return <StyledLogo>Diplomacy</StyledLogo>;
 };
 
 const Navigation = () => {
