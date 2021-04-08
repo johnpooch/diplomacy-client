@@ -5,9 +5,9 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import { apiRequest, getOptions } from './api';
 import { urlConf } from '../urls';
 
+import { apiRequest, getOptions } from './api';
 import { nationStateSelectors } from './nationStates';
 
 const cancelSurrender = createAsyncThunk(

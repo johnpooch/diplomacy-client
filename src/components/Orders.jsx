@@ -1,6 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Group } from 'react-konva';
+import { connect } from 'react-redux';
+
+import { OrderTypes } from '../game/base';
+import { selectOrdersByTurn } from '../store/selectors';
 
 import Build from './Build';
 import Convoy from './Convoy';
@@ -8,8 +11,6 @@ import Hold from './Hold';
 import Move from './Move';
 import Retreat from './Retreat';
 import Support from './Support';
-import { OrderTypes } from '../game/base';
-import { selectOrdersByTurn } from '../store/selectors';
 
 const OrderTypeMap = {
   [OrderTypes.MOVE]: Move,

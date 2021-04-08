@@ -1,6 +1,7 @@
 import { isFulfilled } from '@reduxjs/toolkit';
-import { alertActions } from '../alerts';
+
 import messages from '../../apiSuccessMessages';
+import { alertActions } from '../alerts';
 
 const addSuccessMessage = ({ dispatch, getState }) => (next) => (action) => {
   if (isFulfilled(action)) {

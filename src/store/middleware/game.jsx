@@ -1,11 +1,10 @@
-import gameListNormalizer from '../normalizers/gameListNormalizer';
-import gameDetailNormalizer from '../normalizers/gameDetailNormalizer';
-
-import { drawActions } from '../draws';
 import { drawResponseActions } from '../drawResponses';
+import { drawActions } from '../draws';
 import { gameDetailActions } from '../gameDetail';
 import { gameActions } from '../games';
 import { nationStateActions } from '../nationStates';
+import gameDetailNormalizer from '../normalizers/gameDetailNormalizer';
+import gameListNormalizer from '../normalizers/gameListNormalizer';
 import { orderActions } from '../orders';
 import { pieceActions } from '../pieces';
 import { pieceStateActions } from '../pieceStates';
