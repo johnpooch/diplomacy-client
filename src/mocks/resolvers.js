@@ -1,14 +1,14 @@
+import { errorMessages } from '../copy';
+
 import createGameData from './data/createGame.json';
 import createOrderData from './data/createOrder.json';
 import gameDetailData from './data/gameDetail.json';
 import getGameFilterChoicesData from './data/gameFilterChoices.json';
 import listGamesData from './data/games.json';
-import listVariantsData from './data/variants.json';
 import orderData from './data/orders.json';
 import moreOrderData from './data/orders2.json';
 import userData from './data/user.json';
-
-import { errorMessages } from '../copy';
+import listVariantsData from './data/variants.json';
 
 // TODO centralize expected error messages
 

@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Players from './Players';
 import { selectNationsByTurn, selectNationByUser } from '../store/selectors';
 import { turnSelectors } from '../store/turns';
 import { userSelectors } from '../store/users';
+
+import Players from './Players';
 
 const StyledGame = styled.div`
   background: ${(p) => p.theme.colors.muted};

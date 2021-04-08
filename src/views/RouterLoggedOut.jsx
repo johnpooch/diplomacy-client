@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Switch, withRouter, Route, Redirect } from 'react-router-dom';
 
+import { authActions } from '../store/auth';
+import { errorActions } from '../store/errors';
+
 import ForgotPassword from './ForgotPassword';
 import Login from './Login';
 import Register from './Register';
 import ResetPassword from './ResetPassword';
-import { authActions } from '../store/auth';
-import { errorActions } from '../store/errors';
 
 const RouterLoggedOut = (props) => {
   const { errors, forgotPassword, login, register, resetPassword } = props;

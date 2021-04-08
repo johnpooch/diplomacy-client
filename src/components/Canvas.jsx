@@ -1,16 +1,17 @@
-import { connect, ReactReduxContext, Provider } from 'react-redux';
-import { Stage, Layer } from 'react-konva';
 import React, { useEffect, useRef } from 'react';
+import { Stage, Layer } from 'react-konva';
+import { connect, ReactReduxContext, Provider } from 'react-redux';
 import { ThemeProvider, useTheme } from 'styled-components';
 
+import viewBox from '../data/standard/viewBox.json';
 import { clamp, useReferredState } from '../utils';
-import Orders from './Orders';
+
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
-import Portal from './Portal';
 import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
-import viewBox from '../data/standard/viewBox.json';
+import Orders from './Orders';
+import Portal from './Portal';
 
 const ZOOM_FACTOR = 1.1;
 const ZOOM_MAX = 3;

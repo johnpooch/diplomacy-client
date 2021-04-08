@@ -3,14 +3,14 @@ import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
 
-import FieldError from '../components/FieldError';
-import NonFieldErrors from '../components/NonFieldErrors';
-import Form, { LabelText, FormWrapper } from '../components/Form';
-import Page from '../components/Page';
 import { Button, SecondaryButton } from '../components/Button';
+import FieldError from '../components/FieldError';
+import Form, { LabelText, FormWrapper } from '../components/Form';
+import NonFieldErrors from '../components/NonFieldErrors';
+import Page from '../components/Page';
+import { GridTemplate } from '../layout';
 import { errorActions } from '../store/errors';
 import { gameActions } from '../store/games';
-import { GridTemplate } from '../layout';
 
 const CreateGame = ({ createGame, errors }) => {
   const { register, handleSubmit } = useForm();

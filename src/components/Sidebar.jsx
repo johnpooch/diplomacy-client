@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+
+import { selectUserNationByTurn } from '../store/selectors';
 
 import { BaseButton } from './Button';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
-import { selectUserNationByTurn } from '../store/selectors';
 
 const StyledNation = styled.div`
   display: flex;
