@@ -4,6 +4,7 @@ import { connect, ReactReduxContext, Provider } from 'react-redux';
 import { ThemeProvider, useTheme } from 'styled-components';
 
 import viewBox from '../data/standard/viewBox.json';
+import { turnSelectors } from '../store/turns';
 import { clamp, useReferredState } from '../utils';
 
 import ContextMenu from './CanvasContextMenu';
@@ -12,8 +13,6 @@ import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import Orders from './Orders';
 import Portal from './Portal';
-
-import { turnSelectors } from '../store/turns';
 
 const ZOOM_FACTOR = 1.1;
 const ZOOM_MAX = 3;

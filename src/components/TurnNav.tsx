@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react';
 import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 
 import { IconButton } from './Button';
