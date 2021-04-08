@@ -14,6 +14,7 @@
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "react/prop-types": 0,
     "no-console": "off",
+    "linebreak-style": 0
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["draft"] }]
   }
 }
