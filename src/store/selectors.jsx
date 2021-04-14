@@ -104,6 +104,16 @@ export const selectPieceByTerritory = createSelector(
   }
 );
 
+export const selectPieceStatesWithPiece = createSelector(
+  pieceStateSelectors.selectAll,
+  pieceSelectors.selectEntities,
+  (pieceStates, pieces) => {
+    return pieceStates.map((ps) => {
+      return { ...ps, ...pieces[ps.piece] };
+    });
+  }
+);
+
 export const selectRetreatingPieceByTerritory = createSelector(
   pieceStateSelectors.selectAll,
   pieceSelectors.selectEntities,
