@@ -18,14 +18,14 @@ const ContextMenu = ({
   stageRef,
   selectedTarget,
   mousePosition,
-  onOptionSelected,
+  onClickOption,
   options,
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const menuRef = useRef();
 
-  const handleOptionSelected = (option) => () => onOptionSelected(option);
+  const handleOptionSelected = (option) => () => onClickOption(option);
 
   useEffect(() => {
     if (!menuRef.current) return;

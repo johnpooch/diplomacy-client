@@ -13,7 +13,9 @@
             "currentTurn": true,
             "year": 1901,
             "season": "spring",
-            "phase": "Order",
+            "seasonDisplay": "Spring",
+            "phase": "order",
+            "phaseDisplay": "Order",
             "territoryStates": [
                 {
                     "id": 1,
@@ -885,7 +887,9 @@
             "currentTurn": false,
             "year": 1901,
             "season": "spring",
-            "phase": "Order",
+            "seasonDisplay": "Spring",
+            "phase": "order",
+            "phaseDisplay": "Order",
             "territoryStates": [
                 {
                     "id": 151,
@@ -1870,7 +1874,9 @@
             "currentTurn": false,
             "year": 1901,
             "season": "fall",
-            "phase": "Order",
+            "seasonDisplay": "Fall",
+            "phase": "order",
+            "phaseDisplay": "Order",
             "territoryStates": [
                 {
                     "id": 226,
@@ -2855,7 +2861,9 @@
             "currentTurn": true,
             "year": 1901,
             "season": "fall",
-            "phase": "Retreat",
+            "seasonDisplay": "Fall",
+            "phase": "retreat",
+            "phaseDisplay": "Retreat",
             "territoryStates": [
                 {
                     "id": 301,

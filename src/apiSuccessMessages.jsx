@@ -1,4 +1,4 @@
-import { OrderTypes } from './game/base';
+import { OrderType } from './game/types';
 import { authActions } from './store/auth';
 import { gameActions } from './store/games';
 import { nationStateActions } from './store/nationStates';
@@ -17,12 +17,12 @@ const buildMessage = ({ source, pieceType }) =>
   `${pieceType} will be built in ${source.name}`;
 
 export const orderTypeMessageMap = {
-  [OrderTypes.HOLD]: holdMessage,
-  [OrderTypes.MOVE]: moveMessage,
-  [OrderTypes.SUPPORT]: supportMessage,
-  [OrderTypes.CONVOY]: supportMessage,
-  [OrderTypes.RETREAT]: moveMessage,
-  [OrderTypes.BUILD]: buildMessage,
+  [OrderType.HOLD]: holdMessage,
+  [OrderType.MOVE]: moveMessage,
+  [OrderType.SUPPORT]: supportMessage,
+  [OrderType.CONVOY]: supportMessage,
+  [OrderType.RETREAT]: moveMessage,
+  [OrderType.BUILD]: buildMessage,
 };
 
 export default {

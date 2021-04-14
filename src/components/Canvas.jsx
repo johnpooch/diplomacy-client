@@ -198,8 +198,8 @@ const Canvas = ({ browser, turn, gameInterface }) => {
                       stageRef={stageRef}
                       selectedTarget={gameInterface.source}
                       mousePosition={mousePosition.current}
-                      onOptionSelected={gameInterface.onOptionSelected}
-                      options={gameInterface.getOptions()}
+                      onClickOption={gameInterface.onClickOption}
+                      options={gameInterface.getContextMenuOptions()}
                     />
                   </Portal>
                 )}
