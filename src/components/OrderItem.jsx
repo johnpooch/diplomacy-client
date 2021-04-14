@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled, { useTheme } from 'styled-components';
 
-import { OrderTypes } from '../game/base';
+import { OrderType } from '../game/types';
 import { orderActions } from '../store/orders';
 import { selectPieceByTerritory } from '../store/selectors';
 import { territorySelectors } from '../store/territories';
@@ -58,12 +58,12 @@ const AuxOrderText = ({ aux, source, target, type }) => {
 };
 
 const OrderTypeMap = {
-  [OrderTypes.MOVE]: MoveOrderText,
-  [OrderTypes.HOLD]: HoldOrderText,
-  [OrderTypes.SUPPORT]: AuxOrderText,
-  [OrderTypes.CONVOY]: AuxOrderText,
-  [OrderTypes.RETREAT]: MoveOrderText,
-  [OrderTypes.BUILD]: BuildOrderText,
+  [OrderType.MOVE]: MoveOrderText,
+  [OrderType.HOLD]: HoldOrderText,
+  [OrderType.SUPPORT]: AuxOrderText,
+  [OrderType.CONVOY]: AuxOrderText,
+  [OrderType.RETREAT]: MoveOrderText,
+  [OrderType.BUILD]: BuildOrderText,
 };
 
 const OrderItem = ({

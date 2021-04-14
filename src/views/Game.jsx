@@ -8,19 +8,15 @@ import { BackButton } from '../components/Button';
 import Canvas from '../components/Canvas';
 import MobileContextMenu from '../components/MobileContextMenu';
 import Sidebar from '../components/Sidebar';
-import { initialGameFormState, Phases } from '../game/base';
-import BuildInterface from '../game/BuildInterface';
-import DisbandInterface from '../game/DisbandInterface';
-import DummyInterface from '../game/DummyInterface';
-import OrderInterface from '../game/OrderInterface';
-import RetreatInterface from '../game/RetreatInterface';
+import { initialOrderState } from '../game/BaseInterpreter';
+import DummyInterpreter from '../game/DummyInterpreter';
+import { initializeInterpreterFromState } from '../game/index';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
 import { orderActions } from '../store/orders';
 import {
   selectCurrentTurnByGame,
   selectFirstTurnByGame,
-  selectUserNationByTurn,
 } from '../store/selectors';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
@@ -40,23 +36,6 @@ const HomeNavLinkButton = () => (
   </NavLinkButton>
 );
 
-const getInterfaceClass = (phase, userNation) => {
-  switch (phase) {
-    case Phases.ORDER:
-      return OrderInterface;
-    case Phases.RETREAT:
-      return RetreatInterface;
-    default:
-      if (userNation.supplyDelta < 0) {
-        return DisbandInterface;
-      }
-      if (userNation.supplyDelta > 1) {
-        return BuildInterface;
-      }
-      return DummyInterface;
-  }
-};
-
 const Game = (props) => {
   const {
     browser,
@@ -70,10 +49,9 @@ const Game = (props) => {
     prepareGameDetail,
     slug,
     toggleSurrender,
-    userNation,
   } = props;
 
-  const [gameForm, setGameForm] = useState(initialGameFormState);
+  const [order, setOrder] = useState(initialOrderState);
   const [activeTurnId, setActiveTurn] = useState();
 
   const state = useStore().getState();
@@ -99,28 +77,21 @@ const Game = (props) => {
 
   const activeTurnIsCurrent = activeTurnId === currentTurn.id;
 
-  const postOrder = () => {
-    createOrder(slug, currentTurn.id, gameForm);
-  };
-
-  const InterfaceClass = activeTurnIsCurrent
-    ? getInterfaceClass(currentTurn.phase, userNation)
-    : DummyInterface; // Use dummy interface if user is looking at previous turn
-
-  const gameInterface = new InterfaceClass(
-    { postOrder },
-    gameForm,
-    setGameForm,
-    currentTurn,
-    userNation,
-    state
-  );
+  const gameInterpreter = activeTurnIsCurrent
+    ? initializeInterpreterFromState(
+        state,
+        currentTurn,
+        order,
+        () => createOrder(slug, currentTurn.id, order),
+        setOrder
+      )
+    : new DummyInterpreter();
 
   const isMobile = browser.lessThan.small;
 
   return (
     <div>
-      <Canvas turn={activeTurnId} gameInterface={gameInterface} />
+      <Canvas turn={activeTurnId} gameInterface={gameInterpreter} />
       <Sidebar
         activeTurnId={activeTurnId}
         currentTurn={currentTurn}
@@ -133,10 +104,10 @@ const Game = (props) => {
         variant={game.variant}
         // TODO: clean this up
       />
-      {gameInterface.showContextMenu() && isMobile && (
+      {gameInterpreter.showContextMenu() && isMobile && (
         <MobileContextMenu
-          onOptionSelected={gameInterface.onOptionSelected}
-          options={gameInterface.getOptions()}
+          onClickOption={gameInterpreter.onClickOption}
+          options={gameInterpreter.getContextMenuOptions()}
         />
       )}
       <HomeNavLinkButton />
@@ -157,10 +128,6 @@ const mapStateToProps = (state, { match }) => {
     ? selectCurrentTurnByGame(state, game.id)
     : null;
 
-  const userNation = currentTurn
-    ? selectUserNationByTurn(state, currentTurn.id)
-    : null;
-
   const { loading: drawResponseLoading } = state.entities.drawResponses;
   return {
     browser,
@@ -169,7 +136,6 @@ const mapStateToProps = (state, { match }) => {
     firstTurnId,
     game,
     slug,
-    userNation,
   };
 };
 

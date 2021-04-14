@@ -2,7 +2,7 @@ import React from 'react';
 import { Group } from 'react-konva';
 import { connect } from 'react-redux';
 
-import { OrderTypes } from '../game/base';
+import { OrderType } from '../game/types';
 import { selectOrdersByTurn } from '../store/selectors';
 
 import Build from './Build';
@@ -13,13 +13,13 @@ import Retreat from './Retreat';
 import Support from './Support';
 
 const OrderTypeMap = {
-  [OrderTypes.MOVE]: Move,
-  [OrderTypes.HOLD]: Hold,
-  [OrderTypes.SUPPORT]: Support,
-  [OrderTypes.CONVOY]: Convoy,
-  [OrderTypes.RETREAT]: Retreat,
-  [OrderTypes.BUILD]: Build,
-  [OrderTypes.DISBAND]: Hold,
+  [OrderType.MOVE]: Move,
+  [OrderType.HOLD]: Hold,
+  [OrderType.SUPPORT]: Support,
+  [OrderType.CONVOY]: Convoy,
+  [OrderType.RETREAT]: Retreat,
+  [OrderType.BUILD]: Build,
+  [OrderType.DISBAND]: Hold,
 };
 
 const Orders = ({ orders }) => {
