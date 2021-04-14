@@ -99,3 +99,11 @@ export const toTitleCase = (str) =>
     /\w\S*/g,
     (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   );
+
+export const indexOn = (arr, key) => {
+  return arr.reduce((map, obj) => {
+    // eslint-disable-next-line no-param-reassign
+    map[obj[key]] = { ...obj };
+    return map;
+  }, {});
+};
