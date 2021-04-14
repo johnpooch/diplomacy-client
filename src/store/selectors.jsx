@@ -114,6 +114,10 @@ export const selectPieceStatesWithPiece = createSelector(
   }
 );
 
+export const selectPiecesByTurn = (state, turnId) => {
+  return selectPieceStatesWithPiece(state).filter((ps) => ps.turn === turnId);
+};
+
 export const selectRetreatingPieceByTerritory = createSelector(
   pieceStateSelectors.selectAll,
   pieceSelectors.selectEntities,
