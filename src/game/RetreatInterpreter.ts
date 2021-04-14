@@ -3,7 +3,7 @@ import { OrderTypeChoices } from './choices';
 import { canRetreat, canRetreatTo } from './rules';
 import { OrderType, Piece, Territory } from './types';
 
-export default class RetreatPhaseInterface extends Interpreter {
+export default class RetreatInterpreter extends Interpreter {
   canSelectTerritory(territory: Territory): boolean {
     if (!this.source) return canRetreat(this.getPiece(territory), this.nation);
     return canRetreatTo(this.getPiece(this.source), this.source, territory);
