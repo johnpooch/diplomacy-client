@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "type": "move",
+        "nation": "standard-england",
+        "source": "standard-edinburgh",
+        "target": "standard-norwegian-sea",
+        "targetCoast": null,
+        "aux": null,
+        "pieceType": null,
+        "viaConvoy": false,
+        "turn": 1
+    }
+]

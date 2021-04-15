@@ -1,67 +1,176 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { connect, useStore } from 'react-redux';
+import { withRouter, NavLink } from 'react-router-dom';
 
-import Alert from '../components/Alert';
-import Map from '../components/Map';
-import Loading from '../components/Loading';
-import { PageWrapper } from '../globals';
+import { BackButton } from '../components/Button';
+import Canvas from '../components/Canvas';
+import MobileContextMenu from '../components/MobileContextMenu';
+import Sidebar from '../components/Sidebar';
+import { initialOrderState } from '../game/BaseInterpreter';
+import DummyInterpreter from '../game/DummyInterpreter';
+import { initializeInterpreterFromState } from '../game/index';
+import { gameDetailActions } from '../store/gameDetail';
+import { gameActions } from '../store/games';
+import { orderActions } from '../store/orders';
+import {
+  selectCurrentTurnByGame,
+  selectFirstTurnByGame,
+} from '../store/selectors';
+import { surrenderActions } from '../store/surrenders';
+import { variantActions } from '../store/variants';
 
-import * as API from '../api';
+const NavLinkButton = BackButton.withComponent(NavLink);
+const HomeNavLinkButton = () => (
+  <NavLinkButton
+    exact
+    to="/"
+    css={`
+      position: fixed;
+      top: ${(p) => p.theme.space[2]};
+      left: ${(p) => p.theme.space[2]};
+    `}
+  >
+    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
+  </NavLinkButton>
+);
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props);
+const Game = (props) => {
+  const {
+    browser,
+    clearGameDetail,
+    currentTurn,
+    drawResponseLoading,
+    firstTurnId,
+    createOrder,
+    game,
+    location,
+    prepareGameDetail,
+    slug,
+    toggleSurrender,
+  } = props;
 
-    this.state = {
-      isLoaded: false,
-    };
+  const [order, setOrder] = useState(initialOrderState);
+  const [activeTurnId, setActiveTurn] = useState();
+
+  const state = useStore().getState();
+
+  useEffect(() => {
+    prepareGameDetail(slug);
+    return clearGameDetail;
+  }, [location.pathname]);
+
+  if (!game || !game.loaded) return null; // return <Loading />;
+
+  // Set the active turn to the current turn on initial load
+  if (!activeTurnId) {
+    setActiveTurn(currentTurn.id);
   }
 
-  componentDidMount() {
-    const { match } = this.props;
-    this.getGame(match.params.id);
-  }
+  const setTurn = (id) => {
+    /* Used by the TurnNav component to update the active turn */
+    if (id === 'FIRST') return setActiveTurn(firstTurnId);
+    if (id === 'CURRENT') return setActiveTurn(currentTurn.id);
+    return setActiveTurn(id);
+  };
 
-  getGame(id) {
-    const { headers } = this.props;
-    const GAMESTATEURL = API.GAMESTATEURL.replace('<int:game>', id);
-    fetch(GAMESTATEURL, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        console.error(`Couldn't find game ${id}`);
-        return null;
-      })
-      .then((json) => {
-        console.log(json);
-        this.setState({
-          game: json,
-          isLoaded: true,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        this.setState({
-          isLoaded: true,
-        });
+  const activeTurnIsCurrent = activeTurnId === currentTurn.id;
+
+  const gameInterpreter = activeTurnIsCurrent
+    ? initializeInterpreterFromState(
+        state,
+        currentTurn,
+        order,
+        () => createOrder(slug, currentTurn.id, order),
+        setOrder
+      )
+    : new DummyInterpreter();
+
+  const isMobile = browser.lessThan.small;
+
+  return (
+    <div>
+      <Canvas turn={activeTurnId} gameInterface={gameInterpreter} />
+      <Sidebar
+        activeTurnId={activeTurnId}
+        currentTurn={currentTurn}
+        drawResponseLoading={drawResponseLoading}
+        draws={currentTurn.draws}
+        game={game}
+        participants={game.participants}
+        setTurn={setTurn}
+        toggleSurrender={(id) => toggleSurrender(currentTurn.id, id)}
+        variant={game.variant}
+        // TODO: clean this up
+      />
+      {gameInterpreter.showContextMenu() && isMobile && (
+        <MobileContextMenu
+          onClickOption={gameInterpreter.onClickOption}
+          options={gameInterpreter.getContextMenuOptions()}
+        />
+      )}
+      <HomeNavLinkButton />
+    </div>
+  );
+};
+
+const mapStateToProps = (state, { match }) => {
+  const { slug } = match.params;
+  const { browser } = state;
+  const game = state.entities.gameDetail;
+
+  const firstTurnId = game.loaded
+    ? selectFirstTurnByGame(state, game.id)
+    : null;
+
+  const currentTurn = game.loaded
+    ? selectCurrentTurnByGame(state, game.id)
+    : null;
+
+  const { loading: drawResponseLoading } = state.entities.drawResponses;
+  return {
+    browser,
+    currentTurn,
+    drawResponseLoading,
+    firstTurnId,
+    game,
+    slug,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const prepareGameDetail = (gameSlug) => {
+    dispatch(variantActions.listVariants({})).then(() => {
+      let urlParams = { gameSlug };
+      dispatch(gameActions.getGameDetail({ urlParams })).then(({ payload }) => {
+        const { id: turnId } = payload.turns.find(
+          (t) => t.currentTurn === true
+        );
+        urlParams = { turnId };
+        dispatch(orderActions.listOrders({ urlParams }));
       });
-  }
+    });
+  };
+  const toggleSurrender = (turn, id) => {
+    if (id) dispatch(surrenderActions.cancelSurrender({ turn, id }));
+    else dispatch(surrenderActions.setSurrender({ turn }));
+  };
+  const createOrder = (gameSlug, turnId, data) => {
+    let urlParams = { gameSlug };
+    dispatch(orderActions.createOrder({ urlParams, data })).then(() => {
+      urlParams = { turnId };
+      dispatch(orderActions.listOrders({ urlParams }));
+    });
+  };
+  const clearGameDetail = () => dispatch(gameDetailActions.clearGameDetail());
 
-  render() {
-    const { isLoaded, game } = this.state;
-    if (!isLoaded) return <Loading />;
-    if (!game)
-      return (
-        <PageWrapper>
-          <Alert text="Game not found" type="error" />
-        </PageWrapper>
-      );
-    return <Map game={game} />;
-  }
-}
+  return {
+    clearGameDetail,
+    createOrder,
+    prepareGameDetail,
+    toggleSurrender,
+  };
+};
 
-export default withRouter(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Game));

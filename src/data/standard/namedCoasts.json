@@ -1,0 +1,68 @@
+[
+    {
+        "namedCoastMapDataId": 1,
+        "namedCoastUID": "standard-bulgaria-east-coast",
+        "abbreviation": "EC",
+        "textX": 1021.7999877929688,
+        "textY": 1109.0999755859375,
+        "pieceX": 1127.0,
+        "pieceY": 1067.0,
+        "dislodgedPieceX": 1114.5,
+        "dislodgedPieceY": 1054.5
+    },
+    {
+        "namedCoastMapDataId": 2,
+        "namedCoastUID": "standard-bulgaria-south-coast",
+        "abbreviation": "SC",
+        "textX": 1021.7999877929688,
+        "textY": 1109.0999755859375,
+        "pieceX": 1070.0,
+        "pieceY": 1140.0,
+        "dislodgedPieceX": 1057.5,
+        "dislodgedPieceY": 1127.5
+    },
+    {
+        "namedCoastMapDataId": 3,
+        "namedCoastUID": "standard-spain-north-coast",
+        "abbreviation": "NC",
+        "textX": 302.29998779296875,
+        "textY": 1119.699951171875,
+        "pieceX": 289.0,
+        "pieceY": 965.0,
+        "dislodgedPieceX": 276.5,
+        "dislodgedPieceY": 952.5
+    },
+    {
+        "namedCoastMapDataId": 4,
+        "namedCoastUID": "standard-spain-south-coast",
+        "abbreviation": "SC",
+        "textX": 302.29998779296875,
+        "textY": 1119.699951171875,
+        "pieceX": 291.0,
+        "pieceY": 1166.0,
+        "dislodgedPieceX": 278.5,
+        "dislodgedPieceY": 1153.5
+    },
+    {
+        "namedCoastMapDataId": 5,
+        "namedCoastUID": "standard-st-petersburg-north-coast",
+        "abbreviation": "NC",
+        "textX": 302.29998779296875,
+        "textY": 1119.699951171875,
+        "pieceX": 1218.0,
+        "pieceY": 222.0,
+        "dislodgedPieceX": 1205.5,
+        "dislodgedPieceY": 209.5
+    },
+    {
+        "namedCoastMapDataId": 6,
+        "namedCoastUID": "standard-st-petersburg-south-coast",
+        "abbreviation": "SC",
+        "textX": 302.29998779296875,
+        "textY": 1119.699951171875,
+        "pieceX": 1066.0,
+        "pieceY": 487.0,
+        "dislodgedPieceX": 1053.5,
+        "dislodgedPieceY": 474.5
+    }
+]
