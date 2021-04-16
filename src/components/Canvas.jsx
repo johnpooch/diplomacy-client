@@ -24,7 +24,7 @@ const getMinScale = () => {
   );
 };
 
-const Canvas = ({ browser, turn, gameInterface }) => {
+const Canvas = ({ browser, turn, gameInterpreter }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
@@ -109,13 +109,13 @@ const Canvas = ({ browser, turn, gameInterface }) => {
   }, []);
 
   const handleClick = (e) => {
-    if (!e.target) return gameInterface.reset();
+    if (!e.target) return gameInterpreter.reset();
 
     const { territory } = e.target.attrs;
     if (territory) {
-      return gameInterface.onClickTerritory(territory);
+      return gameInterpreter.onClickTerritory(territory);
     }
-    return gameInterface.reset();
+    return gameInterpreter.reset();
   };
 
   const isMobile = browser.lessThan.small;
@@ -192,14 +192,14 @@ const Canvas = ({ browser, turn, gameInterface }) => {
                 />
               </Layer>
               <Layer>
-                {gameInterface.showContextMenu() && !isMobile && (
+                {gameInterpreter.showContextMenu() && !isMobile && (
                   <Portal theme={theme}>
                     <ContextMenu
                       stageRef={stageRef}
-                      selectedTarget={gameInterface.source}
+                      selectedTarget={gameInterpreter.source}
                       mousePosition={mousePosition.current}
-                      onClickOption={gameInterface.onClickOption}
-                      options={gameInterface.getContextMenuOptions()}
+                      onClickOption={gameInterpreter.onClickOption}
+                      options={gameInterpreter.getContextMenuOptions()}
                     />
                   </Portal>
                 )}

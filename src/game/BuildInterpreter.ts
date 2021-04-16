@@ -3,7 +3,7 @@ import { PieceTypeChoices } from './choices';
 import { canBuild, getPieceTypeOptions } from './rules';
 import { OrderType, PieceType, Territory } from './types';
 
-export default class BuildPhaseInterface extends Interpreter {
+export default class BuildPhaseInterpreter extends Interpreter {
   canSelectTerritory(territory: Territory): boolean {
     return canBuild(territory, this.nation, this.getPiece(territory));
   }

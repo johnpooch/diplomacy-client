@@ -1,8 +1,9 @@
 import { fireEvent, waitFor, screen } from '@testing-library/react';
 
 import { errorMessages } from '../src/copy';
-import { urlConf } from '../src/urls';
 import { resetPasswordConfirm } from '../src/mocks/resolvers';
+import { urlConf } from '../src/urls';
+
 import {
   renderApp,
   successMessages,

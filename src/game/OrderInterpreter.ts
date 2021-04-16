@@ -12,7 +12,7 @@ import {
 } from './rules';
 import { OrderAttr, OrderType, Territory } from './types';
 
-export default class OrderInterface extends Interpreter {
+export default class OrderInterpreter extends Interpreter {
   canSelectTerritory(territory: Territory): boolean {
     if (!this.source) return canOrder(this.getPiece(territory), this.nation);
     if (this.order.type === OrderType.MOVE)
