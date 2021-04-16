@@ -74,8 +74,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
       });
     },
     resetPassword: (token, password) => {
-      const data = { password };
-      dispatch(authActions.resetPasswordConfirm({ token, data })).then(
+      const data = { token, password };
+      dispatch(authActions.resetPasswordConfirm({ data })).then(
         ({ error, payload }) => {
           if (error) {
             dispatch(errorActions.addError(payload));
