@@ -18,7 +18,7 @@ const ZOOM_FACTOR = 1.1;
 const ZOOM_MAX = 3;
 
 const getMinScale = () => {
-  return Math.max(
+  return Math.min(
     window.innerWidth / viewBox.width,
     window.innerHeight / viewBox.height
   );
@@ -35,10 +35,42 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
   const stageRef = useRef();
   const theme = useTheme();
 
-  const bounds = ({ x, y }) => {
+  const zoomBounds = ({ x, y }) => {
     return {
-      x: clamp(x, size.current.width - viewBox.width * scale.current, 0),
-      y: clamp(y, size.current.height - viewBox.height * scale.current, 0),
+      x: clamp(x, (size.current.width - viewBox.width * scale.current) / 2, 0),
+      y: clamp(
+        y,
+        (size.current.height - viewBox.height * scale.current) / 2,
+        0
+      ),
+    };
+  };
+
+  const getBound = (val, viewBoxVal, windowVal, stagePosVal, sc) => {
+    // If the map is smaller than the window, return stagePosVal, i.e. cannot drag.
+    if (viewBoxVal * sc <= windowVal) return stagePosVal;
+    // Get the size of the entire board
+    const fullSize = viewBoxVal * sc;
+    // Drag must be between 0 and the size of the board minus viewport
+    return clamp(val, -(fullSize - windowVal), 0);
+  };
+
+  const dragBounds = ({ x, y }) => {
+    return {
+      x: getBound(
+        x,
+        viewBox.width,
+        window.innerWidth,
+        stagePosition.current.x,
+        scale.current
+      ),
+      y: getBound(
+        y,
+        viewBox.height,
+        window.innerHeight,
+        stagePosition.current.y,
+        scale.current
+      ),
     };
   };
 
@@ -95,7 +127,7 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
 
       setHoverTarget(null);
       setScale(newScale);
-      setStagePosition(bounds(newPosition));
+      setStagePosition(zoomBounds(newPosition));
     };
 
     resize();
@@ -146,7 +178,7 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
           }}
           onClick={(event) => handleClick(event)}
           onTouchEnd={(event) => handleClick(event)}
-          dragBoundFunc={(pos) => bounds(pos)}
+          dragBoundFunc={(pos) => dragBounds(pos)}
           style={{ cursor: getCursor(), background: 'black' }}
         >
           <Provider store={store}>
