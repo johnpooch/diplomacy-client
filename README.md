@@ -26,6 +26,8 @@ In order to get the Mock Service Worker to behave when working over ngrok, you n
 
 Now you should be able to access the dev server on your device using the url given to you by ngrok.
 
+**Note** if you are using an iPhone, you can use [Safari to debug issues](https://www.browserstack.com/guide/how-to-debug-on-iphone).
+
 # Running the tests
 
 - `yarn test`
