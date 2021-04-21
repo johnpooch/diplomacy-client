@@ -21,7 +21,7 @@ Once you have set up ngrok as per the documentation, you can expose your dev cop
 In order to get the Mock Service Worker to behave when working over ngrok, you need to use https for the SERVICE_URI. On windows, start the dev server like this:
 
 ```
-($env:USE_MOCK_SERVICE_WORKER = 'true') -and ($env:SERVICE_URI = 'https://127.0.0.1:8082/') -and (yarn start)
+($env:USE_MOCK_SERVICE_WORKER = 'true') -and ($env:SERVICE_URI = 'https://127.0.0.1:8082/api/v1/') -and (yarn start)
 ```
 
 Now you should be able to access the dev server on your device using the url given to you by ngrok.
