@@ -20,12 +20,12 @@ const LoginForm = ({ errors, onAuth }) => {
       <FormWrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="username">
-            <LabelText>Username</LabelText>
+            <LabelText>Email or username</LabelText>
             <input
               type="text"
               id="username"
               name="username"
-              placeholder="Username"
+              placeholder="Email or username"
               autoComplete="username"
               ref={register}
               required
