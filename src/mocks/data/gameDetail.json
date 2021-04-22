@@ -3,7 +3,6 @@
     "id": 1,
     "name": "First turn",
     "slug": "first-turn",
-    "description": "This game has just started. Test user is playing as England.",
     "turns": [
         {
             "id": 1,
@@ -877,7 +876,6 @@
     "id": 3,
     "name": "Multiple turns",
     "slug": "multiple-turns",
-    "description": "Test user is playing as Austria-Hungary and must retreat one piece.",
     "turns": [
         {
             "id": 3,
