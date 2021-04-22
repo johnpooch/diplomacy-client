@@ -27,6 +27,7 @@ const Turn = ({ turn, ...rest }: Turn): ReactElement => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const TurnEnd = ({ turnEnd }: TurnEnd): ReactElement => {
   const d = new Date(turnEnd);
   const dateOptions: Intl.DateTimeFormatOptions = {
