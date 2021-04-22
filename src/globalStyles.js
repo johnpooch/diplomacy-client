@@ -46,6 +46,9 @@ export default createGlobalStyle`
       text-decoration: underline;
     }
   }
+  input {
+    font-size: ${(p) => p.theme.fontSizes[2]};
+  }
 
   .overlay {
     bottom: 0;

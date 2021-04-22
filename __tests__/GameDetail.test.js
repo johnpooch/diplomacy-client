@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import Konva from 'konva-node';
 
 import { errorMessages } from '../src/copy';
-import { urlConf } from '../src/urls';
 import {
   destroyOrder,
   finalizeOrders,
@@ -13,6 +12,8 @@ import {
   listOrders,
   listVariants,
 } from '../src/mocks/resolvers';
+import { urlConf } from '../src/urls';
+
 import {
   basicBeforeEach,
   logIn,

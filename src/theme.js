@@ -50,7 +50,7 @@ const fonts = {
   sans:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Oxygen-Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
 };
-const fontSizes = [9, 13, 15, 19, 36];
+const fontSizes = [9, 13, 16, 19, 36];
 const fontWeights = {
   body: 400,
   heading: 700,
