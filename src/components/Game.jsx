@@ -8,6 +8,7 @@ import { turnSelectors } from '../store/turns';
 import { userSelectors } from '../store/users';
 
 import Players from './Players';
+import { TurnEnd } from './Turn';
 
 const StyledGame = styled.div`
   background: ${(p) => p.theme.colors.muted};
@@ -60,6 +61,7 @@ const Game = ({ browser, game, participants, userNation, turn }) => {
       />
       <div className="details">
         <Status game={game} turn={turn} />
+        {turn && turn.turnEnd && <TurnEnd turnEnd={turn.turnEnd} />}
         <h2 className="name">{name}</h2>
         {!isMobile && <p className="description">{description}</p>}
       </div>
