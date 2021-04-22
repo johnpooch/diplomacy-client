@@ -1,24 +1,25 @@
 import { fireEvent, waitFor, screen } from '@testing-library/react';
 
+import { errorMessages } from '../src/copy';
+import { register } from '../src/mocks/resolvers';
+import { urlConf } from '../src/urls';
+
 import {
   renderApp,
   successMessages,
   testElements,
   useHandlers,
 } from './testUtils';
-import { urlConf } from '../src/urls';
-import { register } from '../src/mocks/resolvers';
-import { errorMessages } from '../src/copy';
 
 const startingUrl = '/register';
 
 describe('Register', () => {
-  it('redirect to log in and display message on success', async () => {
+  it('redirect to browse and display message on success', async () => {
     useHandlers([urlConf.register, register.success]);
     renderApp().push(startingUrl);
     fireEvent.click(testElements.registerButton());
-    // Expect to be redirected to login page and see success alert
-    await waitFor(() => testElements.loginButton());
+    await waitFor(() => screen.getByRole('alert'));
+    await waitFor(() => screen.getByTitle('home'));
     expect(screen.getByText(successMessages.register()));
   });
   it('display error when user with email already exists', async () => {

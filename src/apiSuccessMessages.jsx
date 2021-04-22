@@ -27,7 +27,8 @@ export const orderTypeMessageMap = {
 
 export default {
   [authActions.register.fulfilled]: {
-    getMessage: () => 'Account created! Log in to continue.',
+    getMessage: (_, { payload }) =>
+      `Account created! Welcome ${payload.user.username}`,
     pending: true,
   },
   [authActions.resetPassword.fulfilled]: {
