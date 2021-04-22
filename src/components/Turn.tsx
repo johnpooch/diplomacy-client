@@ -9,11 +9,15 @@ export type turnType = {
   previousTurn?: number;
 };
 
-interface ITurn extends HTMLAttributes<HTMLDivElement> {
+interface Turn extends HTMLAttributes<HTMLDivElement> {
   turn: turnType;
 }
 
-const Turn = ({ turn, ...rest }: ITurn): ReactElement => {
+interface TurnEnd {
+  turnEnd: string;
+}
+
+const Turn = ({ turn, ...rest }: Turn): ReactElement => {
   return (
     <div className="turn" {...rest}>
       <span className="phase">{turn.phaseDisplay}</span>,{' '}
@@ -21,6 +25,21 @@ const Turn = ({ turn, ...rest }: ITurn): ReactElement => {
       <span className="year">{turn.year}</span>
     </div>
   );
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const TurnEnd = ({ turnEnd }: TurnEnd): ReactElement => {
+  const d = new Date(turnEnd);
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+
+  const dateString = d.toLocaleString('en-UK', dateOptions);
+  return turnEnd ? <span>Deadline: {dateString}</span> : null;
 };
 
 export default Turn;
