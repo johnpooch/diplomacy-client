@@ -1,10 +1,11 @@
-import React from 'react';
-import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import { setupServer } from 'msw/node';
+import React from 'react';
+import { Provider } from 'react-redux';
 
+import apiSuccessMessages from '../src/apiSuccessMessages';
 import { errorMessages } from '../src/copy';
 import userData from '../src/mocks/data/user.json';
 import { restMethods } from '../src/mocks/handlers';
@@ -15,7 +16,6 @@ import { orderActions } from '../src/store/orders';
 import configureStore from '../src/store/store';
 import { urlConf } from '../src/urls';
 import App from '../src/views/App';
-import apiSuccessMessages from '../src/apiSuccessMessages';
 
 const server = setupServer();
 
@@ -131,8 +131,13 @@ export const successMessages = {
     apiSuccessMessages[orderActions.destroyOrder.fulfilled].getMessage(),
   finalizeOrders: () =>
     apiSuccessMessages[orderActions.finalizeOrders.fulfilled].getMessage(),
-  register: () =>
-    apiSuccessMessages[authActions.register.fulfilled].getMessage(),
+  register: () => {
+    const action = { payload: { user: { username: 'testuser' } } };
+    return apiSuccessMessages[authActions.register.fulfilled].getMessage(
+      {},
+      action
+    );
+  },
   resetPassword: (email) => {
     const action = createAction({ email });
     return apiSuccessMessages[authActions.resetPassword.fulfilled].getMessage(

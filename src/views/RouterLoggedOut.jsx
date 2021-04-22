@@ -68,8 +68,6 @@ const mapDispatchToProps = (dispatch, { history }) => {
       dispatch(authActions.register({ data })).then(({ error, payload }) => {
         if (error) {
           dispatch(errorActions.addError(payload));
-        } else {
-          history.push('/login');
         }
       });
     },
