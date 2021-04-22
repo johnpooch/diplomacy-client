@@ -8,6 +8,7 @@ const StyledGames = styled.div`
   grid-template-columns: auto;
   grid-row-gap: ${(p) => p.theme.space[5]};
   grid-column-gap: ${(p) => p.theme.space[5]};
+  width: 100%;
 `;
 
 const Games = ({ games }) => {

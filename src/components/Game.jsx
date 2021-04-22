@@ -49,9 +49,8 @@ const Status = ({ game, turn }) => {
   return <span>{message}</span>;
 };
 
-const Game = ({ browser, game, participants, userNation, turn }) => {
-  const { description, id, name, slug, status } = game;
-  const isMobile = browser.lessThan.small;
+const Game = ({ game, participants, userNation, turn }) => {
+  const { id, name, slug, status } = game;
   return (
     <StyledGame key={id} userNation={userNation}>
       <Link
@@ -63,7 +62,6 @@ const Game = ({ browser, game, participants, userNation, turn }) => {
         <Status game={game} turn={turn} />
         {turn && turn.turnEnd && <TurnEnd turnEnd={turn.turnEnd} />}
         <h2 className="name">{name}</h2>
-        {!isMobile && <p className="description">{description}</p>}
       </div>
       <div className="players">
         <Players game={game} participants={participants} />
@@ -73,7 +71,6 @@ const Game = ({ browser, game, participants, userNation, turn }) => {
 };
 
 const mapStateToProps = (state, { game }) => {
-  const { browser } = state;
   const { user } = state.auth;
   const { currentTurn } = game;
   const turn = turnSelectors.selectById(state, currentTurn);
@@ -81,7 +78,7 @@ const mapStateToProps = (state, { game }) => {
   let participants = game.participants.map((p) =>
     userSelectors.selectById(state, p)
   );
-  if (!currentTurn) return { browser, participants };
+  if (!currentTurn) return { participants };
   // TODO clean up this janky logic. Maybe memoize too
   const nations = currentTurn ? selectNationsByTurn(state, currentTurn) : null;
   const nsMap = nations.reduce(
@@ -92,7 +89,7 @@ const mapStateToProps = (state, { game }) => {
     const nation = nsMap[p.id];
     return { ...p, nation };
   });
-  return { browser, participants, turn, userNation };
+  return { participants, turn, userNation };
 };
 
 export default connect(mapStateToProps, null)(Game);

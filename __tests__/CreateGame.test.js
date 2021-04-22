@@ -1,13 +1,14 @@
 import { fireEvent, waitFor, screen } from '@testing-library/react';
 
-import { urlConf } from '../src/urls';
+import { errorMessages, infoMessages } from '../src/copy';
 import {
   createGame,
   getGameFilterChoices,
   listGames,
   listVariants,
 } from '../src/mocks/resolvers';
-import { errorMessages, infoMessages } from '../src/copy';
+import { urlConf } from '../src/urls';
+
 import {
   basicBeforeEach,
   fillForm,
@@ -27,7 +28,7 @@ describe('Create game', () => {
   it('redirect to pre-game on success', async () => {
     useHandlers([urlConf.createGame, createGame.success]);
     renderApp().push('/create-game');
-    fillForm('Name', 'Description');
+    fillForm('Name');
     fireEvent.click(testElements.createGameButton());
     await waitFor(() => screen.getByText(successMessages.createGame('Value')));
   });
@@ -46,7 +47,7 @@ describe('Create game', () => {
   it('display error on invalid name', async () => {
     useHandlers([urlConf.createGame, createGame.errorNameTooLong]);
     renderApp().push('/create-game');
-    fillForm('Name', 'Description');
+    fillForm('Name');
     fireEvent.click(testElements.createGameButton());
     await waitFor(() => screen.getByText(errorMessages.createGameNameTooLong));
   });
@@ -54,7 +55,7 @@ describe('Create game', () => {
   it('display error on server error', async () => {
     useHandlers([urlConf.createGame, createGame.errorServerError]);
     renderApp().push('/create-game');
-    fillForm('Name', 'Description');
+    fillForm('Name');
     fireEvent.click(testElements.createGameButton());
     await waitFor(() => screen.getByText(errorMessages.internalServerError));
   });
