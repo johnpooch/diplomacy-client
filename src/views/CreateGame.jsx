@@ -32,20 +32,6 @@ const CreateGame = ({ createGame, errors }) => {
             />
             <FieldError error={errors.name} />
           </label>
-          <label htmlFor="description">
-            <LabelText>Description</LabelText>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              placeholder="Description"
-              autoComplete="description"
-              ref={register}
-              required
-              rows={1}
-            />
-            <FieldError error={errors.description} />
-          </label>
           <GridTemplate templateColumns="2fr 1fr">
             <Button type="submit">Create game</Button>
             <SecondaryButton as={NavLink} to="/">

@@ -68,14 +68,12 @@ const mapDispatchToProps = (dispatch, { history }) => {
       dispatch(authActions.register({ data })).then(({ error, payload }) => {
         if (error) {
           dispatch(errorActions.addError(payload));
-        } else {
-          history.push('/login');
         }
       });
     },
     resetPassword: (token, password) => {
-      const data = { password };
-      dispatch(authActions.resetPasswordConfirm({ token, data })).then(
+      const data = { token, password };
+      dispatch(authActions.resetPasswordConfirm({ data })).then(
         ({ error, payload }) => {
           if (error) {
             dispatch(errorActions.addError(payload));

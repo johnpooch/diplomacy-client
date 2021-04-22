@@ -91,7 +91,7 @@ const Game = (props) => {
 
   return (
     <div>
-      <Canvas turn={activeTurnId} gameInterface={gameInterpreter} />
+      <Canvas turn={activeTurnId} gameInterpreter={gameInterpreter} />
       <Sidebar
         activeTurnId={activeTurnId}
         currentTurn={currentTurn}

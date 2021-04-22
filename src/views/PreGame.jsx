@@ -34,8 +34,6 @@ const PreGame = (props) => {
 
   if (!game) return null;
 
-  const { description } = game;
-
   const handleSubmit = (e) => {
     e.preventDefault();
     joinGame(token, game.slug, Boolean(!userJoined));
@@ -48,7 +46,6 @@ const PreGame = (props) => {
   return (
     <Page title={game ? game.name : null}>
       <Grid columns={1}>
-        {description ? <p>{description}</p> : null}
         <Players game={game} participants={participants} />
         <FormWrapper>
           <Form onSubmit={handleSubmit}>

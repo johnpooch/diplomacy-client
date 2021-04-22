@@ -15,7 +15,7 @@ const ResetPassword = ({ errors, history, location, onAuth }) => {
   if (!token) history.push('/');
 
   const onSubmit = ({ password }) => {
-    onAuth(password);
+    onAuth(token, password);
   };
 
   return (

@@ -12,7 +12,7 @@ import { BaseButton } from './Button';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
-import Turn from './Turn';
+import Turn, { TurnEnd } from './Turn';
 import TurnNav from './TurnNav';
 
 const StyledNation = styled.div`
@@ -125,7 +125,7 @@ const Sidebar = ({
   variant,
 }) => {
   const [activeTab, setActiveTab] = useState(null);
-  const { draws } = currentTurn;
+  const { draws, turnEnd } = currentTurn;
 
   const renderPane = () => {
     switch (activeTab) {
@@ -161,6 +161,11 @@ const Sidebar = ({
         <Nation nation={userNation} />
         <Turn turn={currentTurn} />
       </div>
+      {turnEnd && (
+        <div className="turnend">
+          <TurnEnd turnEnd={turnEnd} />
+        </div>
+      )}
       <TurnNav setTurn={setTurn} turn={activeTurn} />
       <div className="tabs">
         <Tab

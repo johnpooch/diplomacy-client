@@ -73,7 +73,6 @@ export const LabelText = styled.span`
 `;
 
 const StyledFormWrapper = styled.div`
-  font-size: ${(p) => p.theme.fontSizes[1]};
   padding: ${(p) => p.theme.space[4]};
   width: 100%;
 

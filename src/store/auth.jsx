@@ -50,10 +50,23 @@ const authSlice = createSlice({
     },
     [login.rejected]: () => {
       return {
+        loading: false,
         loggedIn: false,
         user: {},
         token: null,
       };
+    },
+    [register.pending]: (state) => {
+      state.loading = true;
+    },
+    [register.fulfilled]: (state, action) => {
+      const { user, token } = action.payload;
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', JSON.stringify(token));
+      return { user, token, loggedIn: true, loading: false };
+    },
+    [register.rejected]: (state) => {
+      state.loading = false;
     },
   },
 });
