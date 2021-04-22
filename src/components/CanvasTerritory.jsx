@@ -8,7 +8,7 @@ import viewBox from '../data/standard/viewBox.json';
 import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
 
 const FILL_PATTERN_SCALE = 0.15;
-const FILL_PATTERN_OPACITY = 0.1;
+const FILL_PATTERN_OPACITY = 0.15;
 const STROKE_WIDTH = 2;
 const SUPPLY_CENTER_SIZE = 3;
 
@@ -72,7 +72,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
           data={path}
           fillPatternImage={stripesImage}
           fillPatternRotation={45}
-          fill_Pattern_Scale={{ x: FILL_PATTERN_SCALE, y: FILL_PATTERN_SCALE }}
+          fillPatternScale={{ x: FILL_PATTERN_SCALE, y: FILL_PATTERN_SCALE }}
           listening={false}
           opacity={FILL_PATTERN_OPACITY}
         />
