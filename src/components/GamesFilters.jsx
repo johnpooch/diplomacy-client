@@ -40,16 +40,12 @@ const GamesFilters = ({ choices, listGames, getChoices }) => {
   const { register, handleSubmit } = useForm();
   const [open, setOpen] = useState(false);
 
-  const onSubmit = (data) => {
-    listGames(data);
-  };
-
   const { error } = choices;
 
   const filters = error ? (
     <ComponentError error={error} />
   ) : (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(listGames)}>
       <Grid
         columns={4}
         css={`
@@ -141,8 +137,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   const getChoices = () => dispatch(choiceActions.getGameFilterChoices({}));
-  const listGames = (token, queryParams) =>
-    dispatch(gameActions.listGames({ token, queryParams }));
+  const listGames = (data) => {
+    dispatch(gameActions.listGames({ queryParams: data }));
+  };
   return { getChoices, listGames };
 };
 

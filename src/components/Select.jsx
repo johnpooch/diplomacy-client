@@ -4,7 +4,7 @@ import { LabelText } from './Form';
 
 const EMPTY_OPTION_STRING = '-------';
 
-const Select = (props) => {
+const Select = React.forwardRef((props, ref) => {
   const { name, label, value, onChange, options, required } = props;
 
   if (!options) return null;
@@ -18,6 +18,7 @@ const Select = (props) => {
         value={value}
         onChange={onChange}
         options={options}
+        ref={ref}
       >
         {required ? null : (
           <option key="empty" value="">
@@ -32,6 +33,6 @@ const Select = (props) => {
       </select>
     </label>
   );
-};
+});
 
 export default Select;
