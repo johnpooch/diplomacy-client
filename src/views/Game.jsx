@@ -1,10 +1,7 @@
-import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { connect, useStore } from 'react-redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-import { BackButton } from '../components/Button';
 import Canvas from '../components/Canvas';
 import MobileContextMenu from '../components/MobileContextMenu';
 import Sidebar from '../components/Sidebar';
@@ -20,21 +17,6 @@ import {
 } from '../store/selectors';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
-
-const NavLinkButton = BackButton.withComponent(NavLink);
-const HomeNavLinkButton = () => (
-  <NavLinkButton
-    exact
-    to="/"
-    css={`
-      position: fixed;
-      top: ${(p) => p.theme.space[2]};
-      left: ${(p) => p.theme.space[2]};
-    `}
-  >
-    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
-  </NavLinkButton>
-);
 
 const Game = (props) => {
   const {
@@ -110,7 +92,6 @@ const Game = (props) => {
           options={gameInterpreter.getContextMenuOptions()}
         />
       )}
-      <HomeNavLinkButton />
     </div>
   );
 };

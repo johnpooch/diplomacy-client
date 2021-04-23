@@ -31,6 +31,10 @@ export const Button = styled(BaseButton)`
   }
 `;
 
+export const SmallButton = styled(Button)`
+  padding: ${(p) => `${p.theme.space[1]} ${p.theme.space[2]}`};
+`;
+
 export const SecondaryButton = styled(Button)`
   background: ${(p) => p.theme.colors.secondary};
 `;
@@ -40,14 +44,3 @@ export const IconButton = ({ icon, size = '1x', ...props }) => (
     <FontAwesomeIcon className="icon" icon={icon} size={size} />
   </BaseButton>
 );
-
-export const BackButton = styled(IconButton)`
-  background: ${(p) => p.theme.colors.text};
-  border-radius: 50%;
-  color: ${(p) => p.theme.colors.secondary};
-
-  &:hover {
-    /* background: ${(p) => p.theme.colors.primary}; */
-    color: ${(p) => p.theme.colors.primary};
-  }
-`;

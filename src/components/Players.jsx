@@ -10,6 +10,7 @@ const StyledPlayer = styled.div`
   column-gap: ${(p) => p.theme.space[1]};
   grid-template-columns: auto auto;
   justify-content: flex-start;
+  align-items: center;
 
   .username {
     font-weight: ${(props) =>

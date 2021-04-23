@@ -1,18 +1,54 @@
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
-import { faHistory } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { selectUserNationByTurn } from '../store/selectors';
 import { turnSelectors } from '../store/turns';
 
-import { BaseButton } from './Button';
-import Nation from './Nation';
+import { SmallButton, BaseButton } from './Button';
+import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
 import TurnNav from './TurnNav';
+
+const StyledNation = styled.div`
+  display: flex;
+  gap: ${(p) => p.theme.space[2]};
+  align-items: center;
+
+  .name {
+    font-weight: ${(p) => p.theme.fontWeights.display};
+    font-size: ${(p) => p.theme.fontSizes[3]};
+  }
+`;
+
+const Nation = ({ nation }) => {
+  return nation ? (
+    <StyledNation nation={nation.nation}>
+      <Flag nation={nation} size={1} />
+      <span className="name">{nation.name}</span>
+    </StyledNation>
+  ) : null;
+};
+
+const BackButton = () => (
+  <SmallButton
+    as={NavLink}
+    exact
+    to="/"
+    css={`
+      display: flex;
+      column-gap: ${(p) => p.theme.space[1]};
+    `}
+  >
+    <FontAwesomeIcon icon={faArrowLeft} size="1x" />
+    <span>Back</span>
+  </SmallButton>
+);
 
 const StyledTab = styled(BaseButton)`
   align-items: center;
@@ -36,24 +72,22 @@ const StyledTab = styled(BaseButton)`
   }
 `;
 
-const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
-  return (
-    <StyledTab
-      className="tab"
-      onClick={(e) => {
-        const target = e.target.closest('.tab');
-        setActiveTab(
-          target.dataset.type === activeTab ? null : target.dataset.type
-        );
-      }}
-      data-active={activeTab === type}
-      data-type={type}
-      title={label}
-    >
-      <FontAwesomeIcon icon={icon} size="2x" />
-    </StyledTab>
-  );
-};
+const Tab = ({ activeTab, icon, label, setActiveTab, type }) => (
+  <StyledTab
+    className="tab"
+    onClick={(e) => {
+      const target = e.target.closest('.tab');
+      setActiveTab(
+        target.dataset.type === activeTab ? null : target.dataset.type
+      );
+    }}
+    data-active={activeTab === type}
+    data-type={type}
+    title={label}
+  >
+    <FontAwesomeIcon icon={icon} size="2x" />
+  </StyledTab>
+);
 
 const StyledSidebar = styled.aside`
   background: ${(p) => p.theme.colors.text};
@@ -68,10 +102,13 @@ const StyledSidebar = styled.aside`
   width: 100%;
 
   .details {
-    color: ${(p) => p.theme.colors.muted};
     border-bottom: ${(p) => p.theme.borderWidths[0]} solid;
     border-color: ${(p) =>
       p.nation ? p.theme.colors.nations[p.nation] : p.theme.colors.text};
+    color: ${(p) => p.theme.colors.muted};
+    column-gap: ${(p) => p.theme.space[2]};
+    display: flex;
+    justify-content: space-between;
     padding: ${(p) => p.theme.space[2]};
   }
 
@@ -138,6 +175,7 @@ const Sidebar = ({
     <StyledSidebar isTabOpen={!!activeTab} nation={userNation.nation}>
       <div className="details">
         <Nation nation={userNation} />
+        <BackButton />
       </div>
       <TurnNav setTurn={setTurn} turn={activeTurn} />
       <div className="tabs">

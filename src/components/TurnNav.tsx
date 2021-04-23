@@ -1,8 +1,8 @@
 import {
-  faAngleDoubleLeft,
-  faAngleDoubleRight,
-  faAngleLeft,
-  faAngleRight,
+  faFastBackward,
+  faFastForward,
+  faStepBackward,
+  faStepForward,
 } from '@fortawesome/free-solid-svg-icons';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
@@ -49,26 +49,26 @@ const TurnNav = ({ setTurn, turn }: ITurnNav): ReactElement => {
   return (
     <StyledTurnNav>
       <IconButton
-        icon={faAngleDoubleLeft}
+        icon={faFastBackward}
         onClick={() => setTurn('FIRST')}
         disabled={Boolean(!turn.previousTurn)}
         title={titles.FIRST}
       />
       <IconButton
-        icon={faAngleLeft}
+        icon={faStepBackward}
         onClick={() => setTurn(turn.previousTurn)}
         disabled={Boolean(!turn.previousTurn)}
         title={titles.PREVIOUS}
       />
       <Turn turn={turn} title="Active turn" />
       <IconButton
-        icon={faAngleRight}
+        icon={faStepForward}
         onClick={() => setTurn(turn.nextTurn)}
         disabled={Boolean(!turn.nextTurn)}
         title={titles.NEXT}
       />
       <IconButton
-        icon={faAngleDoubleRight}
+        icon={faFastForward}
         onClick={() => setTurn('CURRENT')}
         disabled={Boolean(!turn.nextTurn)}
         title={titles.CURRENT}
