@@ -72,12 +72,12 @@ const Navigation = () => {
     <Header>
       <div className="inner-div">
         <nav className="primary-nav">
-          <NavLink exact to="/" title="home">
+          <NavLink exact to="/" title="Home">
             <Logo />
           </NavLink>
         </nav>
         <nav className="secondary-nav">
-          <NavLink exact to="/create-game" title="create game">
+          <NavLink exact to="/create-game" title="Create game">
             <FontAwesomeIcon icon={faPlusCircle} size="lg" />
           </NavLink>
           <UserDropdownMenu />

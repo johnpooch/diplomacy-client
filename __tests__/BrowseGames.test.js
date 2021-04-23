@@ -2,13 +2,14 @@ import { fireEvent, waitFor, screen } from '@testing-library/react';
 import Konva from 'konva-node';
 
 import { infoMessages } from '../src/copy';
-import { urlConf } from '../src/urls';
 import {
   getGameFilterChoices,
   getGameDetail,
   listGames,
   listVariants,
 } from '../src/mocks/resolvers';
+import { urlConf } from '../src/urls';
+
 import {
   basicBeforeEach,
   logIn,
@@ -30,7 +31,7 @@ const activeGameTitle = 'First turn';
 describe('Browse Games', () => {
   it('redirect user to log in and remove from storage on log out', async () => {
     renderApp();
-    fireEvent.click(screen.getByTitle('user menu'));
+    fireEvent.click(screen.getByTitle('Menu'));
     const logoutButton = await waitFor(() => screen.getByText('Logout'));
     fireEvent.click(logoutButton);
     await waitFor(() => testElements.loginButton());
@@ -43,8 +44,8 @@ describe('Browse Games', () => {
       [urlConf.getGameFilterChoices, getGameFilterChoices.success]
     );
     renderApp();
-    screen.getByTitle('home');
-    screen.getByTitle('create game');
+    screen.getByTitle('Home');
+    screen.getByTitle('Create game');
   });
 
   it('display pending game correctly', async () => {

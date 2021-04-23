@@ -3,7 +3,6 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import Konva from 'konva-node';
 
-import { urlConf } from '../src/urls';
 import { titles } from '../src/components/TurnNav';
 import {
   getGameDetail,
@@ -11,7 +10,15 @@ import {
   listOrders,
   listVariants,
 } from '../src/mocks/resolvers';
-import { basicBeforeEach, logIn, renderApp, useHandlers } from './testUtils';
+import { urlConf } from '../src/urls';
+
+import {
+  basicBeforeEach,
+  logIn,
+  renderApp,
+  useHandlers,
+  testElements,
+} from './testUtils';
 
 beforeEach(() => {
   basicBeforeEach();
@@ -48,6 +55,8 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/first-turn');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
+
     const buttons = await getNavButtons();
     Object.values(buttons).forEach((b) =>
       expect(b).toHaveAttribute('disabled')
@@ -62,6 +71,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     let buttons = await getNavButtons();
     await checkPhase('Retreat', 'Fall', '1901');
@@ -88,6 +98,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     let buttons = await getNavButtons();
 
@@ -109,6 +120,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     const buttons = await getNavButtons();
 
@@ -127,6 +139,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     const buttons = await getNavButtons();
 
