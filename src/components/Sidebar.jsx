@@ -62,13 +62,10 @@ const StyledTab = styled(BaseButton)`
   position: relative;
   width: 100%;
 
+  &:hover,
   &[data-active='true'] {
-    background: ${(p) => p.theme.colors.primary};
+    background: ${(p) => p.theme.colors.text};
     color: white;
-  }
-
-  &:hover {
-    background: ${(p) => p.theme.colors.primary};
   }
 `;
 
@@ -92,17 +89,16 @@ const Tab = ({ activeTab, icon, label, setActiveTab, type }) => (
 const StyledSidebar = styled.aside`
   background: ${(p) => p.theme.colors.text};
   border-bottom-left-radius: ${(p) => (p.isTabOpen ? '0' : p.theme.radii[0])};
-  width: ${(p) => p.theme.sizes.sidebarMaxWidth};
-  position: absolute;
-  bottom: 0;
-
   display: flex;
   flex-direction: column;
+  max-width: 100vw;
   position: absolute;
-  width: 100%;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
 
   .details {
-    border-bottom: ${(p) => p.theme.borderWidths[0]} solid;
+    border-bottom: ${(p) => p.theme.borderWidths[1]} solid;
     border-color: ${(p) =>
       p.nation ? p.theme.colors.nations[p.nation] : p.theme.colors.text};
     color: ${(p) => p.theme.colors.muted};
@@ -121,10 +117,9 @@ const StyledSidebar = styled.aside`
   }
 
   @media only screen and (min-width: ${(p) => p.theme.breakpoints[0]}) {
-    right: 0;
+    width: ${(p) => p.theme.sizes.sidebarWidth};
     top: 0;
     bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
-    width: 320px;
   }
 `;
 
@@ -177,7 +172,6 @@ const Sidebar = ({
         <Nation nation={userNation} />
         <BackButton />
       </div>
-      <TurnNav setTurn={setTurn} turn={activeTurn} />
       <div className="tabs">
         <Tab
           activeTab={activeTab}
@@ -199,9 +193,9 @@ const Sidebar = ({
           label="Orders"
           type="orders"
           icon={faFlag}
-          notificationCount={4}
         />
       </div>
+      {activeTab ? <TurnNav setTurn={setTurn} turn={activeTurn} /> : null}
       {renderPane()}
     </StyledSidebar>
   );

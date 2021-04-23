@@ -18,6 +18,7 @@ const StyledTurnNav = styled.div`
   grid-template-columns: 1fr 1fr 4fr 1fr 1fr;
   padding: ${(p) => p.theme.space[2]};
   color: white;
+  background: ${(p) => p.theme.colors.text};
 
   button {
     background: ${(p) => p.theme.colors.muted};
