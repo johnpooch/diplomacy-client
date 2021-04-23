@@ -1,4 +1,8 @@
-import { getNextOrderAttribute, orderComplete } from './rules';
+import {
+  getNextOrderAttribute,
+  getTargetCoastOptions,
+  orderComplete,
+} from './rules';
 import { Order, OrderAttr, Piece, Territory, NamedCoast } from './types';
 
 export const initialOrderState: Order = {
@@ -75,6 +79,13 @@ export default abstract class Interpreter {
   abstract getContextMenuOptions(): (string | boolean)[][];
 
   abstract canSelectTerritory(territory: Territory): boolean;
+
+  getTargetCoastChoices(territory: Territory): string[][] {
+    return getTargetCoastOptions(territory, this.namedCoasts).map((t) => [
+      t.id,
+      t.name,
+    ]);
+  }
 
   mustSpecifyTargetCoast(): boolean {
     return false;

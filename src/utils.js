@@ -78,10 +78,15 @@ export const getErrors = (errors, ...types) => {
   return mergedErrors;
 };
 
-export const getTerritoryPieceCoords = (territory, retreating = false) =>
-  retreating
-    ? [territory.dislodgedPieceX, territory.dislodgedPieceY]
-    : [territory.pieceX, territory.pieceY];
+export const getTerritoryPieceCoords = (
+  territory,
+  retreating = false,
+  namedCoast = null
+) => {
+  if (retreating) return [territory.dislodgedPieceX, territory.dislodgedPieceY];
+  if (namedCoast) return [namedCoast.pieceX, namedCoast.pieceY];
+  return [territory.pieceX, territory.pieceY];
+};
 
 export const onClickOutside = (ref, func) => {
   /* Calls the given function when the user clicks outside of the given component (ref) */

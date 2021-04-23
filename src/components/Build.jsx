@@ -4,6 +4,7 @@ import { Circle, Group, Path } from 'react-konva';
 import { connect } from 'react-redux';
 import { useTheme } from 'styled-components';
 
+import namedCoastData from '../data/standard/namedCoasts.json';
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
 
@@ -16,12 +17,12 @@ const CIRCLESTROKEWIDTH = 2;
 const PATH_STROKE_WIDTH = 0.25;
 
 // TODO dry this and CanvasPiece
-const Build = ({ nation, source, pieceType }) => {
+const Build = ({ namedCoast, nation, source, pieceType }) => {
   const theme = useTheme();
   const { icons } = theme;
   const iconWidth = icons[pieceType].icon[0] * ICONSCALES[pieceType];
   const iconHeight = icons[pieceType].icon[1] * ICONSCALES[pieceType];
-  const [sx, sy] = getTerritoryPieceCoords(source);
+  const [sx, sy] = getTerritoryPieceCoords(source, null, namedCoast);
 
   const circleStroke = darken(0.2, theme.colors.nations[nation]);
   return (
@@ -53,8 +54,9 @@ const Build = ({ nation, source, pieceType }) => {
 const mapStateToProps = (state, { order }) => {
   const selectTerritoryById = makeSelectTerritoryById();
   const source = selectTerritoryById(state, order.source);
-  const { nation, pieceType } = order;
-  return { nation, source, pieceType };
+  const { nation, pieceType, targetCoast } = order;
+  const namedCoast = namedCoastData.find((ncd) => ncd.id === targetCoast);
+  return { namedCoast, nation, source, pieceType };
 };
 
 export default connect(mapStateToProps, null)(Build);

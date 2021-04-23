@@ -24,7 +24,7 @@ const getMinScale = () => {
   );
 };
 
-const Canvas = ({ browser, turn, gameInterpreter }) => {
+const Canvas = ({ browser, order, turn, gameInterpreter }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
   const [mousePosition, setMousePosition] = useReferredState({ x: 0, y: 0 });
@@ -173,6 +173,7 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
                   hoverId={
                     hoverTarget.current ? hoverTarget.current.attrs.id : null
                   }
+                  order={order}
                   turn={turn}
                 />
               </Layer>

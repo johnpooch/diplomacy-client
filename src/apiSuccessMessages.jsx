@@ -1,3 +1,5 @@
+import namedCoastData from './data/standard/namedCoasts.json';
+import { PieceTypeChoices } from './game/choices';
 import { OrderType } from './game/types';
 import { authActions } from './store/auth';
 import { gameActions } from './store/games';
@@ -7,14 +9,24 @@ import { selectPieceByTerritory } from './store/selectors';
 import { territorySelectors } from './store/territories';
 import { turnSelectors } from './store/turns';
 
+const getTargetCoastMessage = (targetCoast) => {
+  return targetCoast ? ` (${targetCoast.abbreviation})` : '';
+};
+
 const holdMessage = ({ piece, source, type }) =>
-  `${piece.type} ${source.name} will ${type}`;
-const moveMessage = ({ piece, source, target, type }) =>
-  `${piece.type} ${source.name} will ${type} to ${target.name}`;
+  `${PieceTypeChoices[piece.type]} ${source.name} will ${type}`;
+const moveMessage = ({ piece, source, target, targetCoast, type }) =>
+  `${PieceTypeChoices[piece.type]} ${source.name} will ${type} to ${
+    target.name
+  }${getTargetCoastMessage(targetCoast)}`;
 const supportMessage = ({ aux, piece, source, target, type }) =>
-  `${piece.type} ${source.name} will ${type} ${aux.name} to ${target.name}`;
-const buildMessage = ({ source, pieceType }) =>
-  `${pieceType} will be built in ${source.name}`;
+  `${PieceTypeChoices[piece.type]} ${source.name} will ${type} ${aux.name} to ${
+    target.name
+  }`;
+const buildMessage = ({ source, pieceType, targetCoast }) =>
+  `${PieceTypeChoices[pieceType]} will be built in ${
+    source.name
+  }${getTargetCoastMessage(targetCoast)}`;
 
 export const orderTypeMessageMap = {
   [OrderType.HOLD]: holdMessage,
@@ -73,6 +85,9 @@ export default {
       const aux = territorySelectors.selectById(state, data.aux);
       const source = territorySelectors.selectById(state, data.source);
       const target = territorySelectors.selectById(state, data.target);
+      const targetCoast = namedCoastData.find(
+        (ncd) => ncd.id === data.targetCoast
+      );
       const piece = selectPieceByTerritory(state, source.id, turn.id);
       return orderTypeMessageMap[type]({
         aux,
@@ -80,6 +95,7 @@ export default {
         piece,
         pieceType,
         target,
+        targetCoast,
         type,
       });
     },

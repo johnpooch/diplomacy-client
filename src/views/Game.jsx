@@ -91,7 +91,11 @@ const Game = (props) => {
 
   return (
     <div>
-      <Canvas turn={activeTurnId} gameInterpreter={gameInterpreter} />
+      <Canvas
+        turn={activeTurnId}
+        gameInterpreter={gameInterpreter}
+        order={order}
+      />
       <Sidebar
         activeTurnId={activeTurnId}
         currentTurn={currentTurn}

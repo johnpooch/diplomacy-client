@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled, { useTheme } from 'styled-components';
 
+import namedCoastData from '../data/standard/namedCoasts.json';
 import { OrderType } from '../game/types';
 import { orderActions } from '../store/orders';
 import { selectPieceByTerritory } from '../store/selectors';
@@ -16,13 +17,16 @@ const StyledOrderText = styled.div`
   }
 `;
 
-const BuildOrderText = ({ pieceType, source, type }) => {
+const BuildOrderText = ({ pieceType, source, targetCoast, type }) => {
   return (
     <StyledOrderText className="text">
       <span className="action">{type}</span>{' '}
       <span className="pieceType">{pieceType}</span>{' '}
       <span className="action">in</span>{' '}
       <span className="source">{source}</span>{' '}
+      {targetCoast && (
+        <span className="targetCoast">({targetCoast.abbreviation})</span>
+      )}{' '}
     </StyledOrderText>
   );
 };
@@ -36,12 +40,15 @@ const HoldOrderText = ({ source, type }) => {
   );
 };
 
-const MoveOrderText = ({ source, target, type }) => {
+const MoveOrderText = ({ source, target, targetCoast, type }) => {
   return (
     <StyledOrderText className="text">
       <span className="source">{source}</span>{' '}
       <span className="action">{type} to</span>{' '}
-      <span className="target">{target}</span>
+      <span className="target">{target}</span>{' '}
+      {targetCoast && (
+        <span className="targetCoast">({targetCoast.abbreviation})</span>
+      )}{' '}
     </StyledOrderText>
   );
 };
@@ -74,6 +81,7 @@ const OrderItem = ({
   pieceType,
   source,
   target,
+  targetCoast,
   type,
 }) => {
   const theme = useTheme();
@@ -86,6 +94,7 @@ const OrderItem = ({
       pieceType={pieceType}
       source={source}
       target={target}
+      targetCoast={targetCoast}
       type={type}
     />
   );
@@ -117,8 +126,11 @@ const mapStateToProps = (state, { currentTurn, order }) => {
   const aux = getTerritoryName(state, order.aux);
   const source = getTerritoryName(state, order.source);
   const target = getTerritoryName(state, order.target);
+  const targetCoast = namedCoastData.find(
+    (ncd) => ncd.id === order.targetCoast
+  );
   const piece = selectPieceByTerritory(state, order.source, currentTurn.id);
-  return { aux, loading, piece, pieceType, source, target, type };
+  return { aux, loading, piece, pieceType, source, target, targetCoast, type };
 };
 
 const mapDispatchToProps = (dispatch, { order, currentTurn }) => {
