@@ -20,15 +20,19 @@ import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
 
 const GameWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   height: 100vh;
   width: 100vw;
+
+  @media only screen and (max-width: ${(p) => p.theme.breakpoints[1]}) {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
 `;
 
 const CanvasWrapper = styled.div`
-  flex-grow: 1;
-  overflow-y: auto;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
 `;
 
 const Game = (props) => {
