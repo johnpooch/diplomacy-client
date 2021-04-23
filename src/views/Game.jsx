@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useStore } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 import Canvas from '../components/Canvas';
 import MobileContextMenu from '../components/MobileContextMenu';
@@ -17,6 +18,18 @@ import {
 } from '../store/selectors';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
+
+const GameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+`;
+
+const CanvasWrapper = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+`;
 
 const Game = (props) => {
   const {
@@ -72,8 +85,7 @@ const Game = (props) => {
   const isMobile = browser.lessThan.small;
 
   return (
-    <div>
-      <Canvas turn={activeTurnId} gameInterpreter={gameInterpreter} />
+    <GameWrapper>
       <Sidebar
         activeTurnId={activeTurnId}
         currentTurn={currentTurn}
@@ -86,13 +98,16 @@ const Game = (props) => {
         variant={game.variant}
         // TODO: clean this up
       />
+      <CanvasWrapper>
+        <Canvas turn={activeTurnId} gameInterpreter={gameInterpreter} />
+      </CanvasWrapper>
       {gameInterpreter.showContextMenu() && isMobile && (
         <MobileContextMenu
           onClickOption={gameInterpreter.onClickOption}
           options={gameInterpreter.getContextMenuOptions()}
         />
       )}
-    </div>
+    </GameWrapper>
   );
 };
 

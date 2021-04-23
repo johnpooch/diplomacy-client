@@ -17,13 +17,6 @@ import Portal from './Portal';
 const ZOOM_FACTOR = 1.1;
 const ZOOM_MAX = 3;
 
-const getMinScale = () => {
-  return Math.min(
-    window.innerWidth / viewBox.width,
-    window.innerHeight / viewBox.height
-  );
-};
-
 const Canvas = ({ browser, turn, gameInterpreter }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
@@ -34,6 +27,16 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
 
   const stageRef = useRef();
   const theme = useTheme();
+
+  const getContainerWidth = () => stageRef.current.container().offsetWidth;
+  const getContainerHeight = () => stageRef.current.container().offsetHeight;
+
+  const getMinScale = () => {
+    return Math.min(
+      getContainerWidth() / viewBox.width,
+      getContainerHeight() / viewBox.height
+    );
+  };
 
   const zoomBounds = ({ x, y }) => {
     return {
@@ -60,14 +63,14 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
       x: getBound(
         x,
         viewBox.width,
-        window.innerWidth,
+        getContainerWidth(),
         stagePosition.current.x,
         scale.current
       ),
       y: getBound(
         y,
         viewBox.height,
-        window.innerHeight,
+        getContainerHeight(),
         stagePosition.current.y,
         scale.current
       ),
@@ -86,8 +89,8 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
       const newScale = getMinScale();
 
       const newSize = {
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: getContainerWidth(),
+        height: getContainerHeight(),
       };
 
       const newPosition = {
@@ -132,10 +135,12 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
 
     resize();
     window.addEventListener('resize', resize);
+    window.addEventListener('orientationchange', resize);
     window.addEventListener('wheel', zoom.bind(scale));
 
     return () => {
       window.removeEventListener('resize', resize);
+      window.removeEventListener('orientationchange', resize);
       window.removeEventListener('wheel', zoom);
     };
   }, []);
@@ -182,6 +187,8 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
           style={{
             cursor: getCursor(),
             background: theme.colors.map.background,
+            width: '100%',
+            height: '100%',
           }}
         >
           <Provider store={store}>
