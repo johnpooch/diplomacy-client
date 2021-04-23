@@ -179,7 +179,10 @@ const Canvas = ({ browser, turn, gameInterpreter }) => {
           onClick={(event) => handleClick(event)}
           onTouchEnd={(event) => handleClick(event)}
           dragBoundFunc={(pos) => dragBounds(pos)}
-          style={{ cursor: getCursor(), background: 'black' }}
+          style={{
+            cursor: getCursor(),
+            background: theme.colors.map.background,
+          }}
         >
           <Provider store={store}>
             <ThemeProvider theme={theme}>

@@ -32,12 +32,12 @@ const StyledPane = styled.div`
 
   .heading {
     display: flex;
-    grid-gap: ${(p) => p.theme.space[3]};
+    gap: ${(p) => p.theme.space[3]};
     justify-content: space-between;
 
     .text {
       text-transform: uppercase;
-      font-weight: bold;
+      font-weight: ${(p) => p.theme.fontWeights.display};
     }
   }
 

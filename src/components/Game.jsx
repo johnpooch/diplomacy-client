@@ -17,7 +17,7 @@ const StyledGame = styled.div`
   grid-template-columns: 3fr 2fr;
   position: relative;
   text-align: left;
-  grid-column-gap: ${(p) => p.theme.space[6]};
+  column-gap: ${(p) => p.theme.space[6]};
 
   .overlay:hover ~ .details .name {
     text-decoration: underline;
@@ -31,7 +31,7 @@ const StyledGame = styled.div`
 
   > div {
     display: grid;
-    grid-row-gap: ${(p) => p.theme.space[2]};
+    row-gap: ${(p) => p.theme.space[2]};
     height: max-content;
   }
 `;

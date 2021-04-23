@@ -16,7 +16,7 @@ import Section from './Section';
 const StyledOrders = styled.ul`
   .order {
     display: grid;
-    grid-gap: ${(p) => p.theme.space[1]};
+    gap: ${(p) => p.theme.space[1]};
     grid-template-columns: 20px auto 20px;
     align-items: center;
   }

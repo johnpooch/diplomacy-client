@@ -34,6 +34,7 @@ const colors = {
   map: {
     land: '#e3d8c4',
     sea: '#79bde1',
+    background: 'black',
   },
   status: {
     error: {
@@ -53,12 +54,12 @@ const fonts = {
 const fontSizes = [9, 13, 15, 19, 36];
 const fontWeights = {
   body: 400,
-  heading: 700,
+  display: 700,
   bold: 700,
 };
 const lineHeights = {
   body: 1.5,
-  heading: 1.125,
+  display: 1.1,
 };
 const space = [4, 8, 12, 16, 24, 32, 44, 60];
 const borderWidths = [1];

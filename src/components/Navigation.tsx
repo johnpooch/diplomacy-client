@@ -54,12 +54,12 @@ const Header = styled.header`
   }
 
   .username {
-    font-weight: bold;
+    font-weight: ${(p) => p.theme.fontWeights.display};
   }
 `;
 
 const StyledLogo = styled.span`
-  font-weight: ${(p) => p.theme.fontWeights.heading};
+  font-weight: ${(p) => p.theme.fontWeights.display};
   font-size: ${(p) => p.theme.fontSizes[3]};
 `;
 

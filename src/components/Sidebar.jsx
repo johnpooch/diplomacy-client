@@ -9,31 +9,10 @@ import { selectUserNationByTurn } from '../store/selectors';
 import { turnSelectors } from '../store/turns';
 
 import { BaseButton } from './Button';
-import Flag from './Flag';
+import Nation from './Nation';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
-import Turn from './Turn';
 import TurnNav from './TurnNav';
-
-const StyledNation = styled.div`
-  display: flex;
-  grid-gap: ${(p) => p.theme.space[1]};
-  justify-content: flex-start;
-
-  .name {
-    color: ${(p) => (p.nation ? p.theme.colors.nations[p.nation] : 'inherit')};
-    font-weight: bold;
-  }
-`;
-
-const Nation = ({ nation }) => {
-  return nation ? (
-    <StyledNation nation={nation.nation}>
-      <Flag nation={nation} size={0} />
-      <span className="name">{nation.name}</span>
-    </StyledNation>
-  ) : null;
-};
 
 const StyledTab = styled(BaseButton)`
   align-items: center;
@@ -41,7 +20,7 @@ const StyledTab = styled(BaseButton)`
   color: ${(p) => p.theme.colors.text};
   display: flex;
   flex-direction: column;
-  grid-gap: ${(p) => p.theme.space[1]};
+  gap: ${(p) => p.theme.space[1]};
   justify-content: center;
   padding: ${(p) => p.theme.space[1]};
   position: relative;
@@ -77,7 +56,7 @@ const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
 };
 
 const StyledSidebar = styled.aside`
-  background: ${(p) => p.theme.colors.secondary};
+  background: ${(p) => p.theme.colors.text};
   border-bottom-left-radius: ${(p) => (p.isTabOpen ? '0' : p.theme.radii[0])};
   width: ${(p) => p.theme.sizes.sidebarMaxWidth};
   position: absolute;
@@ -90,18 +69,18 @@ const StyledSidebar = styled.aside`
 
   .details {
     color: ${(p) => p.theme.colors.muted};
-    background: ${(p) => (p.color ? p.color : p.theme.colors.text)};
-    display: flex;
-    grid-gap: ${(p) => p.theme.space[1]};
-    justify-content: space-between;
+    border-bottom: ${(p) => p.theme.borderWidths[0]} solid;
+    border-color: ${(p) =>
+      p.nation ? p.theme.colors.nations[p.nation] : p.theme.colors.text};
     padding: ${(p) => p.theme.space[2]};
   }
 
   .tabs {
     display: flex;
-    grid-gap: ${(p) => p.theme.space[2]};
+    gap: ${(p) => p.theme.space[2]};
     padding: ${(p) => p.theme.space[2]};
     text-align: center;
+    background: ${(p) => p.theme.colors.secondary};
   }
 
   @media only screen and (min-width: ${(p) => p.theme.breakpoints[0]}) {
@@ -156,10 +135,9 @@ const Sidebar = ({
   };
 
   return (
-    <StyledSidebar isTabOpen={!!activeTab}>
+    <StyledSidebar isTabOpen={!!activeTab} nation={userNation.nation}>
       <div className="details">
         <Nation nation={userNation} />
-        <Turn turn={currentTurn} />
       </div>
       <TurnNav setTurn={setTurn} turn={activeTurn} />
       <div className="tabs">

@@ -12,6 +12,7 @@ export default createGlobalStyle`
     font-family: ${(p) => p.theme.fonts.sans};
     color: ${(p) => p.theme.colors.text};
     background: ${(p) => p.theme.colors.background};
+    line-height: 1;
   }
 
   ul,

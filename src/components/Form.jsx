@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledForm = styled.form`
   display: grid;
-  grid-row-gap: ${(p) => p.theme.space[4]};
+  row-gap: ${(p) => p.theme.space[4]};
 
   input,
   select,
@@ -67,7 +67,7 @@ export const LabelText = styled.span`
   display: block;
   font-size: ${(p) => p.theme.fontSizes[1]};
   line-height: 1;
-  font-weight: bold;
+  font-weight: ${(p) => p.theme.fontWeights.display};
   margin-bottom: ${(p) => p.theme.space[2]};
   color: ${(p) => p.theme.colors.text};
 `;

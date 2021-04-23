@@ -6,7 +6,7 @@ import Section from './Section';
 
 const StyledStatus = styled.div`
   display: grid;
-  grid-gap: ${(p) => p.theme.space[1]};
+  gap: ${(p) => p.theme.space[1]};
   grid-template-columns: 20px auto;
   align-items: center;
 `;

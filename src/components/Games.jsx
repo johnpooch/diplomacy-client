@@ -6,8 +6,8 @@ import Game from './Game';
 const StyledGames = styled.div`
   display: grid;
   grid-template-columns: auto;
-  grid-row-gap: ${(p) => p.theme.space[5]};
-  grid-column-gap: ${(p) => p.theme.space[5]};
+  row-gap: ${(p) => p.theme.space[5]};
+  column-gap: ${(p) => p.theme.space[5]};
 `;
 
 const Games = ({ games }) => {
