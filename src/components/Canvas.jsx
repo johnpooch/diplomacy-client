@@ -17,13 +17,6 @@ import Portal from './Portal';
 const ZOOM_FACTOR = 1.1;
 const ZOOM_MAX = 3;
 
-const getMinScale = () => {
-  return Math.max(
-    window.innerWidth / viewBox.width,
-    window.innerHeight / viewBox.height
-  );
-};
-
 const Canvas = ({ browser, order, turn, gameInterpreter }) => {
   const [hoverTarget, setHoverTarget] = useReferredState(null);
   const [isDragging, setIsDragging] = useReferredState(false);
@@ -35,10 +28,52 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
   const stageRef = useRef();
   const theme = useTheme();
 
-  const bounds = ({ x, y }) => {
+  const getContainerWidth = () => stageRef.current.container().offsetWidth;
+  const getContainerHeight = () => stageRef.current.container().offsetHeight;
+
+  const getMinScale = () => {
+    return Math.min(
+      getContainerWidth() / viewBox.width,
+      getContainerHeight() / viewBox.height
+    );
+  };
+
+  const zoomBounds = ({ x, y }) => {
     return {
-      x: clamp(x, size.current.width - viewBox.width * scale.current, 0),
-      y: clamp(y, size.current.height - viewBox.height * scale.current, 0),
+      x: clamp(x, (size.current.width - viewBox.width * scale.current) / 2, 0),
+      y: clamp(
+        y,
+        (size.current.height - viewBox.height * scale.current) / 2,
+        0
+      ),
+    };
+  };
+
+  const getBound = (val, viewBoxVal, windowVal, stagePosVal, sc) => {
+    // If the map is smaller than the window, return stagePosVal, i.e. cannot drag.
+    if (viewBoxVal * sc <= windowVal) return stagePosVal;
+    // Get the size of the entire board
+    const fullSize = viewBoxVal * sc;
+    // Drag must be between 0 and the size of the board minus viewport
+    return clamp(val, -(fullSize - windowVal), 0);
+  };
+
+  const dragBounds = ({ x, y }) => {
+    return {
+      x: getBound(
+        x,
+        viewBox.width,
+        getContainerWidth(),
+        stagePosition.current.x,
+        scale.current
+      ),
+      y: getBound(
+        y,
+        viewBox.height,
+        getContainerHeight(),
+        stagePosition.current.y,
+        scale.current
+      ),
     };
   };
 
@@ -54,8 +89,8 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
       const newScale = getMinScale();
 
       const newSize = {
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: getContainerWidth(),
+        height: getContainerHeight(),
       };
 
       const newPosition = {
@@ -95,15 +130,17 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
 
       setHoverTarget(null);
       setScale(newScale);
-      setStagePosition(bounds(newPosition));
+      setStagePosition(zoomBounds(newPosition));
     };
 
     resize();
     window.addEventListener('resize', resize);
+    window.addEventListener('orientationchange', resize);
     window.addEventListener('wheel', zoom.bind(scale));
 
     return () => {
       window.removeEventListener('resize', resize);
+      window.removeEventListener('orientationchange', resize);
       window.removeEventListener('wheel', zoom);
     };
   }, []);
@@ -146,8 +183,13 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
           }}
           onClick={(event) => handleClick(event)}
           onTouchEnd={(event) => handleClick(event)}
-          dragBoundFunc={(pos) => bounds(pos)}
-          style={{ cursor: getCursor(), background: 'black' }}
+          dragBoundFunc={(pos) => dragBounds(pos)}
+          style={{
+            cursor: getCursor(),
+            background: theme.colors.map.background,
+            width: '100%',
+            height: '100%',
+          }}
         >
           <Provider store={store}>
             <ThemeProvider theme={theme}>

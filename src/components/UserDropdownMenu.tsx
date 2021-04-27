@@ -1,4 +1,4 @@
-import { faCog, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faBars } from '@fortawesome/free-solid-svg-icons';
 import React, { ReactElement } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -29,11 +29,7 @@ const UserDropdownMenu: React.FC<IUserDropdownMenu & RouteComponentProps> = ({
   ];
   return (
     <StyledDropdownMenu>
-      <IconDropdownMenu
-        icon={faUserCog}
-        menuItems={menuItems}
-        title="user menu"
-      />
+      <IconDropdownMenu icon={faBars} menuItems={menuItems} title="Menu" />
     </StyledDropdownMenu>
   );
 };

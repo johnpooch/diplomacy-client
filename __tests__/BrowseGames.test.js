@@ -31,7 +31,7 @@ const activeGameTitle = 'First turn';
 describe('Browse Games', () => {
   it('redirect user to log in and remove from storage on log out', async () => {
     renderApp();
-    fireEvent.click(screen.getByTitle('user menu'));
+    fireEvent.click(screen.getByTitle('Menu'));
     const logoutButton = await waitFor(() => screen.getByText('Logout'));
     fireEvent.click(logoutButton);
     await waitFor(() => testElements.loginButton());
@@ -44,8 +44,8 @@ describe('Browse Games', () => {
       [urlConf.getGameFilterChoices, getGameFilterChoices.success]
     );
     renderApp();
-    screen.getByTitle('home');
-    screen.getByTitle('create game');
+    screen.getByTitle('Home');
+    screen.getByTitle('Create game');
   });
 
   it('display pending game correctly', async () => {

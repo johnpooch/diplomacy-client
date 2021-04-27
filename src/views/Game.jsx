@@ -1,10 +1,8 @@
-import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { connect, useStore } from 'react-redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { BackButton } from '../components/Button';
 import Canvas from '../components/Canvas';
 import MobileContextMenu from '../components/MobileContextMenu';
 import Sidebar from '../components/Sidebar';
@@ -22,20 +20,21 @@ import {
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
 
-const NavLinkButton = BackButton.withComponent(NavLink);
-const HomeNavLinkButton = () => (
-  <NavLinkButton
-    exact
-    to="/"
-    css={`
-      position: fixed;
-      top: ${(p) => p.theme.space[2]};
-      left: ${(p) => p.theme.space[2]};
-    `}
-  >
-    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
-  </NavLinkButton>
-);
+const GameWrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+
+  @media only screen and (max-width: ${(p) => p.theme.breakpoints[1]}) {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+`;
+
+const CanvasWrapper = styled.div`
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+`;
 
 const Game = (props) => {
   const {
@@ -93,12 +92,7 @@ const Game = (props) => {
   const isMobile = browser.lessThan.small;
 
   return (
-    <div>
-      <Canvas
-        turn={activeTurnId}
-        gameInterpreter={gameInterpreter}
-        order={order}
-      />
+    <GameWrapper>
       <Sidebar
         activeTurnId={activeTurnId}
         currentTurn={currentTurn}
@@ -111,14 +105,20 @@ const Game = (props) => {
         variant={game.variant}
         // TODO: clean this up
       />
+      <CanvasWrapper>
+        <Canvas
+          turn={activeTurnId}
+          gameInterpreter={gameInterpreter}
+          order={order}
+        />
+      </CanvasWrapper>
       {gameInterpreter.showContextMenu() && isMobile && (
         <MobileContextMenu
           onClickOption={gameInterpreter.onClickOption}
           options={gameInterpreter.getContextMenuOptions()}
         />
       )}
-      <HomeNavLinkButton />
-    </div>
+    </GameWrapper>
   );
 };
 

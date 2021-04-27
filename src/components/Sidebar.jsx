@@ -1,39 +1,55 @@
 import { faComment, faFlag } from '@fortawesome/free-regular-svg-icons';
-import { faHistory } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { selectUserNationByTurn } from '../store/selectors';
 import { turnSelectors } from '../store/turns';
 
-import { BaseButton } from './Button';
+import { SmallButton, BaseButton } from './Button';
 import Flag from './Flag';
 import OrdersPane from './SidebarOrdersPane';
 import Pane from './SidebarPane';
-import Turn, { TurnEnd } from './Turn';
+import { TurnEnd } from './Turn';
 import TurnNav from './TurnNav';
 
 const StyledNation = styled.div`
   display: flex;
-  grid-gap: ${(p) => p.theme.space[1]};
-  justify-content: flex-start;
+  gap: ${(p) => p.theme.space[2]};
+  align-items: center;
 
   .name {
-    color: ${(p) => (p.nation ? p.theme.colors.nations[p.nation] : 'inherit')};
-    font-weight: bold;
+    font-weight: ${(p) => p.theme.fontWeights.display};
+    font-size: ${(p) => p.theme.fontSizes[3]};
   }
 `;
 
 const Nation = ({ nation }) => {
   return nation ? (
     <StyledNation nation={nation.nation}>
-      <Flag nation={nation} size={0} />
+      <Flag nation={nation} size={1} />
       <span className="name">{nation.name}</span>
     </StyledNation>
   ) : null;
 };
+
+const BackButton = () => (
+  <SmallButton
+    as={NavLink}
+    exact
+    to="/"
+    css={`
+      display: flex;
+      column-gap: ${(p) => p.theme.space[1]};
+    `}
+  >
+    <FontAwesomeIcon icon={faArrowLeft} size="1x" />
+    <span>Back</span>
+  </SmallButton>
+);
 
 const StyledTab = styled(BaseButton)`
   align-items: center;
@@ -41,74 +57,86 @@ const StyledTab = styled(BaseButton)`
   color: ${(p) => p.theme.colors.text};
   display: flex;
   flex-direction: column;
-  grid-gap: ${(p) => p.theme.space[1]};
+  gap: ${(p) => p.theme.space[1]};
   justify-content: center;
   padding: ${(p) => p.theme.space[1]};
   position: relative;
   width: 100%;
 
   &[data-active='true'] {
-    background: ${(p) => p.theme.colors.primary};
+    background: ${(p) => p.theme.colors.text};
     color: white;
   }
 
   &:hover {
-    background: ${(p) => p.theme.colors.primary};
+    color: ${(p) => p.theme.colors.primary};
   }
 `;
 
-const Tab = ({ activeTab, icon, label, setActiveTab, type }) => {
-  return (
-    <StyledTab
-      className="tab"
-      onClick={(e) => {
-        const target = e.target.closest('.tab');
-        setActiveTab(
-          target.dataset.type === activeTab ? null : target.dataset.type
-        );
-      }}
-      data-active={activeTab === type}
-      data-type={type}
-      title={label}
-    >
-      <FontAwesomeIcon icon={icon} size="2x" />
-    </StyledTab>
-  );
-};
+const Tab = ({ activeTab, icon, label, setActiveTab, type }) => (
+  <StyledTab
+    className="tab"
+    onClick={(e) => {
+      const target = e.target.closest('.tab');
+      setActiveTab(
+        target.dataset.type === activeTab ? null : target.dataset.type
+      );
+    }}
+    data-active={activeTab === type}
+    data-type={type}
+    title={label}
+  >
+    <FontAwesomeIcon icon={icon} size="2x" />
+  </StyledTab>
+);
 
 const StyledSidebar = styled.aside`
-  background: ${(p) => p.theme.colors.secondary};
-  border-bottom-left-radius: ${(p) => (p.isTabOpen ? '0' : p.theme.radii[0])};
-  width: ${(p) => p.theme.sizes.sidebarMaxWidth};
-  position: absolute;
-  bottom: 0;
-
+  background: ${(p) => p.theme.colors.text};
   display: flex;
   flex-direction: column;
+  max-height: 100vh;
+  overflow-y: auto;
   position: absolute;
-  width: 100%;
+  right: 0;
+  top: 0;
+  width: ${(p) => p.theme.sizes.sidebarWidth};
+  z-index: 1;
 
   .details {
+    align-items: center;
+    border-bottom: ${(p) => p.theme.borderWidths[1]} solid;
+    border-color: ${(p) =>
+      p.nation ? p.theme.colors.nations[p.nation] : p.theme.colors.text};
     color: ${(p) => p.theme.colors.muted};
-    background: ${(p) => (p.color ? p.color : p.theme.colors.text)};
+    column-gap: ${(p) => p.theme.space[2]};
     display: flex;
-    grid-gap: ${(p) => p.theme.space[1]};
     justify-content: space-between;
     padding: ${(p) => p.theme.space[2]};
   }
 
   .tabs {
     display: flex;
-    grid-gap: ${(p) => p.theme.space[2]};
+    gap: ${(p) => p.theme.space[2]};
     padding: ${(p) => p.theme.space[2]};
     text-align: center;
+    background: ${(p) => p.theme.colors.secondary};
   }
 
-  @media only screen and (min-width: ${(p) => p.theme.breakpoints[0]}) {
-    right: 0;
-    top: 0;
-    bottom: ${(props) => (props.isTabOpen ? '0' : 'initial')};
-    width: 320px;
+  @media only screen and (max-width: ${(p) => p.theme.breakpoints[1]}) {
+    height: ${(p) => (p.isTabOpen ? '100vh' : 'auto')};
+    position: ${(p) => (p.isTabOpen ? 'absolute' : 'relative')};
+    width: 100%;
+
+    @media (orientation: landscape) {
+      nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .details {
+        order: 1;
+      }
+    }
   }
 `;
 
@@ -156,41 +184,42 @@ const Sidebar = ({
   };
 
   return (
-    <StyledSidebar isTabOpen={!!activeTab}>
-      <div className="details">
-        <Nation nation={userNation} />
-        <Turn turn={currentTurn} />
-      </div>
-      {turnEnd && (
-        <div className="turnend">
-          <TurnEnd turnEnd={turnEnd} />
+    <StyledSidebar isTabOpen={!!activeTab} nation={userNation.nation}>
+      <nav>
+        <div className="details">
+          <Nation nation={userNation} />
+          <BackButton />
         </div>
-      )}
-      <TurnNav setTurn={setTurn} turn={activeTurn} />
-      <div className="tabs">
-        <Tab
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          label="Messages"
-          type="messages"
-          icon={faComment}
-        />
-        <Tab
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          label="History"
-          type="history"
-          icon={faHistory}
-        />
-        <Tab
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          label="Orders"
-          type="orders"
-          icon={faFlag}
-          notificationCount={4}
-        />
-      </div>
+        {turnEnd && (
+          <div className="turnend">
+            <TurnEnd turnEnd={turnEnd} />
+          </div>
+        )}
+        <div className="tabs">
+          <Tab
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            label="Messages"
+            type="messages"
+            icon={faComment}
+          />
+          <Tab
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            label="History"
+            type="history"
+            icon={faHistory}
+          />
+          <Tab
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            label="Orders"
+            type="orders"
+            icon={faFlag}
+          />
+        </div>
+      </nav>
+      {activeTab ? <TurnNav setTurn={setTurn} turn={activeTurn} /> : null}
       {renderPane()}
     </StyledSidebar>
   );

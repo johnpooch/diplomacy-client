@@ -215,7 +215,7 @@ const StyledDrawsPane = styled.div`
 
   .actions {
     display: grid;
-    grid-gap: ${(p) => p.theme.space[2]};
+    gap: ${(p) => p.theme.space[2]};
     grid-template-columns: repeat(2, 1fr);
     margin: ${(p) => p.theme.space[3]} 0;
   }

@@ -13,7 +13,13 @@ import {
 } from '../src/mocks/resolvers';
 import { urlConf } from '../src/urls';
 
-import { basicBeforeEach, logIn, renderApp, useHandlers } from './testUtils';
+import {
+  basicBeforeEach,
+  logIn,
+  renderApp,
+  useHandlers,
+  testElements,
+} from './testUtils';
 
 beforeEach(() => {
   basicBeforeEach();
@@ -51,6 +57,8 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/first-turn');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
+
     const buttons = await getNavButtons();
     Object.values(buttons).forEach((b) =>
       expect(b).toHaveAttribute('disabled')
@@ -66,6 +74,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     let buttons = await getNavButtons();
     await checkPhase('Retreat', 'Fall', '1901');
@@ -93,6 +102,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     let buttons = await getNavButtons();
 
@@ -115,6 +125,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     const buttons = await getNavButtons();
 
@@ -134,6 +145,7 @@ describe('Turn Nav', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/multiple-turns');
+    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
 
     const buttons = await getNavButtons();
 
