@@ -4,8 +4,8 @@ export const Grid = styled.div`
   display: grid;
   grid-template-columns: ${(p) =>
     p.columns ? `repeat(${p.columns}, 1fr)` : 'auto'};
-  grid-column-gap: ${(p) => (p.columnGap ? p.columnGap : p.theme.space[4])};
-  grid-row-gap: ${(p) => (p.rowGap ? p.rowGap : p.theme.space[4])};
+  column-gap: ${(p) => (p.columnGap ? p.columnGap : p.theme.space[4])};
+  row-gap: ${(p) => (p.rowGap ? p.rowGap : p.theme.space[4])};
 
   label,
   input {

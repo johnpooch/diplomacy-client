@@ -54,12 +54,12 @@ const Header = styled.header`
   }
 
   .username {
-    font-weight: bold;
+    font-weight: ${(p) => p.theme.fontWeights.display};
   }
 `;
 
 const StyledLogo = styled.span`
-  font-weight: ${(p) => p.theme.fontWeights.heading};
+  font-weight: ${(p) => p.theme.fontWeights.display};
   font-size: ${(p) => p.theme.fontSizes[3]};
 `;
 
@@ -72,12 +72,12 @@ const Navigation = () => {
     <Header>
       <div className="inner-div">
         <nav className="primary-nav">
-          <NavLink exact to="/" title="home">
+          <NavLink exact to="/" title="Home">
             <Logo />
           </NavLink>
         </nav>
         <nav className="secondary-nav">
-          <NavLink exact to="/create-game" title="create game">
+          <NavLink exact to="/create-game" title="Create game">
             <FontAwesomeIcon icon={faPlusCircle} size="lg" />
           </NavLink>
           <UserDropdownMenu />

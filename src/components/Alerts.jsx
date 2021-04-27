@@ -12,7 +12,7 @@ const StyledAlert = styled.div`
   color: ${(p) => p.theme.colors.status[p.category].primary};
   display: grid;
   font-size: ${(p) => p.theme.fontSizes[2]};
-  grid-column-gap: ${(p) => p.theme.space[4]};
+  column-gap: ${(p) => p.theme.space[4]};
   grid-template-columns: 1fr auto;
 
   p {

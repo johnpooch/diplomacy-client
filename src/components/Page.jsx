@@ -10,6 +10,9 @@ export const PageWrapper = styled.div`
   padding: ${(p) => `${p.theme.space[6]} ${p.theme.space[3]}`};
   text-align: center;
   width: 100%;
+  @media only screen and (max-width: ${(p) => p.theme.breakpoints[1]}) {
+    padding: ${(p) => `${p.theme.space[6]} ${p.theme.space[0]}`};
+  }
 `;
 
 export const PageTitle = styled.h1`

@@ -85,24 +85,18 @@ export const selectFirstTurnByGame = createSelector(
   (turns) => turns.reduce((min, t) => (t.id < min ? t.id : min), turns[0].id)
 );
 
-export const selectOrdersByTurn = createSelector(
-  orderSelectors.selectAll,
-  (_, id) => id,
-  (orders, id) => orders.filter((o) => o.turn === id)
-);
+export const selectOrdersByTurn = (state, turnId) =>
+  orderSelectors.selectAll(state).filter((o) => o.turn === turnId);
 
-export const selectPieceByTerritory = createSelector(
-  pieceStateSelectors.selectAll,
-  pieceSelectors.selectEntities,
-  (_, id) => id,
-  (_, x, turn) => turn,
-  (pieceStates, pieces, id, turn) => {
-    const pieceState = pieceStates.find(
-      (ps) => ps.territory === id && !ps.mustRetreat && ps.turn === turn
-    );
-    return pieceState ? { ...pieceState, ...pieces[pieceState.piece] } : null;
-  }
-);
+export const selectPieceByTerritory = (state, territoryId, turnId) => {
+  const pieceStates = pieceStateSelectors.selectAll(state);
+  const pieces = pieceSelectors.selectEntities(state);
+  const pieceState = pieceStates.find(
+    (ps) =>
+      ps.territory === territoryId && !ps.mustRetreat && ps.turn === turnId
+  );
+  return pieceState ? { ...pieceState, ...pieces[pieceState.piece] } : null;
+};
 
 export const selectPieceStatesWithPiece = createSelector(
   pieceStateSelectors.selectAll,

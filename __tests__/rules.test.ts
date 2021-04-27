@@ -29,6 +29,28 @@ const NAMED_COAST = 'standard-named-coast';
 const SOURCE = 'standard-source';
 const TARGET = 'standard-target';
 
+const pieceDefaults = () => {
+  return {
+    id: 1,
+    attackerTerritory: null,
+    dislodged: false,
+    dislodgedBy: null,
+    mustRetreat: false,
+    namedCoast: null,
+    turn: 1,
+  };
+};
+
+const territoryDefaults = () => {
+  return {
+    name: 'Name',
+    namedCoasts: [],
+    neighbours: [],
+    sharedCoasts: [],
+    supplyCenter: true,
+  };
+};
+
 const setNeighbours = (t1: Territory, t2: Territory) => {
   t1.neighbours.push(t2.id);
   t2.neighbours.push(t1.id);
@@ -43,32 +65,26 @@ describe('pieceCanReachTerritory', () => {
   let source: Territory;
   let target: Territory;
   const army: Piece = {
-    mustRetreat: false,
+    ...pieceDefaults(),
     nation: ENGLAND,
     territory: SOURCE,
     type: PieceType.ARMY,
   };
   const fleet: Piece = {
-    mustRetreat: false,
+    ...pieceDefaults(),
     nation: ENGLAND,
     territory: SOURCE,
     type: PieceType.FLEET,
   };
   beforeEach(() => {
     source = {
+      ...territoryDefaults(),
       id: SOURCE,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.COASTAL,
     };
     target = {
+      ...territoryDefaults(),
       id: TARGET,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.COASTAL,
     };
   });
@@ -147,40 +163,31 @@ describe('checkMustSpecifyViaConvoy', () => {
   let territories: { [key: string]: Territory };
   let pieces: Piece[];
   const army: Piece = {
-    mustRetreat: false,
+    ...pieceDefaults(),
     nation: ENGLAND,
     territory: ADJACENT_TERRITORY,
     type: PieceType.ARMY,
   };
   const fleet: Piece = {
-    mustRetreat: false,
+    ...pieceDefaults(),
     nation: ENGLAND,
     territory: ADJACENT_TERRITORY,
     type: PieceType.FLEET,
   };
   beforeEach(() => {
     source = {
+      ...territoryDefaults(),
       id: SOURCE,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.COASTAL,
     };
     target = {
+      ...territoryDefaults(),
       id: TARGET,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.COASTAL,
     };
     adjacentTerritory = {
+      ...territoryDefaults(),
       id: ADJACENT_TERRITORY,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: false,
       type: TerritoryType.SEA,
     };
     territories = {};
@@ -259,24 +266,51 @@ describe('checkMustSpecifyTargetCoast', () => {
   let target: Territory;
   beforeEach(() => {
     target = {
+      ...territoryDefaults(),
       id: TARGET,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
       supplyCenter: false,
       type: TerritoryType.COASTAL,
     };
   });
-  it('true if order is move and territory has named coasts', () => {
+  it('true if order is move and territory has named coasts and fleet', () => {
     target.namedCoasts.push(NAMED_COAST);
-    expect(checkMustSpecifyTargetCoast(target, OrderType.MOVE)).toBe(true);
+    expect(
+      checkMustSpecifyTargetCoast(target, OrderType.MOVE, PieceType.FLEET)
+    ).toBe(true);
+  });
+  it('false if order is move and territory has named coasts and army', () => {
+    target.namedCoasts.push(NAMED_COAST);
+    expect(
+      checkMustSpecifyTargetCoast(target, OrderType.MOVE, PieceType.ARMY)
+    ).toBe(false);
   });
   it('false if order is not move and territory has named coasts', () => {
     target.namedCoasts.push(NAMED_COAST);
-    expect(checkMustSpecifyTargetCoast(target, OrderType.SUPPORT)).toBe(false);
+    expect(
+      checkMustSpecifyTargetCoast(target, OrderType.SUPPORT, PieceType.FLEET)
+    ).toBe(false);
   });
   it('false if order is move and territory does not have named coasts', () => {
-    expect(checkMustSpecifyTargetCoast(target, OrderType.SUPPORT)).toBe(false);
+    expect(
+      checkMustSpecifyTargetCoast(target, OrderType.SUPPORT, PieceType.FLEET)
+    ).toBe(false);
+  });
+  it('true if order is build and territory has named coasts', () => {
+    target.namedCoasts.push(NAMED_COAST);
+    expect(
+      checkMustSpecifyTargetCoast(target, OrderType.BUILD, PieceType.FLEET)
+    ).toBe(true);
+  });
+  it('false if order is build and territory has named coasts and army', () => {
+    target.namedCoasts.push(NAMED_COAST);
+    expect(
+      checkMustSpecifyTargetCoast(target, OrderType.BUILD, PieceType.ARMY)
+    ).toBe(false);
+  });
+  it('false if order is build and territory does not have named coasts', () => {
+    expect(
+      checkMustSpecifyTargetCoast(target, OrderType.BUILD, PieceType.FLEET)
+    ).toBe(false);
   });
 });
 
@@ -286,19 +320,13 @@ describe('requiresConvoy', () => {
   let target: Territory;
   beforeEach(() => {
     source = {
+      ...territoryDefaults(),
       id: SOURCE,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.COASTAL,
     };
     target = {
+      ...territoryDefaults(),
       id: TARGET,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.COASTAL,
     };
     order = {
@@ -462,21 +490,18 @@ describe('getOrderTypeOptions', () => {
   let orderTypes: string[];
   beforeEach(() => {
     territory = {
+      ...territoryDefaults(),
       id: SOURCE,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.INLAND,
     };
     army = {
-      mustRetreat: false,
+      ...pieceDefaults(),
       nation: ENGLAND,
       territory: SOURCE,
       type: PieceType.ARMY,
     };
     fleet = {
-      mustRetreat: false,
+      ...pieceDefaults(),
       nation: ENGLAND,
       territory: SOURCE,
       type: PieceType.FLEET,
@@ -507,10 +532,8 @@ describe('getPieceTypeOptions', () => {
   let pieceTypes: PieceType[];
   beforeEach(() => {
     territory = {
+      ...territoryDefaults(),
       id: SOURCE,
-      namedCoasts: [],
-      neighbours: [],
-      sharedCoasts: [],
       supplyCenter: true,
       type: TerritoryType.INLAND,
     };
@@ -534,7 +557,7 @@ describe('canOrder', () => {
   let army: Piece;
   beforeEach(() => {
     army = {
-      mustRetreat: false,
+      ...pieceDefaults(),
       nation: ENGLAND,
       territory: SOURCE,
       type: PieceType.ARMY,
@@ -555,20 +578,17 @@ describe('canOrder', () => {
 describe('canBuild', () => {
   let territory: Territory;
   const army: Piece = {
-    mustRetreat: false,
+    ...pieceDefaults(),
     nation: ENGLAND,
     territory: SOURCE,
     type: PieceType.ARMY,
   };
   beforeEach(() => {
     territory = {
+      ...territoryDefaults(),
       id: SOURCE,
       controlledBy: ENGLAND,
-      namedCoasts: [],
       nationality: ENGLAND,
-      neighbours: [],
-      sharedCoasts: [],
-      supplyCenter: true,
       type: TerritoryType.INLAND,
     };
   });
@@ -596,6 +616,7 @@ describe('canRetreat', () => {
   let army: Piece;
   beforeEach(() => {
     army = {
+      ...pieceDefaults(),
       mustRetreat: true,
       nation: ENGLAND,
       territory: SOURCE,

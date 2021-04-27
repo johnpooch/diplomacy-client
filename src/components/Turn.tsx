@@ -20,7 +20,7 @@ interface TurnEnd {
 const Turn = ({ turn, ...rest }: Turn): ReactElement => {
   return (
     <div className="turn" {...rest}>
-      <span className="phase">{turn.phaseDisplay}</span>,{' '}
+      <div className="phase">{turn.phaseDisplay}</div>{' '}
       <span className="season">{turn.seasonDisplay}</span>{' '}
       <span className="year">{turn.year}</span>
     </div>

@@ -1,5 +1,12 @@
+export enum GameStatus {
+  PENDING = 'pending',
+  ACTIVE = 'active',
+  ENDED = 'ended',
+}
+
 export enum OrderAttr {
   AUX = 'aux',
+  PIECE_TYPE = 'pieceType',
   SOURCE = 'source',
   TARGET = 'target',
   TARGET_COAST = 'targetCoast',

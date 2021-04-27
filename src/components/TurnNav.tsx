@@ -1,8 +1,8 @@
 import {
-  faAngleDoubleLeft,
-  faAngleDoubleRight,
-  faChevronLeft,
-  faChevronRight,
+  faFastBackward,
+  faFastForward,
+  faStepBackward,
+  faStepForward,
 } from '@fortawesome/free-solid-svg-icons';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
@@ -12,16 +12,25 @@ import Turn, { turnType } from './Turn';
 
 const StyledTurnNav = styled.div`
   text-align: center;
+  align-items: center;
+  column-gap: ${(p) => p.theme.space[1]};
   display: grid;
   grid-template-columns: 1fr 1fr 4fr 1fr 1fr;
-  grid-column-gap: ${(p) => p.theme.space[0]};
-  padding: ${(p) => p.theme.space[1]} ${(p) => p.theme.space[0]};
+  padding: ${(p) => p.theme.space[2]};
+  color: white;
+  background: ${(p) => p.theme.colors.text};
 
   button {
     background: ${(p) => p.theme.colors.muted};
-    &:hover {
+    padding: ${(p) => p.theme.space[1]};
+
+    &:not(:disabled):hover {
       background: ${(p) => p.theme.colors.primary};
     }
+  }
+
+  .turn {
+    line-height: ${(p) => p.theme.lineHeights.display};
   }
 `;
 
@@ -41,26 +50,26 @@ const TurnNav = ({ setTurn, turn }: ITurnNav): ReactElement => {
   return (
     <StyledTurnNav>
       <IconButton
-        icon={faAngleDoubleLeft}
+        icon={faFastBackward}
         onClick={() => setTurn('FIRST')}
         disabled={Boolean(!turn.previousTurn)}
         title={titles.FIRST}
       />
       <IconButton
-        icon={faChevronLeft}
+        icon={faStepBackward}
         onClick={() => setTurn(turn.previousTurn)}
         disabled={Boolean(!turn.previousTurn)}
         title={titles.PREVIOUS}
       />
       <Turn turn={turn} title="Active turn" />
       <IconButton
-        icon={faChevronRight}
+        icon={faStepForward}
         onClick={() => setTurn(turn.nextTurn)}
         disabled={Boolean(!turn.nextTurn)}
         title={titles.NEXT}
       />
       <IconButton
-        icon={faAngleDoubleRight}
+        icon={faFastForward}
         onClick={() => setTurn('CURRENT')}
         disabled={Boolean(!turn.nextTurn)}
         title={titles.CURRENT}

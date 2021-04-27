@@ -11,6 +11,7 @@ import {
   Piece,
   Territory,
   TerritoryType,
+  NamedCoast,
 } from '../src/game/types';
 
 let mockCreateOrder: jest.Mock;
@@ -19,14 +20,17 @@ let mockSetOrder: jest.Mock;
 let order: Order;
 let nation: string;
 let piece: Piece;
+let namedCoast: NamedCoast;
 let pieces: Piece[];
 let territories: { [key: string]: Territory };
+let namedCoasts: { [key: string]: NamedCoast };
 
 const ENGLAND = 'standard-england';
 const FRANCE = 'standard-france';
 const ENGLISH_CHANNEL = 'standard-english-channel';
 const LONDON = 'standard-london';
 const WALES = 'standard-wales';
+const NAMED_COAST = 'standard-named-coast';
 
 let getInterpreter: () => Interpreter;
 let InterpreterClass;
@@ -84,6 +88,13 @@ const setUp = () => {
       controlledBy: null,
     },
   };
+  namedCoast = {
+    id: NAMED_COAST,
+    name: 'Named Coast',
+  };
+  namedCoasts = {
+    [NAMED_COAST]: namedCoast,
+  };
 
   getInterpreter = (): OrderInterpreter => {
     return new InterpreterClass(
@@ -91,7 +102,7 @@ const setUp = () => {
       nation,
       territories,
       pieces,
-      {},
+      namedCoasts,
       mockCreateOrder,
       mockSetOrder
     );
@@ -244,6 +255,24 @@ describe('Order Interpreter', () => {
     getInterpreter();
     expect(mockCreateOrder).toHaveBeenCalled();
   });
+  it('do not post order once target if complex and not target coast fleet (move)', async () => {
+    order.source = LONDON;
+    order.target = WALES;
+    order.type = OrderType.MOVE;
+    piece.type = PieceType.FLEET;
+    territories[WALES].namedCoasts.push(NAMED_COAST);
+    getInterpreter();
+    expect(mockCreateOrder).not.toHaveBeenCalled();
+  });
+  it('post order once target if complex and not target coast army (move)', async () => {
+    order.source = LONDON;
+    order.target = WALES;
+    order.type = OrderType.MOVE;
+    piece.type = PieceType.ARMY;
+    territories[WALES].namedCoasts.push(NAMED_COAST);
+    getInterpreter();
+    expect(mockCreateOrder).toHaveBeenCalled();
+  });
   it('set aux on click territory after order type choice (support)', async () => {
     order.source = LONDON;
     order.type = OrderType.SUPPORT;
@@ -305,6 +334,7 @@ describe('Order Interpreter', () => {
     expect(mockCreateOrder).toHaveBeenCalled();
   });
   it('post order once target (convoy)', async () => {
+    piece.territory = ENGLISH_CHANNEL;
     order.aux = WALES;
     order.source = ENGLISH_CHANNEL;
     order.target = LONDON;
@@ -389,12 +419,13 @@ describe('Build Interpreter', () => {
     expect(gameInterpreter.showContextMenu()).toBe(false);
   });
 
-  it('set source on click empty home territory with supply center when surplus', async () => {
+  it('set source and type on click empty home territory with supply center when surplus', async () => {
     const gameInterpreter = getInterpreter();
     gameInterpreter.onClickTerritory(territories[LONDON]);
     expect(mockSetOrder.mock.calls[0][0]).toEqual({
       ...initialOrderState,
       source: LONDON,
+      type: OrderType.BUILD,
     });
   });
   it('do nothing on click empty controlled home territory without supply center when surplus', async () => {
@@ -430,6 +461,17 @@ describe('Build Interpreter', () => {
       [PieceType.FLEET, PieceTypeChoices[PieceType.FLEET]],
     ]);
   });
+  it('show named coasts when source is complex and pieceType is fleet', async () => {
+    territories[LONDON].namedCoasts.push(NAMED_COAST);
+    order.source = LONDON;
+    order.type = OrderType.BUILD;
+    order.pieceType = PieceType.FLEET;
+    const gameInterpreter = getInterpreter();
+    expect(gameInterpreter.showContextMenu()).toBe(true);
+    expect(gameInterpreter.getContextMenuOptions()).toEqual([
+      [namedCoast.id, namedCoast.name],
+    ]);
+  });
   it('show army only when source is inland', async () => {
     order.source = LONDON;
     territories[LONDON].type = TerritoryType.INLAND;
@@ -441,6 +483,7 @@ describe('Build Interpreter', () => {
   });
   it('set piece type on click army', async () => {
     order.source = LONDON;
+    order.type = OrderType.BUILD;
     const gameInterpreter = getInterpreter();
     gameInterpreter.onClickOption(PieceType.ARMY);
     expect(mockSetOrder.mock.calls[0][0]).toEqual({
@@ -452,6 +495,7 @@ describe('Build Interpreter', () => {
   });
   it('set piece type on click fleet', async () => {
     order.source = LONDON;
+    order.type = OrderType.BUILD;
     const gameInterpreter = getInterpreter();
     gameInterpreter.onClickOption(PieceType.FLEET);
     expect(mockSetOrder.mock.calls[0][0]).toEqual({
@@ -463,6 +507,22 @@ describe('Build Interpreter', () => {
   });
   it('post order once piece type is set', async () => {
     order.source = LONDON;
+    order.type = OrderType.BUILD;
+    order.pieceType = PieceType.ARMY;
+    getInterpreter();
+    expect(mockCreateOrder).toHaveBeenCalled();
+  });
+  it('do not post order once piece type is set if complex and fleet', async () => {
+    order.source = LONDON;
+    territories[LONDON].namedCoasts.push(NAMED_COAST);
+    order.type = OrderType.BUILD;
+    order.pieceType = PieceType.FLEET;
+    getInterpreter();
+    expect(mockCreateOrder).not.toHaveBeenCalled();
+  });
+  it('post order once piece type is set if complex and army', async () => {
+    order.source = LONDON;
+    territories[LONDON].namedCoasts.push(NAMED_COAST);
     order.type = OrderType.BUILD;
     order.pieceType = PieceType.ARMY;
     getInterpreter();

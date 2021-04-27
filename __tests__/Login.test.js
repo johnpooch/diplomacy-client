@@ -1,8 +1,9 @@
 import { fireEvent, waitFor, screen } from '@testing-library/react';
 
-import { urlConf } from '../src/urls';
-import { login } from '../src/mocks/resolvers';
 import { errorMessages } from '../src/copy';
+import { login } from '../src/mocks/resolvers';
+import { urlConf } from '../src/urls';
+
 import { renderApp, testElements, useHandlers } from './testUtils';
 
 describe('Login', () => {
@@ -10,7 +11,7 @@ describe('Login', () => {
     useHandlers([urlConf.login, login.success]);
     renderApp();
     fireEvent.click(testElements.loginButton());
-    await waitFor(() => screen.getByTitle('home'));
+    await waitFor(() => screen.getByTitle('Home'));
   });
 
   it('display error when no matching account', async () => {

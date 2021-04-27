@@ -15,17 +15,13 @@ const BrowseGames = (props) => {
     loaded,
     loading,
     games,
-    location,
     prepareBrowseGames,
     token,
   } = props;
 
   useEffect(() => {
-    // This will only be called on initial page load
-    if (!loaded) {
-      prepareBrowseGames(token);
-    }
-  }, [location.pathname]);
+    prepareBrowseGames(token);
+  }, []);
 
   const gameComponent = loading || !loaded ? null : <Games games={games} />;
   const error = listGamesError || listVariantsError;

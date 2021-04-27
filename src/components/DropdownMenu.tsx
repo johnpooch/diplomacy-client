@@ -18,15 +18,18 @@ export const StyledDropdownMenu = styled.div`
     transform: translateX(-200px);
     width: 230px;
   }
+
   .dropdown-menu-item {
     padding: ${(p) => p.theme.space[2]};
     &:hover {
       text-decoration: underline;
     }
   }
+
   .dropdown-menu-item-icon {
     margin-right: ${(p) => p.theme.space[1]};
   }
+
   button {
     border: none;
     background: inherit;
@@ -39,10 +42,11 @@ export const StyledDropdownMenu = styled.div`
 
   .dropdown-menu-icon {
     color: ${(p) => p.theme.colors.accent};
-  }
+    cursor: pointer;
 
-  .dropdown-menu-icon.active {
-    color: ${(p) => p.theme.colors.text};
+    &.active {
+      color: ${(p) => p.theme.colors.text};
+    }
   }
 `;
 

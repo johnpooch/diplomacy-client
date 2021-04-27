@@ -6,7 +6,7 @@ import apiActions from './apiActions';
 
 const { getGameFilterChoices } = apiActions;
 
-const initialState = { loading: false };
+const initialState = { loading: false, loaded: false };
 
 const choicesSlice = createSlice({
   name: 'choices',
@@ -16,10 +16,11 @@ const choicesSlice = createSlice({
       state.loading = true;
     },
     [getGameFilterChoices.fulfilled]: (_, { payload }) => {
-      return { loading: false, ...payload };
+      return { loading: false, loaded: true, ...payload };
     },
     [getGameFilterChoices.rejected]: (state, { payload }) => {
       state.loading = false;
+      state.loaded = true;
       state.error = payload;
     },
   },

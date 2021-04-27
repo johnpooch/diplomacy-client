@@ -9,7 +9,7 @@ const StyledContextMenu = styled.nav`
   bottom: 0;
   display: grid;
   display: grid;
-  grid-row-gap: ${(p) => p.theme.space[0]};
+  row-gap: ${(p) => p.theme.space[0]};
   padding: ${(p) => p.theme.space[0]};
   position: absolute;
   width: 100%;

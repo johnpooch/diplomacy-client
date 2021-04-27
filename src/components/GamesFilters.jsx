@@ -35,7 +35,7 @@ const StyledSearchButton = styled(Button)`
 `;
 
 const GamesFilters = ({ choices, listGames, getChoices }) => {
-  useEffect(() => (choices ? null : getChoices()));
+  useEffect(() => (choices.loaded || choices.loading ? null : getChoices()));
 
   const { register, handleSubmit } = useForm();
   const [open, setOpen] = useState(false);
