@@ -31,6 +31,15 @@ const BuildOrderText = ({ pieceType, source, targetCoast, type }) => {
   );
 };
 
+const DisbandOrderText = ({ source, type }) => {
+  return (
+    <StyledOrderText className="text">
+      <span className="source">{source}</span>{' '}
+      <span className="action">{type}</span>
+    </StyledOrderText>
+  );
+};
+
 const HoldOrderText = ({ source, type }) => {
   return (
     <StyledOrderText className="text">
@@ -71,6 +80,7 @@ const OrderTypeMap = {
   [OrderType.CONVOY]: AuxOrderText,
   [OrderType.RETREAT]: MoveOrderText,
   [OrderType.BUILD]: BuildOrderText,
+  [OrderType.DISBAND]: DisbandOrderText,
 };
 
 export const OrderText = ({
