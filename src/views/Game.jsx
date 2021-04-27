@@ -32,6 +32,9 @@ const GameWrapper = styled.div`
 
 const CanvasWrapper = styled.div`
   height: 100%;
+  // -webkit-fill-available is used instead of 100% to prevent issue controls
+  // on mobile block part of the canvas
+  height: -webkit-fill-available
   overflow: hidden;
   width: 100%;
 `;
@@ -89,7 +92,7 @@ const Game = (props) => {
         )
       : new DummyInterpreter();
 
-  const isMobile = browser.lessThan.small;
+  const isMobile = browser.lessThan.medium;
 
   return (
     <GameWrapper>

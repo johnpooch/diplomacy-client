@@ -1,3 +1,4 @@
+import Konva from 'konva';
 import React, { useEffect, useRef } from 'react';
 import { Stage, Layer } from 'react-konva';
 import { connect, ReactReduxContext, Provider } from 'react-redux';
@@ -5,7 +6,7 @@ import { ThemeProvider, useTheme } from 'styled-components';
 
 import viewBox from '../data/standard/viewBox.json';
 import { turnSelectors } from '../store/turns';
-import { clamp, useReferredState } from '../utils';
+import { clamp, getCenter, getDistance, useReferredState } from '../utils';
 
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
@@ -13,6 +14,10 @@ import Territories from './CanvasTerritories';
 import Tooltip from './CanvasTooltip';
 import Orders from './Orders';
 import Portal from './Portal';
+
+// By default Konva disables hit detection during drag for performance reasons
+// but we need to enable it to allow pinch zoom.
+Konva.hitOnDragEnabled = true;
 
 const ZOOM_FACTOR = 1.1;
 const ZOOM_MAX = 3;
@@ -25,11 +30,21 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
   const [size, setSize] = useReferredState({ width: 0, height: 0 });
   const [stagePosition, setStagePosition] = useReferredState({ x: 0, y: 0 });
 
+  // Used to distinguish between touch "clicks" and touch drags
+  const [isTouchMoving, setIsTouchMoving] = useReferredState(false);
+
+  // Used to support pinch zoom
+  const [lastCenter, setLastCenter] = useReferredState(null);
+  const [lastDist, setLastDist] = useReferredState(0);
+
   const stageRef = useRef();
   const theme = useTheme();
 
   const getContainerWidth = () => stageRef.current.container().offsetWidth;
-  const getContainerHeight = () => stageRef.current.container().offsetHeight;
+  const getContainerHeight = () => {
+    console.log(stageRef.current.container());
+    return stageRef.current.container().offsetHeight;
+  };
 
   const getMinScale = () => {
     return Math.min(
@@ -84,6 +99,31 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
     return 'grab';
   };
 
+  const getNewPosition = (center, sc) => {
+    const pointTo = {
+      x: (center.x - stagePosition.current.x) / scale.current,
+      y: (center.y - stagePosition.current.y) / scale.current,
+    };
+    return {
+      x: center.x - pointTo.x * sc,
+      y: center.y - pointTo.y * sc,
+    };
+  };
+
+  const getNewScale = (scaleAmount) =>
+    clamp(scaleAmount, getMinScale(), ZOOM_MAX);
+
+  const getTouchPoints = (touches) => {
+    const touchPoints = [];
+    for (let i = 0; i < touches.length; i += 1) {
+      touchPoints.push({
+        x: touches[i].clientX,
+        y: touches[i].clientY,
+      });
+    }
+    return touchPoints;
+  };
+
   useEffect(() => {
     const resize = () => {
       const newScale = getMinScale();
@@ -107,26 +147,14 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
     const zoom = (e) => {
       if (isDragging.current) return;
 
-      const newScale = clamp(
-        e.deltaY > 0
-          ? scale.current / ZOOM_FACTOR
-          : scale.current * ZOOM_FACTOR,
-        getMinScale(),
-        ZOOM_MAX
+      const newScale = getNewScale(
+        e.deltaY > 0 ? scale.current / ZOOM_FACTOR : scale.current * ZOOM_FACTOR
       );
 
       const pointer = stageRef.current.getPointerPosition();
       if (!pointer) return;
 
-      const mousePointTo = {
-        x: (pointer.x - stagePosition.current.x) / scale.current,
-        y: (pointer.y - stagePosition.current.y) / scale.current,
-      };
-
-      const newPosition = {
-        x: pointer.x - mousePointTo.x * newScale,
-        y: pointer.y - mousePointTo.y * newScale,
-      };
+      const newPosition = getNewPosition(pointer, newScale);
 
       setHoverTarget(null);
       setScale(newScale);
@@ -145,6 +173,32 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
     };
   }, []);
 
+  const handlePinchZoom = (e) => {
+    if (stageRef.current.isDragging()) {
+      stageRef.current.stopDrag();
+      setIsDragging(false);
+    }
+    const [p1, p2] = getTouchPoints(e.touches);
+    const newCenter = getCenter(p1, p2);
+    const dist = getDistance(p1, p2);
+
+    if (!lastCenter.current) setLastCenter(newCenter);
+    if (!lastDist.current) setLastDist(dist);
+
+    const newScale = getNewScale(scale.current * (dist / lastDist.current));
+    const newPos = getNewPosition(newCenter, newScale);
+
+    setScale(newScale);
+    setStagePosition(zoomBounds(newPos));
+    setLastDist(dist);
+    setLastCenter(newCenter);
+  };
+
+  const endPinchZoom = () => {
+    setLastDist(0);
+    setLastCenter(null);
+  };
+
   const handleClick = (e) => {
     if (!e.target) return gameInterpreter.reset();
 
@@ -155,7 +209,7 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
     return gameInterpreter.reset();
   };
 
-  const isMobile = browser.lessThan.small;
+  const isMobile = browser.lessThan.medium;
 
   return (
     <ReactReduxContext.Consumer>
@@ -170,7 +224,9 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
           scaleX={scale.current}
           scaleY={scale.current}
           draggable
-          onDragStart={() => {
+          onDragStart={(e) => {
+            // Do not drag if using two fingers on touch screen
+            if (e.evt.touches.length > 1) return;
             setIsDragging(true);
             setHoverTarget(null);
           }}
@@ -182,7 +238,15 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
             });
           }}
           onClick={(event) => handleClick(event)}
-          onTouchEnd={(event) => handleClick(event)}
+          onTouchMove={(e) => {
+            setIsTouchMoving(true);
+            if (e.evt.touches.length === 2) handlePinchZoom(e.evt);
+          }}
+          onTouchEnd={(event) => {
+            endPinchZoom();
+            if (!isTouchMoving.current) handleClick(event);
+            setIsTouchMoving(false);
+          }}
           dragBoundFunc={(pos) => dragBounds(pos)}
           style={{
             cursor: getCursor(),
