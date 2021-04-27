@@ -43,8 +43,8 @@ const Status = ({ game, turn }) => {
   if (status === 'pending') {
     message = 'Waiting for players to join';
   } else if (turn) {
-    const { phase, season, year } = turn;
-    message = `${season} ${year} - ${phase}`;
+    const { phaseDisplay, seasonDisplay, year } = turn;
+    message = `${seasonDisplay} ${year} - ${phaseDisplay}`;
   }
   return <span>{message}</span>;
 };

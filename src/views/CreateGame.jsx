@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { withRouter, NavLink } from 'react-router-dom';
@@ -8,11 +8,14 @@ import FieldError from '../components/FieldError';
 import Form, { LabelText, FormWrapper } from '../components/Form';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
+import Select from '../components/Select';
 import { GridTemplate } from '../layout';
+import { choiceActions } from '../store/choices';
 import { errorActions } from '../store/errors';
 import { gameActions } from '../store/games';
 
-const CreateGame = ({ createGame, errors }) => {
+const CreateGame = ({ choices, createGame, errors, getChoices }) => {
+  useEffect(() => (choices.loaded ? null : getChoices()));
   const { register, handleSubmit } = useForm();
 
   return (
@@ -32,6 +35,27 @@ const CreateGame = ({ createGame, errors }) => {
             />
             <FieldError error={errors.name} />
           </label>
+          <Select
+            name="orderDeadline"
+            label="Order deadline"
+            options={choices.deadlines}
+            ref={register}
+            required
+          />
+          <Select
+            name="retreatDeadline"
+            label="Retreat deadline"
+            options={choices.deadlines}
+            ref={register}
+            required
+          />
+          <Select
+            name="buildDeadline"
+            label="Build deadline"
+            options={choices.deadlines}
+            ref={register}
+            required
+          />
           <GridTemplate templateColumns="2fr 1fr">
             <Button type="submit">Create game</Button>
             <SecondaryButton as={NavLink} to="/">
@@ -46,8 +70,8 @@ const CreateGame = ({ createGame, errors }) => {
 };
 
 const mapStateToProps = (state) => {
-  const { errors } = state;
-  return { errors };
+  const { choices, errors } = state;
+  return { choices, errors };
 };
 
 const mapDispatchToProps = (dispatch, { history }) => {
@@ -61,6 +85,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
           history.push(`/pre-game/${slug}`);
         }
       }),
+    getChoices: () => dispatch(choiceActions.getGameFilterChoices({})),
   };
 };
 

@@ -9,6 +9,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import produce from 'immer';
+import { DefaultTheme } from 'styled-components';
 
 import { withUnits } from './utils';
 
@@ -82,7 +83,7 @@ const icons = {
   warning: faExclamationTriangle,
 };
 
-export const theme = {
+export const theme: DefaultTheme = {
   breakpoints,
   colors,
   fonts,
@@ -102,7 +103,7 @@ export const theme = {
   icons,
 };
 
-export const darkTheme = produce(theme, (draft) => {
+export const darkTheme: DefaultTheme = produce(theme, (draft) => {
   draft.colors.text = 'white';
   draft.colors.background = colors.text;
   draft.colors.muted = 'black';

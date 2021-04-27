@@ -138,7 +138,7 @@ const Sidebar = ({
       case 'orders':
         return (
           <OrdersPane
-            currentTurn={currentTurn}
+            turn={activeTurn}
             destroyOrder={destroyOrder}
             draws={draws}
             drawResponseLoading={drawResponseLoading}

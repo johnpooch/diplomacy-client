@@ -73,6 +73,27 @@ const OrderTypeMap = {
   [OrderType.BUILD]: BuildOrderText,
 };
 
+export const OrderText = ({
+  aux,
+  pieceType,
+  source,
+  target,
+  targetCoast,
+  type,
+}) => {
+  const OrderTextElement = OrderTypeMap[type];
+  return (
+    <OrderTextElement
+      aux={aux}
+      pieceType={pieceType}
+      source={source}
+      target={target}
+      targetCoast={targetCoast}
+      type={type}
+    />
+  );
+};
+
 const OrderItem = ({
   aux,
   destroyOrder,
@@ -86,18 +107,6 @@ const OrderItem = ({
 }) => {
   const theme = useTheme();
 
-  let orderText = null;
-  const OrderTextElement = OrderTypeMap[type];
-  orderText = (
-    <OrderTextElement
-      aux={aux}
-      pieceType={pieceType}
-      source={source}
-      target={target}
-      targetCoast={targetCoast}
-      type={type}
-    />
-  );
   const className = loading ? 'order disabled' : 'order';
   return (
     <div className={className}>
@@ -105,7 +114,14 @@ const OrderItem = ({
         className="icon"
         icon={theme.icons[pieceType || piece.type]}
       />{' '}
-      {orderText}
+      <OrderText
+        aux={aux}
+        pieceType={pieceType}
+        source={source}
+        target={target}
+        targetCoast={targetCoast}
+        type={type}
+      />
       <IconButton
         icon={theme.icons.cancel}
         onClick={destroyOrder}
@@ -116,12 +132,12 @@ const OrderItem = ({
   );
 };
 
-const getTerritoryName = (state, id) => {
+export const getTerritoryName = (state, id) => {
   const territory = territorySelectors.selectById(state, id);
   return territory ? territory.name : null;
 };
 
-const mapStateToProps = (state, { currentTurn, order }) => {
+const mapState = (state, { turn, order }) => {
   const { loading, pieceType, type } = order;
   const aux = getTerritoryName(state, order.aux);
   const source = getTerritoryName(state, order.source);
@@ -129,19 +145,19 @@ const mapStateToProps = (state, { currentTurn, order }) => {
   const targetCoast = namedCoastData.find(
     (ncd) => ncd.id === order.targetCoast
   );
-  const piece = selectPieceByTerritory(state, order.source, currentTurn.id);
+  const piece = selectPieceByTerritory(state, order.source, turn.id);
   return { aux, loading, piece, pieceType, source, target, targetCoast, type };
 };
 
-const mapDispatchToProps = (dispatch, { order, currentTurn }) => {
+const mapDispatch = (dispatch, { order, turn }) => {
   const destroyOrder = () => {
     let urlParams = { orderId: order.id };
     dispatch(orderActions.destroyOrder({ urlParams })).then(() => {
-      urlParams = { turnId: currentTurn.id };
+      urlParams = { turnId: turn.id };
       dispatch(orderActions.listOrders({ urlParams }));
     });
   };
   return { destroyOrder };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderItem);
+export default connect(mapState, mapDispatch)(OrderItem);

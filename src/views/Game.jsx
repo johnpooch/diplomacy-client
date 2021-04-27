@@ -11,6 +11,7 @@ import Sidebar from '../components/Sidebar';
 import { initialOrderState } from '../game/BaseInterpreter';
 import DummyInterpreter from '../game/DummyInterpreter';
 import { initializeInterpreterFromState } from '../game/index';
+import { alertActions } from '../store/alerts';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
 import { orderActions } from '../store/orders';
@@ -49,6 +50,7 @@ const Game = (props) => {
     prepareGameDetail,
     slug,
     toggleSurrender,
+    userIsParticipant,
   } = props;
 
   const [order, setOrder] = useState(initialOrderState);
@@ -77,15 +79,16 @@ const Game = (props) => {
 
   const activeTurnIsCurrent = activeTurnId === currentTurn.id;
 
-  const gameInterpreter = activeTurnIsCurrent
-    ? initializeInterpreterFromState(
-        state,
-        currentTurn,
-        order,
-        () => createOrder(slug, currentTurn.id, order),
-        setOrder
-      )
-    : new DummyInterpreter();
+  const gameInterpreter =
+    activeTurnIsCurrent && userIsParticipant
+      ? initializeInterpreterFromState(
+          state,
+          currentTurn,
+          order,
+          () => createOrder(slug, currentTurn.id, order),
+          setOrder
+        )
+      : new DummyInterpreter();
 
   const isMobile = browser.lessThan.small;
 
@@ -132,6 +135,10 @@ const mapStateToProps = (state, { match }) => {
     ? selectCurrentTurnByGame(state, game.id)
     : null;
 
+  const userIsParticipant = game.loaded
+    ? game.participants.includes(state.auth.user.id)
+    : false;
+
   const { loading: drawResponseLoading } = state.entities.drawResponses;
   return {
     browser,
@@ -140,11 +147,14 @@ const mapStateToProps = (state, { match }) => {
     firstTurnId,
     game,
     slug,
+    userIsParticipant,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   const prepareGameDetail = (gameSlug) => {
+    // We clear games to avoid browse games rendering before loading games
+    dispatch(gameActions.clearGames());
     dispatch(variantActions.listVariants({})).then(() => {
       let urlParams = { gameSlug };
       dispatch(gameActions.getGameDetail({ urlParams })).then(({ payload }) => {
@@ -162,10 +172,22 @@ const mapDispatchToProps = (dispatch) => {
   };
   const createOrder = (gameSlug, turnId, data) => {
     let urlParams = { gameSlug };
-    dispatch(orderActions.createOrder({ urlParams, data })).then(() => {
-      urlParams = { turnId };
-      dispatch(orderActions.listOrders({ urlParams }));
-    });
+    dispatch(orderActions.createOrder({ urlParams, data })).then(
+      ({ error, payload }) => {
+        if (error) {
+          // TODO tidy this up
+          dispatch(
+            alertActions.alertsAdd({
+              message: Object.values(payload)[0],
+              category: 'error',
+            })
+          );
+        } else {
+          urlParams = { turnId };
+          dispatch(orderActions.listOrders({ urlParams }));
+        }
+      }
+    );
   };
   const clearGameDetail = () => dispatch(gameDetailActions.clearGameDetail());
 

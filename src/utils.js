@@ -112,3 +112,12 @@ export const indexOn = (arr, key) => {
     return map;
   }, {});
 };
+
+export const groupBy = (arr, key) => {
+  return arr.reduce((r, a) => {
+    // eslint-disable-next-line no-param-reassign
+    r[a[key]] = r[a[key]] || [];
+    r[a[key]].push(a);
+    return r;
+  }, Object.create(null));
+};

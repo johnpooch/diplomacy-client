@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { drawResponseActions } from '../store/drawResponses';
 
 import Draws from './Draws';
+import OrderHistorySection from './OrderHistorySection';
 import OrdersSection from './OrdersSection';
 import Pane from './SidebarPane';
 import StatusSection from './StatusSection';
 
 const OrdersPane = ({
-  currentTurn,
+  turn,
   game,
   userNation,
   cancelDrawResponse,
@@ -19,14 +20,16 @@ const OrdersPane = ({
   participants,
   variant,
 }) => {
+  // TODO this prevents crash when user is not participant but we should show something better
+  if (!userNation) return <Pane />;
   return (
     <Pane>
       <StatusSection userNation={userNation} />
-      <OrdersSection
-        currentTurn={currentTurn}
-        game={game}
-        userNation={userNation}
-      />
+      {turn.currentTurn ? (
+        <OrdersSection turn={turn} game={game} userNation={userNation} />
+      ) : (
+        <OrderHistorySection turn={turn} variant={variant} />
+      )}
       {draws.length ? (
         <Draws
           cancelDrawResponse={cancelDrawResponse}

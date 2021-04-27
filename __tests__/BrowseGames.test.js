@@ -2,13 +2,14 @@ import { fireEvent, waitFor, screen } from '@testing-library/react';
 import Konva from 'konva-node';
 
 import { infoMessages } from '../src/copy';
-import { urlConf } from '../src/urls';
 import {
   getGameFilterChoices,
   getGameDetail,
   listGames,
   listVariants,
 } from '../src/mocks/resolvers';
+import { urlConf } from '../src/urls';
+
 import {
   basicBeforeEach,
   logIn,
@@ -67,7 +68,7 @@ describe('Browse Games', () => {
     );
     renderApp();
     await waitFor(() => screen.getByTitle(activeGameTitle));
-    expect(screen.getByText('spring 1901 - Order'));
+    expect(screen.getByText('Spring 1901 - Order'));
     expect(screen.getByText('7 / 7'));
   });
 

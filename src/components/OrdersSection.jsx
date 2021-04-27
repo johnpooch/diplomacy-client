@@ -27,7 +27,7 @@ const StyledOrders = styled.ul`
 `;
 
 const OrdersSection = ({
-  currentTurn,
+  turn,
   errors,
   finalizeOrders,
   orders,
@@ -47,7 +47,7 @@ const OrdersSection = ({
           <StyledOrders>
             {orders.map((order) => (
               <li key={order.id}>
-                <OrderItem order={order} currentTurn={currentTurn} />
+                <OrderItem order={order} turn={turn} />
               </li>
             ))}
           </StyledOrders>
@@ -60,8 +60,8 @@ const OrdersSection = ({
   );
 };
 
-const mapStateToProps = (state, { currentTurn }) => {
-  const orders = selectOrdersByTurn(state, currentTurn.id);
+const mapStateToProps = (state, { turn }) => {
+  const orders = selectOrdersByTurn(state, turn.id);
   const errors = getErrors(
     state.errors,
     orderActions.destroyOrder,
