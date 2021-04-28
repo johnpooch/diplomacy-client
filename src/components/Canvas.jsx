@@ -41,10 +41,7 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
   const theme = useTheme();
 
   const getContainerWidth = () => stageRef.current.container().offsetWidth;
-  const getContainerHeight = () => {
-    console.log(stageRef.current.container());
-    return stageRef.current.container().offsetHeight;
-  };
+  const getContainerHeight = () => stageRef.current.container().offsetHeight;
 
   const getMinScale = () => {
     return Math.min(
