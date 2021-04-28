@@ -15,8 +15,8 @@ const StyledContextMenu = styled.nav`
   width: 100%;
 `;
 
-const ContextMenu = ({ onOptionSelected, options }) => {
-  const handleOptionSelected = (option) => () => onOptionSelected(option);
+const ContextMenu = ({ onClickOption, options }) => {
+  const handleOptionSelected = (option) => () => onClickOption(option);
 
   const elements = options.map(([value, label]) => {
     return (
