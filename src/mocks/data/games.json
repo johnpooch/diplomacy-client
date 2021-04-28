@@ -75,7 +75,9 @@
             "id": 1,
             "year": 1901,
             "season": "spring",
-            "phase": "Order",
+            "seasonDisplay": "Spring",
+            "phase": "order",
+            "phaseDisplay": "Order",
             "nationStates": [
                 {
                     "id": 1,

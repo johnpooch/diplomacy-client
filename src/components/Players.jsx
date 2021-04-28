@@ -7,9 +7,10 @@ import Flag from './Flag';
 
 const StyledPlayer = styled.div`
   display: grid;
-  grid-column-gap: ${(p) => p.theme.space[1]};
+  column-gap: ${(p) => p.theme.space[1]};
   grid-template-columns: auto auto;
   justify-content: flex-start;
+  align-items: center;
 
   .username {
     font-weight: ${(props) =>
@@ -29,7 +30,7 @@ export const Player = ({ player }) => {
 
 const StyledPlayerCount = styled.div`
   display: grid;
-  grid-column-gap: ${(p) => p.theme.space[2]};
+  column-gap: ${(p) => p.theme.space[2]};
   grid-template-columns: auto 1fr;
   text-align: left;
 `;
@@ -49,7 +50,7 @@ export const PlayerCount = ({ game }) => {
 
 const StyledPlayerList = styled.div`
   display: grid;
-  grid-row-gap: ${(p) => p.theme.space[1]};
+  row-gap: ${(p) => p.theme.space[1]};
 `;
 
 export const PlayerList = ({ participants }) => {
@@ -61,7 +62,7 @@ export const PlayerList = ({ participants }) => {
 
 const StyledPlayers = styled.div`
   display: grid;
-  grid-row-gap: ${(p) => p.theme.space[2]};
+  row-gap: ${(p) => p.theme.space[2]};
 `;
 
 const Players = ({ browser, game, participants }) => {

@@ -71,10 +71,13 @@ export const checkMustSpecifyViaConvoy = (
 };
 
 export const checkMustSpecifyTargetCoast = (
-  target: Territory,
-  orderType: OrderType
+  territory: Territory,
+  orderType: OrderType,
+  pieceType: PieceType
 ): boolean =>
-  orderType === OrderType.MOVE && Boolean(target.namedCoasts.length);
+  [OrderType.MOVE, OrderType.BUILD].includes(orderType) &&
+  pieceType === PieceType.FLEET &&
+  Boolean(territory.namedCoasts.length);
 
 export const requiresConvoy = (
   order: Order,
@@ -87,7 +90,10 @@ export const orderComplete = (
   mustSpecifyViaConvoy: boolean,
   mustSpecifyTargetCoast: boolean
 ): boolean => {
-  if (isBuild(order)) return Boolean(order.pieceType);
+  if (isBuild(order))
+    return Boolean(
+      order.pieceType && mustSpecifyTargetCoast === Boolean(order.targetCoast)
+    );
   if (isHold(order)) return Boolean(order.source);
   if (isMoveOrRetreat(order)) {
     return Boolean(
@@ -107,6 +113,7 @@ export const getNextOrderAttribute = (
 ): OrderAttr => {
   if (!order.source) return OrderAttr.SOURCE;
   if (!order.type) return OrderAttr.TYPE;
+  if (isBuild(order) && !order.pieceType) return OrderAttr.PIECE_TYPE;
   if (mustSpecifyTargetCoast) return OrderAttr.TARGET_COAST;
   if (mustSpecifyViaConvoy) return OrderAttr.VIA_CONVOY;
   if (isMoveOrRetreat(order) && !order.target) return OrderAttr.TARGET;

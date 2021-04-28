@@ -7,7 +7,6 @@ const StyledPane = styled.div`
   flex-grow: 1;
   font-size: ${(p) => p.theme.fontSizes[2]};
   padding: 0 ${(p) => p.theme.space[2]};
-  overflow-y: auto;
 
   section {
     margin: ${(p) => p.theme.space[3]} 0;
@@ -32,12 +31,12 @@ const StyledPane = styled.div`
 
   .heading {
     display: flex;
-    grid-gap: ${(p) => p.theme.space[3]};
+    gap: ${(p) => p.theme.space[3]};
     justify-content: space-between;
 
     .text {
       text-transform: uppercase;
-      font-weight: bold;
+      font-weight: ${(p) => p.theme.fontWeights.display};
     }
   }
 

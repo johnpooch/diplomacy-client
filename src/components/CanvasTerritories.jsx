@@ -7,7 +7,7 @@ import stripes from '../img/stripes.svg';
 
 import Territory from './CanvasTerritory';
 
-const Territories = ({ hoverId, turn }) => {
+const Territories = ({ hoverId, order, turn }) => {
   const [stripesImage, setStripesImage] = useState(null);
 
   useEffect(() => {
@@ -16,15 +16,19 @@ const Territories = ({ hoverId, turn }) => {
     image.src = stripes;
   }, []);
 
+  const selectedTerritories = [order.aux, order.source, order.target];
+
   return (
     <Group>
       {territoryData.map((t) => {
+        const isSelected = selectedTerritories.includes(t.id);
         return (
           <Territory
             key={t.id}
             hoverId={hoverId}
             stripesImage={stripesImage}
             id={t.id}
+            isSelected={isSelected}
             turnId={turn.id}
           />
         );

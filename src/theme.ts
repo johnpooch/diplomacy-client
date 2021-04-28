@@ -9,17 +9,18 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import produce from 'immer';
+import { DefaultTheme } from 'styled-components';
 
 import { withUnits } from './utils';
 
 // based on https://theme-ui.com/theme-spec/
-const breakpoints = ['480px', '768px', '992px', '1200'];
+const breakpoints = [480, 768, 992, 1200];
 
 const colors = {
   text: 'midnightblue',
   background: 'papayawhip',
   primary: 'dodgerblue',
-  secondary: 'slategray',
+  secondary: '#8b8bb7',
   accent: 'slateblue',
   muted: 'white',
   nations: {
@@ -34,6 +35,7 @@ const colors = {
   map: {
     land: '#e3d8c4',
     sea: '#79bde1',
+    background: 'black',
   },
   status: {
     error: {
@@ -53,23 +55,23 @@ const fonts = {
 const fontSizes = [9, 13, 16, 19, 36];
 const fontWeights = {
   body: 400,
-  heading: 700,
+  display: 700,
   bold: 700,
 };
 const lineHeights = {
   body: 1.5,
-  heading: 1.125,
+  display: 1.1,
 };
 const space = [4, 8, 12, 16, 24, 32, 44, 60];
-const borderWidths = [1];
+const borderWidths = [1, 3];
 const borders = [`${borderWidths[0]}px solid ${colors.secondary}`];
 const radii = [6, 8, 16];
 const shadows = [`rgba(0, 0, 0, 0.15) 0px 1px 3px 1px`];
 const sizes = {
   pageMaxWidth: '690px',
   inputMinSize: '44px',
-  sidebarMaxWidth: '320px',
-  flag: withUnits([30, 80], 'px'),
+  sidebarWidth: '320px',
+  flag: withUnits([32, 48], 'px'),
 };
 const icons = {
   accept: faCheck,
@@ -82,8 +84,8 @@ const icons = {
   warning: faExclamationTriangle,
 };
 
-export const theme = {
-  breakpoints,
+export const theme: DefaultTheme = {
+  breakpoints: withUnits(breakpoints, 'px'),
   colors,
   fonts,
   fontSizes: withUnits(fontSizes, 'px'),
@@ -102,7 +104,7 @@ export const theme = {
   icons,
 };
 
-export const darkTheme = produce(theme, (draft) => {
+export const darkTheme: DefaultTheme = produce(theme, (draft) => {
   draft.colors.text = 'white';
   draft.colors.background = colors.text;
   draft.colors.muted = 'black';

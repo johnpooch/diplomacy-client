@@ -4,7 +4,6 @@ import {
   canMoveTo,
   canOrder,
   getOrderTypeOptions,
-  getTargetCoastOptions,
   getViaConvoyOptions,
   requiresConvoy,
   checkMustSpecifyViaConvoy,
@@ -61,13 +60,6 @@ export default class OrderInterpreter extends Interpreter {
     }
   }
 
-  getTargetCoastChoices(territory: Territory): string[][] {
-    return getTargetCoastOptions(territory, this.namedCoasts).map((t) => [
-      t.id,
-      t.name,
-    ]);
-  }
-
   getViaConvoyChoices(): (boolean | string)[][] {
     return getViaConvoyOptions().map((o) => [
       o,
@@ -77,7 +69,11 @@ export default class OrderInterpreter extends Interpreter {
 
   mustSpecifyTargetCoast(): boolean {
     return this.target
-      ? checkMustSpecifyTargetCoast(this.target, this.order.type)
+      ? checkMustSpecifyTargetCoast(
+          this.target,
+          this.order.type,
+          this.getPiece(this.source).type
+        )
       : false;
   }
 

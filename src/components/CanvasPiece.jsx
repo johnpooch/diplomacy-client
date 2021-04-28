@@ -4,6 +4,7 @@ import { Circle, Group, Path } from 'react-konva';
 import { connect } from 'react-redux';
 import { useTheme } from 'styled-components';
 
+import namedCoastData from '../data/standard/namedCoasts.json';
 import territoryData from '../data/standard/territories.json';
 import { makeSelectPieceById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
@@ -17,6 +18,7 @@ const CIRCLE_STROKE_WIDTH = 2;
 const PATH_STROKE_WIDTH = 0.25;
 
 const Piece = ({
+  namedCoast,
   piece,
   territory,
   turnId,
@@ -29,7 +31,7 @@ const Piece = ({
   // Don't show a piece if it was created this turn (build order shown instead)
   if (turnCreated === turnId) return null;
 
-  const [x, y] = getTerritoryPieceCoords(territory, mustRetreat);
+  const [x, y] = getTerritoryPieceCoords(territory, mustRetreat, namedCoast);
   const theme = useTheme();
 
   const iconWidth = theme.icons[type].icon[0] * ICON_SCALES[type];
@@ -75,8 +77,12 @@ const makeMapStateToProps = () => {
   const selectPieceById = makeSelectPieceById();
   return (state, { id, turnId }) => {
     const piece = selectPieceById(state, id, turnId);
+    const namedCoast = namedCoastData.find(
+      (ncd) => ncd.id === piece.namedCoast
+    );
     const territory = territoryData.find((td) => td.id === piece.territory);
     return {
+      namedCoast,
       piece,
       territory,
       turnId,

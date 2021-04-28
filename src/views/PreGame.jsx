@@ -7,6 +7,7 @@ import Form, { FormWrapper } from '../components/Form';
 import Page from '../components/Page';
 import Players from '../components/Players';
 import { infoMessages } from '../copy';
+import { GameStatus } from '../game/types';
 import { Grid, GridTemplate } from '../layout';
 import { alertActions } from '../store/alerts';
 import { choiceActions } from '../store/choices';
@@ -76,7 +77,7 @@ const mapStateToProps = (state, { match }) => {
   return { game, participants, token, userJoined };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { history }) => {
   const category = 'success';
   const prepareBrowseGames = (token) => {
     dispatch(variantActions.listVariants({ token }));
@@ -88,12 +89,16 @@ const mapDispatchToProps = (dispatch) => {
       const urlParams = { gameSlug };
       dispatch(gameActions.joinGame({ token, urlParams })).then(
         ({ payload }) => {
-          const { name } = payload;
+          const { name, slug, status } = payload;
           const message = joining
             ? `You have joined ${name}!`
             : `You have left ${name}.`;
           dispatch(gameActions.listGames({ token }));
           dispatch(alertActions.alertsAdd({ message, category }));
+          // If user is the last player to join, redirect to game
+          if (status === GameStatus.ACTIVE) {
+            history.push(`/game/${slug}`);
+          }
         }
       );
     },

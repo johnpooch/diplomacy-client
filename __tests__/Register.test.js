@@ -19,7 +19,7 @@ describe('Register', () => {
     renderApp().push(startingUrl);
     fireEvent.click(testElements.registerButton());
     await waitFor(() => screen.getByRole('alert'));
-    await waitFor(() => screen.getByTitle('home'));
+    await waitFor(() => screen.getByTitle('Home'));
     expect(screen.getByText(successMessages.register()));
   });
   it('display error when user with email already exists', async () => {

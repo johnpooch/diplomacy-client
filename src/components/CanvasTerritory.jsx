@@ -11,6 +11,7 @@ const FILL_PATTERN_SCALE = 0.15;
 const FILL_PATTERN_OPACITY = 0.15;
 const STROKE_WIDTH = 2;
 const SUPPLY_CENTER_SIZE = 3;
+const SELECTED_DASH = [5, 2, 0.1];
 
 const SupplyCenter = ({ x, y }) => {
   const theme = useTheme();
@@ -29,7 +30,13 @@ const SupplyCenter = ({ x, y }) => {
   );
 };
 
-const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
+const Territory = ({
+  territory,
+  isHovering,
+  isOrderable,
+  isSelected,
+  stripesImage,
+}) => {
   const {
     controlledBy,
     path,
@@ -51,7 +58,11 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
   };
 
   const getStroke = () =>
-    isHovering && playable ? theme.colors.muted : darken(0.2, getFill());
+    (isHovering && playable) || isSelected
+      ? theme.colors.muted
+      : darken(0.2, getFill());
+
+  const dash = isSelected ? SELECTED_DASH : null;
 
   return (
     <Group>
@@ -66,6 +77,7 @@ const Territory = ({ territory, isHovering, isOrderable, stripesImage }) => {
         stroke={getStroke()}
         strokeWidth={STROKE_WIDTH}
         territory={territory}
+        dash={dash}
       />
       {playable ? null : (
         <Path

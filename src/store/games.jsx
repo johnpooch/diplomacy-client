@@ -18,12 +18,14 @@ const setLoading = (state, loading) => {
   state.loading = loading;
 };
 
+const initialState = gameAdapter.getInitialState({
+  loading: false,
+  loaded: false,
+});
+
 const gameSlice = createSlice({
   name: 'games',
-  initialState: gameAdapter.getInitialState({
-    loading: false,
-    loaded: false,
-  }),
+  initialState,
   reducers: {
     normalizedGamesReceived: (state, action) => {
       gameAdapter.setAll(state, action.payload);
@@ -38,6 +40,9 @@ const gameSlice = createSlice({
       const { id, piece } = payload;
       const game = state.entities[id];
       game.pieces = game.pieces.filter((p) => p !== piece);
+    },
+    clearGames: () => {
+      return initialState;
     },
   },
   extraReducers: {

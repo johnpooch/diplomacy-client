@@ -1,16 +1,15 @@
-import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { connect, useStore } from 'react-redux';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { BackButton } from '../components/Button';
 import Canvas from '../components/Canvas';
 import MobileContextMenu from '../components/MobileContextMenu';
 import Sidebar from '../components/Sidebar';
 import { initialOrderState } from '../game/BaseInterpreter';
 import DummyInterpreter from '../game/DummyInterpreter';
 import { initializeInterpreterFromState } from '../game/index';
+import { alertActions } from '../store/alerts';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
 import { orderActions } from '../store/orders';
@@ -21,20 +20,24 @@ import {
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
 
-const NavLinkButton = BackButton.withComponent(NavLink);
-const HomeNavLinkButton = () => (
-  <NavLinkButton
-    exact
-    to="/"
-    css={`
-      position: fixed;
-      top: ${(p) => p.theme.space[2]};
-      left: ${(p) => p.theme.space[2]};
-    `}
-  >
-    <FontAwesomeIcon icon={faArrowAltCircleLeft} size="3x" />
-  </NavLinkButton>
-);
+const GameWrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+
+  @media only screen and (max-width: ${(p) => p.theme.breakpoints[1]}) {
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+`;
+
+const CanvasWrapper = styled.div`
+  height: 100%;
+  // -webkit-fill-available is used instead of 100% to prevent issue controls
+  // on mobile block part of the canvas
+  height: -webkit-fill-available
+  overflow: hidden;
+  width: 100%;
+`;
 
 const Game = (props) => {
   const {
@@ -49,6 +52,7 @@ const Game = (props) => {
     prepareGameDetail,
     slug,
     toggleSurrender,
+    userIsParticipant,
   } = props;
 
   const [order, setOrder] = useState(initialOrderState);
@@ -77,21 +81,21 @@ const Game = (props) => {
 
   const activeTurnIsCurrent = activeTurnId === currentTurn.id;
 
-  const gameInterpreter = activeTurnIsCurrent
-    ? initializeInterpreterFromState(
-        state,
-        currentTurn,
-        order,
-        () => createOrder(slug, currentTurn.id, order),
-        setOrder
-      )
-    : new DummyInterpreter();
+  const gameInterpreter =
+    activeTurnIsCurrent && userIsParticipant
+      ? initializeInterpreterFromState(
+          state,
+          currentTurn,
+          order,
+          () => createOrder(slug, currentTurn.id, order),
+          setOrder
+        )
+      : new DummyInterpreter();
 
-  const isMobile = browser.lessThan.small;
+  const isMobile = browser.lessThan.medium;
 
   return (
-    <div>
-      <Canvas turn={activeTurnId} gameInterpreter={gameInterpreter} />
+    <GameWrapper>
       <Sidebar
         activeTurnId={activeTurnId}
         currentTurn={currentTurn}
@@ -104,14 +108,20 @@ const Game = (props) => {
         variant={game.variant}
         // TODO: clean this up
       />
+      <CanvasWrapper>
+        <Canvas
+          turn={activeTurnId}
+          gameInterpreter={gameInterpreter}
+          order={order}
+        />
+      </CanvasWrapper>
       {gameInterpreter.showContextMenu() && isMobile && (
         <MobileContextMenu
           onClickOption={gameInterpreter.onClickOption}
           options={gameInterpreter.getContextMenuOptions()}
         />
       )}
-      <HomeNavLinkButton />
-    </div>
+    </GameWrapper>
   );
 };
 
@@ -128,6 +138,10 @@ const mapStateToProps = (state, { match }) => {
     ? selectCurrentTurnByGame(state, game.id)
     : null;
 
+  const userIsParticipant = game.loaded
+    ? game.participants.includes(state.auth.user.id)
+    : false;
+
   const { loading: drawResponseLoading } = state.entities.drawResponses;
   return {
     browser,
@@ -136,11 +150,14 @@ const mapStateToProps = (state, { match }) => {
     firstTurnId,
     game,
     slug,
+    userIsParticipant,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   const prepareGameDetail = (gameSlug) => {
+    // We clear games to avoid browse games rendering before loading games
+    dispatch(gameActions.clearGames());
     dispatch(variantActions.listVariants({})).then(() => {
       let urlParams = { gameSlug };
       dispatch(gameActions.getGameDetail({ urlParams })).then(({ payload }) => {
@@ -158,10 +175,22 @@ const mapDispatchToProps = (dispatch) => {
   };
   const createOrder = (gameSlug, turnId, data) => {
     let urlParams = { gameSlug };
-    dispatch(orderActions.createOrder({ urlParams, data })).then(() => {
-      urlParams = { turnId };
-      dispatch(orderActions.listOrders({ urlParams }));
-    });
+    dispatch(orderActions.createOrder({ urlParams, data })).then(
+      ({ error, payload }) => {
+        if (error) {
+          // TODO tidy this up
+          dispatch(
+            alertActions.alertsAdd({
+              message: Object.values(payload)[0],
+              category: 'error',
+            })
+          );
+        } else {
+          urlParams = { turnId };
+          dispatch(orderActions.listOrders({ urlParams }));
+        }
+      }
+    );
   };
   const clearGameDetail = () => dispatch(gameDetailActions.clearGameDetail());
 

@@ -1,7 +1,7 @@
 [
     {
         "namedCoastMapDataId": 1,
-        "namedCoastUID": "standard-bulgaria-east-coast",
+        "id": "standard-bulgaria-east-coast",
         "abbreviation": "EC",
         "textX": 1021.7999877929688,
         "textY": 1109.0999755859375,
@@ -12,7 +12,7 @@
     },
     {
         "namedCoastMapDataId": 2,
-        "namedCoastUID": "standard-bulgaria-south-coast",
+        "id": "standard-bulgaria-south-coast",
         "abbreviation": "SC",
         "textX": 1021.7999877929688,
         "textY": 1109.0999755859375,
@@ -23,7 +23,7 @@
     },
     {
         "namedCoastMapDataId": 3,
-        "namedCoastUID": "standard-spain-north-coast",
+        "id": "standard-spain-north-coast",
         "abbreviation": "NC",
         "textX": 302.29998779296875,
         "textY": 1119.699951171875,
@@ -34,7 +34,7 @@
     },
     {
         "namedCoastMapDataId": 4,
-        "namedCoastUID": "standard-spain-south-coast",
+        "id": "standard-spain-south-coast",
         "abbreviation": "SC",
         "textX": 302.29998779296875,
         "textY": 1119.699951171875,
@@ -45,7 +45,7 @@
     },
     {
         "namedCoastMapDataId": 5,
-        "namedCoastUID": "standard-st-petersburg-north-coast",
+        "id": "standard-st-petersburg-north-coast",
         "abbreviation": "NC",
         "textX": 302.29998779296875,
         "textY": 1119.699951171875,
@@ -56,7 +56,7 @@
     },
     {
         "namedCoastMapDataId": 6,
-        "namedCoastUID": "standard-st-petersburg-south-coast",
+        "id": "standard-st-petersburg-south-coast",
         "abbreviation": "SC",
         "textX": 302.29998779296875,
         "textY": 1119.699951171875,
