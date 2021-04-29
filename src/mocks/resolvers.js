@@ -5,6 +5,8 @@ import createOrderData from './data/createOrder.json';
 import gameDetailData from './data/gameDetail.json';
 import getGameFilterChoicesData from './data/gameFilterChoices.json';
 import listGamesData from './data/games.json';
+import getOrdersFinalizedData from './data/getOrdersFinalized.json';
+import getOrdersStatusData from './data/getOrdersStatus.json';
 import orderData from './data/orders.json';
 import moreOrderData from './data/orders2.json';
 import userData from './data/user.json';
@@ -68,6 +70,17 @@ export const finalizeOrders = {
     res(ctx.status(201), ctx.json({ ordersFinalized: true })),
   successUnFinalized: (_, res, ctx) =>
     res(ctx.status(201), ctx.json({ ordersFinalized: false })),
+  errorServerError,
+};
+
+export const getOrdersFinalized = {
+  success: (_, res, ctx) =>
+    res(ctx.status(201), ctx.json(getOrdersFinalizedData)),
+  errorServerError,
+};
+
+export const getOrdersStatus = {
+  success: (_, res, ctx) => res(ctx.status(201), ctx.json(getOrdersStatusData)),
   errorServerError,
 };
 
