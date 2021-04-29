@@ -9,6 +9,8 @@ import {
   destroyOrder,
   finalizeOrders,
   getGameDetail,
+  getOrdersFinalized,
+  getOrdersStatus,
   getGameFilterChoices,
   listGames,
   listOrders,
@@ -49,6 +51,8 @@ const handlers = [
   [urlConf.finalizeOrders, finalizeOrders.success],
   [urlConf.getGameDetail, getGameDetail.success],
   [urlConf.listOrders, listOrders.success],
+  [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+  [urlConf.getOrdersStatus, getOrdersStatus.success],
 ];
 
 export default Object.values(handlers).map(([url, resolver]) => {

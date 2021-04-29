@@ -56,6 +56,16 @@ const toggleSurrender = {
   method: methods.PATCH,
   urlPattern: 'surrender/:turnId',
 };
+const getOrdersFinalized = {
+  name: 'getOrdersFinalized',
+  method: methods.GET,
+  urlPattern: 'game/:turnId/orders_finalized',
+};
+const getOrdersStatus = {
+  name: 'getOrdersStatus',
+  method: methods.GET,
+  urlPattern: 'game/:turnId/orders_status',
+};
 const listVariants = {
   name: 'listVariants',
   method: methods.GET,
@@ -106,6 +116,8 @@ export const urlConf = {
   finalizeOrders,
   getGameDetail,
   getGameFilterChoices,
+  getOrdersFinalized,
+  getOrdersStatus,
   joinGame,
   listGames,
   listOrders,

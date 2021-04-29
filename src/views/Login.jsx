@@ -27,6 +27,7 @@ const LoginForm = ({ errors, onAuth }) => {
               name="username"
               placeholder="Email or username"
               autoComplete="username"
+              autoCapitalize="off"
               ref={register}
               required
             />

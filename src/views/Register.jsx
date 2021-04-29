@@ -40,6 +40,7 @@ const Register = ({ errors, onAuth }) => {
               name="username"
               placeholder="Username"
               autoComplete="username"
+              autoCapitalize="off"
               ref={register}
               required
             />

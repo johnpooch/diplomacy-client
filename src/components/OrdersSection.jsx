@@ -35,6 +35,9 @@ const OrdersSection = ({
 }) => {
   const { numOrders, ordersFinalized } = userNation;
 
+  const disableFinalizeOrders =
+    userNation.loading || typeof ordersFinalized !== 'boolean';
+
   return (
     <Section className="orders" label="Orders">
       {Object.keys(errors).length ? (
@@ -51,7 +54,7 @@ const OrdersSection = ({
               </li>
             ))}
           </StyledOrders>
-          <Button onClick={finalizeOrders} disabled={userNation.loading}>
+          <Button onClick={finalizeOrders} disabled={disableFinalizeOrders}>
             {ordersFinalized ? `Un-finalize orders` : 'Finalize orders'}
           </Button>
         </div>
@@ -76,7 +79,15 @@ const mapDispatchToProps = (dispatch, { game, userNation }) => {
     let urlParams = { nationStateId: userNation.id };
     dispatch(nationStateActions.finalizeOrders({ urlParams })).then(() => {
       urlParams = { gameSlug: game.slug };
-      dispatch(gameActions.getGameDetail({ urlParams }));
+      dispatch(gameActions.getGameDetail({ urlParams })).then(({ payload }) => {
+        const { id: turnId } = payload.turns.find(
+          (t) => t.currentTurn === true
+        );
+        urlParams = { turnId };
+        dispatch(orderActions.listOrders({ urlParams }));
+        dispatch(nationStateActions.getOrdersFinalized({ urlParams }));
+        dispatch(nationStateActions.getOrdersStatus({ urlParams }));
+      });
     });
   };
   return { finalizeOrders };
