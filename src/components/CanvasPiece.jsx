@@ -15,17 +15,8 @@ const ICON_SCALES = {
   fleet: 0.045,
 };
 const CIRCLE_STROKE_WIDTH = 2;
-const PATH_STROKE_WIDTH = 0.25;
 
-const Piece = ({
-  namedCoast,
-  piece,
-  territory,
-  turnId,
-  isHovering,
-  isOrderable,
-  isSelected,
-}) => {
+const Piece = ({ namedCoast, piece, territory, turnId }) => {
   const { mustRetreat, nation, turnCreated, type } = piece;
 
   // Don't show a piece if it was created this turn (build order shown instead)
