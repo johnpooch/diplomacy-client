@@ -9,6 +9,8 @@ import {
   finalizeOrders,
   getGameDetail,
   getGameFilterChoices,
+  getOrdersFinalized,
+  getOrdersStatus,
   listGames,
   listOrders,
   listVariants,
@@ -37,6 +39,8 @@ describe('Game Detail', () => {
       [urlConf.destroyOrder, destroyOrder.success],
       [urlConf.getGameDetail, getGameDetail.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
@@ -56,6 +60,8 @@ describe('Game Detail', () => {
       [urlConf.destroyOrder, destroyOrder.errorServerError],
       [urlConf.getGameDetail, getGameDetail.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
@@ -71,6 +77,8 @@ describe('Game Detail', () => {
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.errorServerError]
@@ -85,6 +93,8 @@ describe('Game Detail', () => {
       [urlConf.destroyOrder, destroyOrder.errorNotFound],
       [urlConf.getGameDetail, getGameDetail.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
@@ -101,6 +111,8 @@ describe('Game Detail', () => {
       [urlConf.finalizeOrders, finalizeOrders.success],
       [urlConf.getGameDetail, getGameDetail.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
       [urlConf.listOrders, listOrders.success]
@@ -111,7 +123,6 @@ describe('Game Detail', () => {
       screen.getByText('Finalize orders')
     );
     userEvent.click(finalizeOrdersButton);
-    expect(screen.getByText('Finalize orders')).toHaveAttribute('disabled');
     await waitFor(() => screen.getByRole('alert'));
     expect(screen.getByText('Un-finalize orders')).not.toHaveAttribute(
       'disabled'
