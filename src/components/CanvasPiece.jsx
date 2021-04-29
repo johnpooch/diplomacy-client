@@ -11,8 +11,8 @@ import { getTerritoryPieceCoords } from '../utils';
 
 const CIRCLE_RADIUS = 15;
 const ICON_SCALES = {
-  army: 0.03,
-  fleet: 0.04,
+  army: 0.035,
+  fleet: 0.045,
 };
 const CIRCLE_STROKE_WIDTH = 2;
 const PATH_STROKE_WIDTH = 0.25;
@@ -37,22 +37,12 @@ const Piece = ({
   const iconWidth = theme.icons[type].icon[0] * ICON_SCALES[type];
   const iconHeight = theme.icons[type].icon[1] * ICON_SCALES[type];
 
-  const circleFill =
-    (isHovering || isSelected) && isOrderable
-      ? theme.colors.neutral
-      : theme.colors.text;
-
-  const circleStroke =
-    !(isHovering || isSelected) && isOrderable
-      ? theme.colors.neutral
-      : darken(0.2, theme.colors.nations[nation]);
-
   return (
     <Group mustRetreat={mustRetreat} listening={false} type={type}>
       <Circle
-        fill={circleFill}
+        fill={theme.colors.map.pieceCircleFill}
         radius={CIRCLE_RADIUS}
-        stroke={circleStroke}
+        stroke={darken(0.2, theme.colors.nations[nation])}
         strokeWidth={CIRCLE_STROKE_WIDTH}
         shadowForStrokeEnabled={false}
         x={x}
@@ -63,8 +53,6 @@ const Piece = ({
         fill={theme.colors.nations[nation]}
         scaleX={ICON_SCALES[type]}
         scaleY={ICON_SCALES[type]}
-        stroke={circleFill}
-        _stroke_Width={PATH_STROKE_WIDTH / ICON_SCALES[type]}
         shadowForStrokeEnabled={false}
         x={x - iconWidth / 2}
         y={y - iconHeight / 2}
