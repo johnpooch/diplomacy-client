@@ -27,7 +27,7 @@ const colors = {
     'standard-england': '#ff1103',
     'standard-france': '#0074d9',
     'standard-germany': '#777777',
-    'standard-austria-hungary': '#E69F00',
+    'standard-austria-hungary': '#FC8889',
     'standard-italy': '#2ecc40',
     'standard-russia': '#b10dc9',
     'standard-turkey': '#508e59',
@@ -36,6 +36,9 @@ const colors = {
     land: '#e3d8c4',
     sea: '#79bde1',
     background: 'black',
+    text: 'black',
+    pieceCircleStroke: 'white',
+    pieceCircleFill: 'white',
   },
   status: {
     error: {

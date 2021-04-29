@@ -1,6 +1,6 @@
 import { darken } from 'polished';
 import React, { useRef } from 'react';
-import { Path, Star, Group } from 'react-konva';
+import { Path, Star, Group, Text } from 'react-konva';
 import { connect } from 'react-redux';
 import { useTheme } from 'styled-components';
 
@@ -12,6 +12,7 @@ const FILL_PATTERN_OPACITY = 0.15;
 const STROKE_WIDTH = 2;
 const SUPPLY_CENTER_SIZE = 3;
 const SELECTED_DASH = [5, 2, 0.1];
+const TEXT_OFFSET = { x: 185, y: 160 };
 
 const SupplyCenter = ({ x, y }) => {
   const theme = useTheme();
@@ -38,6 +39,7 @@ const Territory = ({
   stripesImage,
 }) => {
   const {
+    abbreviation,
     controlledBy,
     path,
     playable,
@@ -46,6 +48,8 @@ const Territory = ({
     supplyCenter,
     supplyCenterX: scx,
     supplyCenterY: scy,
+    textX,
+    textY,
   } = territory;
 
   const theme = useTheme();
@@ -89,6 +93,15 @@ const Territory = ({
           opacity={FILL_PATTERN_OPACITY}
         />
       )}
+      <Text
+        x={textX + TEXT_OFFSET.x}
+        y={textY + TEXT_OFFSET.y}
+        fill={theme.colors.map.text}
+        fontStyle="bold"
+        fontVariant="small-caps"
+        text={abbreviation}
+        listening={false}
+      />
       {supplyCenter ? <SupplyCenter x={scx} y={scy} /> : null}
     </Group>
   );
