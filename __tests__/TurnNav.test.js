@@ -6,6 +6,8 @@ import Konva from 'konva-node';
 import { titles } from '../src/components/TurnNav';
 import {
   getGameDetail,
+  getOrdersFinalized,
+  getOrdersStatus,
   getGameFilterChoices,
   listGames,
   listOrders,
@@ -51,6 +53,8 @@ describe('Turn Nav', () => {
   it('all buttons disabled if only turn', async () => {
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
@@ -68,6 +72,8 @@ describe('Turn Nav', () => {
   it('first button changes to first turn', async () => {
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
@@ -96,6 +102,8 @@ describe('Turn Nav', () => {
   it('previous button changes to previous turn', async () => {
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
@@ -119,6 +127,8 @@ describe('Turn Nav', () => {
   it('next button changes to next turn', async () => {
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],
@@ -139,6 +149,8 @@ describe('Turn Nav', () => {
   it('current button changes to current turn', async () => {
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
       [urlConf.listGames, listGames.success],
       [urlConf.listVariants, listVariants.success],

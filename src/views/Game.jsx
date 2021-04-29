@@ -12,6 +12,7 @@ import { initializeInterpreterFromState } from '../game/index';
 import { alertActions } from '../store/alerts';
 import { gameDetailActions } from '../store/gameDetail';
 import { gameActions } from '../store/games';
+import { nationStateActions } from '../store/nationStates';
 import { orderActions } from '../store/orders';
 import {
   selectCurrentTurnByGame,
@@ -166,6 +167,8 @@ const mapDispatchToProps = (dispatch) => {
         );
         urlParams = { turnId };
         dispatch(orderActions.listOrders({ urlParams }));
+        dispatch(nationStateActions.getOrdersFinalized({ urlParams }));
+        dispatch(nationStateActions.getOrdersStatus({ urlParams }));
       });
     });
   };

@@ -9,7 +9,7 @@ import {
 import apiActions from './apiActions';
 import { turnSelectors } from './turns';
 
-const { finalizeOrders } = apiActions;
+const { finalizeOrders, getOrdersFinalized, getOrdersStatus } = apiActions;
 
 const nationStateAdapter = createEntityAdapter();
 
@@ -36,17 +36,22 @@ const nationStateSlice = createSlice({
       const changes = { loading: false };
       nationStateAdapter.updateOne(state, { id: nationStateId, changes });
     },
-    // [toggleSurrender.fulfilled]: (state, { payload }) => {
-    //   const { nationState, id } = payload;
-    //   const nationStateToUpdate = state.entities[nationState];
-    //   nationStateToUpdate.surrenders.push(id);
-    // },
+    [getOrdersFinalized.fulfilled]: (state, { payload }) => {
+      const { id, ...changes } = payload;
+      nationStateAdapter.updateOne(state, { id, changes });
+    },
+    [getOrdersStatus.fulfilled]: (state, { payload }) => {
+      const { id, ...changes } = payload;
+      nationStateAdapter.updateOne(state, { id, changes });
+    },
   },
 });
 
 export const nationStateActions = {
   ...nationStateSlice.actions,
   finalizeOrders,
+  getOrdersFinalized,
+  getOrdersStatus,
 };
 
 const adapterSelectors = nationStateAdapter.getSelectors(
