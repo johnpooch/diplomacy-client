@@ -27,8 +27,8 @@ const isSupportOrConvoy = (order: Order): boolean =>
 
 const areNeighbours = (t1: Territory, t2: Territory): boolean =>
   t1.neighbours.includes(t2.id);
-const haveSharedCoast = (t1: Territory, t2: Territory): boolean =>
-  t1.sharedCoasts.includes(t2.id);
+export const haveSharedCoast = (t1: Territory, t2: Territory): boolean =>
+  t1.sharedCoasts.includes(t2.id) || t2.sharedCoasts.includes(t1.id);
 
 export const pieceCanReachTerritory = (
   piece: Piece,
