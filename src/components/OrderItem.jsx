@@ -66,9 +66,9 @@ const AuxOrderText = ({ aux, source, target, type }) => {
   return (
     <StyledOrderText className="text">
       <span className="source">{source}</span>{' '}
-      <span className="action">{type}</span>{' '}
-      <span className="target">{target}</span>{' '}
-      <span className="action">to</span> <span className="aux">{aux}</span>
+      <span className="action">{type}</span> <span className="aux">{aux}</span>{' '}
+      <span className="action">to</span>{' '}
+      <span className="target">{target}</span>
     </StyledOrderText>
   );
 };
