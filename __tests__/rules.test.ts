@@ -7,6 +7,7 @@ import {
   getNextOrderAttribute,
   getOrderTypeOptions,
   getPieceTypeOptions,
+  haveSharedCoast,
   orderComplete,
   pieceCanReachTerritory,
   requiresConvoy,
@@ -636,5 +637,42 @@ describe('canRetreat', () => {
   it('false if not piece', () => {
     army.mustRetreat = false;
     expect(canRetreat(null, ENGLAND)).toBe(false);
+  });
+});
+
+describe('haveSharedCoast', () => {
+  let t1: Territory;
+  let t2: Territory;
+  beforeEach(() => {
+    t1 = {
+      ...territoryDefaults(),
+      id: SOURCE,
+      controlledBy: ENGLAND,
+      nationality: ENGLAND,
+      type: TerritoryType.INLAND,
+    };
+    t2 = {
+      ...territoryDefaults(),
+      id: SOURCE,
+      controlledBy: ENGLAND,
+      nationality: ENGLAND,
+      type: TerritoryType.INLAND,
+    };
+  });
+  it('true if t1 sharedCoasts includes t2', () => {
+    t1.sharedCoasts.push(t2.id);
+    expect(haveSharedCoast(t1, t2)).toBe(true);
+  });
+  it('true if t2 sharedCoasts includes t1', () => {
+    t2.sharedCoasts.push(t1.id);
+    expect(haveSharedCoast(t1, t2)).toBe(true);
+  });
+  it('true if both sharedCoasts', () => {
+    t1.sharedCoasts.push(t2.id);
+    t2.sharedCoasts.push(t1.id);
+    expect(haveSharedCoast(t1, t2)).toBe(true);
+  });
+  it('false if not sharedCoasts', () => {
+    expect(haveSharedCoast(t1, t2)).toBe(false);
   });
 });
