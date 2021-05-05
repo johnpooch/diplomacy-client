@@ -369,6 +369,15 @@ describe('orderComplete', () => {
     order.source = SOURCE;
     expect(orderComplete(order, false, false)).toBe(false);
   });
+  it('true if disband, source and type', () => {
+    order.type = OrderType.DISBAND;
+    order.source = SOURCE;
+    expect(orderComplete(order, false, false)).toBe(true);
+  });
+  it('false if disband and not source', () => {
+    order.type = OrderType.DISBAND;
+    expect(orderComplete(order, false, false)).toBe(false);
+  });
   it('true if hold and source', () => {
     order.type = OrderType.HOLD;
     order.source = SOURCE;

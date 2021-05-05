@@ -23,6 +23,8 @@ const supportMessage = ({ aux, piece, source, target, type }) =>
   `${PieceTypeChoices[piece.type]} ${source.name} will ${type} ${aux.name} to ${
     target.name
   }`;
+const disbandMessage = ({ piece, source }) =>
+  `${PieceTypeChoices[piece.type]} ${source.name} will be disbanded`;
 const buildMessage = ({ source, pieceType, targetCoast }) =>
   `${PieceTypeChoices[pieceType]} will be built in ${
     source.name
@@ -35,6 +37,7 @@ export const orderTypeMessageMap = {
   [OrderType.CONVOY]: supportMessage,
   [OrderType.RETREAT]: moveMessage,
   [OrderType.BUILD]: buildMessage,
+  [OrderType.DISBAND]: disbandMessage,
 };
 
 export default {

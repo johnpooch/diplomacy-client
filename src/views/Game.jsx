@@ -17,6 +17,7 @@ import { orderActions } from '../store/orders';
 import {
   selectCurrentTurnByGame,
   selectFirstTurnByGame,
+  selectUserNationByTurn,
 } from '../store/selectors';
 import { surrenderActions } from '../store/surrenders';
 import { variantActions } from '../store/variants';
@@ -143,6 +144,12 @@ const mapStateToProps = (state, { match }) => {
     ? game.participants.includes(state.auth.user.id)
     : false;
 
+  // Note this is a bit hacky. Need to be subscribed to changes to userNation
+  // in state to re-render page when orderStatus is loaded.
+  const userNation = game.loaded
+    ? selectUserNationByTurn(state, currentTurn.id)
+    : null;
+
   const { loading: drawResponseLoading } = state.entities.drawResponses;
   return {
     browser,
@@ -152,6 +159,7 @@ const mapStateToProps = (state, { match }) => {
     game,
     slug,
     userIsParticipant,
+    userNation,
   };
 };
 
