@@ -19,6 +19,7 @@ const isFleet = (piece: Piece): boolean => piece.type === PieceType.FLEET;
 
 const isHold = (order: Order): boolean => order.type === OrderType.HOLD;
 const isBuild = (order: Order): boolean => order.type === OrderType.BUILD;
+const isDisband = (order: Order): boolean => order.type === OrderType.DISBAND;
 const isMove = (order: Order): boolean => order.type === OrderType.MOVE;
 const isMoveOrRetreat = (order: Order): boolean =>
   [OrderType.MOVE, OrderType.RETREAT].includes(order.type);
@@ -90,6 +91,7 @@ export const orderComplete = (
   mustSpecifyViaConvoy: boolean,
   mustSpecifyTargetCoast: boolean
 ): boolean => {
+  if (isDisband(order)) return Boolean(order.type && order.source);
   if (isBuild(order))
     return Boolean(
       order.pieceType && mustSpecifyTargetCoast === Boolean(order.targetCoast)
