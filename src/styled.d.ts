@@ -10,6 +10,9 @@ type MapColors = {
 type StatusColors = {
   [key: string]: { [key in 'primary' | 'muted']: string };
 };
+type TintColors = {
+  [key in 'main' | 'light' | 'lighter']: string;
+};
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -17,7 +20,14 @@ declare module 'styled-components' {
     borderWidths: number[];
     borderWidthsUnitless: number[];
     breakpoints: string[];
-    colors: { [key: string]: string | MapColors | NationColors | StatusColors };
+    colors: {
+      [key: string]:
+        | string
+        | MapColors
+        | NationColors
+        | StatusColors
+        | TintColors;
+    };
     icons: { [key: string]: IconDefinition };
     fonts: { [key: string]: string };
     fontSizesUnitless: number[];

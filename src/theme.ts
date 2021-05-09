@@ -17,9 +17,18 @@ import { withUnits } from './utils';
 const breakpoints = [480, 768, 992, 1200];
 
 const colors = {
-  text: 'midnightblue',
-  background: 'papayawhip',
-  primary: 'dodgerblue',
+  text: {
+    main: 'black',
+    light: '#616161',
+    lighter: '#959595',
+  },
+  background: '#F0F0F0',
+  border: 'black',
+  primary: {
+    main: '#9D0189',
+    light: '#E896DD',
+    lighter: '#FFD6FA',
+  },
   secondary: '#8b8bb7',
   accent: 'slateblue',
   muted: 'white',
@@ -42,14 +51,16 @@ const colors = {
   },
   status: {
     error: {
-      primary: 'firebrick',
-      muted: '#f5dddb',
+      main: '#F35C6E',
+      light: '#F89DA8',
+      lighter: '#FDDEE2',
     },
     success: {
       primary: '#508e59',
       muted: '#c3f5ca',
     },
   },
+  white: 'white',
 };
 const fonts = {
   sans:
@@ -57,7 +68,7 @@ const fonts = {
 };
 const fontSizes = [9, 13, 16, 19, 36];
 const fontWeights = {
-  body: 400,
+  body: 500,
   display: 700,
   bold: 700,
 };
@@ -66,7 +77,7 @@ const lineHeights = {
   display: 1.1,
 };
 const space = [4, 8, 12, 16, 24, 32, 44, 60];
-const borderWidths = [1, 3];
+const borderWidths = [1, 2, 3];
 const borders = [`${borderWidths[0]}px solid ${colors.secondary}`];
 const radii = [6, 8, 16];
 const shadows = [`rgba(0, 0, 0, 0.15) 0px 1px 3px 1px`];
@@ -108,7 +119,6 @@ export const theme: DefaultTheme = {
 };
 
 export const darkTheme: DefaultTheme = produce(theme, (draft) => {
-  draft.colors.text = 'white';
   draft.colors.background = colors.text;
   draft.colors.muted = 'black';
 });

@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { Button } from '../components/Button';
-import FieldError from '../components/FieldError';
 import Form, { LabelText, FormWrapper } from '../components/Form';
+import FieldError from '../components/FormError';
 import NonFieldErrors from '../components/NonFieldErrors';
 import Page from '../components/Page';
 import { authActions } from '../store/auth';

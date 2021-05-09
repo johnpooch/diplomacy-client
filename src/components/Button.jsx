@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 export const BaseButton = styled.button`
   background: transparent;
-  border-radius: ${(p) => p.theme.radii[0]};
   border: none;
   cursor: pointer;
   font-size: inherit;
