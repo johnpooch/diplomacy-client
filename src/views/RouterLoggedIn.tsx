@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { Switch, withRouter, Redirect, Route } from 'react-router-dom';
 
 import Navigation from '../components/Navigation';
+import CreateGame from '../pages/CreateGame/CreateGame';
+import UserSettings from '../pages/UserSettings/UserSettings';
 
 import BrowseGames from './BrowseGames';
-import CreateGame from './CreateGame';
 import Error from './Error';
 import Game from './Game';
 import PreGame from './PreGame';
-import UserSettings from './UserSettings';
 
 const RouterLoggedIn = (props) => {
   const { loggedIn } = props;

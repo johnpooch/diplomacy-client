@@ -1,4 +1,4 @@
-import { OrderType, Phase } from './game/types';
+import { GameStatus, OrderType, Phase } from './game/types';
 
 export enum Outcome {
   MOVES = 'moves',
@@ -9,6 +9,35 @@ export enum Outcome {
   SUCCEEDS = 'succeeds',
   GIVEN = 'given',
   FAILS = 'fails',
+}
+
+export interface BrowseGame {
+  slug: string;
+  joinable: boolean;
+  name: string;
+  participants: Participant[];
+  rules: GameRules;
+  status: GameStatus;
+  userIsParticipant: boolean;
+  turn?: TurnDisplay;
+  variant: string;
+}
+
+export interface NationDisplay {
+  id: string;
+  name: string;
+}
+
+export interface GameRules {
+  orderDeadline: string;
+  retreatDeadline: string;
+  buildDeadline: string;
+}
+
+export interface Participant {
+  isCurrentUser: boolean;
+  username: string;
+  nation?: Nation;
 }
 
 export interface Nation {
@@ -43,6 +72,12 @@ export interface Order {
   turn: number;
   type: OrderType;
   viaConvoy: boolean;
+}
+
+export interface TurnDisplay {
+  phase: string;
+  season: string;
+  year: number;
 }
 
 export interface Turn {

@@ -1,11 +1,13 @@
 import { addDecorator } from "@storybook/react";
-import { withThemesProvider } from "storybook-addon-styled-component-theme";
-import { ThemeProvider } from "styled-components";
+import { MuiThemeProvider } from "@material-ui/core";
 
-import { darkTheme, theme } from '../src/theme'
+import { theme } from '../src/theme';
 
-const themes = [darkTheme, theme];
-addDecorator(withThemesProvider(themes), ThemeProvider);
+addDecorator((story) => (
+    <MuiThemeProvider theme={theme}>
+      {story()}
+    </MuiThemeProvider>
+));
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

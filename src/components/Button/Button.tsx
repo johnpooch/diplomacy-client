@@ -1,17 +1,19 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { Button, ButtonTypeMap, ExtendButtonBase } from '@material-ui/core';
 import React from 'react';
 
-import StyledButton from './Button.styles';
-import { ButtonComponentProps } from './Button.types';
-
-const Button: React.FC<
-  ButtonComponentProps & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ icon, label, ...props }) => {
+export const PrimaryButton: ExtendButtonBase<ButtonTypeMap> = (props) => {
+  const { children } = props;
   return (
-    <StyledButton primary {...props}>
-      {icon}
-      {label}
-    </StyledButton>
+    <Button
+      variant="contained"
+      disableElevation
+      disableRipple
+      color="primary"
+      {...props}
+    >
+      {children}
+    </Button>
   );
 };
 

@@ -4,9 +4,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
+import App from './App';
 import worker from './mocks/browser';
 import configureStore from './store/store';
-import App from './views/App';
+
+import '@fontsource/work-sans';
 
 if (process.env.USE_MOCK_SERVICE_WORKER) {
   worker.start();

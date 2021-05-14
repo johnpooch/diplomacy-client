@@ -1,7 +1,7 @@
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 import UserDropdownMenu from './UserDropdownMenu';
@@ -32,17 +32,17 @@ const Header = styled.header`
       grid-template-rows: auto;
       grid-auto-flow: column;
       grid-auto-columns: max-content;
-      column-gap: ${(p) => p.theme.space[3]};
+      column-gap: ${(p) => p.theme.spacing[3]};
       align-items: center;
     }
 
     > * {
-      padding: ${(p) => `${p.theme.space[2]} ${p.theme.space[3]}`};
+      padding: ${(p) => `${p.theme.spacing[2]} ${p.theme.spacing[3]}`};
     }
   }
 
   a {
-    padding: ${(p) => p.theme.space[0]} 0;
+    padding: ${(p) => p.theme.spacing[0]} 0;
 
     &.active {
       color: ${(p) => p.theme.colors.text};

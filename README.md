@@ -11,6 +11,12 @@ A client for [@johnpooch](https://github.com/johnpooch)'s Diplomacy service: htt
 - Before you start developing, install [VSCode](https://code.visualstudio.com)
 - Open this directory in VSCode, and install the recommended extensions to lint on save
 
+### Develop using Storybook
+
+[Storybook](https://storybook.js.org/) is a very useful tool for developing components and pages in isolation.
+
+Run `yarn storybook` from the project root to start Storybook
+
 ### Accessing the dev copy on a mobile device
 
 It can be useful to test a dev copy from a mobile device to check how touch gestures behave with the canvas.

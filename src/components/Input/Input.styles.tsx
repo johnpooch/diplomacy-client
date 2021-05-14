@@ -1,24 +1,26 @@
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
 
-export default styled.input`
-  background-color: ${(p) => p.theme.colors.background};
-  border: none;
-  border-radius: ${(p) => p.theme.radii[1]};
-  color: ${(p) => p.theme.colors.text.light};
-  padding: ${(p) => p.theme.space[3]};
+export default makeStyles((theme) => {
+  return {
+    root: {
+      backgroundColor: theme.palette.background.default,
+      border: 'none',
+      borderRadius: theme.spacing(1),
+      color: theme.palette.text.primary,
+      padding: theme.spacing(3),
+      width: '100%',
 
-  &:focus-visible {
-    background-color: ${(p) => p.theme.colors.white};
-    border: ${(p) => p.theme.borderWidths[1]} solid
-      ${(p) => p.theme.colors.primary.main};
-    box-sizing: border-box;
-    box-shadow: 0px 0px 0px 2px ${(p) => p.theme.colors.primary.lighter};
-    color: ${(p) => p.theme.colors.text.main};
-    outline: none;
-  }
-  &:not(:placeholder-shown) {
-    background-color: ${(p) => p.theme.colors.white};
-    border: ${(p) => p.theme.borderWidths[0]} solid
-      ${(p) => p.theme.colors.border};
-  }
-`;
+      '& &:focus-visible': {
+        backgroundColor: theme.palette.background.paper,
+        border: `${theme.spacing(0.125)}px solid`,
+        boxSizing: 'border-box',
+        color: theme.palette.text.primary,
+        outline: 'none',
+      },
+      '& &:not(:placeholder-shown)': {
+        backgroundColor: theme.palette.background.paper,
+        border: `${theme.spacing(0.125)} solid`,
+      },
+    },
+  };
+});

@@ -35,6 +35,11 @@ export enum PieceType {
   FLEET = 'fleet',
 }
 
+export enum Season {
+  SPRING = 'spring',
+  FALL = 'fall',
+}
+
 export enum TerritoryType {
   INLAND = 'inland',
   COASTAL = 'coastal',

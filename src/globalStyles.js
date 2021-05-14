@@ -9,9 +9,8 @@ export default createGlobalStyle`
 
   body {
     margin: 0;
-    font-family: ${(p) => p.theme.fonts.sans};
-    color: ${(p) => p.theme.colors.text};
-    background: ${(p) => p.theme.colors.background};
+    color: ${(p) => p.theme.palette.text.primary};
+    background: ${(p) => p.theme.palette.background.default};
     line-height: 1;
   }
 
@@ -39,7 +38,7 @@ export default createGlobalStyle`
   }
 
   a {
-    color: ${(p) => p.theme.colors.accent};
+    color: ${(p) => p.theme.palette.primary.main};
     cursor: pointer;
     text-decoration: none;
 
@@ -47,8 +46,9 @@ export default createGlobalStyle`
       text-decoration: underline;
     }
   }
-  input {
-    font-size: ${(p) => p.theme.fontSizes[2]};
+
+  .small {
+    font-size: 14px;
   }
 
   .overlay {
@@ -62,7 +62,6 @@ export default createGlobalStyle`
   .field-error,
   .non-field-errors {
     text-align: left;
-    color: ${(p) => p.theme.colors.error};
-    font-size: ${(p) => p.theme.fontSizes[1]};
+    color: ${(p) => p.theme.palette.error.main};
   }
 `;

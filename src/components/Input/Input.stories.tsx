@@ -3,9 +3,6 @@
 import { Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
-import GlobalStyles from '../../globalStyles';
-import { theme } from '../../theme';
-
 import Input from './Input';
 
 export default {
@@ -14,15 +11,11 @@ export default {
 };
 
 const Template: Story<ComponentProps<typeof Input>> = (args) => (
-  <>
-    <GlobalStyles />
-    <Input {...args} />
-  </>
+  <Input {...args} />
 );
 
 const defaultArgs = {
   required: true,
-  theme,
 };
 
 export const UsernameOrEmail = Template.bind({});

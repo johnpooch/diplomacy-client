@@ -6,8 +6,8 @@ import { InputComponentProps } from './Input.types';
 
 const Input: React.FC<
   InputComponentProps & React.InputHTMLAttributes<HTMLInputElement>
-> = (props) => {
-  return <StyledInput {...props} />;
-};
+> = React.forwardRef((props, ref) => {
+  return <StyledInput ref={ref} {...props} />;
+});
 
 export default Input;
