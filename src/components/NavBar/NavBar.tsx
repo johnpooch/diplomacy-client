@@ -3,15 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AppBar, Container, IconButton, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import React from 'react';
-import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
-import UserDropDownMenu from '../UserDropDownMenu/UserDropDownMenu';
+import UserDropdownMenu from '../UserDropdownMenu';
 
 import useStyles from './NavBar.styles';
+import { NavBarComponentProps } from './NavBar.types';
 
 const ICON_SIZE = '1x';
 
-const NavBar: React.FC<RouteComponentProps> = () => {
+const NavBar: React.FC<NavBarComponentProps> = ({ logout }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
 
@@ -22,7 +23,7 @@ const NavBar: React.FC<RouteComponentProps> = () => {
           <div>
             <NavLink exact to="/" title="Home" className={classes.logo}>
               <Typography variant="h3">Diplomacy</Typography>
-              <span>.gg</span>
+              <Typography variant="body2">.gg</Typography>
             </NavLink>
           </div>
           <div>
@@ -36,11 +37,10 @@ const NavBar: React.FC<RouteComponentProps> = () => {
                 <FontAwesomeIcon icon={faPlusCircle} size={ICON_SIZE} />
               </IconButton>
             </NavLink>
-            <UserDropDownMenu />
+            <UserDropdownMenu logout={logout} />
           </div>
         </Container>
       </AppBar>
-      <div className={classes.buffer} />
     </>
   );
 };

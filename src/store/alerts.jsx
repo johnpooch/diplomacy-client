@@ -32,7 +32,14 @@ const alertsSlice = createSlice({
   },
 });
 
-export const alertActions = { ...alertsSlice.actions };
+const clearAndPromoteAlerts = (payload) => {
+  return (dispatch) => {
+    dispatch(alertsSlice.actions.alertsClearActive(payload));
+    dispatch(alertsSlice.actions.alertsPromotePending(payload));
+  };
+};
+
+export const alertActions = { ...alertsSlice.actions, clearAndPromoteAlerts };
 export const alertSelectors = alertAdapter.getSelectors(
   (state) => state.alerts
 );

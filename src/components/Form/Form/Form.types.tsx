@@ -2,5 +2,5 @@ import { ReactNode } from 'react';
 
 export interface FormComponentProps {
   button: ReactNode;
-  onSubmit: () => void;
+  onSubmit: (data: Record<string, unknown>) => void;
 }

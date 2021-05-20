@@ -2,6 +2,8 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import territoryData from '../data/standard/territories.json';
 
+import alerts, { alertSelectors } from './alerts';
+import { gameSelectors } from './games';
 import { nationSelectors } from './nations';
 import { nationStateSelectors } from './nationStates';
 import { orderSelectors } from './orders';
@@ -10,6 +12,8 @@ import { pieceStateSelectors } from './pieceStates';
 import { territorySelectors } from './territories';
 import { territoryStateSelectors } from './territoryStates';
 import { turnSelectors } from './turns';
+import { userSelectors } from './users';
+import { variantSelectors } from './variants';
 
 export const makeSelectTerritoryById = () =>
   createSelector(territorySelectors.selectById, (territory) => {
@@ -135,3 +139,71 @@ export const selectRetreatingPieceByTerritory = createSelector(
     return pieceState ? { ...pieceState, ...pieces[pieceState.piece] } : null;
   }
 );
+
+// TODO test
+// TODO types
+const selectBrowseGames = createSelector(
+  (state) => state.auth.user.id,
+  gameSelectors.selectAll,
+  nationStateSelectors.selectAll,
+  nationSelectors.selectEntities,
+  turnSelectors.selectEntities,
+  userSelectors.selectAll,
+  variantSelectors.selectEntities,
+  (userId, games, nationStates, nations, turns, users, variants) => {
+    return games.map((g) => {
+      const variant = variants[g.variant];
+      const currentTurn = turns[g.currentTurn];
+      let ns = null;
+      if (currentTurn) {
+        ns = nationStates.filter((n) =>
+          currentTurn.nationStates.includes(n.id)
+        );
+      }
+      let userIsParticipant = false;
+      const participants = g.participants.map((p) => {
+        if (p === userId) userIsParticipant = true;
+        return {
+          username: users.find((u) => u.id === p).username,
+          nation: ns
+            ? {
+                id: ns.find((n) => n.user === p).nation,
+                name: nations[ns.find((n) => n.user === p).nation].name,
+              }
+            : null,
+          isCurrentUser: userId === p,
+        };
+      });
+      const turn = currentTurn
+        ? {
+            phase: currentTurn.phaseDisplay,
+            season: currentTurn.seasonDisplay,
+            year: currentTurn.year,
+          }
+        : null;
+      return {
+        slug: g.slug,
+        joinable: true, // TODO
+        name: g.name,
+        participants,
+        rules: {
+          orderDeadline: g.orderDeadlineDisplay,
+          retreatDeadline: g.retreatDeadlineDisplay,
+          buildDeadline: g.buildDeadlineDisplay,
+        },
+        turn,
+        status: g.status,
+        userIsParticipant,
+        variant: variant.name,
+      };
+    });
+  }
+);
+
+const selectAlerts = alertSelectors.selectAll;
+const selectBrowseGamesLoading = (state) => state.entities.games.loading;
+export default {
+  selectAlerts,
+  selectBrowseGames,
+  selectBrowseGamesLoading,
+};

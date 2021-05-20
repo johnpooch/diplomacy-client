@@ -5,9 +5,6 @@ export default makeStyles((theme) => {
     root: {
       backgroundColor: theme.palette.background.paper,
     },
-    buffer: {
-      marginTop: '75px',
-    },
     container: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',

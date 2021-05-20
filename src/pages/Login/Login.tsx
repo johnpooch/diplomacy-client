@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
 import { PrimaryButton } from '../../components/Button/Button';
 import {
@@ -9,13 +10,14 @@ import {
   FormWrapper,
 } from '../../components/Form';
 import Input from '../../components/Input/Input';
+import { authActions } from '../../store/auth';
 
-const Login: React.FC = () => {
-  const sumbitButton = <PrimaryButton>Login</PrimaryButton>;
+const Login: React.FC<ReduxProps> = ({ login }) => {
+  const sumbitButton = <PrimaryButton type="submit">Login</PrimaryButton>;
   return (
     <FormContainer>
       <FormWrapper title="Login">
-        <Form button={sumbitButton} onSubmit={() => null}>
+        <Form button={sumbitButton} onSubmit={login}>
           <FormFieldWrapper
             name="username"
             label="Username or email"
@@ -54,4 +56,8 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+const mapDispatch = { login: authActions.login };
+const connector = connect(null, mapDispatch);
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default connector(Login);

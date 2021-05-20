@@ -1,4 +1,4 @@
-import { useTheme } from '@material-ui/core';
+import { Typography, useTheme } from '@material-ui/core';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
@@ -14,7 +14,9 @@ const FormLink: React.FC<FormLinkComponentProps> = ({
   const classes = useStyles(theme);
   return (
     <div className={classes.root}>
-      {prompt} <Link to={link}>{label}</Link>
+      <Typography variant="body2">
+        {prompt} <Link to={link}>{label}</Link>
+      </Typography>
     </div>
   );
 };

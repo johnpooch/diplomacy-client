@@ -6,11 +6,16 @@ import {
   IconButton,
 } from '@material-ui/core';
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { Menu as MenuIcon, Settings } from '../Icon';
 
-const UserDropDownMenu: React.FC<RouteComponentProps> = ({ history }) => {
+import { UserDropdownMenuComponentProps } from './UserDropdownMenu.types';
+
+const UserDropdownMenu: React.FC<UserDropdownMenuComponentProps> = ({
+  logout,
+  history,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -44,7 +49,7 @@ const UserDropDownMenu: React.FC<RouteComponentProps> = ({ history }) => {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={logout}>
           <ListItemText primary="Logout" />
         </MenuItem>
       </Menu>
@@ -52,4 +57,4 @@ const UserDropDownMenu: React.FC<RouteComponentProps> = ({ history }) => {
   );
 };
 
-export default withRouter(UserDropDownMenu);
+export default withRouter(UserDropdownMenu);

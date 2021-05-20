@@ -5,14 +5,15 @@ export default makeStyles((theme) => {
     root: {
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(4, 0),
-      '& p': {
-        padding: theme.spacing(3, 0),
+      '& label': {
+        padding: theme.spacing(1, 0),
       },
       '& form': {
         padding: theme.spacing(0, 3),
         paddingBottom: theme.spacing(3),
       },
       '& button': {
+        marginTop: theme.spacing(2),
         width: '100%',
       },
       '& .form-links': {

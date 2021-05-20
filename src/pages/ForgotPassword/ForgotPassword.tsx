@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import React from 'react';
 
 import { PrimaryButton } from '../../components/Button/Button';
@@ -16,10 +17,10 @@ const ForgotPassword: React.FC = () => {
     <FormContainer>
       <FormWrapper title="Forgot Password">
         <Form button={sumbitButton} onSubmit={() => null}>
-          <p>
+          <Typography variant="body2">
             Enter your email and we&apos;ll send you a link to get back into
             your account.
-          </p>
+          </Typography>
           <FormFieldWrapper
             name="email"
             label="Email"

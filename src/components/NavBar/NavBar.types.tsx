@@ -1,5 +1,5 @@
 import { RouteComponentProps } from 'react-router-dom';
 
-export interface UserDropdownMenuComponentProps extends RouteComponentProps {
+export interface NavBarComponentProps extends RouteComponentProps {
   logout: () => void;
 }

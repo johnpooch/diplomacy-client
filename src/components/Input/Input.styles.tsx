@@ -8,7 +8,6 @@ export default makeStyles((theme) => {
       borderRadius: theme.spacing(1),
       color: theme.palette.text.primary,
       padding: theme.spacing(3),
-      width: '100%',
 
       '& &:focus-visible': {
         backgroundColor: theme.palette.background.paper,

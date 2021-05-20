@@ -1,5 +1,6 @@
+import { Typography } from '@material-ui/core';
 import React from 'react';
-import { ThemeProvider, useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import FieldError from '../FormError/FormError';
 
@@ -22,7 +23,7 @@ const FormFieldWrapper: React.FC<FormFieldWrapperComponentProps> = React.forward
     });
     return (
       <label className={classes.root} htmlFor={name}>
-        <span>{label}</span>
+        <Typography variant="body2">{label}</Typography>
         {fieldComponent}
         <div>
           {errors &&

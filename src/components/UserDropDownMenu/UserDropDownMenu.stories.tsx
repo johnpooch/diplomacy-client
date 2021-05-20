@@ -4,16 +4,16 @@ import { Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import UserDropDownMenu from './UserDropDownMenu';
+import UserDropdownMenu from './UserDropdownMenu';
 
 export default {
-  title: 'UserDropDownMenu',
-  component: UserDropDownMenu,
+  title: 'UserDropdownMenu',
+  component: UserDropdownMenu,
   decorators: [(story) => <MemoryRouter>{story()}</MemoryRouter>],
 };
 
-const Template: Story<ComponentProps<typeof UserDropDownMenu>> = (args) => (
-  <UserDropDownMenu {...args} />
+const Template: Story<ComponentProps<typeof UserDropdownMenu>> = (args) => (
+  <UserDropdownMenu {...args} />
 );
 
 export const Default = Template.bind({});

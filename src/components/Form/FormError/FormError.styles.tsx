@@ -1,7 +1,9 @@
-/* eslint-disable import/prefer-default-export */
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
 
-export const StyledFieldError = styled.div`
-  color: ${(p) => p.theme.colors.status.error.main};
-  font-size: ${(p) => p.theme.fontSizes[1]};
-`;
+export default makeStyles((theme) => {
+  return {
+    root: {
+      color: theme.palette.error.main,
+    },
+  };
+});

@@ -1,10 +1,13 @@
+import { useTheme } from '@material-ui/core';
 import React from 'react';
 
-import { StyledFieldError } from './FormError.styles';
+import useStyles from './FormError.styles';
 import { FieldErrorComponentProps } from './FormError.types';
 
 const FieldError: React.FC<FieldErrorComponentProps> = ({ error }) => {
-  return <StyledFieldError>{error}</StyledFieldError>;
+  const theme = useTheme();
+  const classes = useStyles(theme);
+  return <div className={classes.root}>{error}</div>;
 };
 
 export default FieldError;

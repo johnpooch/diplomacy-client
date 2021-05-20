@@ -3,14 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Switch, withRouter, Redirect, Route } from 'react-router-dom';
 
-import Navigation from '../components/Navigation';
-import CreateGame from '../pages/CreateGame/CreateGame';
-import UserSettings from '../pages/UserSettings/UserSettings';
-
-import BrowseGames from './BrowseGames';
-import Error from './Error';
-import Game from './Game';
-import PreGame from './PreGame';
+import NavBar from './components/NavBar';
+import BrowseGames from './pages/BrowseGames';
+import CreateGame from './pages/CreateGame/CreateGame';
+import UserSettings from './pages/UserSettings/UserSettings';
+import Error from './views/Error';
+import Game from './views/Game';
+import PreGame from './views/PreGame';
 
 const RouterLoggedIn = (props) => {
   const { loggedIn } = props;
@@ -19,12 +18,7 @@ const RouterLoggedIn = (props) => {
     return (
       <Route
         {...routeProps}
-        render={(componentProps) => (
-          <div>
-            <Navigation />
-            <Component {...componentProps} />
-          </div>
-        )}
+        render={(componentProps) => <Component {...componentProps} />}
       />
     );
   };

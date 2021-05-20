@@ -1,3 +1,5 @@
+import { Color } from '@material-ui/lab/Alert';
+
 import { GameStatus, OrderType, Phase } from './game/types';
 
 export enum Outcome {
@@ -11,6 +13,12 @@ export enum Outcome {
   FAILS = 'fails',
 }
 
+export type Alert = {
+  id: number;
+  message: string;
+  category: Color;
+};
+
 export interface BrowseGame {
   slug: string;
   joinable: boolean;
@@ -19,7 +27,7 @@ export interface BrowseGame {
   rules: GameRules;
   status: GameStatus;
   userIsParticipant: boolean;
-  turn?: TurnDisplay;
+  turn: TurnDisplay | null;
   variant: string;
 }
 

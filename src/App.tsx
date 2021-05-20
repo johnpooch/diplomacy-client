@@ -3,12 +3,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import Alerts from './components/Alerts';
+import RouterLoggedIn from './RouterLoggedIn';
 import RouterLoggedOut from './RouterLoggedOut';
 import { alertActions, alertSelectors } from './store/alerts';
 import { errorActions } from './store/errors';
 import { theme } from './theme';
-import RouterLoggedIn from './views/RouterLoggedIn';
 
 const App = ({
   alerts,
@@ -26,14 +25,12 @@ const App = ({
 
   return (
     <MuiThemeProvider theme={theme}>
-      <Alerts alerts={alerts} onClick={alertsClear} />
-      {/* {loggedIn ? <RouterLoggedIn /> : <RouterLoggedOut />} */}
-      <RouterLoggedOut />
+      {loggedIn ? <RouterLoggedIn /> : <RouterLoggedOut />}
     </MuiThemeProvider>
   );
 };
 
-const mapStateToProps = (state) => {
+const mapState = (state) => {
   const { loggedIn } = state.auth;
   return {
     alerts: alertSelectors.selectAll(state),
@@ -41,20 +38,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const alertsClear = (id) => {
-    dispatch(alertActions.alertsClear(id));
-  };
-  const clearAndPromoteAlerts = () => {
-    dispatch(alertActions.alertsClearActive());
-    dispatch(alertActions.alertsPromotePending());
-  };
-  const clearErrors = () => dispatch(errorActions.clearErrors());
-  return {
-    alertsClear,
-    clearAndPromoteAlerts,
-    clearErrors,
-  };
+const mapDispatch = {
+  clearErrors: errorActions.clearErrors,
+  clearAndPromoteAlerts: alertActions.clearAndPromoteAlerts,
+  alertsClear: alertActions.alertsClear,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapState, mapDispatch)(App);
