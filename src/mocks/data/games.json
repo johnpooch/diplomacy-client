@@ -25,6 +25,7 @@
         "createdBy": 7,
         "initializedAt": null,
         "status": "pending",
+        "joinable": false,
         "currentTurn": null
     },
     {
@@ -43,6 +44,7 @@
         "processOnFinalizedOrders": true,
         "nationChoiceMode": "random",
         "numPlayers": 7,
+        "joinable": false,
         "participants": [
             {
                 "username": "samuelsaunders",

@@ -10,6 +10,8 @@ import { variantActions } from '../store/variants';
 
 const BrowseGames = (props) => {
   const {
+    joinGame,
+    leaveGame,
     listGamesError,
     listVariantsError,
     loaded,

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
 import { nations } from '../data';
@@ -10,7 +10,7 @@ import GameParticipant from './GameParticipant';
 export default {
   title: 'GameParticipant',
   component: GameParticipant,
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof GameParticipant>> = (args) => (
   <GameParticipant {...args} />
@@ -21,24 +21,24 @@ const defaultArgs = {
   username: 'johnpooch',
 };
 
-export const PendingDefault = Template.bind({});
+export const PendingDefault: Story = Template.bind({});
 PendingDefault.args = {
   ...defaultArgs,
 };
 
-export const PendingIsUser = Template.bind({});
+export const PendingIsUser: Story = Template.bind({});
 PendingIsUser.args = {
   ...defaultArgs,
   isCurrentUser: true,
 };
 
-export const ActiveDefault = Template.bind({});
+export const ActiveDefault: Story = Template.bind({});
 ActiveDefault.args = {
   ...defaultArgs,
   nation: nations.england,
 };
 
-export const ActiveIsUser = Template.bind({});
+export const ActiveIsUser: Story = Template.bind({});
 ActiveIsUser.args = {
   ...defaultArgs,
   isCurrentUser: true,

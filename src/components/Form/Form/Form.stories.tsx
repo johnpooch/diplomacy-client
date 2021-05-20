@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
 import Input from '../../Input/Input';
@@ -11,7 +11,7 @@ import Form from './Form';
 export default {
   title: 'Form',
   component: Form,
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof Form>> = (args) => {
   const userNameField = {
@@ -42,7 +42,7 @@ const Template: Story<ComponentProps<typeof Form>> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
+export const Default: Story = Template.bind({});
 Default.args = {
   buttonLabel: 'Login',
   onSubmit: (data) => console.log(data),

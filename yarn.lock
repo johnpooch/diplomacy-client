@@ -2761,7 +2761,7 @@
     prop-types "^15.7.2"
     regenerator-runtime "^0.13.7"
 
-"@storybook/addons@6.2.9":
+"@storybook/addons@6.2.9", "@storybook/addons@^6.1.21":
   version "6.2.9"
   resolved "https://registry.yarnpkg.com/@storybook/addons/-/addons-6.2.9.tgz#b7ba2b9f0e15b852c7d6b57d04fb0a493c57477c"
   integrity sha512-GnmEKbJwiN1jncN9NSA8CuR1i2XAlasPcl/Zn0jkfV9WitQeczVcJCPw86SGH84AD+tTBCyF2i9UC0KaOV1YBQ==
@@ -2900,7 +2900,7 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/client-api@6.2.9":
+"@storybook/client-api@6.2.9", "@storybook/client-api@^6.1.21":
   version "6.2.9"
   resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-6.2.9.tgz#f0bb44e9b2692adfbf30d7ff751c6dd44bcfe1ce"
   integrity sha512-aLvEUVkbvv6Qo/2mF4rFCecdqi2CGOUDdsV1a6EFIVS/9gXFdpirsOwKHo9qNjacGdWPlBYGCUcbrw+DvNaSFA==
@@ -3137,7 +3137,7 @@
   dependencies:
     core-js "^3.8.2"
 
-"@storybook/react@^6.2.9":
+"@storybook/react@^6.1.21", "@storybook/react@^6.2.9":
   version "6.2.9"
   resolved "https://registry.yarnpkg.com/@storybook/react/-/react-6.2.9.tgz#84f42b3d9a5c8de814f71ae186886076ba377d2c"
   integrity sha512-glvw+o/Vek2oapYIXCYDK6gm3cuSnx0XdOpiJVcXk3KLb8JfLbdzGYYp6dcWUbyOBqGcGFRpXIgMmkcwgn+fvQ==
@@ -3205,6 +3205,15 @@
     lodash "^4.17.20"
     prettier "~2.2.1"
     regenerator-runtime "^0.13.7"
+
+"@storybook/testing-react@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@storybook/testing-react/-/testing-react-0.0.12.tgz#eec39d4ff6b4fd5786d8c705de2ec5b366f34cac"
+  integrity sha512-FubaIeNJsaAD4t5hKFH0dr1K6e6dDR7ZdC9jMXH7QkSZp+iyEeJwKi1wde2fI2y2m3lXRvGOKUg3G0cEykS/LQ==
+  dependencies:
+    "@storybook/addons" "^6.1.21"
+    "@storybook/client-api" "^6.1.21"
+    "@storybook/react" "^6.1.21"
 
 "@storybook/theming@6.2.9":
   version "6.2.9"
@@ -3618,6 +3627,14 @@
   version "5.1.13"
   resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.13.tgz#051c0d229bd48ad90558a1db500708127cc512f7"
   integrity sha512-ZIuaO9Yrln54X6elg8q2Ivp6iK6p4syPsefEYAhRDAoqNh48C8VYUmB9RkXjKSQAJSJV0mbIFCX7I4vZDcHrjg==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
+"@types/react-router@^5.1.14":
+  version "5.1.14"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.14.tgz#e0442f4eb4c446541ad7435d44a97f8fe6df40da"
+  integrity sha512-LAJpqYUaCTMT2anZheoidiIymt8MuX286zoVFPM3DVb23aQBH0mAkFvzpd4LKqiolV8bBtZWT5Qp7hClCNDENw==
   dependencies:
     "@types/history" "*"
     "@types/react" "*"

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
 import UserCircle from './UserCircle';
@@ -19,18 +19,18 @@ const defaultArgs = {
   username: 'johnpooch',
 };
 
-export const Default = Template.bind({});
+export const Default: Story = Template.bind({});
 Default.args = {
   ...defaultArgs,
 };
 
-export const IsCurrentUser = Template.bind({});
+export const IsCurrentUser: Story = Template.bind({});
 IsCurrentUser.args = {
   ...defaultArgs,
   isCurrentUser: true,
 };
 
-export const Small = Template.bind({});
+export const Small: Story = Template.bind({});
 Small.args = {
   ...defaultArgs,
   size: 'sm',

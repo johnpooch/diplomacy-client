@@ -15,6 +15,8 @@ export const BrowseGames: React.FC<ReduxProps & BrowseGamesPageProps> = ({
   alerts,
   alertsClear,
   games,
+  joinGame,
+  leaveGame,
   loading,
   logout,
   loadBrowseGames,
@@ -35,7 +37,12 @@ export const BrowseGames: React.FC<ReduxProps & BrowseGamesPageProps> = ({
         ) : (
           <GameCardGrid>
             {games.map((game) => (
-              <GameCard game={game} key={game.slug} />
+              <GameCard
+                joinGame={joinGame}
+                leaveGame={leaveGame}
+                game={game}
+                key={game.slug}
+              />
             ))}
           </GameCardGrid>
         )}
@@ -53,6 +60,8 @@ const mapState = (state) => {
 
 const mapDispatch = {
   alertsClear: actions.alertsClear,
+  joinGame: actions.joinGame,
+  leaveGame: actions.leaveGame,
   loadBrowseGames: actions.loadBrowseGames,
   logout: actions.logout,
 };

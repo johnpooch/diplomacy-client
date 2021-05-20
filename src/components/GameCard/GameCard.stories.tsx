@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
 import { GameStatus } from '../../game/types';
@@ -8,12 +8,10 @@ import * as GameParticipantListStories from '../GameParticipantList/GameParticip
 
 import GameCard from './GameCard';
 
-import '@fontsource/work-sans';
-
 export default {
   title: 'GameCard',
   component: GameCard,
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof GameCard>> = (args) => (
   <GameCard {...args} />
@@ -35,7 +33,7 @@ const defaultGame = {
   variant: 'Standard',
 };
 
-export const PendingJoinable = Template.bind({});
+export const PendingJoinable: Story = Template.bind({});
 PendingJoinable.args = {
   game: {
     ...defaultGame,
@@ -44,7 +42,7 @@ PendingJoinable.args = {
   },
 };
 
-export const PendingNotJoinable = Template.bind({});
+export const PendingNotJoinable: Story = Template.bind({});
 PendingNotJoinable.args = {
   game: {
     ...defaultGame,
@@ -52,7 +50,7 @@ PendingNotJoinable.args = {
   },
 };
 
-export const PendingUserIsParticipant = Template.bind({});
+export const PendingUserIsParticipant: Story = Template.bind({});
 PendingUserIsParticipant.args = {
   game: {
     ...defaultGame,
@@ -61,17 +59,17 @@ PendingUserIsParticipant.args = {
   },
 };
 
-export const PendingNoParticipantsJoinable = Template.bind({});
+export const PendingNoParticipantsJoinable: Story = Template.bind({});
 PendingNoParticipantsJoinable.args = {
   game: { ...defaultGame, joinable: true },
 };
 
-export const PendingNoParticipantsNotJoinable = Template.bind({});
+export const PendingNoParticipantsNotJoinable: Story = Template.bind({});
 PendingNoParticipantsNotJoinable.args = {
   game: { ...defaultGame },
 };
 
-export const ActiveJoinable = Template.bind({});
+export const ActiveJoinable: Story = Template.bind({});
 ActiveJoinable.args = {
   game: {
     ...defaultGame,
@@ -86,19 +84,19 @@ ActiveJoinable.args = {
   },
 };
 
-// export const PendingIsUser = Template.bind({});
+// export const PendingIsUser: Story = Template.bind({});
 // PendingIsUser.args = {
 //   ...defaultArgs,
 //   isCurrentUser: true,
 // };
 
-// export const ActiveDefault = Template.bind({});
+// export const ActiveDefault: Story = Template.bind({});
 // ActiveDefault.args = {
 //   ...defaultArgs,
 //   nation: 'standard-england',
 // };
 
-// export const ActiveIsUser = Template.bind({});
+// export const ActiveIsUser: Story = Template.bind({});
 // ActiveIsUser.args = {
 //   ...defaultArgs,
 //   isCurrentUser: true,

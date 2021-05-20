@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 
@@ -13,7 +13,7 @@ export default {
   title: 'FormWrapper',
   component: FormWrapper,
   decorators: [(story) => <MemoryRouter>{story()}</MemoryRouter>],
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof FormWrapper>> = (args) => {
   return (
@@ -31,7 +31,7 @@ const Template: Story<ComponentProps<typeof FormWrapper>> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
+export const Default: Story = Template.bind({});
 Default.args = {
   title: 'Log in',
 };

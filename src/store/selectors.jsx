@@ -181,10 +181,11 @@ const selectBrowseGames = createSelector(
             year: currentTurn.year,
           }
         : null;
+      const { joinable, name, slug, status } = g;
       return {
-        slug: g.slug,
-        joinable: true, // TODO
-        name: g.name,
+        slug,
+        joinable,
+        name,
         participants,
         rules: {
           orderDeadline: g.orderDeadlineDisplay,
@@ -192,7 +193,7 @@ const selectBrowseGames = createSelector(
           buildDeadline: g.buildDeadlineDisplay,
         },
         turn,
-        status: g.status,
+        status,
         userIsParticipant,
         variant: variant.name,
       };

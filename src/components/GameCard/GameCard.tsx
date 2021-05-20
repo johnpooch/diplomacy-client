@@ -8,12 +8,17 @@ import GameParticipantList from '../GameParticipantList/GameParticipantList';
 import useStyles from './GameCard.styles';
 import { GameCardComponentProps } from './GameCard.types';
 
-const GameCard: React.FC<GameCardComponentProps> = ({ game }) => {
+const GameCard: React.FC<GameCardComponentProps> = ({
+  game,
+  joinGame,
+  leaveGame,
+}) => {
   const {
     joinable,
     name,
     participants,
     rules,
+    slug,
     status,
     userIsParticipant,
     turn,
@@ -40,9 +45,11 @@ const GameCard: React.FC<GameCardComponentProps> = ({ game }) => {
       <CardActions className={classes.actions}>
         <GameParticipantList participants={participants} joinable={joinable} />
         <div>
-          {joinable && <PrimaryButton>Join</PrimaryButton>}
+          {joinable && (
+            <PrimaryButton onClick={() => joinGame(slug)}>Join</PrimaryButton>
+          )}
           {status === GameStatus.PENDING && userIsParticipant && (
-            <PrimaryButton>Leave</PrimaryButton>
+            <PrimaryButton onClick={() => leaveGame(slug)}>Leave</PrimaryButton>
           )}
         </div>
       </CardActions>

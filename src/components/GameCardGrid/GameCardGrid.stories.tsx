@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
 import * as GameCardStories from '../GameCard/GameCard.stories';
@@ -10,7 +10,7 @@ import GameCardGrid from './GameCardGrid';
 export default {
   title: 'GameCardGrid',
   component: GameCardGrid,
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof GameCardGrid>> = () => (
   <GameCardGrid>
@@ -24,4 +24,4 @@ const Template: Story<ComponentProps<typeof GameCardGrid>> = () => (
   </GameCardGrid>
 );
 
-export const Default = Template.bind({});
+export const Default: Story = Template.bind({});

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
 import Input from './Input';
@@ -8,7 +8,7 @@ import Input from './Input';
 export default {
   title: 'Input',
   component: Input,
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof Input>> = (args) => (
   <Input {...args} />
@@ -18,7 +18,7 @@ const defaultArgs = {
   required: true,
 };
 
-export const UsernameOrEmail = Template.bind({});
+export const UsernameOrEmail: Story = Template.bind({});
 UsernameOrEmail.args = {
   ...defaultArgs,
   placeholder: 'Username or email',
@@ -29,7 +29,7 @@ UsernameOrEmail.args = {
   autoCapitalize: 'off',
 };
 
-export const Password = Template.bind({});
+export const Password: Story = Template.bind({});
 Password.args = {
   ...defaultArgs,
   placeholder: 'Password',
