@@ -15,6 +15,7 @@ import CreateGame from './pages/CreateGame/CreateGame';
 import UserSettings from './pages/UserSettings/UserSettings';
 import actions from './store/actions';
 import selectors from './store/selectors';
+import Game from './views/Game';
 
 const RouterLoggedIn: React.FC<ReduxProps & RouteComponentProps> = ({
   alerts,
@@ -40,7 +41,7 @@ const RouterLoggedIn: React.FC<ReduxProps & RouteComponentProps> = ({
           component={CreateGame}
           loggedIn={loggedIn}
         />
-        {/* <Route exact path="/game/:slug" component={Game} /> */}
+        <Route exact path="/game/:slug" component={Game} />
         <RouteWithNavigation
           exact
           path="/"

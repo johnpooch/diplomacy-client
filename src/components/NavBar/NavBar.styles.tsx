@@ -21,7 +21,8 @@ export default makeStyles((theme) => {
     },
     logo: {
       color: theme.palette.primary.main,
-      '& > h3': {
+      textDecoration: 'none',
+      '& > *': {
         display: 'inline',
       },
     },

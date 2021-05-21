@@ -1,4 +1,5 @@
 import { MuiThemeProvider } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -19,6 +20,7 @@ const App = ({ clearAndPromoteAlerts, clearErrors, loggedIn }) => {
 
   return (
     <MuiThemeProvider theme={theme}>
+      <CssBaseline />
       {loggedIn ? <RouterLoggedIn /> : <RouterLoggedOut />}
     </MuiThemeProvider>
   );

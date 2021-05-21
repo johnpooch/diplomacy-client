@@ -135,6 +135,9 @@ import purple from '@material-ui/core/colors/purple';
 
 export const theme = createMuiTheme({
   palette: {
+    background: {
+      default: '#fafafa',
+    },
     primary: {
       main: purple[500],
     },

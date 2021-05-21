@@ -15,7 +15,7 @@ const PageWrapper: React.FC<PageWrapperComponentProps> = ({
   return (
     <>
       <NavBar logout={logout} />
-      <div style={{ height: '50px' }} />
+      <div style={{ height: '64px' }} />
       <AlertList alerts={alerts} onClose={alertsClear} />
       {children}
     </>
