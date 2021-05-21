@@ -20,14 +20,15 @@ export type Alert = {
 };
 
 export interface BrowseGame {
-  slug: string;
+  id: number;
   joinable: boolean;
   name: string;
   participants: Participant[];
   rules: GameRules;
+  slug: string;
   status: GameStatus;
-  userIsParticipant: boolean;
   turn: TurnDisplay | null;
+  userIsParticipant: boolean;
   variant: string;
 }
 

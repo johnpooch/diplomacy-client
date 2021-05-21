@@ -1,8 +1,9 @@
+/* eslint-disable camelcase */
 import { createSelector } from '@reduxjs/toolkit';
 
 import territoryData from '../data/standard/territories.json';
 
-import alerts, { alertSelectors } from './alerts';
+import { alertSelectors } from './alerts';
 import { gameSelectors } from './games';
 import { nationSelectors } from './nations';
 import { nationStateSelectors } from './nationStates';
@@ -181,9 +182,10 @@ const selectBrowseGames = createSelector(
             year: currentTurn.year,
           }
         : null;
-      const { joinable, name, slug, status } = g;
+      const { id, joinable, name, slug, status } = g;
       return {
         slug,
+        id,
         joinable,
         name,
         participants,
@@ -202,9 +204,31 @@ const selectBrowseGames = createSelector(
 );
 
 const selectAlerts = alertSelectors.selectAll;
+const selectErrors = (state, ...actionTypes) => {
+  const mergedErrors = {};
+  actionTypes.forEach((t) => {
+    const error = state.errors[t];
+    if (!error) return null;
+    const { non_field_errors, ...otherErrors } = error;
+    if (non_field_errors) {
+      if (mergedErrors.non_field_errors) {
+        mergedErrors.non_field_errors = [
+          ...mergedErrors.non_field_errors,
+          ...non_field_errors,
+        ];
+      } else {
+        mergedErrors.non_field_errors = non_field_errors;
+      }
+      Object.assign(mergedErrors, otherErrors);
+    }
+    return {};
+  });
+  return Object.values(mergedErrors).flat();
+};
 const selectBrowseGamesLoading = (state) => state.entities.games.loading;
 export default {
   selectAlerts,
   selectBrowseGames,
   selectBrowseGamesLoading,
+  selectErrors,
 };

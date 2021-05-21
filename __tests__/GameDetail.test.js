@@ -33,7 +33,7 @@ beforeEach(() => {
 
 Konva.isBrowser = false;
 
-describe('Game Detail', () => {
+describe.skip('Game Detail', () => {
   it('delete order succesfully', async () => {
     useHandlers(
       [urlConf.destroyOrder, destroyOrder.success],

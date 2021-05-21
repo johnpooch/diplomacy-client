@@ -12,6 +12,7 @@ import {
   getOrdersFinalized,
   getOrdersStatus,
   getGameFilterChoices,
+  joinGame,
   listGames,
   listOrders,
   listVariants,
@@ -42,6 +43,7 @@ const handlers = [
   // Games
   [urlConf.createGame, createGame.success],
   [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+  [urlConf.joinGame, joinGame.success],
   [urlConf.listGames, listGames.success],
   [urlConf.listVariants, listVariants.success],
 

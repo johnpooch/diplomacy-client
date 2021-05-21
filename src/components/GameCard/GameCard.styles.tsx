@@ -16,6 +16,15 @@ export default makeStyles({
       marginTop: '8px',
     },
   },
+  link: {
+    textDecoration: 'none',
+    color: 'inherit',
+    display: 'contents',
+
+    '& :hover': {
+      textDecoration: 'underline',
+    },
+  },
   rules: {
     color: 'gray',
   },

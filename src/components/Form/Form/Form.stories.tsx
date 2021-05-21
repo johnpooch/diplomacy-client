@@ -45,5 +45,6 @@ const Template: Story<ComponentProps<typeof Form>> = (args) => {
 export const Default: Story = Template.bind({});
 Default.args = {
   buttonLabel: 'Login',
+  errors: {},
   onSubmit: (data) => console.log(data),
 };

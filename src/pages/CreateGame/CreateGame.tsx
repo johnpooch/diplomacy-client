@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
 import { PrimaryButton } from '../../components/Button/Button';
 import {
@@ -8,20 +9,19 @@ import {
   FormWrapper,
 } from '../../components/Form';
 import Input from '../../components/Input/Input';
+import actions from '../../store/actions';
 
-// import { CreateGamePageProps } from './CreateGame.types';
-
-const CreateGame: React.FC = () => {
-  const submitButton = <PrimaryButton>Create Game</PrimaryButton>;
+export const CreateGame: React.FC<ReduxProps> = ({ errors, onSubmit }) => {
+  const submitButton = <PrimaryButton type="submit">Create Game</PrimaryButton>;
   // TODO selects and required
   return (
     <FormContainer>
       <FormWrapper title="Create Game">
-        <Form button={submitButton} onSubmit={() => null}>
+        <Form button={submitButton} errors={errors} onSubmit={onSubmit}>
           <FormFieldWrapper
             name="name"
             label="Name"
-            errors={[]}
+            errors={errors.name}
             field={{
               fieldClass: Input,
               id: 'name',
@@ -34,4 +34,14 @@ const CreateGame: React.FC = () => {
   );
 };
 
-export default CreateGame;
+const mapState = (state) => {
+  const errors = state.errors.createGameStatus || {};
+  return { errors };
+};
+const mapDispatch = {
+  onSubmit: actions.createGame,
+};
+const connector = connect(mapState, mapDispatch);
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default connector(CreateGame);

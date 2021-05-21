@@ -12,16 +12,16 @@ import {
 import Input from '../../components/Input/Input';
 import { authActions } from '../../store/auth';
 
-const Register: React.FC<ReduxProps> = ({ register }) => {
+export const Register: React.FC<ReduxProps> = ({ errors, onSubmit }) => {
   const sumbitButton = <PrimaryButton type="submit">Register</PrimaryButton>;
   return (
     <FormContainer>
       <FormWrapper title="Register">
-        <Form button={sumbitButton} onSubmit={register}>
+        <Form button={sumbitButton} errors={errors} onSubmit={onSubmit}>
           <FormFieldWrapper
             name="email"
             label="Email"
-            errors={[]}
+            errors={errors.email}
             field={{
               fieldClass: Input,
               id: 'email',
@@ -31,7 +31,7 @@ const Register: React.FC<ReduxProps> = ({ register }) => {
           <FormFieldWrapper
             name="username"
             label="Username"
-            errors={[]}
+            errors={errors.username}
             field={{
               fieldClass: Input,
               id: 'username',
@@ -41,7 +41,7 @@ const Register: React.FC<ReduxProps> = ({ register }) => {
           <FormFieldWrapper
             name="password"
             label="Password"
-            errors={[]}
+            errors={errors.password}
             field={{
               fieldClass: Input,
               id: 'password',
@@ -66,8 +66,12 @@ const Register: React.FC<ReduxProps> = ({ register }) => {
   );
 };
 
-const mapDispatch = { register: authActions.register };
-const connector = connect(null, mapDispatch);
+const mapState = (state) => {
+  const errors = state.errors.registerStatus || {};
+  return { errors };
+};
+const mapDispatch = { onSubmit: authActions.register };
+const connector = connect(mapState, mapDispatch);
 type ReduxProps = ConnectedProps<typeof connector>;
 
 export default connector(Register);

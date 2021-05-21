@@ -32,6 +32,7 @@ const UserDropdownMenu: React.FC<UserDropdownMenuComponentProps> = ({
       <IconButton
         aria-controls="customized-menu"
         aria-haspopup="true"
+        title="Menu"
         onClick={handleClick}
       >
         <MenuIcon />

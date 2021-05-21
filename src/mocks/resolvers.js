@@ -48,6 +48,11 @@ export const createGame = {
   errorServerError,
 };
 
+export const joinGame = {
+  success: (_, res, ctx) => res(ctx.status(200), ctx.json(listGamesData[0])),
+  errorServerError,
+};
+
 export const createOrder = {
   success: (_, res, ctx) => res(ctx.status(201), ctx.json(createOrderData)),
   errorServerError,

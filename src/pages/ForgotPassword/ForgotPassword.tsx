@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core';
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
 import { PrimaryButton } from '../../components/Button/Button';
 import {
@@ -10,13 +11,16 @@ import {
   FormWrapper,
 } from '../../components/Form';
 import Input from '../../components/Input/Input';
+import actions from '../../store/actions';
 
-const ForgotPassword: React.FC = () => {
-  const sumbitButton = <PrimaryButton>Forgot Password</PrimaryButton>;
+export const ForgotPassword: React.FC<ReduxProps> = ({ errors, onSubmit }) => {
+  const sumbitButton = (
+    <PrimaryButton type="submit">Send reset link</PrimaryButton>
+  );
   return (
     <FormContainer>
       <FormWrapper title="Forgot Password">
-        <Form button={sumbitButton} onSubmit={() => null}>
+        <Form button={sumbitButton} errors={errors} onSubmit={onSubmit}>
           <Typography variant="body2">
             Enter your email and we&apos;ll send you a link to get back into
             your account.
@@ -24,7 +28,7 @@ const ForgotPassword: React.FC = () => {
           <FormFieldWrapper
             name="email"
             label="Email"
-            errors={[]}
+            errors={errors.email}
             field={{
               fieldClass: Input,
               id: 'email',
@@ -49,4 +53,12 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-export default ForgotPassword;
+const mapState = (state) => {
+  const errors = state.errors.resetPasswordStatus || {};
+  return { errors };
+};
+const mapDispatch = { onSubmit: actions.resetPassword };
+const connector = connect(mapState, mapDispatch);
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default connector(ForgotPassword);

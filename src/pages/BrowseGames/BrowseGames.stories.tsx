@@ -1,10 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import * as AlertStories from '../../components/Alert/Alert.stories';
 import * as GameCardStories from '../../components/GameCard/GameCard.stories';
 
 import { BrowseGames } from './BrowseGames';
@@ -13,7 +12,7 @@ export default {
   title: 'Pages/BrowseGames',
   component: BrowseGames,
   decorators: [(story) => <MemoryRouter>{story()}</MemoryRouter>],
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof BrowseGames>> = (args) => (
   <BrowseGames {...args} />
@@ -22,12 +21,13 @@ const Template: Story<ComponentProps<typeof BrowseGames>> = (args) => (
 const defaultArgs = {
   alerts: [],
   alertsClear: () => null,
+  errors: [],
   loadBrowseGames: () => null,
   logout: () => null,
   loading: false,
 };
 
-export const Default = Template.bind({});
+export const Default: Story = Template.bind({});
 Default.args = {
   ...defaultArgs,
   games: [
@@ -40,22 +40,17 @@ Default.args = {
   ],
 };
 
-export const WithAlert = Template.bind({});
-WithAlert.args = {
-  ...defaultArgs,
-  alerts: [AlertStories.Success.args.alert],
-  games: [GameCardStories.PendingJoinable.args.game],
-};
-
-export const WithMultipleAlerts = Template.bind({});
-WithMultipleAlerts.args = {
-  ...defaultArgs,
-  alerts: [AlertStories.Success.args.alert, AlertStories.Error.args.alert],
-  games: [GameCardStories.PendingJoinable.args.game],
-};
-
-export const NoGamesFound = Template.bind({});
+export const NoGamesFound: Story = Template.bind({});
 NoGamesFound.args = {
   ...defaultArgs,
   games: [],
+};
+
+export const Error: Story = Template.bind({});
+Error.args = {
+  ...defaultArgs,
+  errors: [
+    "500 Internal Server Error. Please come back later when we've fixed the problem. Thanks.",
+  ],
+  games: [GameCardStories.PendingJoinable.args.game],
 };

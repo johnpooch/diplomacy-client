@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
+import { MemoryRouter } from 'react-router';
 
 import { GameStatus } from '../../game/types';
 import * as GameParticipantListStories from '../GameParticipantList/GameParticipantList.stories';
@@ -11,6 +12,7 @@ import GameCard from './GameCard';
 export default {
   title: 'GameCard',
   component: GameCard,
+  decorators: [(story) => <MemoryRouter>{story()}</MemoryRouter>],
 } as Meta;
 
 const Template: Story<ComponentProps<typeof GameCard>> = (args) => (
@@ -39,6 +41,7 @@ PendingJoinable.args = {
     ...defaultGame,
     joinable: true,
     participants: GameParticipantListStories.Pending.args.participants,
+    id: 1,
   },
 };
 
@@ -47,6 +50,7 @@ PendingNotJoinable.args = {
   game: {
     ...defaultGame,
     participants: GameParticipantListStories.Pending.args.participants,
+    id: 2,
   },
 };
 
@@ -56,17 +60,18 @@ PendingUserIsParticipant.args = {
     ...defaultGame,
     participants:
       GameParticipantListStories.PendingUserIsParticipant.args.participants,
+    id: 3,
   },
 };
 
 export const PendingNoParticipantsJoinable: Story = Template.bind({});
 PendingNoParticipantsJoinable.args = {
-  game: { ...defaultGame, joinable: true },
+  game: { ...defaultGame, joinable: true, id: 4 },
 };
 
 export const PendingNoParticipantsNotJoinable: Story = Template.bind({});
 PendingNoParticipantsNotJoinable.args = {
-  game: { ...defaultGame },
+  game: { ...defaultGame, id: 5 },
 };
 
 export const ActiveJoinable: Story = Template.bind({});
@@ -81,6 +86,7 @@ ActiveJoinable.args = {
       season: 'Order',
     },
     participants: GameParticipantListStories.ActiveJoinable.args.participants,
+    id: 6,
   },
 };
 

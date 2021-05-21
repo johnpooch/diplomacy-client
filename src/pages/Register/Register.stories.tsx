@@ -1,19 +1,44 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Story } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 
-import Register from './Register';
+import { Register as Component } from './Register';
 
 export default {
   title: 'Pages/Register',
-  component: Register,
+  component: Component,
   decorators: [(story) => <MemoryRouter>{story()}</MemoryRouter>],
-};
+} as Meta;
 
-const Template: Story<ComponentProps<typeof Register>> = (args) => (
-  <Register {...args} />
+const Template: Story<ComponentProps<typeof Component>> = (args) => (
+  <Component {...args} />
 );
 
-export const Default = Template.bind({});
+const defaultArgs = {
+  onSubmit: ({ email, username, password }) =>
+    console.log(email, username, password),
+  errors: {},
+};
+
+export const Default: Story = Template.bind({});
+Default.args = {
+  ...defaultArgs,
+};
+
+export const FieldError: Story = Template.bind({});
+FieldError.args = {
+  ...defaultArgs,
+  errors: {
+    email: ['This email is already registered'],
+  },
+};
+
+export const NonFieldError: Story = Template.bind({});
+NonFieldError.args = {
+  ...defaultArgs,
+  errors: {
+    non_field_errors: ['Internal server error'],
+  },
+};

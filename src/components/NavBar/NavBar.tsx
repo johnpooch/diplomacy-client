@@ -21,13 +21,15 @@ const NavBar: React.FC<NavBarComponentProps> = ({ logout }) => {
       <AppBar className={classes.root} position="fixed">
         <Container className={classes.container} maxWidth="lg">
           <div>
-            <NavLink exact to="/" title="Home" className={classes.logo}>
-              <Typography variant="h3">Diplomacy</Typography>
+            <NavLink exact to="/" className={classes.logo}>
+              <Typography variant="h3" component="h1" title="Home">
+                Diplomacy
+              </Typography>
               <Typography variant="body2">.gg</Typography>
             </NavLink>
           </div>
           <div>
-            <NavLink exact to="/" title="Home">
+            <NavLink exact to="/" title="Home Icon Button">
               <IconButton>
                 <FontAwesomeIcon icon={faHome} size={ICON_SIZE} />
               </IconButton>

@@ -25,7 +25,7 @@ UsernameOrEmail.args = {
   type: 'text',
   id: 'username',
   name: 'username',
-  autocomplete: 'username',
+  autoComplete: 'username',
   autoCapitalize: 'off',
 };
 
@@ -36,5 +36,5 @@ Password.args = {
   type: 'password',
   id: 'password',
   name: 'password',
-  autocomplete: 'password',
+  autoComplete: 'password',
 };

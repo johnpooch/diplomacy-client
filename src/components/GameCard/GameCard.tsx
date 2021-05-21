@@ -1,5 +1,6 @@
 import { Card, CardActions, CardContent, Typography } from '@material-ui/core';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { GameStatus } from '../../game/types';
 import { PrimaryButton } from '../Button/Button';
@@ -26,12 +27,24 @@ const GameCard: React.FC<GameCardComponentProps> = ({
   } = game;
   const bull = <span>•</span>;
   const classes = useStyles();
+  const getHeader = () => {
+    const title = (
+      <Typography gutterBottom variant="h3">
+        {name}
+      </Typography>
+    );
+    return status === 'active' ? (
+      <Link className={classes.link} to={`/game/${slug}`} title={name}>
+        {title}
+      </Link>
+    ) : (
+      title
+    );
+  };
   return (
     <Card square>
       <CardContent className={classes.content}>
-        <Typography gutterBottom variant="h3">
-          {name}
-        </Typography>
+        {getHeader()}
         {turn && (
           <Typography variant="body1">
             {turn.season} {bull} {turn.year} {bull} {turn.phase}

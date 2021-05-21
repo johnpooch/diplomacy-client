@@ -1,9 +1,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import NonFieldErrors from '../../NonFieldErrors';
+
 import { FormComponentProps } from './Form.types';
 
-const Form: React.FC<FormComponentProps> = ({ button, onSubmit, children }) => {
+const Form: React.FC<FormComponentProps> = ({
+  button,
+  errors,
+  onSubmit,
+  children,
+}) => {
   const { register, handleSubmit } = useForm();
   const childrenWithRegister = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
@@ -14,6 +21,7 @@ const Form: React.FC<FormComponentProps> = ({ button, onSubmit, children }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {childrenWithRegister}
+      <NonFieldErrors errors={errors.non_field_errors} />
       {button}
     </form>
   );

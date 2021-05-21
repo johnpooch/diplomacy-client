@@ -49,7 +49,7 @@ const checkPhase = async (phase, season, year) => {
   await getByText(turn, year, { selector: '.year' });
 };
 
-describe('Turn Nav', () => {
+describe.skip('Turn Nav', () => {
   it('all buttons disabled if only turn', async () => {
     useHandlers(
       [urlConf.getGameDetail, getGameDetail.success],

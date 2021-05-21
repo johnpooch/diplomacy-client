@@ -1,19 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { connect } from 'react-redux';
-import { Switch, withRouter, Redirect, Route } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
+import {
+  Switch,
+  withRouter,
+  Redirect,
+  Route,
+  RouteComponentProps,
+} from 'react-router-dom';
 
-import NavBar from './components/NavBar';
+import PageWrapper from './components/PageWrapper';
 import BrowseGames from './pages/BrowseGames';
 import CreateGame from './pages/CreateGame/CreateGame';
 import UserSettings from './pages/UserSettings/UserSettings';
-import Error from './views/Error';
-import Game from './views/Game';
-import PreGame from './views/PreGame';
+import actions from './store/actions';
+import selectors from './store/selectors';
 
-const RouterLoggedIn = (props) => {
-  const { loggedIn } = props;
-
+const RouterLoggedIn: React.FC<ReduxProps & RouteComponentProps> = ({
+  alerts,
+  alertsClear,
+  loggedIn,
+  logout,
+}) => {
   const RouteWithNavigation = ({ component: Component, ...routeProps }) => {
     return (
       <Route
@@ -24,45 +32,46 @@ const RouterLoggedIn = (props) => {
   };
 
   return (
-    <Switch>
-      <RouteWithNavigation
-        exact
-        path="/create-game"
-        component={CreateGame}
-        loggedIn={loggedIn}
-      />
-      <RouteWithNavigation
-        exact
-        path="/pre-game/:slug"
-        component={PreGame}
-        loggedIn={loggedIn}
-      />
-      <Route exact path="/game/:slug" component={Game} />
-      <RouteWithNavigation
-        exact
-        path="/"
-        component={BrowseGames}
-        loggedIn={loggedIn}
-      />
-      <RouteWithNavigation
-        exact
-        path="/user-settings"
-        component={UserSettings}
-        loggedIn={loggedIn}
-      />
-      <Route exact path={['/forgot-password', '/login', '/register']}>
-        <Redirect to="/" />
-      </Route>
-      <RouteWithNavigation component={() => <Error text="Page not found" />} />
-    </Switch>
+    <PageWrapper alerts={alerts} alertsClear={alertsClear} logout={logout}>
+      <Switch>
+        <RouteWithNavigation
+          exact
+          path="/create-game"
+          component={CreateGame}
+          loggedIn={loggedIn}
+        />
+        {/* <Route exact path="/game/:slug" component={Game} /> */}
+        <RouteWithNavigation
+          exact
+          path="/"
+          component={BrowseGames}
+          loggedIn={loggedIn}
+        />
+        <RouteWithNavigation
+          exact
+          path="/user-settings"
+          component={UserSettings}
+          loggedIn={loggedIn}
+        />
+        <Route exact path={['/forgot-password', '/login', '/register']}>
+          <Redirect to="/" />
+        </Route>
+      </Switch>
+    </PageWrapper>
   );
 };
 
-const mapStateToProps = (state) => {
+const mapState = (state) => {
+  const alerts = selectors.selectAlerts(state);
   const { loggedIn } = state.auth;
-  return {
-    loggedIn,
-  };
+  return { alerts, loggedIn };
 };
 
-export default connect(mapStateToProps, null)(withRouter(RouterLoggedIn));
+const mapDispatch = {
+  alertsClear: actions.alertsClear,
+  logout: actions.logout,
+};
+const connector = connect(mapState, mapDispatch);
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default withRouter(connector(RouterLoggedIn));

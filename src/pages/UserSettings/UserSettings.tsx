@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
 import { PrimaryButton } from '../../components/Button/Button';
 import {
@@ -8,17 +9,20 @@ import {
   FormWrapper,
 } from '../../components/Form';
 import Input from '../../components/Input/Input';
+import actions from '../../store/actions';
 
-const UserSettings: React.FC = () => {
-  const submitButton = <PrimaryButton>Change Password</PrimaryButton>;
+export const UserSettings: React.FC<ReduxProps> = ({ errors, onSubmit }) => {
+  const submitButton = (
+    <PrimaryButton type="submit">Change Password</PrimaryButton>
+  );
   return (
     <FormContainer>
       <FormWrapper title="Change Password">
-        <Form button={submitButton} onSubmit={() => null}>
+        <Form button={submitButton} errors={errors} onSubmit={onSubmit}>
           <FormFieldWrapper
             name="current_password"
             label="Current password"
-            errors={[]}
+            errors={errors.current_password}
             field={{
               fieldClass: Input,
               id: 'current_password',
@@ -28,7 +32,7 @@ const UserSettings: React.FC = () => {
           <FormFieldWrapper
             name="new_password"
             label="New password"
-            errors={[]}
+            errors={errors.new_password}
             field={{
               fieldClass: Input,
               id: 'new_password',
@@ -38,7 +42,7 @@ const UserSettings: React.FC = () => {
           <FormFieldWrapper
             name="new_password_confirm"
             label="Confirm new password"
-            errors={[]}
+            errors={errors.new_password_confirm}
             field={{
               fieldClass: Input,
               id: 'new_password_confirm',
@@ -51,4 +55,12 @@ const UserSettings: React.FC = () => {
   );
 };
 
-export default UserSettings;
+const mapState = (state) => {
+  const errors = state.errors.changePasswordStatus || {};
+  return { errors };
+};
+const mapDispatch = { onSubmit: actions.changePassword };
+const connector = connect(mapState, mapDispatch);
+type ReduxProps = ConnectedProps<typeof connector>;
+
+export default connector(UserSettings);

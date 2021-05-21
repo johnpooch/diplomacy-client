@@ -1,27 +1,29 @@
-import { fireEvent, waitFor, screen } from '@testing-library/react';
-
 import { errorMessages } from '../src/copy';
 import { resetPasswordConfirm } from '../src/mocks/resolvers';
 import { urlConf } from '../src/urls';
 
 import {
+  Selectors,
   renderApp,
-  successMessages,
-  testElements,
   useHandlers,
+  userClicksElement,
+  userSeesElement,
+  userSeesAlert,
 } from './testUtils';
 
 const startingUrl = '/reset-password?token=1234';
 
 describe('Reset Password', () => {
+  it('redirect to login if no token', async () => {
+    renderApp().push('/reset-password');
+    await userSeesElement('Login', Selectors.FormHeader);
+  });
+
   it('redirect to log in and display message on success', async () => {
     useHandlers([urlConf.resetPasswordConfirm, resetPasswordConfirm.success]);
     renderApp().push(startingUrl);
-    fireEvent.click(testElements.resetPasswordButton());
-    await waitFor(() => testElements.loginButton());
-    await waitFor(() =>
-      screen.getByText(successMessages.resetPasswordConfirm())
-    );
+    userClicksElement('Reset Password', Selectors.FormButton);
+    await userSeesAlert('Password updated!');
   });
 
   it('display error on server error', async () => {
@@ -30,10 +32,7 @@ describe('Reset Password', () => {
       resetPasswordConfirm.errorServerError,
     ]);
     renderApp().push(startingUrl);
-    fireEvent.click(testElements.resetPasswordButton());
-    await waitFor(() => {
-      const error = screen.getByRole('alert');
-      expect(error.text === errorMessages.internalServerError);
-    });
+    userClicksElement('Reset Password', Selectors.FormButton);
+    await userSeesAlert(errorMessages.internalServerError);
   });
 });

@@ -1,10 +1,9 @@
 import { fireEvent, waitFor, screen } from '@testing-library/react';
 import Konva from 'konva-node';
 
-import { infoMessages } from '../src/copy';
+import { errorMessages } from '../src/copy';
 import {
   getGameFilterChoices,
-  getGameDetail,
   listGames,
   listVariants,
 } from '../src/mocks/resolvers';
@@ -12,10 +11,13 @@ import { urlConf } from '../src/urls';
 
 import {
   basicBeforeEach,
+  Selectors,
   logIn,
   renderApp,
-  testElements,
   useHandlers,
+  userClicksElement,
+  userSeesAlert,
+  userSeesElement,
 } from './testUtils';
 
 beforeEach(() => {
@@ -32,9 +34,8 @@ describe('Browse Games', () => {
   it('redirect user to log in and remove from storage on log out', async () => {
     renderApp();
     fireEvent.click(screen.getByTitle('Menu'));
-    const logoutButton = await waitFor(() => screen.getByText('Logout'));
-    fireEvent.click(logoutButton);
-    await waitFor(() => testElements.loginButton());
+    userClicksElement('Logout', Selectors.MenuButton);
+    await userSeesElement('Login', Selectors.FormHeader);
   });
 
   it('display nav items', async () => {
@@ -45,19 +46,19 @@ describe('Browse Games', () => {
     );
     renderApp();
     screen.getByTitle('Home');
+    screen.getByTitle('Home Icon Button');
     screen.getByTitle('Create game');
+    screen.getByTitle('Menu');
   });
 
-  it('display pending game correctly', async () => {
+  it('display pending game', async () => {
     useHandlers(
       [urlConf.listGames, listGames.successPendingGame],
       [urlConf.listVariants, listVariants.success],
       [urlConf.getGameFilterChoices, getGameFilterChoices.success]
     );
     renderApp();
-    await waitFor(() => screen.getByTitle(pendingGameTitle));
-    expect(screen.getByText(infoMessages.waitingForPlayers));
-    expect(screen.getByText('1 / 7'));
+    await userSeesElement(pendingGameTitle, Selectors.BrowseGameTitle);
   });
 
   it('display active game correctly', async () => {
@@ -67,36 +68,23 @@ describe('Browse Games', () => {
       [urlConf.getGameFilterChoices, getGameFilterChoices.success]
     );
     renderApp();
-    await waitFor(() => screen.getByTitle(activeGameTitle));
-    expect(screen.getByText('Spring 1901 - Order'));
-    expect(screen.getByText('7 / 7'));
+    await userSeesElement(activeGameTitle, Selectors.BrowseGameTitle);
   });
 
-  it('navigate to game detail view when active game is clicked', async () => {
-    useHandlers(
-      [urlConf.getGameDetail, getGameDetail.success],
-      [urlConf.getGameFilterChoices, getGameFilterChoices.success],
-      [urlConf.listGames, listGames.successActiveGame],
-      [urlConf.listVariants, listVariants.success]
-    );
-    renderApp();
-    const gameLink = await waitFor(() => screen.getByTitle(activeGameTitle));
-    fireEvent.click(gameLink);
-    await waitFor(() => screen.getByText('England'));
-  });
-
-  it('navigate to pre-game when when pending game is clicked', async () => {
-    useHandlers(
-      [urlConf.getGameFilterChoices, getGameFilterChoices.success],
-      [urlConf.listGames, listGames.successPendingGame],
-      [urlConf.listVariants, listVariants.success]
-    );
-    renderApp();
-    const gameLink = await waitFor(() => screen.getByTitle(pendingGameTitle));
-    fireEvent.click(gameLink);
-    fireEvent.click(gameLink);
-    await waitFor(testElements.leaveGameButton);
-  });
+  // it('navigate to game detail view when active game is clicked', async () => {
+  //   useHandlers(
+  //     [urlConf.getGameDetail, getGameDetail.success],
+  //     [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+  //     [urlConf.listGames, listGames.successActiveGame],
+  //     [urlConf.listVariants, listVariants.success]
+  //   );
+  //   renderApp();
+  //   userClicksElement('Logout', Selectors.MenuButton);
+  //   await userSeesElement('Login', Selectors.FormHeader);
+  //   const gameLink = await waitFor(() => screen.getByTitle(activeGameTitle));
+  //   fireEvent.click(gameLink);
+  //   await waitFor(() => screen.getByText('England'));
+  // });
 
   it('display error on listGames server error', async () => {
     useHandlers(
@@ -105,7 +93,7 @@ describe('Browse Games', () => {
       [urlConf.listVariants, listVariants.success]
     );
     renderApp();
-    await waitFor(testElements.componentError500);
+    await userSeesAlert(errorMessages.internalServerError);
   });
 
   it('display error on listVariants server error', async () => {
@@ -115,7 +103,7 @@ describe('Browse Games', () => {
       [urlConf.listVariants, listVariants.errorServerError]
     );
     renderApp();
-    await waitFor(testElements.componentError500);
+    await userSeesAlert(errorMessages.internalServerError);
   });
 
   it('redirect to login on unauthorized', async () => {
@@ -125,11 +113,6 @@ describe('Browse Games', () => {
       [urlConf.listVariants, listVariants.success]
     );
     renderApp();
-    await waitFor(testElements.loginButton);
-  });
-
-  // TODO
-  it('filter games using filters', async () => {
-    return true;
+    await userSeesElement('Login', Selectors.FormHeader);
   });
 });
