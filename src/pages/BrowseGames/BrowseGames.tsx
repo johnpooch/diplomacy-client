@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useLocation, withRouter } from 'react-router-dom';
 
+import ComponentError from '../../components/ComponentError';
 import GameCard from '../../components/GameCard/GameCard';
-import NonFieldErrors from '../../components/NonFieldErrors';
 import actions from '../../store/actions';
 import selectors from '../../store/selectors';
 
@@ -27,11 +27,11 @@ export const BrowseGames: React.FC<ReduxProps & BrowseGamesPageProps> = ({
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
-    <>
+    <Container maxWidth="md">
       {errors.length ? (
-        <NonFieldErrors errors={errors} />
+        <ComponentError error={errors[0]} />
       ) : (
-        <Container maxWidth="md">
+        <>
           {loading ? (
             <div className={classes.progressDiv}>
               <CircularProgress />
@@ -49,9 +49,9 @@ export const BrowseGames: React.FC<ReduxProps & BrowseGamesPageProps> = ({
               ))}
             </Grid>
           )}
-        </Container>
+        </>
       )}
-    </>
+    </Container>
   );
 };
 
