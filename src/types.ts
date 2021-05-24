@@ -1,6 +1,6 @@
 import { Color } from '@material-ui/lab/Alert';
 
-import { GameStatus, OrderType, Phase } from './game/types';
+import { GameStatus, PieceType, OrderType, Phase } from './game/types';
 
 export enum Outcome {
   MOVES = 'moves',
@@ -35,6 +35,17 @@ export interface BrowseGame {
 export interface NationDisplay {
   id: string;
   name: string;
+}
+
+export interface NationOrderHistory {
+  nation: NationDisplay;
+  numSupplyCenters: number;
+  orders: {
+    order: OrderDisplay;
+    outcome: OrderOutcomeDisplay;
+    loading: boolean;
+  }[];
+  username: string;
 }
 
 export interface GameRules {
@@ -81,6 +92,20 @@ export interface Order {
   turn: number;
   type: OrderType;
   viaConvoy: boolean;
+}
+
+export interface OrderDisplay {
+  aux: string | null;
+  orderType: OrderType;
+  pieceType: PieceType;
+  source: string;
+  target: string | null;
+  targetCoast: string | null;
+}
+
+export interface OrderOutcomeDisplay {
+  outcome: string;
+  message: string;
 }
 
 export interface TurnDisplay {
