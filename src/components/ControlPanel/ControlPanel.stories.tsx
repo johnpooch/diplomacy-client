@@ -3,8 +3,8 @@
 import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 
+import * as OrderStories from '../Order/Order.stories';
 import * as OrderHistorySectionStories from '../OrderHistorySection/OrderHistorySection.stories';
-import * as OrderListStories from '../OrderList/OrderList.stories';
 
 import Component from './ControlPanel';
 
@@ -19,6 +19,8 @@ const Template: Story<ComponentProps<typeof Component>> = (args) => (
 
 const defaultArgs = {
   open: true,
+  numOrdersToGive: 3,
+  numOrdersGiven: 0,
 };
 
 export const PreviousTurn: Story = Template.bind({});
@@ -42,7 +44,12 @@ export const CurrentTurn: Story = Template.bind({});
 CurrentTurn.args = {
   ...defaultArgs,
   currentTurn: true,
-  ...OrderListStories.MultipleOrders.args,
+  numOrdersGiven: 3,
+  orders: [
+    OrderStories.Default.args.order,
+    OrderStories.Default.args.order,
+    OrderStories.Loading.args.order,
+  ],
 };
 
 export const CurrentTurnClosed: Story = Template.bind({});
@@ -50,5 +57,10 @@ CurrentTurnClosed.args = {
   ...defaultArgs,
   open: false,
   currentTurn: true,
-  ...OrderListStories.MultipleOrders.args,
+  numOrdersGiven: 3,
+  orders: [
+    OrderStories.Default.args.order,
+    OrderStories.Default.args.order,
+    OrderStories.Loading.args.order,
+  ],
 };

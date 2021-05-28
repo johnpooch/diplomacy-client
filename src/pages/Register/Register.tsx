@@ -10,7 +10,7 @@ import {
   FormWrapper,
 } from '../../components/Form';
 import Input from '../../components/Input/Input';
-import { authActions } from '../../store/auth';
+import actions from '../../store/actions';
 
 export const Register: React.FC<ReduxProps> = ({ errors, onSubmit }) => {
   const sumbitButton = <PrimaryButton type="submit">Register</PrimaryButton>;
@@ -70,7 +70,7 @@ const mapState = (state) => {
   const errors = state.errors.registerStatus || {};
   return { errors };
 };
-const mapDispatch = { onSubmit: authActions.register };
+const mapDispatch = { onSubmit: actions.register };
 const connector = connect(mapState, mapDispatch);
 type ReduxProps = ConnectedProps<typeof connector>;
 

@@ -16,9 +16,14 @@ const Template: Story<ComponentProps<typeof Component>> = (args) => (
   <Component {...args} />
 );
 
+const defaultOrderArgs = {
+  loading: false,
+};
+
 export const ArmyHold: Story = Template.bind({});
 ArmyHold.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     pieceType: PieceType.ARMY,
     orderType: OrderType.HOLD,
@@ -28,6 +33,7 @@ ArmyHold.args = {
 export const FleetHold: Story = Template.bind({});
 FleetHold.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     pieceType: PieceType.FLEET,
     orderType: OrderType.HOLD,
@@ -37,6 +43,7 @@ FleetHold.args = {
 export const ArmyMove: Story = Template.bind({});
 ArmyMove.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     target: 'Trieste',
     pieceType: PieceType.ARMY,
@@ -47,6 +54,7 @@ ArmyMove.args = {
 export const FleetMove: Story = Template.bind({});
 FleetMove.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     target: 'Trieste',
     pieceType: PieceType.FLEET,
@@ -57,6 +65,7 @@ FleetMove.args = {
 export const FleetMoveTargetCoast: Story = Template.bind({});
 FleetMoveTargetCoast.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     target: 'Trieste',
     targetCoast: 'NC',
@@ -68,6 +77,7 @@ FleetMoveTargetCoast.args = {
 export const ArmyRetreat: Story = Template.bind({});
 ArmyRetreat.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     target: 'Trieste',
     pieceType: PieceType.ARMY,
@@ -78,6 +88,7 @@ ArmyRetreat.args = {
 export const FleetRetreat: Story = Template.bind({});
 FleetRetreat.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     target: 'Trieste',
     pieceType: PieceType.FLEET,
@@ -88,6 +99,7 @@ FleetRetreat.args = {
 export const FleetRetreatTargetCoast: Story = Template.bind({});
 FleetRetreatTargetCoast.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     target: 'Trieste',
     targetCoast: 'NC',
@@ -99,6 +111,7 @@ FleetRetreatTargetCoast.args = {
 export const ArmySupport: Story = Template.bind({});
 ArmySupport.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     aux: 'Adriatic Sea',
     target: 'Trieste',
@@ -110,6 +123,7 @@ ArmySupport.args = {
 export const FleetSupport: Story = Template.bind({});
 FleetSupport.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     aux: 'Adriatic Sea',
     target: 'Trieste',
@@ -121,6 +135,7 @@ FleetSupport.args = {
 export const FleetConvoy: Story = Template.bind({});
 FleetConvoy.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     aux: 'Adriatic Sea',
     target: 'Trieste',
@@ -132,6 +147,7 @@ FleetConvoy.args = {
 export const BuildArmy: Story = Template.bind({});
 BuildArmy.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     pieceType: PieceType.ARMY,
     orderType: OrderType.BUILD,
@@ -141,6 +157,7 @@ BuildArmy.args = {
 export const BuildFleet: Story = Template.bind({});
 BuildFleet.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     pieceType: PieceType.FLEET,
     orderType: OrderType.BUILD,
@@ -150,6 +167,7 @@ BuildFleet.args = {
 export const DisbandArmy: Story = Template.bind({});
 DisbandArmy.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     pieceType: PieceType.ARMY,
     orderType: OrderType.DISBAND,
@@ -159,6 +177,7 @@ DisbandArmy.args = {
 export const DisbandFleet: Story = Template.bind({});
 DisbandFleet.args = {
   order: {
+    ...defaultOrderArgs,
     source: 'Venice',
     pieceType: PieceType.FLEET,
     orderType: OrderType.DISBAND,

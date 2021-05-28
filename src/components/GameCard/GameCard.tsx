@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { GameStatus } from '../../game/types';
 import { PrimaryButton } from '../Button/Button';
 import GameParticipantList from '../GameParticipantList/GameParticipantList';
+import TurnSummary from '../TurnSummary';
 
 import useStyles from './GameCard.styles';
 import { GameCardComponentProps } from './GameCard.types';
@@ -45,11 +46,7 @@ const GameCard: React.FC<GameCardComponentProps> = ({
     <Card square>
       <CardContent className={classes.content}>
         {getHeader()}
-        {turn && (
-          <Typography variant="body1">
-            {turn.season} {bull} {turn.year} {bull} {turn.phase}
-          </Typography>
-        )}
+        {turn && <TurnSummary turn={turn} />}
         <Typography variant="body2" className={classes.rules}>
           {variant} {bull} Orders {rules.orderDeadline} {bull} Retreat{' '}
           {rules.retreatDeadline} {bull} Build {rules.buildDeadline}

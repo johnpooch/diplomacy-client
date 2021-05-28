@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Box, Tab, Tabs, Typography } from '@material-ui/core';
+import { Box, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import React from 'react';
 
+import { PrimaryButton } from '../Button/Button';
 import { Orders, Participants } from '../Icon';
+import Order from '../Order';
 import OrderHistorySection from '../OrderHistorySection';
-import OrderList from '../OrderList';
 
 import useStyles from './ControlPanel.styles';
 import {
@@ -28,22 +29,22 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
       id={`contol-panel-tabpanel-${index}`}
       aria-labelledby={`contol-panel-tab-${index}`}
     >
-      {value === index && (
-        <Box>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 };
 
 const ControlPanel: React.FC<ControlPanelComponentProps> = ({
+  cancelOrder,
   currentTurn,
+  finalizeOrders,
   nationOrderHistories,
   numOrdersToGive,
   numOrdersGiven,
   open,
   orders,
+  ordersFinalized,
+  ordersFinalizedLoading,
 }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -56,28 +57,46 @@ const ControlPanel: React.FC<ControlPanelComponentProps> = ({
     <div className={classes.root}>
       <Drawer
         BackdropProps={{ invisible: true }}
+        variant="persistent"
         anchor="right"
         open={open}
-        onClose={() => console.log('close')}
       >
+        <Toolbar variant="dense" />
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="Control panel sections"
         >
-          <Tab icon={<Orders />} {...a11yProps(0)} />
-          <Tab icon={<Participants />} {...a11yProps(1)} />
+          <Tab icon={Orders} {...a11yProps(0)} />
+          <Tab icon={Participants} {...a11yProps(1)} />
         </Tabs>
         <div role="presentation">
           <TabPanel value={value} index={0}>
             {currentTurn ? (
               <>
                 <Typography variant="h6">Orders</Typography>
-                <OrderList
-                  orders={orders}
-                  numOrdersToGive={numOrdersToGive}
-                  numOrdersGiven={numOrdersGiven}
-                />
+                <div className={classes.ordersSection}>
+                  <Typography variant="body2" className={classes.orderCount}>
+                    {numOrdersGiven}/{numOrdersToGive}
+                  </Typography>
+                  <div>
+                    {orders.map((order) => (
+                      <Order
+                        cancelOrder={cancelOrder}
+                        isCurrent
+                        key={order.source}
+                        order={order}
+                        outcome={null}
+                      />
+                    ))}
+                  </div>
+                  <PrimaryButton
+                    onClick={finalizeOrders}
+                    disabled={ordersFinalizedLoading}
+                  >
+                    {ordersFinalized ? 'Un-finalize orders' : 'Finalize orders'}
+                  </PrimaryButton>
+                </div>
               </>
             ) : (
               <>
@@ -89,7 +108,7 @@ const ControlPanel: React.FC<ControlPanelComponentProps> = ({
             )}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Typography variant="h6">Participants</Typography>
+            <Typography variant="h6">Players</Typography>
           </TabPanel>
         </div>
       </Drawer>

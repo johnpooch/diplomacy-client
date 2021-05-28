@@ -54,3 +54,9 @@ Error.args = {
   ],
   games: [GameCardStories.PendingJoinable.args.game],
 };
+
+export const Loading: Story = Template.bind({});
+Loading.args = {
+  ...defaultArgs,
+  loading: true,
+};

@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { createSelector } from '@reduxjs/toolkit';
 
+import namedCoastData from '../data/standard/namedCoasts.json';
 import territoryData from '../data/standard/territories.json';
 
 import { alertSelectors } from './alerts';
@@ -141,8 +142,6 @@ export const selectRetreatingPieceByTerritory = createSelector(
   }
 );
 
-// TODO test
-// TODO types
 const selectBrowseGames = createSelector(
   (state) => state.auth.user.id,
   gameSelectors.selectAll,
@@ -164,14 +163,20 @@ const selectBrowseGames = createSelector(
       let userIsParticipant = false;
       const participants = g.participants.map((p) => {
         if (p === userId) userIsParticipant = true;
+        const user = users.find((u) => u.id === p);
+        const userNationState = ns ? ns.find((n) => n.user === p) : null;
         return {
-          username: users.find((u) => u.id === p).username,
-          nation: ns
-            ? {
-                id: ns.find((n) => n.user === p).nation,
-                name: nations[ns.find((n) => n.user === p).nation].name,
-              }
-            : null,
+          username: user ? user.username : null,
+          nation:
+            ns && nations
+              ? {
+                  id: userNationState ? userNationState.nation : null,
+                  name:
+                    userNationState && nations[userNationState.nation]
+                      ? nations[userNationState.nation].name
+                      : null,
+                }
+              : null,
           isCurrentUser: userId === p,
         };
       });
@@ -197,7 +202,7 @@ const selectBrowseGames = createSelector(
         turn,
         status,
         userIsParticipant,
-        variant: variant.name,
+        variant: variant ? variant.name : null,
       };
     });
   }
@@ -226,9 +231,128 @@ const selectErrors = (state, ...actionTypes) => {
   return Object.values(mergedErrors).flat();
 };
 const selectBrowseGamesLoading = (state) => state.entities.games.loading;
+const selectGameDetail = createSelector(
+  (state) => state.auth.user.id,
+  (state) => state.entities.gameDetail,
+  orderSelectors.selectAll,
+  nationStateSelectors.selectAll,
+  nationSelectors.selectEntities,
+  turnSelectors.selectAll,
+  territorySelectors.selectEntities,
+  userSelectors.selectEntities,
+  (
+    userId,
+    game,
+    allOrders,
+    allNationStates,
+    nations,
+    allTurns,
+    territoryEntities,
+    users
+  ) => {
+    const { activeTurnId, loading, loaded } = game;
+
+    if (!loaded) return game;
+
+    const turns = allTurns.filter((t) => game.turns.includes(t.id));
+    const currentTurn = turns.find((t) => t.currentTurn) || null;
+    const turn = turns.find((t) => {
+      if (activeTurnId) return t.id === activeTurnId;
+      return t.currentTurn === true;
+    });
+    const isCurrentTurn = currentTurn.id === turn.id;
+
+    const turnDisplay = {
+      season: turn.seasonDisplay,
+      phase: turn.phaseDisplay,
+      year: turn.year,
+    };
+
+    const turnNationStates = allNationStates.filter((ns) =>
+      turn.nationStates.includes(ns.id)
+    );
+    const userNationState = turnNationStates.find((ns) => ns.user === userId);
+    const nation = userNationState ? nations[userNationState.nation] : null;
+    const { ordersFinalized, numOrders } = userNationState || {};
+
+    const getTerritoryName = (id) => {
+      const territory = territoryEntities[id];
+      return territory ? territory.name : null;
+    };
+    const getNamedCoastAbbreviation = (id) => {
+      const namedCoast = namedCoastData.find((nc) => nc.id === id);
+      return namedCoast ? namedCoast.abbreviation : null;
+    };
+
+    const { previousTurn, nextTurn } = turn;
+
+    const turnOrders = allOrders.filter((o) => o.turn === turn.id);
+    const orders = turnOrders.map((o) => {
+      return {
+        ...o,
+        source: getTerritoryName(o.source),
+        target: getTerritoryName(o.target),
+        aux: getTerritoryName(o.aux),
+        targetCoast: getNamedCoastAbbreviation(o.targetCoast),
+        orderType: o.type,
+      };
+    });
+
+    const getNationOrderHistories = () =>
+      game.participants.map((p) => {
+        const user = users[p];
+        const nationState = turnNationStates.find((ns) => ns.user === p);
+        const n = nations[nationState.nation];
+        const nationOrders = orders
+          .filter((o) => o.nation === n.id)
+          .map((o) => {
+            return { order: o, outcome: null };
+          });
+        return {
+          username: user.username,
+          nation: { name: n.name, id: n.id },
+          orders: nationOrders,
+          numSupplyCenters: nationState.numSupplyCenters,
+        };
+      });
+
+    const nationOrderHistories = isCurrentTurn ? [] : getNationOrderHistories();
+
+    return {
+      currentTurn: isCurrentTurn,
+      currentTurnId: currentTurn.id,
+      loaded,
+      loading,
+      userNationState,
+      nationOrderHistories,
+      nation,
+      nextTurn,
+      numOrders,
+      orders,
+      ordersFinalized,
+      previousTurn,
+      turnDisplay,
+      turn,
+    };
+  }
+);
+
+const selectFirstTurnId = createSelector(
+  (state) => state.entities.gameDetail,
+  turnSelectors.selectAll,
+  (game, turns) => {
+    if (!game.turns) return null;
+    if (!turns.length) return null;
+    return turns
+      .filter((t) => game.turns.includes(t.id))
+      .reduce((min, t) => (t.id < min ? t.id : min), turns[0].id);
+  }
+);
 export default {
   selectAlerts,
   selectBrowseGames,
   selectBrowseGamesLoading,
   selectErrors,
+  selectFirstTurnId,
+  selectGameDetail,
 };

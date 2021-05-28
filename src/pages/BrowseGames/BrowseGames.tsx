@@ -1,10 +1,11 @@
-import { CircularProgress, Container, useTheme, Grid } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useLocation, withRouter } from 'react-router-dom';
 
 import ComponentError from '../../components/ComponentError';
 import GameCard from '../../components/GameCard/GameCard';
+import PageLoading from '../../components/PageLoading';
 import actions from '../../store/actions';
 import selectors from '../../store/selectors';
 
@@ -23,33 +24,22 @@ export const BrowseGames: React.FC<ReduxProps & BrowseGamesPageProps> = ({
   useEffect(() => {
     loadBrowseGames();
   }, [location]);
+  const classes = useStyles();
 
-  const theme = useTheme();
-  const classes = useStyles(theme);
+  if (loading) return <PageLoading />;
+
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" className={classes.root}>
       {errors.length ? (
         <ComponentError error={errors[0]} />
       ) : (
-        <>
-          {loading ? (
-            <div className={classes.progressDiv}>
-              <CircularProgress />
-            </div>
-          ) : (
-            <Grid container direction="column" spacing={3}>
-              {games.map((game) => (
-                <Grid key={game.id} item>
-                  <GameCard
-                    joinGame={joinGame}
-                    leaveGame={leaveGame}
-                    game={game}
-                  />
-                </Grid>
-              ))}
+        <Grid container direction="column" spacing={3}>
+          {games.map((game) => (
+            <Grid key={game.id} item>
+              <GameCard joinGame={joinGame} leaveGame={leaveGame} game={game} />
             </Grid>
-          )}
-        </>
+          ))}
+        </Grid>
       )}
     </Container>
   );

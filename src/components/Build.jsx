@@ -1,8 +1,9 @@
+import { faAnchor, faTruckMoving } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '@material-ui/core';
 import { darken } from 'polished';
 import React from 'react';
 import { Circle, Group, Path } from 'react-konva';
 import { connect } from 'react-redux';
-import { useTheme } from 'styled-components';
 
 import namedCoastData from '../data/standard/namedCoasts.json';
 import { makeSelectTerritoryById } from '../store/selectors';
@@ -19,16 +20,17 @@ const PATH_STROKE_WIDTH = 0.25;
 // TODO dry this and CanvasPiece
 const Build = ({ namedCoast, nation, source, pieceType }) => {
   const theme = useTheme();
-  const { icons } = theme;
-  const iconWidth = icons[pieceType].icon[0] * ICONSCALES[pieceType];
-  const iconHeight = icons[pieceType].icon[1] * ICONSCALES[pieceType];
+
+  const iconType = pieceType === 'army' ? faTruckMoving : faAnchor;
+  const iconWidth = iconType.icon[0] * ICONSCALES[pieceType];
+  const iconHeight = iconType.icon[1] * ICONSCALES[pieceType];
   const [sx, sy] = getTerritoryPieceCoords(source, null, namedCoast);
 
-  const circleStroke = darken(0.2, theme.colors.nations[nation]);
+  const circleStroke = darken(0.2, theme.palette.nations[nation].main);
   return (
     <Group>
       <Circle
-        fill={theme.colors.muted}
+        fill={theme.palette.map.pieceCircleFill}
         radius={CIRCLERADIUS}
         stroke={circleStroke}
         strokeWidth={CIRCLESTROKEWIDTH}
@@ -37,11 +39,11 @@ const Build = ({ namedCoast, nation, source, pieceType }) => {
         y={sy}
       />
       <Path
-        data={icons[pieceType].icon[4]}
-        fill={darken(0.2, theme.colors.nations[nation])}
+        data={iconType.icon[4]}
+        fill={darken(0.2, theme.palette.nations[nation].main)}
         scaleX={ICONSCALES[pieceType]}
         scaleY={ICONSCALES[pieceType]}
-        stroke={theme.colors.white}
+        stroke={theme.palette.map.pieceCircleStroke}
         strokeWidth={PATH_STROKE_WIDTH / ICONSCALES[pieceType]}
         shadowForStrokeEnabled={false}
         x={sx - iconWidth / 2}

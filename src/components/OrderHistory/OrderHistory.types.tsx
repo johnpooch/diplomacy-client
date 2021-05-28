@@ -6,7 +6,6 @@ export interface OrderHistoryComponentProps {
   orders: {
     order: OrderDisplay;
     outcome: OrderOutcomeDisplay;
-    loading: boolean;
   }[];
   username: string;
 }

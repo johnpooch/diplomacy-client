@@ -1,8 +1,8 @@
+import { useTheme } from '@material-ui/core';
 import { darken } from 'polished';
 import React, { useRef } from 'react';
 import { Path, Star, Group, Text } from 'react-konva';
 import { connect } from 'react-redux';
-import { useTheme } from 'styled-components';
 
 import viewBox from '../data/standard/viewBox.json';
 import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
@@ -24,8 +24,8 @@ const SupplyCenter = ({ x, y }) => {
       innerRadius={SUPPLY_CENTER_SIZE * 0.6}
       outerRadius={SUPPLY_CENTER_SIZE}
       listening={false}
-      fill={theme.colors.text}
-      stroke={theme.colors.text}
+      fill={theme.palette.map.text}
+      stroke={theme.palette.map.text}
       strokeWidth={4}
     />
   );
@@ -56,14 +56,14 @@ const Territory = ({
   const territoryRef = useRef(null);
 
   const getFill = () => {
-    if (controlledBy in theme.colors.nations)
-      return theme.colors.nations[controlledBy];
-    return type === 'sea' ? theme.colors.map.sea : theme.colors.map.land;
+    if (controlledBy in theme.palette.nations)
+      return theme.palette.nations[controlledBy].main;
+    return type === 'sea' ? theme.palette.map.sea : theme.palette.map.land;
   };
 
   const getStroke = () =>
     (isHovering && playable) || isSelected
-      ? theme.colors.muted
+      ? theme.palette.background.paper
       : darken(0.2, getFill());
 
   const dash = isSelected ? SELECTED_DASH : null;
@@ -96,7 +96,7 @@ const Territory = ({
       <Text
         x={textX + TEXT_OFFSET.x}
         y={textY + TEXT_OFFSET.y}
-        fill={theme.colors.map.text}
+        fill={theme.palette.text.primary}
         fontStyle="bold"
         fontVariant="small-caps"
         text={abbreviation}

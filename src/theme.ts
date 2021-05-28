@@ -144,6 +144,37 @@ export const theme = createMuiTheme({
     secondary: {
       main: green[500],
     },
+    nations: {
+      'standard-england': {
+        main: '#ff1103',
+      },
+      'standard-france': {
+        main: '#0074d9',
+      },
+      'standard-germany': {
+        main: '#777777',
+      },
+      'standard-austria-hungary': {
+        main: '#FC8889',
+      },
+      'standard-italy': {
+        main: '#2ecc40',
+      },
+      'standard-russia': {
+        main: '#b10dc9',
+      },
+      'standard-turkey': {
+        main: '#508e59',
+      },
+    },
+    map: {
+      land: '#e3d8c4',
+      sea: '#79bde1',
+      background: 'black',
+      text: 'black',
+      pieceCircleStroke: 'white',
+      pieceCircleFill: 'white',
+    },
   },
   typography: {
     body1: {

@@ -18,15 +18,18 @@ export default makeStyles((theme) => {
     summary: {
       alignItems: 'center',
       display: 'flex',
-      '& > *:not(:last-child)': {
-        marginRight: theme.spacing(1),
-      },
     },
     details: {
       display: 'block',
     },
     order: {
       paddingBottom: theme.spacing(1),
+    },
+    playerSummary: {
+      margin: theme.spacing(0, 0, 0, 2),
+      minHeight: theme.spacing(6),
+      alignItems: 'center',
+      display: 'flex',
     },
   };
 });

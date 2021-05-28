@@ -4,6 +4,7 @@ export default makeStyles((theme) => {
   return {
     root: {
       backgroundColor: theme.palette.background.paper,
+      zIndex: theme.zIndex.drawer + 101,
     },
     container: {
       display: 'grid',

@@ -1,18 +1,19 @@
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 
-import { Button } from './Button';
+import { PrimaryButton } from './Button/Button';
 
-const StyledContextMenu = styled.nav`
-  background: ${(p) => p.theme.colors.muted};
-  border-radius: ${(p) => p.theme.radii[0]};
-  display: grid;
-  row-gap: ${(p) => p.theme.space[0]};
-  left: ${(p) => p.position.x}px;
-  padding: ${(p) => p.theme.space[0]};
-  position: absolute;
-  top: ${(p) => p.position.y}px;
-`;
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      background: theme.palette.background.paper,
+      display: 'grid',
+      rowGap: theme.spacing(0.25),
+      padding: theme.spacing(0.25),
+      position: 'absolute',
+    },
+  };
+});
 
 const ContextMenu = ({
   stageRef,
@@ -22,6 +23,7 @@ const ContextMenu = ({
   options,
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const classes = useStyles();
 
   const menuRef = useRef();
 
@@ -45,16 +47,23 @@ const ContextMenu = ({
 
   const elements = options.map(([value, label]) => {
     return (
-      <Button key={value} onClick={handleOptionSelected(value)}>
+      <PrimaryButton key={value} onClick={handleOptionSelected(value)}>
         {label}
-      </Button>
+      </PrimaryButton>
     );
   });
 
+  const positionStyle = { top: `${position.y}px`, left: `${position.x}px` };
+
   return (
-    <StyledContextMenu ref={menuRef} position={position}>
+    <nav
+      className={classes.root}
+      ref={menuRef}
+      position={position}
+      style={positionStyle}
+    >
       {elements}
-    </StyledContextMenu>
+    </nav>
   );
 };
 

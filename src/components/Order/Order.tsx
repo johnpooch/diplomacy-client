@@ -9,13 +9,13 @@ import useStyles from './Order.styles';
 import { OrderComponentProps } from './Order.types';
 
 const Order: React.FC<OrderComponentProps> = ({
+  cancelOrder,
   order,
   outcome,
-  loading,
   isCurrent,
 }) => {
   const classes = useStyles();
-  const rootClasses = loading
+  const rootClasses = order.loading
     ? `${classes.root} ${classes.disabled}`
     : classes.root;
   return (
@@ -23,7 +23,11 @@ const Order: React.FC<OrderComponentProps> = ({
       <div className={classes.order}>
         <OrderSummary order={order} />
         {isCurrent && (
-          <IconButton aria-label="cancel" disabled={loading}>
+          <IconButton
+            aria-label="cancel"
+            disabled={order.loading}
+            onClick={() => cancelOrder(order.id)}
+          >
             <Cancel />
           </IconButton>
         )}

@@ -1,7 +1,7 @@
+import { useTheme } from '@material-ui/core';
 import React from 'react';
 import { Arrow, Group, Line } from 'react-konva';
 import { connect } from 'react-redux';
-import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
@@ -26,16 +26,16 @@ const Support = ({ aux, isHoldSupport, source, target }) => {
     <Group>
       <Line
         points={auxPoints}
-        fill={theme.colors.text}
-        stroke={theme.colors.text}
+        fill={theme.palette.text.primary}
+        stroke={theme.palette.text.primary}
         strokeWidth={PATH_STROKE_WIDTH}
         dash={SUPPORT_DASH}
       />
       {!isHoldSupport ? (
         <Arrow
           points={targetPoints}
-          fill={theme.colors.text}
-          stroke={theme.colors.text}
+          fill={theme.palette.text.primary}
+          stroke={theme.palette.text.primary}
           strokeWidth={PATH_STROKE_WIDTH}
           dash={SUPPORT_DASH}
         />

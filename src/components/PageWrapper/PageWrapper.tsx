@@ -1,3 +1,4 @@
+import { Toolbar } from '@material-ui/core';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
@@ -15,7 +16,7 @@ const PageWrapper: React.FC<PageWrapperComponentProps> = ({
   return (
     <>
       <NavBar logout={logout} />
-      <div style={{ height: '64px' }} />
+      <Toolbar variant="dense" />
       <AlertList alerts={alerts} onClose={alertsClear} />
       {children}
     </>

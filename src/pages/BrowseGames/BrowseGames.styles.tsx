@@ -1,7 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core';
 
-export default makeStyles({
-  progressDiv: {
-    textAlign: 'center',
-  },
+export default makeStyles((theme) => {
+  return {
+    root: {
+      paddingTop: theme.spacing(2),
+    },
+  };
 });

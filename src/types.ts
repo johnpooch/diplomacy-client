@@ -43,7 +43,6 @@ export interface NationOrderHistory {
   orders: {
     order: OrderDisplay;
     outcome: OrderOutcomeDisplay;
-    loading: boolean;
   }[];
   username: string;
 }
@@ -95,7 +94,9 @@ export interface Order {
 }
 
 export interface OrderDisplay {
+  id: number;
   aux: string | null;
+  loading: boolean;
   orderType: OrderType;
   pieceType: PieceType;
   source: string;

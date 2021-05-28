@@ -25,8 +25,32 @@ const OrderHistory: React.FC<OrderHistoryComponentProps> = ({
   const handleChange = (panel: string) => (_event, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : '');
   };
-  console.log(orders);
-  return (
+
+  const PlayerSummary = (
+    <div className={classes.summary}>
+      <CircleFlag nation={nation} size="sm" />
+      <Typography variant="body1">{username}</Typography>
+      <SupplyCenter titleAccess="Number of supply centers" />
+      <Typography variant="body2">{numSupplyCenters}</Typography>
+    </div>
+  );
+
+  const OrdersList = (
+    <>
+      {orders.map((order) => (
+        <div key={order.order.source} className={classes.order}>
+          <Order
+            isCurrent={false}
+            outcome={order.outcome}
+            order={order.order}
+            cancelOrder={() => null}
+          />
+        </div>
+      ))}
+    </>
+  );
+
+  return orders.length ? (
     <div>
       <Accordion
         className={classes.root}
@@ -38,27 +62,15 @@ const OrderHistory: React.FC<OrderHistoryComponentProps> = ({
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <div className={classes.summary}>
-            <CircleFlag nation={nation} />
-            <Typography variant="body1">{username}</Typography>
-            <SupplyCenter titleAccess="Number of supply centers" />
-            <Typography variant="body2">{numSupplyCenters}</Typography>
-          </div>
+          {PlayerSummary}
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
-          {orders.map((order) => (
-            <div key={order.order.source} className={classes.order}>
-              <Order
-                isCurrent={false}
-                outcome={order.outcome}
-                order={order.order}
-                loading={order.loading}
-              />
-            </div>
-          ))}
+          {OrdersList}
         </AccordionDetails>
       </Accordion>
     </div>
+  ) : (
+    <div className={classes.playerSummary}>{PlayerSummary}</div>
   );
 };
 

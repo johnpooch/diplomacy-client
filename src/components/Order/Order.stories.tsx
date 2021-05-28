@@ -16,7 +16,6 @@ export default {
 const defaultArgs = {
   outcome: null,
   isCurrent: true,
-  loading: false,
   order: OrderSummaryStories.ArmyHold.args.order,
 };
 
@@ -32,7 +31,7 @@ Default.args = {
 export const Loading: Story = Template.bind({});
 Loading.args = {
   ...defaultArgs,
-  loading: true,
+  order: { ...OrderSummaryStories.ArmyHold.args.order, loading: true },
 };
 
 export const HistorySuccess: Story = Template.bind({});
