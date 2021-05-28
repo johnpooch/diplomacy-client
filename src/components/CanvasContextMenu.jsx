@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { PrimaryButton } from './Button/Button';
+import { makeStyles } from './MaterialUI';
 
 const useStyles = makeStyles((theme) => {
   return {

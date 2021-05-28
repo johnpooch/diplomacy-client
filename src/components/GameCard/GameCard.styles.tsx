@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '../MaterialUI';
 
 export default makeStyles({
   actions: {

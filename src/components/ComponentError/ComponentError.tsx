@@ -1,7 +1,7 @@
-import { Typography } from '@material-ui/core';
 import React from 'react';
 
 import { Warning } from '../Icon';
+import { Typography } from '../MaterialUI';
 
 import useStyles from './ComponentError.styles';
 import { ComponentErrorComponentProps } from './ComponentError.types';

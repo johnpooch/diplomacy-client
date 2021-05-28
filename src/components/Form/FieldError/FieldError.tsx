@@ -1,5 +1,6 @@
-import { Typography, useTheme } from '@material-ui/core';
 import React from 'react';
+
+import { Typography, useTheme } from '../../MaterialUI';
 
 import useStyles from './FieldError.styles';
 import { FieldErrorComponentProps } from './FieldError.types';

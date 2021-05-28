@@ -1,7 +1,7 @@
-import { Typography } from '@material-ui/core';
 import React from 'react';
 import { useTheme } from 'styled-components';
 
+import { Typography } from '../../MaterialUI';
 import FieldError from '../FieldError/FieldError';
 
 import useStyles from './FormFieldWrapper.styles';

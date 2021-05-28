@@ -1,4 +1,3 @@
-import { MuiThemeProvider, useTheme } from '@material-ui/core';
 import Konva from 'konva';
 import React, { useEffect, useRef } from 'react';
 import { Stage, Layer, Rect } from 'react-konva';
@@ -11,6 +10,7 @@ import { clamp, getCenter, getDistance, useReferredState } from '../utils';
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
 import Territories from './CanvasTerritories';
+import { MuiThemeProvider, useTheme } from './MaterialUI';
 import Orders from './Orders';
 import Portal from './Portal';
 

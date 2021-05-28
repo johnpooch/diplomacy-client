@@ -1,5 +1,6 @@
-import { Typography } from '@material-ui/core';
 import React from 'react';
+
+import { Typography } from '../MaterialUI';
 
 import useStyles from './OrderOutcome.styles';
 import { OrderOutcomeComponentProps } from './OrderOutcome.types';

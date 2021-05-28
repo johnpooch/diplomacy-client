@@ -1,8 +1,8 @@
-import { Toolbar } from '@material-ui/core';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 import AlertList from '../AlertList/AlertList';
+import { Toolbar } from '../MaterialUI';
 import NavBar from '../NavBar';
 
 import { PageWrapperComponentProps } from './PageWrapper.types';

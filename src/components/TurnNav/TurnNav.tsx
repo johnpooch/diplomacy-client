@@ -1,7 +1,7 @@
-import { IconButton } from '@material-ui/core';
 import React from 'react';
 
 import { FastForward, FastRewind, SkipNext, SkipPrevious } from '../Icon';
+import { IconButton } from '../MaterialUI';
 import TurnSummary from '../TurnSummary';
 
 import useStyles from './TurnNav.styles';

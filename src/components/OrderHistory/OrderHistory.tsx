@@ -1,13 +1,13 @@
+import React, { useState } from 'react';
+
+import CircleFlag from '../CircleFlag/CircleFlag';
+import { ExpandMore, SupplyCenter } from '../Icon';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Typography,
-} from '@material-ui/core';
-import React, { useState } from 'react';
-
-import CircleFlag from '../CircleFlag/CircleFlag';
-import { ExpandMore, SupplyCenter } from '../Icon';
+} from '../MaterialUI';
 import Order from '../Order';
 
 import useStyles from './OrderHistory.styles';

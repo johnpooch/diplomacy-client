@@ -1,10 +1,11 @@
-import { useTheme } from '@material-ui/core';
 import React from 'react';
 import { Arrow } from 'react-konva';
 import { connect } from 'react-redux';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
+
+import { useTheme } from './MaterialUI';
 
 const OFFSET = 25;
 const PATH_STROKE_WIDTH = 8;

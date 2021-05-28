@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Typography } from '@material-ui/core';
 import React from 'react';
 
 import { OrderType, PieceType } from '../../game/types';
 import { Army, Fleet } from '../Icon';
+import { Typography } from '../MaterialUI';
 
 import useStyles from './OrderSummary.styles';
 import { OrderSummaryComponentProps } from './OrderSummary.types';

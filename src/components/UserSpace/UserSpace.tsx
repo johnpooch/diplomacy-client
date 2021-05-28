@@ -1,6 +1,6 @@
-import { useTheme } from '@material-ui/core';
 import React from 'react';
 
+import { useTheme } from '../MaterialUI';
 import Tooltip from '../Tooltip/Tooltip';
 
 import { UserSpaceComponentProps } from './UserSpace.types';

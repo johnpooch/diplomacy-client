@@ -1,4 +1,3 @@
-import { useTheme } from '@material-ui/core';
 import { darken } from 'polished';
 import React, { useRef } from 'react';
 import { Path, Star, Group, Text } from 'react-konva';
@@ -6,6 +5,8 @@ import { connect } from 'react-redux';
 
 import viewBox from '../data/standard/viewBox.json';
 import { makeSelectTerritoryStateByMapDataId } from '../store/selectors';
+
+import { useTheme } from './MaterialUI';
 
 const FILL_PATTERN_SCALE = 0.15;
 const FILL_PATTERN_OPACITY = 0.15;

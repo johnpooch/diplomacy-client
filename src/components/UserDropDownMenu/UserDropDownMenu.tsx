@@ -1,14 +1,14 @@
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+
+import { Menu as MenuIcon, Settings } from '../Icon';
 import {
   Menu,
   MenuItem,
   ListItemIcon,
   ListItemText,
   IconButton,
-} from '@material-ui/core';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-
-import { Menu as MenuIcon, Settings } from '../Icon';
+} from '../MaterialUI';
 
 import { UserDropdownMenuComponentProps } from './UserDropdownMenu.types';
 

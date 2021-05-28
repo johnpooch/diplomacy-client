@@ -1,5 +1,6 @@
-import { makeStyles, useTheme } from '@material-ui/core';
 import React from 'react';
+
+import { makeStyles, useTheme } from '../MaterialUI';
 
 import { UserCircleComponentProps } from './UserCircle.types';
 

@@ -1,10 +1,10 @@
-import { Card, CardActions, CardContent, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { GameStatus } from '../../game/types';
 import { PrimaryButton } from '../Button/Button';
 import GameParticipantList from '../GameParticipantList/GameParticipantList';
+import { Card, CardActions, CardContent, Typography } from '../MaterialUI';
 import TurnSummary from '../TurnSummary';
 
 import useStyles from './GameCard.styles';

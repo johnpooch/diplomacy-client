@@ -1,7 +1,7 @@
-import { IconButton } from '@material-ui/core';
 import React from 'react';
 
 import { Cancel } from '../Icon';
+import { IconButton } from '../MaterialUI';
 import OrderOutcome from '../OrderOutcome/OrderOutcome';
 import OrderSummary from '../OrderSummary';
 

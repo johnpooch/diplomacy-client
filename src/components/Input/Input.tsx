@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useTheme } from '@material-ui/core';
 import React from 'react';
+
+import { useTheme } from '../MaterialUI';
 
 import UseStyles from './Input.styles';
 

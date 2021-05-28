@@ -1,5 +1,3 @@
-import { faAnchor, faTruckMoving } from '@fortawesome/free-solid-svg-icons';
-import { useTheme } from '@material-ui/core';
 import { darken } from 'polished';
 import React from 'react';
 import { Circle, Group, Path } from 'react-konva';
@@ -8,6 +6,9 @@ import { connect } from 'react-redux';
 import namedCoastData from '../data/standard/namedCoasts.json';
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
+
+import { FleetType, ArmyType } from './Icon';
+import { useTheme } from './MaterialUI';
 
 const CIRCLERADIUS = 15;
 const ICONSCALES = {
@@ -21,7 +22,7 @@ const PATH_STROKE_WIDTH = 0.25;
 const Build = ({ namedCoast, nation, source, pieceType }) => {
   const theme = useTheme();
 
-  const iconType = pieceType === 'army' ? faTruckMoving : faAnchor;
+  const iconType = pieceType === 'army' ? ArmyType : FleetType;
   const iconWidth = iconType.icon[0] * ICONSCALES[pieceType];
   const iconHeight = iconType.icon[1] * ICONSCALES[pieceType];
   const [sx, sy] = getTerritoryPieceCoords(source, null, namedCoast);

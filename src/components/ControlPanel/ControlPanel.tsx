@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Box, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
-import Drawer from '@material-ui/core/Drawer';
 import React from 'react';
 
 import { PrimaryButton } from '../Button/Button';
 import { Orders, Participants } from '../Icon';
+import { Box, Drawer, Tab, Tabs, Toolbar, Typography } from '../MaterialUI';
 import Order from '../Order';
 import OrderHistorySection from '../OrderHistorySection';
 

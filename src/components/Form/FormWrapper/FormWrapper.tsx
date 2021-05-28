@@ -1,5 +1,6 @@
-import { Paper, Typography } from '@material-ui/core';
 import React from 'react';
+
+import { Paper, Typography } from '../../MaterialUI';
 
 import useStyles from './FormWrapper.styles';
 import { FormWrapperComponentProps } from './FormWrapper.types';

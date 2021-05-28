@@ -1,6 +1,7 @@
-import { Typography, useTheme } from '@material-ui/core';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+
+import { Typography, useTheme } from '../../MaterialUI';
 
 import useStyles from './FormLink.styles';
 import { FormLinkComponentProps } from './FormLink.types';

@@ -1,15 +1,15 @@
+import React from 'react';
+import { NavLink, withRouter } from 'react-router-dom';
+
+import CircleFlag from '../CircleFlag/CircleFlag';
+import { Menu } from '../Icon';
 import {
   AppBar,
   Container,
   IconButton,
   Toolbar,
   Typography,
-} from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
-import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
-
-import CircleFlag from '../CircleFlag/CircleFlag';
+} from '../MaterialUI';
 import TurnNav from '../TurnNav';
 
 import useStyles from './GameNavBar.styles';

@@ -1,7 +1,7 @@
-import { useTheme } from '@material-ui/core';
 import React from 'react';
 
 import Alert from '../Alert';
+import { useTheme } from '../MaterialUI';
 
 import useStyles from './AlertList.styles';
 import { AlertListComponentProps } from './AlertList.types';

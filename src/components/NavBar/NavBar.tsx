@@ -1,22 +1,19 @@
-import { faHome, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { NavLink, withRouter } from 'react-router-dom';
+
+import { Home, New } from '../Icon';
 import {
   AppBar,
   Container,
   IconButton,
   Toolbar,
   Typography,
-} from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
-import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
-
+  useTheme,
+} from '../MaterialUI';
 import UserDropdownMenu from '../UserDropdownMenu';
 
 import useStyles from './NavBar.styles';
 import { NavBarComponentProps } from './NavBar.types';
-
-const ICON_SIZE = '1x';
 
 const NavBar: React.FC<NavBarComponentProps> = ({ logout }) => {
   const theme = useTheme();
@@ -37,14 +34,10 @@ const NavBar: React.FC<NavBarComponentProps> = ({ logout }) => {
             </div>
             <div>
               <NavLink exact to="/" title="Home Icon Button">
-                <IconButton>
-                  <FontAwesomeIcon icon={faHome} size={ICON_SIZE} />
-                </IconButton>
+                <IconButton>{Home}</IconButton>
               </NavLink>
               <NavLink exact to="/create-game" title="Create game">
-                <IconButton>
-                  <FontAwesomeIcon icon={faPlusCircle} size={ICON_SIZE} />
-                </IconButton>
+                <IconButton>{New}</IconButton>
               </NavLink>
               <UserDropdownMenu logout={logout} />
             </div>

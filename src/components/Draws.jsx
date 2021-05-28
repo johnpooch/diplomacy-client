@@ -1,9 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import { SecondaryButton } from './Button';
 import Flag from './Flag';
+import { SupplyCenter } from './Icon';
 
 const StyledLi = styled.li`
   div {
@@ -26,20 +26,18 @@ const StyledDiv = styled.div`
 `;
 
 const SupplyCenterCount = ({ count }) => {
-  const theme = useTheme();
   return (
     <div>
-      <FontAwesomeIcon icon={theme.icons.supplyCenter} />
+      <SupplyCenter />
       {count}
     </div>
   );
 };
 
 const SupplyCentersRequirement = ({ drawStrength, numSupplyCentersToWin }) => {
-  const theme = useTheme();
   return (
     <StyledDiv>
-      <FontAwesomeIcon icon={theme.icons.supplyCenter} />
+      <SupplyCenter />
       <p>
         {drawStrength}/{numSupplyCentersToWin}
       </p>
@@ -48,21 +46,14 @@ const SupplyCentersRequirement = ({ drawStrength, numSupplyCentersToWin }) => {
 };
 
 const DrawResponse = (props) => {
-  const { nation, response, proposedWinner } = props;
-  const theme = useTheme();
+  const { nation, proposedWinner } = props;
 
-  const responseIconMap = {
-    accepted: theme.icons.accept,
-    rejected: theme.icons.cancel,
-  };
-  const icon = responseIconMap[response];
   const { id, numSupplyCenters } = nation;
 
   return (
     <StyledLi key={id}>
       <Flag nation={nation} size={0} />
       {proposedWinner ? <SupplyCenterCount count={numSupplyCenters} /> : null}
-      {icon ? <FontAwesomeIcon icon={icon} /> : null}
     </StyledLi>
   );
 };

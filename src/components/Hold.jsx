@@ -1,10 +1,11 @@
-import { useTheme } from '@material-ui/core';
 import React from 'react';
 import { RegularPolygon } from 'react-konva';
 import { connect } from 'react-redux';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
+
+import { useTheme } from './MaterialUI';
 
 const HOLD_RADIUS = 22;
 const HOLD_STROKE_WIDTH = 5;
