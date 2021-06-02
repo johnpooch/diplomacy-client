@@ -1,6 +1,6 @@
 # diplomacy-client
 
-A client for [@johnpooch](https://github.com/johnpooch)'s Diplomacy service: https://github.com/johnpooch/diplomacy
+A client for Diplomacy service: https://github.com/johnpooch/diplomacy
 
 ## Setting up a development environment
 
