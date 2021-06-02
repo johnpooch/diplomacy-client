@@ -1,3 +1,5 @@
+import { yellow } from '@material-ui/core/colors';
+
 import { makeStyles } from '../MaterialUI';
 
 export default makeStyles((theme) => {
@@ -17,6 +19,11 @@ export default makeStyles((theme) => {
       },
       '& > *:last-child': {
         justifyContent: 'flex-end',
+      },
+      '& a.active': {
+        '& > button': {
+          color: theme.palette.primary.light,
+        },
       },
     },
     logo: {

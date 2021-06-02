@@ -99,32 +99,58 @@ afterEach(() => basicAfterEach());
 afterAll(() => basicAfterAll());
 
 export enum Selectors {
+  Button = 'button',
   BrowseGameTitle = 'h3',
   FormButton = 'button>span',
   FormHeader = 'h3',
   FormLink = 'a',
   Header = 'h1',
+  ControlPanelHeader = 'h6',
   MenuButton = 'span',
+  Paragraph = 'p',
 }
 
 export const userClicksElement = (
   label: Matcher,
-  selector: Selectors
+  selector: Selectors,
+  query: (...args: any[]) => HTMLElement = screen.getByText
 ): void => {
-  const button = screen.getByText(label, { selector });
-  fireEvent.click(button);
+  const element = query(label, { selector });
+  fireEvent.click(element);
+};
+
+export const elementIsDisabled = (
+  label: Matcher,
+  selector: Selectors,
+  query: (...args: any[]) => HTMLElement = screen.getByText
+): void => {
+  const element = query(label, { selector });
+  expect(element).toHaveAttribute('disabled');
 };
 
 export const userSeesElement = async (
   label: Matcher,
+  selector: Selectors,
+  query: (...args: any[]) => HTMLElement = screen.getByText
+): Promise<void> => {
+  await waitFor(() => query(label, { selector }));
+};
+
+export const userCannotSeeElement = async (
+  label: Matcher,
   selector: Selectors
 ): Promise<void> => {
-  await waitFor(() => screen.getByText(label, { selector }));
+  const element = screen.queryByText(label, { selector });
+  expect(element).toBeNull(); // it doesn't exist
 };
 
 export const userSeesAlert = async (message: string): Promise<void> => {
   const element = await waitFor(() => screen.getByRole('alert'));
   expect(element.textContent).toBe(message);
+};
+
+export const userSeesLoadingSpinner = async (): Promise<void> => {
+  await waitFor(() => screen.getByTitle('loading spinner'));
 };
 
 export const userFillsForm = (formData: { [key: string]: string }): void =>

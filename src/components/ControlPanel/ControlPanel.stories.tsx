@@ -18,7 +18,6 @@ const Template: Story<ComponentProps<typeof Component>> = (args) => (
 );
 
 const defaultArgs = {
-  open: true,
   numOrdersToGive: 3,
   numOrdersGiven: 0,
 };
@@ -31,31 +30,9 @@ PreviousTurn.args = {
     OrderHistorySectionStories.Default.args.nationOrderHistories,
 };
 
-export const PreviousTurnClosed: Story = Template.bind({});
-PreviousTurnClosed.args = {
-  ...defaultArgs,
-  open: false,
-  currentTurn: false,
-  nationOrderHistories:
-    OrderHistorySectionStories.Default.args.nationOrderHistories,
-};
-
 export const CurrentTurn: Story = Template.bind({});
 CurrentTurn.args = {
   ...defaultArgs,
-  currentTurn: true,
-  numOrdersGiven: 3,
-  orders: [
-    OrderStories.Default.args.order,
-    OrderStories.Default.args.order,
-    OrderStories.Loading.args.order,
-  ],
-};
-
-export const CurrentTurnClosed: Story = Template.bind({});
-CurrentTurnClosed.args = {
-  ...defaultArgs,
-  open: false,
   currentTurn: true,
   numOrdersGiven: 3,
   orders: [

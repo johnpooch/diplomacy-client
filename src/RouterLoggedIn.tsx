@@ -20,17 +20,8 @@ import selectors from './store/selectors';
 const RouterLoggedIn: React.FC<ReduxProps & RouteComponentProps> = ({
   alerts,
   alertsClear,
-  loggedIn,
   logout,
 }) => {
-  const RouteWithNavigation = ({ component: Component, ...routeProps }) => {
-    return (
-      <Route
-        {...routeProps}
-        render={(componentProps) => <Component {...componentProps} />}
-      />
-    );
-  };
   const pageWrapperProps = { alerts, alertsClear, logout };
   const withPageWrapper = (WrappedComponent) => {
     return (
@@ -42,26 +33,18 @@ const RouterLoggedIn: React.FC<ReduxProps & RouteComponentProps> = ({
 
   return (
     <Switch>
-      <RouteWithNavigation
-        exact
-        path="/create-game"
-        component={() => withPageWrapper(CreateGame)}
-        loggedIn={loggedIn}
-      />
-      <Route exact path="/game/:slug" component={Game} />
-      <RouteWithNavigation
-        exact
-        path="/"
-        component={() => withPageWrapper(BrowseGames)}
-        loggedIn={loggedIn}
-      />
-      <RouteWithNavigation
-        exact
-        path="/user-settings"
-        component={() => withPageWrapper(UserSettings)}
-        loggedIn={loggedIn}
-      />
-      <Route exact path="/game/:slug" component={Game} />
+      <Route exact path="/create-game">
+        {withPageWrapper(CreateGame)}
+      </Route>
+      <Route exact path="/game/:slug">
+        <Game />
+      </Route>
+      <Route exact path="/">
+        {withPageWrapper(BrowseGames)}
+      </Route>
+      <Route exact path="/user-settings">
+        {withPageWrapper(UserSettings)}
+      </Route>
       <Route exact path={['/forgot-password', '/login', '/register']}>
         <Redirect to="/" />
       </Route>
@@ -71,8 +54,7 @@ const RouterLoggedIn: React.FC<ReduxProps & RouteComponentProps> = ({
 
 const mapState = (state) => {
   const alerts = selectors.selectAlerts(state);
-  const { loggedIn } = state.auth;
-  return { alerts, loggedIn };
+  return { alerts };
 };
 
 const mapDispatch = {

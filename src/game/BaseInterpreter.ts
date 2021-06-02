@@ -134,6 +134,7 @@ export default abstract class Interpreter {
   }
 
   getPiece(territory: Territory): Piece {
+    if (!territory) return null;
     return this.pieces.find(
       (p) => p.territory === territory.id && !p.mustRetreat
     );

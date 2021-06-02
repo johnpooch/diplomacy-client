@@ -37,16 +37,6 @@ export interface NationDisplay {
   name: string;
 }
 
-export interface NationOrderHistory {
-  nation: NationDisplay;
-  numSupplyCenters: number;
-  orders: {
-    order: OrderDisplay;
-    outcome: OrderOutcomeDisplay;
-  }[];
-  username: string;
-}
-
 export interface GameRules {
   orderDeadline: string;
   retreatDeadline: string;
@@ -63,6 +53,21 @@ export interface Nation {
   id: string;
   name: string;
   variant: string;
+}
+
+export interface NationStateDisplay {
+  id: number;
+  isUser: boolean;
+  loading: boolean;
+  orders: {
+    order: OrderDisplay;
+    outcome: OrderOutcomeDisplay;
+  }[];
+  ordersFinalized: boolean;
+  nation: NationDisplay;
+  numOrders: number | null;
+  numSupplyCenters: number | null;
+  username: string;
 }
 
 export interface NationState {

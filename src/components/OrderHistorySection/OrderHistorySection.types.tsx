@@ -1,5 +1,5 @@
-import { NationOrderHistory } from '../../types';
+import { NationStateDisplay } from '../../types';
 
 export interface OrderHistorySectionComponentProps {
-  nationOrderHistories: NationOrderHistory[];
+  nationStates: NationStateDisplay[];
 }

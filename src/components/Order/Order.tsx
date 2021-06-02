@@ -27,6 +27,7 @@ const Order: React.FC<OrderComponentProps> = ({
             aria-label="cancel"
             disabled={order.loading}
             onClick={() => cancelOrder(order.id)}
+            title="Cancel order"
           >
             <Cancel />
           </IconButton>

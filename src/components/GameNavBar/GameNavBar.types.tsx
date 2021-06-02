@@ -8,6 +8,7 @@ export interface GameNavBarComponentProps
   extends RouteComponentProps,
     TurnNavComponentProps,
     CircleFlagComponentProps {
+  isMobile: boolean;
   nation: NationDisplay | null;
   onClickOpenControlPanel: () => void;
 }

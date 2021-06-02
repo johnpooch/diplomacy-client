@@ -1,7 +1,5 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import userEvent from '@testing-library/user-event';
-import Konva from 'konva-node';
 
 import { errorMessages } from '../src/copy';
 import {
@@ -19,11 +17,15 @@ import { urlConf } from '../src/urls';
 
 import {
   basicBeforeEach,
+  Selectors,
   logIn,
   renderApp,
-  successMessages,
-  testElements,
   useHandlers,
+  userSeesElement,
+  userSeesLoadingSpinner,
+  userClicksElement,
+  elementIsDisabled,
+  userSeesAlert,
 } from './testUtils';
 
 beforeEach(() => {
@@ -31,9 +33,22 @@ beforeEach(() => {
   logIn();
 });
 
-Konva.isBrowser = false;
-
-describe.skip('Game Detail', () => {
+describe('Game Detail', () => {
+  it('show control panel', async () => {
+    useHandlers(
+      [urlConf.destroyOrder, destroyOrder.success],
+      [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.getGameFilterChoices, getGameFilterChoices.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
+      [urlConf.listGames, listGames.success],
+      [urlConf.listVariants, listVariants.success],
+      [urlConf.listOrders, listOrders.success]
+    );
+    renderApp().push('/game/first-turn');
+    await userSeesLoadingSpinner();
+    await userSeesElement('Diplomacy', Selectors.Header);
+  });
   it('delete order succesfully', async () => {
     useHandlers(
       [urlConf.destroyOrder, destroyOrder.success],
@@ -46,13 +61,11 @@ describe.skip('Game Detail', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/first-turn');
-    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
-    let cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
-    userEvent.click(cancelButton);
-    cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
-    expect(cancelButton).toHaveAttribute('disabled');
-    const successMessage = await waitFor(() => screen.getByRole('alert'));
-    expect(successMessage.textContent).toBe(successMessages.destroyOrder());
+    await userSeesElement('Diplomacy', Selectors.Header);
+    await userSeesElement('Cancel order', Selectors.Button, screen.getByTitle);
+    userClicksElement('Cancel order', Selectors.Button, screen.getByTitle);
+    elementIsDisabled('Cancel order', Selectors.Button, screen.getByTitle);
+    await userSeesAlert('Order cancelled');
   });
 
   it('display error on server error delete order', async () => {
@@ -67,25 +80,10 @@ describe.skip('Game Detail', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/first-turn');
-    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
-    const cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
-    userEvent.click(cancelButton);
-    await waitFor(() => screen.getByText(errorMessages.internalServerError));
-  });
-
-  it('display error on server error list orders', async () => {
-    useHandlers(
-      [urlConf.getGameDetail, getGameDetail.success],
-      [urlConf.getGameFilterChoices, getGameFilterChoices.success],
-      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
-      [urlConf.getOrdersStatus, getOrdersStatus.success],
-      [urlConf.listGames, listGames.success],
-      [urlConf.listVariants, listVariants.success],
-      [urlConf.listOrders, listOrders.errorServerError]
-    );
-    renderApp().push('/game/first-turn');
-    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
-    await waitFor(() => screen.getByText(errorMessages.internalServerError));
+    await userSeesElement('Diplomacy', Selectors.Header);
+    await userSeesElement('Cancel order', Selectors.Button, screen.getByTitle);
+    userClicksElement('Cancel order', Selectors.Button, screen.getByTitle);
+    await userSeesAlert(errorMessages.internalServerError);
   });
 
   it('display error on not found delete order', async () => {
@@ -100,10 +98,10 @@ describe.skip('Game Detail', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/first-turn');
-    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
-    const cancelButton = await waitFor(() => screen.getByTitle('Cancel order'));
-    userEvent.click(cancelButton);
-    await waitFor(() => screen.getByText(errorMessages.notFound));
+    await userSeesElement('Diplomacy', Selectors.Header);
+    await userSeesElement('Cancel order', Selectors.Button, screen.getByTitle);
+    userClicksElement('Cancel order', Selectors.Button, screen.getByTitle);
+    await userSeesAlert(errorMessages.notFound);
   });
 
   it('finalize orders success', async () => {
@@ -118,14 +116,34 @@ describe.skip('Game Detail', () => {
       [urlConf.listOrders, listOrders.success]
     );
     renderApp().push('/game/first-turn');
-    userEvent.click(await waitFor(() => testElements.ordersSidebarButton()));
-    const finalizeOrdersButton = await waitFor(() =>
-      screen.getByText('Finalize orders')
+    await userSeesElement('Cancel order', Selectors.Button, screen.getByTitle);
+    userClicksElement(
+      'Toggle finalize orders',
+      Selectors.Button,
+      screen.getByTitle
     );
-    userEvent.click(finalizeOrdersButton);
-    await waitFor(() => screen.getByRole('alert'));
-    expect(screen.getByText('Un-finalize orders')).not.toHaveAttribute(
-      'disabled'
+    elementIsDisabled(
+      'Toggle finalize orders',
+      Selectors.Button,
+      screen.getByTitle
+    );
+    await userSeesAlert('Orders finalized');
+  });
+
+  it('display message if user not participant', async () => {
+    useHandlers(
+      [urlConf.getGameDetail, getGameDetail.success],
+      [urlConf.getOrdersFinalized, getOrdersFinalized.success],
+      [urlConf.getOrdersStatus, getOrdersStatus.success],
+      [urlConf.listGames, listGames.success],
+      [urlConf.listVariants, listVariants.success],
+      [urlConf.listOrders, listOrders.success]
+    );
+    renderApp().push('/game/game-user-not-participating');
+    await userSeesElement('Diplomacy', Selectors.Header);
+    await userSeesElement(
+      'You are not participating in this game.',
+      Selectors.Paragraph
     );
   });
 });

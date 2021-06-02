@@ -1,4 +1,4 @@
-import { fireEvent, waitFor, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import Konva from 'konva-node';
 
 import { errorMessages } from '../src/copy';

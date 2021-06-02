@@ -22,9 +22,16 @@ const alertsClear = (props) => {
 
 const cancelOrder = (turnId, orderId) => {
   return (dispatch) => {
-    dispatch(orderActions.destroyOrder({ urlParams: { orderId } })).then(() => {
-      dispatch(orderActions.listOrders({ urlParams: { turnId } }));
-    });
+    dispatch(orderActions.destroyOrder({ urlParams: { orderId } })).then(
+      ({ error, payload }) => {
+        if (error) {
+          const message = payload.non_field_errors[0];
+          dispatch(alertActions.alertsAdd({ message, category: 'error' }));
+        } else {
+          dispatch(orderActions.listOrders({ urlParams: { turnId } }));
+        }
+      }
+    );
   };
 };
 

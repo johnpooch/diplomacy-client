@@ -1,10 +1,10 @@
-import { Container, Grid } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { useLocation, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import ComponentError from '../../components/ComponentError';
 import GameCard from '../../components/GameCard/GameCard';
+import { Container, Grid } from '../../components/MaterialUI';
 import PageLoading from '../../components/PageLoading';
 import actions from '../../store/actions';
 import selectors from '../../store/selectors';
@@ -20,10 +20,9 @@ export const BrowseGames: React.FC<ReduxProps & BrowseGamesPageProps> = ({
   loading,
   loadBrowseGames,
 }) => {
-  const location = useLocation();
   useEffect(() => {
     loadBrowseGames();
-  }, [location]);
+  }, []);
   const classes = useStyles();
 
   if (loading) return <PageLoading />;
@@ -33,7 +32,7 @@ export const BrowseGames: React.FC<ReduxProps & BrowseGamesPageProps> = ({
       {errors.length ? (
         <ComponentError error={errors[0]} />
       ) : (
-        <Grid container direction="column" spacing={3}>
+        <Grid container direction="column" spacing={1}>
           {games.map((game) => (
             <Grid key={game.id} item>
               <GameCard joinGame={joinGame} leaveGame={leaveGame} game={game} />

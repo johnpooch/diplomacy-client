@@ -1,4 +1,3 @@
-import { Typography } from '@material-ui/core';
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
@@ -11,6 +10,7 @@ import {
   FormWrapper,
 } from '../../components/Form';
 import Input from '../../components/Input/Input';
+import { Typography } from '../../components/MaterialUI';
 import actions from '../../store/actions';
 
 export const ForgotPassword: React.FC<ReduxProps> = ({ errors, onSubmit }) => {

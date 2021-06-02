@@ -16,6 +16,7 @@ import useStyles from './GameNavBar.styles';
 import { GameNavBarComponentProps } from './GameNavBar.types';
 
 const GameNavBar: React.FC<GameNavBarComponentProps> = ({
+  isMobile,
   nation,
   onClickOpenControlPanel,
   setTurn,
@@ -39,8 +40,17 @@ const GameNavBar: React.FC<GameNavBarComponentProps> = ({
             </div>
             <div>
               {nation && <CircleFlag nation={nation} size="sm" />}
-              <TurnNav setTurn={setTurn} turn={turn} turnNavIds={turnNavIds} />
-              <IconButton onClick={onClickOpenControlPanel}>
+              {!isMobile && (
+                <TurnNav
+                  setTurn={setTurn}
+                  turn={turn}
+                  turnNavIds={turnNavIds}
+                />
+              )}
+              <IconButton
+                title="Control Panel"
+                onClick={onClickOpenControlPanel}
+              >
                 <Menu />
               </IconButton>
             </div>

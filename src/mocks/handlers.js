@@ -49,7 +49,7 @@ const handlers = [
 
   // GameDetail
   [urlConf.createOrder, createOrder.success],
-  [urlConf.destroyOrder, destroyOrder.success],
+  [urlConf.destroyOrder, destroyOrder.errorServerError],
   [urlConf.finalizeOrders, finalizeOrders.success],
   [urlConf.getGameDetail, getGameDetail.success],
   [urlConf.listOrders, listOrders.success],

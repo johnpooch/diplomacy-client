@@ -6,6 +6,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AppBar from '@material-ui/core/AppBar';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
 import Box from '@material-ui/core/Box';
 import Button, { ButtonTypeMap } from '@material-ui/core/Button';
 import { ExtendButtonBase } from '@material-ui/core/ButtonBase';
@@ -42,6 +43,7 @@ export {
   AccordionDetails,
   AccordionSummary,
   AppBar,
+  BottomNavigation,
   Box,
   Button,
   ButtonTypeMap,

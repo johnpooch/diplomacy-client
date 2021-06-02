@@ -7,7 +7,12 @@ import useStyles from './PageLoading.styles';
 const PageLoading: React.FC = () => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div
+      title="loading spinner"
+      aria-busy="true"
+      aria-live="polite"
+      className={classes.root}
+    >
       <CircularProgress />
     </div>
   );

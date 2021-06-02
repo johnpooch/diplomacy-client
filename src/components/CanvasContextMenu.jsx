@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { PrimaryButton } from './Button/Button';
+import ContextMenu from './ContextMenu';
 import { makeStyles } from './MaterialUI';
 
 const useStyles = makeStyles((theme) => {
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const ContextMenu = ({
+const CanvasContextMenu = ({
   stageRef,
   selectedTarget,
   mousePosition,
@@ -24,10 +24,7 @@ const ContextMenu = ({
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const classes = useStyles();
-
   const menuRef = useRef();
-
-  const handleOptionSelected = (option) => () => onClickOption(option);
 
   useEffect(() => {
     if (!menuRef.current) return;
@@ -45,26 +42,18 @@ const ContextMenu = ({
     });
   }, [selectedTarget]);
 
-  const elements = options.map(([value, label]) => {
-    return (
-      <PrimaryButton key={value} onClick={handleOptionSelected(value)}>
-        {label}
-      </PrimaryButton>
-    );
-  });
-
   const positionStyle = { top: `${position.y}px`, left: `${position.x}px` };
 
   return (
-    <nav
+    <div
       className={classes.root}
       ref={menuRef}
       position={position}
       style={positionStyle}
     >
-      {elements}
-    </nav>
+      <ContextMenu options={options} onClickOption={onClickOption} />
+    </div>
   );
 };
 
-export default ContextMenu;
+export default CanvasContextMenu;

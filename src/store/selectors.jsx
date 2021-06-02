@@ -187,7 +187,8 @@ const selectBrowseGames = createSelector(
             year: currentTurn.year,
           }
         : null;
-      const { id, joinable, name, slug, status } = g;
+      const { id, name, slug, status } = g;
+      const joinable = g.joinable && !userIsParticipant;
       return {
         slug,
         id,
@@ -232,7 +233,7 @@ const selectErrors = (state, ...actionTypes) => {
 };
 const selectBrowseGamesLoading = (state) => state.entities.games.loading;
 const selectGameDetail = createSelector(
-  (state) => state.auth.user.id,
+  (state) => state.auth.user.username,
   (state) => state.entities.gameDetail,
   orderSelectors.selectAll,
   nationStateSelectors.selectAll,
@@ -241,11 +242,11 @@ const selectGameDetail = createSelector(
   territorySelectors.selectEntities,
   userSelectors.selectEntities,
   (
-    userId,
+    username,
     game,
     allOrders,
     allNationStates,
-    nations,
+    allNations,
     allTurns,
     territoryEntities,
     users
@@ -271,10 +272,6 @@ const selectGameDetail = createSelector(
     const turnNationStates = allNationStates.filter((ns) =>
       turn.nationStates.includes(ns.id)
     );
-    const userNationState = turnNationStates.find((ns) => ns.user === userId);
-    const nation = userNationState ? nations[userNationState.nation] : null;
-    const { ordersFinalized, numOrders } = userNationState || {};
-
     const getTerritoryName = (id) => {
       const territory = territoryEntities[id];
       return territory ? territory.name : null;
@@ -302,11 +299,14 @@ const selectGameDetail = createSelector(
       game.participants.map((p) => {
         const user = users[p];
         const nationState = turnNationStates.find((ns) => ns.user === p);
-        const n = nations[nationState.nation];
+        const n = allNations[nationState.nation];
         const nationOrders = orders
           .filter((o) => o.nation === n.id)
           .map((o) => {
-            return { order: o, outcome: null };
+            return {
+              order: o,
+              outcome: { outcome: o.outcome, message: o.outcomeVerbose },
+            };
           });
         return {
           username: user.username,
@@ -316,6 +316,35 @@ const selectGameDetail = createSelector(
         };
       });
 
+    const getNationStates = () => {
+      return game.participants.map((p) => {
+        const user = users[p];
+        const nationState = turnNationStates.find((ns) => ns.user === p);
+        const n = allNations[nationState.nation];
+        const nationOrders = orders
+          .filter((o) => o.nation === n.id)
+          .map((o) => {
+            return {
+              order: o,
+              outcome: { outcome: o.outcome, message: o.outcomeVerbose },
+            };
+          });
+        return {
+          id: nationState.id,
+          isUser: user.username === username,
+          loading: nationState.loading,
+          nation: { name: n.name, id: n.id },
+          numOrders: nationState.numOrders,
+          numSupplyCenters: nationState.numSupplyCenters,
+          orders: nationOrders,
+          ordersFinalized: nationState.ordersFinalized,
+          username: user.username,
+        };
+      });
+    };
+
+    const nationStates = getNationStates();
+
     const nationOrderHistories = isCurrentTurn ? [] : getNationOrderHistories();
 
     return {
@@ -323,13 +352,10 @@ const selectGameDetail = createSelector(
       currentTurnId: currentTurn.id,
       loaded,
       loading,
-      userNationState,
       nationOrderHistories,
-      nation,
+      nationStates,
       nextTurn,
-      numOrders,
       orders,
-      ordersFinalized,
       previousTurn,
       turnDisplay,
       turn,

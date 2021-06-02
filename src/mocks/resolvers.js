@@ -90,7 +90,8 @@ export const getOrdersStatus = {
 };
 
 export const listOrders = {
-  success: (_, res, ctx) => res(ctx.status(200), ctx.json(orderData)),
+  success: (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(orderData[req.params.turnId])),
   successOneDeleted: (_, res, ctx) =>
     res(ctx.status(200), ctx.json(Array.from(orderData).splice(1))),
   successMultiple: (_, res, ctx) =>

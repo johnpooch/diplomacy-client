@@ -153,5 +153,131 @@
             ],
             "turnEnd": null
         }
+    },
+    {
+        "id": 3,
+        "name": "Game user not participating",
+        "slug": "game-user-not-participating",
+        "variant": "standard",
+        "private": false,
+        "password": null,
+        "orderDeadline": "twenty_four_hours",
+        "orderDeadlineDisplay": "24hrs",
+        "retreatDeadline": "twenty_four_hours",
+        "retreatDeadlineDisplay": "24hrs",
+        "buildDeadline": "twelve_hours",
+        "buildDeadlineDisplay": "12hrs",
+        "processOnFinalizedOrders": true,
+        "nationChoiceMode": "random",
+        "numPlayers": 7,
+        "joinable": false,
+        "participants": [
+            {
+                "username": "samuelsaunders",
+                "id": 1
+            },
+            {
+                "username": "codycarrillo",
+                "id": 2
+            },
+            {
+                "username": "juliegilmore",
+                "id": 3
+            },
+            {
+                "username": "melissanichols",
+                "id": 4
+            },
+            {
+                "username": "aprilbutler",
+                "id": 5
+            },
+            {
+                "username": "daniellerodriguez",
+                "id": 6
+            },
+            {
+                "username": "someuser",
+                "id": 8
+            }
+        ],
+        "createdAt": "2020-12-17T17:11:43.031625Z",
+        "createdBy": 7,
+        "initializedAt": "2020-07-26T12:59:22.541000Z",
+        "status": "active",
+        "currentTurn": {
+            "id": 1,
+            "year": 1901,
+            "season": "spring",
+            "seasonDisplay": "Spring",
+            "phase": "order",
+            "phaseDisplay": "Order",
+            "nationStates": [
+                {
+                    "id": 1,
+                    "user": {
+                        "username": "someuser",
+                        "id": 8
+                    },
+                    "nation": "standard-england",
+                    "surrenders": []
+                },
+                {
+                    "id": 2,
+                    "user": {
+                        "username": "amyburns",
+                        "id": 1
+                    },
+                    "nation": "standard-france",
+                    "surrenders": []
+                },
+                {
+                    "id": 3,
+                    "user": {
+                        "username": "mariahawkins",
+                        "id": 2
+                    },
+                    "nation": "standard-germany",
+                    "surrenders": []
+                },
+                {
+                    "id": 4,
+                    "user": {
+                        "username": "stephaniegordon",
+                        "id": 3
+                    },
+                    "nation": "standard-austria-hungary",
+                    "surrenders": []
+                },
+                {
+                    "id": 5,
+                    "user": {
+                        "username": "tracygeorge",
+                        "id": 4
+                    },
+                    "nation": "standard-italy",
+                    "surrenders": []
+                },
+                {
+                    "id": 6,
+                    "user": {
+                        "username": "christinaharper",
+                        "id": 5
+                    },
+                    "nation": "standard-russia",
+                    "surrenders": []
+                },
+                {
+                    "id": 7,
+                    "user": {
+                        "username": "tammybryant",
+                        "id": 6
+                    },
+                    "nation": "standard-turkey",
+                    "surrenders": []
+                }
+            ],
+            "turnEnd": null
+        }
     }
 ]

@@ -1,39 +1,26 @@
 import React, { useState } from 'react';
 
-import CircleFlag from '../CircleFlag/CircleFlag';
-import { ExpandMore, SupplyCenter } from '../Icon';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-} from '../MaterialUI';
+import { ExpandMore } from '../Icon';
+import { Accordion, AccordionDetails, AccordionSummary } from '../MaterialUI';
+import NationStateSummary from '../NationStateSummary/NationStateSummary';
 import Order from '../Order';
 
 import useStyles from './OrderHistory.styles';
 import { OrderHistoryComponentProps } from './OrderHistory.types';
 
 const OrderHistory: React.FC<OrderHistoryComponentProps> = ({
-  nation,
-  numSupplyCenters,
-  orders,
-  username,
+  nationState,
 }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState('');
+
+  const { orders } = nationState;
 
   const handleChange = (panel: string) => (_event, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : '');
   };
 
-  const PlayerSummary = (
-    <div className={classes.summary}>
-      <CircleFlag nation={nation} size="sm" />
-      <Typography variant="body1">{username}</Typography>
-      <SupplyCenter titleAccess="Number of supply centers" />
-      <Typography variant="body2">{numSupplyCenters}</Typography>
-    </div>
-  );
+  const Summary = <NationStateSummary nationState={nationState} />;
 
   const OrdersList = (
     <>
@@ -62,7 +49,7 @@ const OrderHistory: React.FC<OrderHistoryComponentProps> = ({
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          {PlayerSummary}
+          {Summary}
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
           {OrdersList}
@@ -70,7 +57,7 @@ const OrderHistory: React.FC<OrderHistoryComponentProps> = ({
       </Accordion>
     </div>
   ) : (
-    <div className={classes.playerSummary}>{PlayerSummary}</div>
+    <div className={classes.playerSummary}>{Summary}</div>
   );
 };
 

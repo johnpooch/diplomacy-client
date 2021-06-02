@@ -1,16 +1,10 @@
-import { NationOrderHistory, OrderDisplay } from '../../types';
+import { NationStateDisplay } from '../../types';
 
 export interface ControlPanelComponentProps {
   cancelOrder: (orderId: number) => void;
   currentTurn: boolean;
   finalizeOrders: () => void;
-  nationOrderHistories: NationOrderHistory[];
-  numOrdersGiven?: number;
-  numOrdersToGive?: number;
-  open: boolean;
-  orders: OrderDisplay[];
-  ordersFinalized: boolean;
-  ordersFinalizedLoading: boolean;
+  nationStates: NationStateDisplay[];
 }
 
 export interface TabPanelProps {

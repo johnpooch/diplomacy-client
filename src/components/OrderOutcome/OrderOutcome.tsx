@@ -10,6 +10,9 @@ const OrderOutcome: React.FC<OrderOutcomeComponentProps> = ({
   message,
 }) => {
   const classes = useStyles();
+  if (outcome === 'succeeds') {
+    return null;
+  }
   return (
     <div className={classes.root}>
       <Typography variant="body2" component="span" className={classes.outcome}>
