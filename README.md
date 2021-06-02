@@ -1,6 +1,6 @@
 # diplomacy-client
 
-A client for [@johnpooch](https://github.com/johnpooch)'s Diplomacy service: https://github.com/johnpooch/diplomacy
+A client for Diplomacy service: https://github.com/johnpooch/diplomacy
 
 ## Setting up a development environment
 
@@ -10,6 +10,12 @@ A client for [@johnpooch](https://github.com/johnpooch)'s Diplomacy service: htt
 - `yarn start` - the dev server should open at http://localhost:8000
 - Before you start developing, install [VSCode](https://code.visualstudio.com)
 - Open this directory in VSCode, and install the recommended extensions to lint on save
+
+### Develop using Storybook
+
+[Storybook](https://storybook.js.org/) is a very useful tool for developing components and pages in isolation.
+
+Run `yarn storybook` from the project root to start Storybook
 
 ### Accessing the dev copy on a mobile device
 

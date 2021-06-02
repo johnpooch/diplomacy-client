@@ -2,12 +2,14 @@ import { darken } from 'polished';
 import React from 'react';
 import { Circle, Group, Path } from 'react-konva';
 import { connect } from 'react-redux';
-import { useTheme } from 'styled-components';
 
 import namedCoastData from '../data/standard/namedCoasts.json';
 import territoryData from '../data/standard/territories.json';
 import { makeSelectPieceById } from '../store/selectors';
 import { getTerritoryPieceCoords } from '../utils';
+
+import { ArmyType, FleetType } from './Icon';
+import { useTheme } from './MaterialUI';
 
 const CIRCLE_RADIUS = 15;
 const ICON_SCALES = {
@@ -25,23 +27,25 @@ const Piece = ({ namedCoast, piece, territory, turnId }) => {
   const [x, y] = getTerritoryPieceCoords(territory, mustRetreat, namedCoast);
   const theme = useTheme();
 
-  const iconWidth = theme.icons[type].icon[0] * ICON_SCALES[type];
-  const iconHeight = theme.icons[type].icon[1] * ICON_SCALES[type];
+  const iconType = type === 'army' ? ArmyType : FleetType;
+
+  const iconWidth = iconType.icon[0] * ICON_SCALES[type];
+  const iconHeight = iconType.icon[1] * ICON_SCALES[type];
 
   return (
     <Group mustRetreat={mustRetreat} listening={false} type={type}>
       <Circle
-        fill={theme.colors.map.pieceCircleFill}
+        fill={theme.palette.map.pieceCircleFill}
         radius={CIRCLE_RADIUS}
-        stroke={darken(0.2, theme.colors.nations[nation])}
+        stroke={darken(0.2, theme.palette.nations[nation].main)}
         strokeWidth={CIRCLE_STROKE_WIDTH}
         shadowForStrokeEnabled={false}
         x={x}
         y={y}
       />
       <Path
-        data={theme.icons[type].icon[4]}
-        fill={theme.colors.nations[nation]}
+        data={iconType.icon[4]}
+        fill={theme.palette.nations[nation].main}
         scaleX={ICON_SCALES[type]}
         scaleY={ICON_SCALES[type]}
         shadowForStrokeEnabled={false}

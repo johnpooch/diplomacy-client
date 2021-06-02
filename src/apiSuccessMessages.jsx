@@ -48,8 +48,7 @@ export default {
   },
   [authActions.resetPassword.fulfilled]: {
     getMessage: (_, action) => {
-      const { data } = action.meta.arg;
-      const { email } = data;
+      const { email } = action.meta.arg.data;
       return `Thanks! Please check ${email} for a link to reset your password.`;
     },
     pending: true,

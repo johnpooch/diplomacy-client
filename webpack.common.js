@@ -1,6 +1,7 @@
 const path = require('path');
-const webpack = require('webpack');
+
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'production',
@@ -10,6 +11,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader!sass-loader',
+      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,

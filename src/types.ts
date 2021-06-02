@@ -1,4 +1,6 @@
-import { OrderType, Phase } from './game/types';
+import { Color } from '@material-ui/lab/Alert';
+
+import { GameStatus, PieceType, OrderType, Phase } from './game/types';
 
 export enum Outcome {
   MOVES = 'moves',
@@ -11,10 +13,61 @@ export enum Outcome {
   FAILS = 'fails',
 }
 
+export type Alert = {
+  id: number;
+  message: string;
+  category: Color;
+};
+
+export interface BrowseGame {
+  id: number;
+  joinable: boolean;
+  name: string;
+  participants: Participant[];
+  rules: GameRules;
+  slug: string;
+  status: GameStatus;
+  turn: TurnDisplay | null;
+  userIsParticipant: boolean;
+  variant: string;
+}
+
+export interface NationDisplay {
+  id: string;
+  name: string;
+}
+
+export interface GameRules {
+  orderDeadline: string;
+  retreatDeadline: string;
+  buildDeadline: string;
+}
+
+export interface Participant {
+  isCurrentUser: boolean;
+  username: string;
+  nation?: Nation;
+}
+
 export interface Nation {
   id: string;
   name: string;
   variant: string;
+}
+
+export interface NationStateDisplay {
+  id: number;
+  isUser: boolean;
+  loading: boolean;
+  orders: {
+    order: OrderDisplay;
+    outcome: OrderOutcomeDisplay;
+  }[];
+  ordersFinalized: boolean;
+  nation: NationDisplay;
+  numOrders: number | null;
+  numSupplyCenters: number | null;
+  username: string;
 }
 
 export interface NationState {
@@ -43,6 +96,28 @@ export interface Order {
   turn: number;
   type: OrderType;
   viaConvoy: boolean;
+}
+
+export interface OrderDisplay {
+  id: number;
+  aux: string | null;
+  loading: boolean;
+  orderType: OrderType;
+  pieceType: PieceType;
+  source: string;
+  target: string | null;
+  targetCoast: string | null;
+}
+
+export interface OrderOutcomeDisplay {
+  outcome: string;
+  message: string;
+}
+
+export interface TurnDisplay {
+  phase: string;
+  season: string;
+  year: number;
 }
 
 export interface Turn {

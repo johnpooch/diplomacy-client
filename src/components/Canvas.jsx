@@ -1,8 +1,7 @@
 import Konva from 'konva';
 import React, { useEffect, useRef } from 'react';
-import { Stage, Layer } from 'react-konva';
+import { Stage, Layer, Rect } from 'react-konva';
 import { connect, ReactReduxContext, Provider } from 'react-redux';
-import { ThemeProvider, useTheme } from 'styled-components';
 
 import viewBox from '../data/standard/viewBox.json';
 import { turnSelectors } from '../store/turns';
@@ -11,7 +10,7 @@ import { clamp, getCenter, getDistance, useReferredState } from '../utils';
 import ContextMenu from './CanvasContextMenu';
 import Pieces from './CanvasPieces';
 import Territories from './CanvasTerritories';
-import Tooltip from './CanvasTooltip';
+import { MuiThemeProvider, useTheme } from './MaterialUI';
 import Orders from './Orders';
 import Portal from './Portal';
 
@@ -208,111 +207,121 @@ const Canvas = ({ browser, order, turn, gameInterpreter }) => {
 
   const isMobile = browser.lessThan.medium;
 
+  const mapWrapperStyle = {
+    // -webkit-fill-available is used instead of 100% to prevent issue controls
+    // on mobile block part of the canvas
+    height: '100vh',
+    overflow: 'hidden',
+    width: '100%',
+  };
+
   return (
-    <ReactReduxContext.Consumer>
-      {/* See https://github.com/konvajs/react-konva/issues/311#issuecomment-536634446 */}
-      {({ store }) => (
-        <Stage
-          ref={stageRef}
-          width={size.current.width}
-          height={size.current.height}
-          x={stagePosition.current.x}
-          y={stagePosition.current.y}
-          scaleX={scale.current}
-          scaleY={scale.current}
-          draggable
-          onDragStart={(e) => {
-            // Do not drag if using two fingers on touch screen
-            if (e.evt.touches.length > 1) return;
-            setIsDragging(true);
-            setHoverTarget(null);
-          }}
-          onDragEnd={(e) => {
-            setIsDragging(false);
-            setStagePosition({
-              x: e.target.x(),
-              y: e.target.y(),
-            });
-          }}
-          onClick={(event) => handleClick(event)}
-          onTouchMove={(e) => {
-            setIsTouchMoving(true);
-            if (e.evt.touches.length === 2) handlePinchZoom(e.evt);
-          }}
-          onTouchEnd={(event) => {
-            endPinchZoom();
-            if (!isTouchMoving.current) handleClick(event);
-            setIsTouchMoving(false);
-          }}
-          dragBoundFunc={(pos) => dragBounds(pos)}
-          style={{
-            cursor: getCursor(),
-            background: theme.colors.map.background,
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          <Provider store={store}>
-            <ThemeProvider theme={theme}>
-              <Layer
-                x={viewBox.territoriesX}
-                y={viewBox.territoriesY}
-                onMouseMove={(event) => {
-                  if (!isDragging.current) setHoverTarget(event.target);
-                  else setHoverTarget(null);
-                  setMousePosition({
-                    x: event.evt.clientX,
-                    y: event.evt.clientY,
-                  });
-                }}
-                onMouseOut={() => {
-                  setHoverTarget(null);
-                }}
-                onBlur={() => {
-                  setHoverTarget(null);
-                }}
-              >
-                <Territories
-                  hoverId={
-                    hoverTarget.current ? hoverTarget.current.attrs.id : null
-                  }
-                  order={order}
-                  turn={turn}
-                />
-              </Layer>
-              <Layer>
-                <Orders turn={turn} />
-              </Layer>
-              <Layer>
-                <Pieces turn={turn} />
-              </Layer>
-              <Layer>
-                <Tooltip
-                  hoverTarget={hoverTarget.current}
-                  mousePosition={mousePosition.current}
-                  scale={scale.current}
-                  stagePosition={stagePosition.current}
-                  stageRef={stageRef}
-                />
-              </Layer>
-              <Layer>
-                {gameInterpreter.showContextMenu() && !isMobile && (
-                  <Portal theme={theme}>
-                    <ContextMenu
-                      stageRef={stageRef}
-                      selectedTarget={gameInterpreter.source}
-                      mousePosition={mousePosition.current}
-                      onClickOption={gameInterpreter.onClickOption}
-                      options={gameInterpreter.getContextMenuOptions()}
-                    />
-                  </Portal>
-                )}
-              </Layer>
-            </ThemeProvider>
-          </Provider>
-        </Stage>
-      )}
-    </ReactReduxContext.Consumer>
+    <div style={mapWrapperStyle}>
+      <ReactReduxContext.Consumer>
+        {/* See https://github.com/konvajs/react-konva/issues/311#issuecomment-536634446 */}
+        {({ store }) => (
+          <Stage
+            ref={stageRef}
+            width={size.current.width}
+            height={size.current.height}
+            x={stagePosition.current.x}
+            y={stagePosition.current.y}
+            scaleX={scale.current}
+            scaleY={scale.current}
+            draggable
+            onDragStart={(e) => {
+              // Do not drag if using two fingers on touch screen
+              if (e.evt.touches.length > 1) return;
+              setIsDragging(true);
+              setHoverTarget(null);
+            }}
+            onDragEnd={(e) => {
+              setIsDragging(false);
+              setStagePosition({
+                x: e.target.x(),
+                y: e.target.y(),
+              });
+            }}
+            onClick={(event) => handleClick(event)}
+            onTouchMove={(e) => {
+              setIsTouchMoving(true);
+              if (e.evt.touches.length === 2) handlePinchZoom(e.evt);
+            }}
+            onTouchEnd={(event) => {
+              endPinchZoom();
+              if (!isTouchMoving.current) handleClick(event);
+              setIsTouchMoving(false);
+            }}
+            dragBoundFunc={(pos) => dragBounds(pos)}
+            style={{
+              cursor: getCursor(),
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <Provider store={store}>
+              <MuiThemeProvider theme={theme}>
+                <Layer>
+                  <Rect
+                    width={viewBox.width}
+                    height={viewBox.height}
+                    fill={theme.palette.map.background}
+                  />
+                </Layer>
+                <Layer
+                  x={viewBox.territoriesX}
+                  y={viewBox.territoriesY}
+                  style={{
+                    background: theme.palette.map.background,
+                  }}
+                  onMouseMove={(event) => {
+                    if (!isDragging.current) setHoverTarget(event.target);
+                    else setHoverTarget(null);
+                    setMousePosition({
+                      x: event.evt.clientX,
+                      y: event.evt.clientY,
+                    });
+                  }}
+                  onMouseOut={() => {
+                    setHoverTarget(null);
+                  }}
+                  onBlur={() => {
+                    setHoverTarget(null);
+                  }}
+                >
+                  <Territories
+                    hoverId={
+                      hoverTarget.current ? hoverTarget.current.attrs.id : null
+                    }
+                    order={order}
+                    turn={turn}
+                  />
+                </Layer>
+                <Layer>
+                  <Orders turn={turn} />
+                </Layer>
+                <Layer>
+                  <Pieces turn={turn} />
+                </Layer>
+                <Layer>
+                  {gameInterpreter.showContextMenu() && !isMobile && (
+                    <Portal theme={theme}>
+                      <ContextMenu
+                        stageRef={stageRef}
+                        selectedTarget={gameInterpreter.source}
+                        mousePosition={mousePosition.current}
+                        onClickOption={gameInterpreter.onClickOption}
+                        options={gameInterpreter.getContextMenuOptions()}
+                      />
+                    </Portal>
+                  )}
+                </Layer>
+              </MuiThemeProvider>
+            </Provider>
+          </Stage>
+        )}
+      </ReactReduxContext.Consumer>
+    </div>
   );
 };
 
