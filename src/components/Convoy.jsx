@@ -1,10 +1,11 @@
 import React from 'react';
 import { Arrow, Group, Line } from 'react-konva';
 import { connect } from 'react-redux';
-import { useTheme } from 'styled-components';
 
 import { makeSelectTerritoryById } from '../store/selectors';
 import { getTerritoryPieceCoords, Vector } from '../utils';
+
+import { useTheme } from './MaterialUI';
 
 const OFFSET = 15;
 const PATH_STROKE_WIDTH = 8;
@@ -26,15 +27,15 @@ const Convoy = ({ aux, source, target }) => {
     <Group>
       <Line
         points={auxPoints}
-        fill={theme.colors.text}
-        stroke={theme.colors.text}
+        fill={theme.palette.text.primary}
+        stroke={theme.palette.text.primary}
         strokeWidth={PATH_STROKE_WIDTH}
         dash={CONVOY_DASH}
       />
       <Arrow
         points={targetPoints}
-        fill={theme.colors.text}
-        stroke={theme.colors.text}
+        fill={theme.palette.text.primary}
+        stroke={theme.palette.text.primary}
         strokeWidth={PATH_STROKE_WIDTH}
         dash={CONVOY_DASH}
       />

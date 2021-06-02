@@ -2,7 +2,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from 'styled-components';
+
+import { MuiThemeProvider } from './MaterialUI';
 
 export default class Portal extends React.Component {
   componentDidMount() {
@@ -40,7 +41,7 @@ export default class Portal extends React.Component {
     }
 
     ReactDOM.render(
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>,
+      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>,
       node || this.defaultNode
     );
   }

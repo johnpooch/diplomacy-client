@@ -12,7 +12,7 @@
     // This option checks for type errors in javascript files in your project.
     "checkJs": false,
     // This option generates type declaration files automatically for every js or ts file.
-    "declaration": true,
+    "declaration": false,
     // This option determines what format our JSX outputs in the compiled js file.
     // There are a number of options like preserving the .jsx format or using createReactElement.
     // Refer to the docs for more info.

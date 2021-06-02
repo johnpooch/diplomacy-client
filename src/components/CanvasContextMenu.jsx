@@ -1,20 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 
-import { Button } from './Button';
+import ContextMenu from './ContextMenu';
+import { makeStyles } from './MaterialUI';
 
-const StyledContextMenu = styled.nav`
-  background: ${(p) => p.theme.colors.muted};
-  border-radius: ${(p) => p.theme.radii[0]};
-  display: grid;
-  row-gap: ${(p) => p.theme.space[0]};
-  left: ${(p) => p.position.x}px;
-  padding: ${(p) => p.theme.space[0]};
-  position: absolute;
-  top: ${(p) => p.position.y}px;
-`;
+const useStyles = makeStyles((theme) => {
+  return {
+    root: {
+      background: theme.palette.background.paper,
+      display: 'grid',
+      rowGap: theme.spacing(0.25),
+      padding: theme.spacing(0.25),
+      position: 'absolute',
+    },
+  };
+});
 
-const ContextMenu = ({
+const CanvasContextMenu = ({
   stageRef,
   selectedTarget,
   mousePosition,
@@ -22,10 +23,8 @@ const ContextMenu = ({
   options,
 }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
-
+  const classes = useStyles();
   const menuRef = useRef();
-
-  const handleOptionSelected = (option) => () => onClickOption(option);
 
   useEffect(() => {
     if (!menuRef.current) return;
@@ -43,19 +42,18 @@ const ContextMenu = ({
     });
   }, [selectedTarget]);
 
-  const elements = options.map(([value, label]) => {
-    return (
-      <Button key={value} onClick={handleOptionSelected(value)}>
-        {label}
-      </Button>
-    );
-  });
+  const positionStyle = { top: `${position.y}px`, left: `${position.x}px` };
 
   return (
-    <StyledContextMenu ref={menuRef} position={position}>
-      {elements}
-    </StyledContextMenu>
+    <div
+      className={classes.root}
+      ref={menuRef}
+      position={position}
+      style={positionStyle}
+    >
+      <ContextMenu options={options} onClickOption={onClickOption} />
+    </div>
   );
 };
 
-export default ContextMenu;
+export default CanvasContextMenu;

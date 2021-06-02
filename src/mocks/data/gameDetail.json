@@ -3550,5 +3550,836 @@
             "id": 15
         }
     ]
+},
+"game-user-not-participating": {
+    "id": 3,
+    "name": "Game user not participating",
+    "slug": "game-user-not-participating",
+    "turns": [
+        {
+            "id": 3,
+            "game": 3,
+            "nextTurn": null,
+            "previousTurn": null,
+            "currentTurn": true,
+            "year": 1901,
+            "season": "spring",
+            "seasonDisplay": "Spring",
+            "phase": "order",
+            "phaseDisplay": "Order",
+            "territoryStates": [
+                {
+                    "id": 1,
+                    "territory": "standard-adriatic-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 2,
+                    "territory": "standard-aegean-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 3,
+                    "territory": "standard-baltic-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 4,
+                    "territory": "standard-barents-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 5,
+                    "territory": "standard-black-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 6,
+                    "territory": "standard-gulf-of-bothnia",
+                    "controlledBy": null
+                },
+                {
+                    "id": 7,
+                    "territory": "standard-eastern-mediterranean",
+                    "controlledBy": null
+                },
+                {
+                    "id": 8,
+                    "territory": "standard-english-channel",
+                    "controlledBy": null
+                },
+                {
+                    "id": 9,
+                    "territory": "standard-gulf-of-lyon",
+                    "controlledBy": null
+                },
+                {
+                    "id": 10,
+                    "territory": "standard-helgoland-bight",
+                    "controlledBy": null
+                },
+                {
+                    "id": 11,
+                    "territory": "standard-ionian-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 12,
+                    "territory": "standard-irish-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 13,
+                    "territory": "standard-mid-atlantic-ocean",
+                    "controlledBy": null
+                },
+                {
+                    "id": 14,
+                    "territory": "standard-north-atlantic-ocean",
+                    "controlledBy": null
+                },
+                {
+                    "id": 15,
+                    "territory": "standard-norwegian-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 16,
+                    "territory": "standard-north-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 17,
+                    "territory": "standard-skagerrak",
+                    "controlledBy": null
+                },
+                {
+                    "id": 18,
+                    "territory": "standard-tyrrhenian-sea",
+                    "controlledBy": null
+                },
+                {
+                    "id": 19,
+                    "territory": "standard-western-mediterranean",
+                    "controlledBy": null
+                },
+                {
+                    "id": 20,
+                    "territory": "standard-albania",
+                    "controlledBy": null
+                },
+                {
+                    "id": 21,
+                    "territory": "standard-ankara",
+                    "controlledBy": "standard-turkey"
+                },
+                {
+                    "id": 22,
+                    "territory": "standard-apulia",
+                    "controlledBy": "standard-italy"
+                },
+                {
+                    "id": 23,
+                    "territory": "standard-armenia",
+                    "controlledBy": "standard-turkey"
+                },
+                {
+                    "id": 24,
+                    "territory": "standard-berlin",
+                    "controlledBy": "standard-germany"
+                },
+                {
+                    "id": 25,
+                    "territory": "standard-belgium",
+                    "controlledBy": null
+                },
+                {
+                    "id": 26,
+                    "territory": "standard-brest",
+                    "controlledBy": "standard-france"
+                },
+                {
+                    "id": 27,
+                    "territory": "standard-clyde",
+                    "controlledBy": "standard-england"
+                },
+                {
+                    "id": 28,
+                    "territory": "standard-constantinople",
+                    "controlledBy": "standard-turkey"
+                },
+                {
+                    "id": 29,
+                    "territory": "standard-denmark",
+                    "controlledBy": null
+                },
+                {
+                    "id": 30,
+                    "territory": "standard-edinburgh",
+                    "controlledBy": "standard-england"
+                },
+                {
+                    "id": 31,
+                    "territory": "standard-finland",
+                    "controlledBy": null
+                },
+                {
+                    "id": 32,
+                    "territory": "standard-gascony",
+                    "controlledBy": "standard-france"
+                },
+                {
+                    "id": 33,
+                    "territory": "standard-greece",
+                    "controlledBy": null
+                },
+                {
+                    "id": 34,
+                    "territory": "standard-holland",
+                    "controlledBy": null
+                },
+                {
+                    "id": 35,
+                    "territory": "standard-kiel",
+                    "controlledBy": "standard-germany"
+                },
+                {
+                    "id": 36,
+                    "territory": "standard-london",
+                    "controlledBy": "standard-england"
+                },
+                {
+                    "id": 37,
+                    "territory": "standard-livonia",
+                    "controlledBy": "standard-russia"
+                },
+                {
+                    "id": 38,
+                    "territory": "standard-liverpool",
+                    "controlledBy": "standard-england"
+                },
+                {
+                    "id": 39,
+                    "territory": "standard-marseilles",
+                    "controlledBy": "standard-france"
+                },
+                {
+                    "id": 40,
+                    "territory": "standard-north-africa",
+                    "controlledBy": null
+                },
+                {
+                    "id": 41,
+                    "territory": "standard-naples",
+                    "controlledBy": "standard-italy"
+                },
+                {
+                    "id": 42,
+                    "territory": "standard-norway",
+                    "controlledBy": null
+                },
+                {
+                    "id": 43,
+                    "territory": "standard-picardy",
+                    "controlledBy": "standard-france"
+                },
+                {
+                    "id": 44,
+                    "territory": "standard-piedmont",
+                    "controlledBy": "standard-italy"
+                },
+                {
+                    "id": 45,
+                    "territory": "standard-portugal",
+                    "controlledBy": null
+                },
+                {
+                    "id": 46,
+                    "territory": "standard-rome",
+                    "controlledBy": "standard-italy"
+                },
+                {
+                    "id": 47,
+                    "territory": "standard-rumania",
+                    "controlledBy": null
+                },
+                {
+                    "id": 48,
+                    "territory": "standard-prussia",
+                    "controlledBy": "standard-germany"
+                },
+                {
+                    "id": 49,
+                    "territory": "standard-sevastopol",
+                    "controlledBy": "standard-russia"
+                },
+                {
+                    "id": 50,
+                    "territory": "standard-smyrna",
+                    "controlledBy": "standard-turkey"
+                },
+                {
+                    "id": 51,
+                    "territory": "standard-sweden",
+                    "controlledBy": null
+                },
+                {
+                    "id": 52,
+                    "territory": "standard-syria",
+                    "controlledBy": "standard-turkey"
+                },
+                {
+                    "id": 53,
+                    "territory": "standard-trieste",
+                    "controlledBy": "standard-austria-hungary"
+                },
+                {
+                    "id": 54,
+                    "territory": "standard-tunis",
+                    "controlledBy": null
+                },
+                {
+                    "id": 55,
+                    "territory": "standard-tuscany",
+                    "controlledBy": "standard-italy"
+                },
+                {
+                    "id": 56,
+                    "territory": "standard-venice",
+                    "controlledBy": "standard-italy"
+                },
+                {
+                    "id": 57,
+                    "territory": "standard-wales",
+                    "controlledBy": "standard-england"
+                },
+                {
+                    "id": 58,
+                    "territory": "standard-yorkshire",
+                    "controlledBy": "standard-england"
+                },
+                {
+                    "id": 59,
+                    "territory": "standard-bohemia",
+                    "controlledBy": "standard-austria-hungary"
+                },
+                {
+                    "id": 60,
+                    "territory": "standard-budapest",
+                    "controlledBy": "standard-austria-hungary"
+                },
+                {
+                    "id": 61,
+                    "territory": "standard-burgundy",
+                    "controlledBy": "standard-france"
+                },
+                {
+                    "id": 62,
+                    "territory": "standard-galicia",
+                    "controlledBy": "standard-austria-hungary"
+                },
+                {
+                    "id": 63,
+                    "territory": "standard-moscow",
+                    "controlledBy": "standard-russia"
+                },
+                {
+                    "id": 64,
+                    "territory": "standard-munich",
+                    "controlledBy": "standard-germany"
+                },
+                {
+                    "id": 65,
+                    "territory": "standard-paris",
+                    "controlledBy": "standard-france"
+                },
+                {
+                    "id": 66,
+                    "territory": "standard-ruhr",
+                    "controlledBy": "standard-germany"
+                },
+                {
+                    "id": 67,
+                    "territory": "standard-serbia",
+                    "controlledBy": null
+                },
+                {
+                    "id": 68,
+                    "territory": "standard-silesia",
+                    "controlledBy": "standard-germany"
+                },
+                {
+                    "id": 69,
+                    "territory": "standard-tyrolia",
+                    "controlledBy": "standard-austria-hungary"
+                },
+                {
+                    "id": 70,
+                    "territory": "standard-ukraine",
+                    "controlledBy": "standard-russia"
+                },
+                {
+                    "id": 71,
+                    "territory": "standard-vienna",
+                    "controlledBy": "standard-austria-hungary"
+                },
+                {
+                    "id": 72,
+                    "territory": "standard-warsaw",
+                    "controlledBy": "standard-russia"
+                },
+                {
+                    "id": 73,
+                    "territory": "standard-bulgaria",
+                    "controlledBy": null
+                },
+                {
+                    "id": 74,
+                    "territory": "standard-spain",
+                    "controlledBy": null
+                },
+                {
+                    "id": 75,
+                    "territory": "standard-st-petersburg",
+                    "controlledBy": "standard-russia"
+                }
+            ],
+            "pieceStates": [
+                {
+                    "id": 1,
+                    "turn": 1,
+                    "piece": 1,
+                    "territory": "standard-ankara",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 2,
+                    "turn": 1,
+                    "piece": 2,
+                    "territory": "standard-berlin",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 3,
+                    "turn": 1,
+                    "piece": 3,
+                    "territory": "standard-brest",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 16,
+                    "turn": 1,
+                    "piece": 16,
+                    "territory": "standard-budapest",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 4,
+                    "turn": 1,
+                    "piece": 4,
+                    "territory": "standard-constantinople",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 5,
+                    "turn": 1,
+                    "piece": 5,
+                    "territory": "standard-edinburgh",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 6,
+                    "turn": 1,
+                    "piece": 6,
+                    "territory": "standard-kiel",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 8,
+                    "turn": 1,
+                    "piece": 8,
+                    "territory": "standard-liverpool",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 7,
+                    "turn": 1,
+                    "piece": 7,
+                    "territory": "standard-london",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 9,
+                    "turn": 1,
+                    "piece": 9,
+                    "territory": "standard-marseilles",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 17,
+                    "turn": 1,
+                    "piece": 17,
+                    "territory": "standard-moscow",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 18,
+                    "turn": 1,
+                    "piece": 18,
+                    "territory": "standard-munich",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 10,
+                    "turn": 1,
+                    "piece": 10,
+                    "territory": "standard-naples",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 19,
+                    "turn": 1,
+                    "piece": 19,
+                    "territory": "standard-paris",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 11,
+                    "turn": 1,
+                    "piece": 11,
+                    "territory": "standard-rome",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 12,
+                    "turn": 1,
+                    "piece": 12,
+                    "territory": "standard-sevastopol",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 13,
+                    "turn": 1,
+                    "piece": 13,
+                    "territory": "standard-smyrna",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 22,
+                    "turn": 1,
+                    "piece": 22,
+                    "territory": "standard-st-petersburg",
+                    "namedCoast": "standard-st-petersburg-south-coast",
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 14,
+                    "turn": 1,
+                    "piece": 14,
+                    "territory": "standard-trieste",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 15,
+                    "turn": 1,
+                    "piece": 15,
+                    "territory": "standard-venice",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 20,
+                    "turn": 1,
+                    "piece": 20,
+                    "territory": "standard-vienna",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                },
+                {
+                    "id": 21,
+                    "turn": 1,
+                    "piece": 21,
+                    "territory": "standard-warsaw",
+                    "namedCoast": null,
+                    "dislodged": false,
+                    "dislodgedBy": null,
+                    "attackerTerritory": null,
+                    "mustRetreat": false
+                }
+            ],
+            "nationStates": [
+                {
+                    "id": 1,
+                    "user": 8,
+                    "nation": "standard-england",
+                    "surrenders": []
+                },
+                {
+                    "id": 2,
+                    "user": 1,
+                    "nation": "standard-france",
+                    "surrenders": []
+                },
+                {
+                    "id": 3,
+                    "user": 2,
+                    "nation": "standard-germany",
+                    "surrenders": []
+                },
+                {
+                    "id": 4,
+                    "user": 3,
+                    "nation": "standard-austria-hungary",
+                    "surrenders": []
+                },
+                {
+                    "id": 5,
+                    "user": 4,
+                    "nation": "standard-italy",
+                    "surrenders": []
+                },
+                {
+                    "id": 6,
+                    "user": 5,
+                    "nation": "standard-russia",
+                    "surrenders": []
+                },
+                {
+                    "id": 7,
+                    "user": 6,
+                    "nation": "standard-turkey",
+                    "surrenders": []
+                }
+            ],
+            "orders": [],
+            "draws": [],
+            "turnend": null
+        }
+    ],
+    "variant": "standard",
+    "pieces": [
+        {
+            "id": 1,
+            "type": "fleet",
+            "nation": "standard-turkey"
+        },
+        {
+            "id": 2,
+            "type": "army",
+            "nation": "standard-germany"
+        },
+        {
+            "id": 3,
+            "type": "fleet",
+            "nation": "standard-france"
+        },
+        {
+            "id": 4,
+            "type": "army",
+            "nation": "standard-turkey"
+        },
+        {
+            "id": 5,
+            "type": "fleet",
+            "nation": "standard-england"
+        },
+        {
+            "id": 6,
+            "type": "fleet",
+            "nation": "standard-germany"
+        },
+        {
+            "id": 7,
+            "type": "fleet",
+            "nation": "standard-england"
+        },
+        {
+            "id": 8,
+            "type": "army",
+            "nation": "standard-england"
+        },
+        {
+            "id": 9,
+            "type": "army",
+            "nation": "standard-france"
+        },
+        {
+            "id": 10,
+            "type": "fleet",
+            "nation": "standard-italy"
+        },
+        {
+            "id": 11,
+            "type": "army",
+            "nation": "standard-italy"
+        },
+        {
+            "id": 12,
+            "type": "fleet",
+            "nation": "standard-russia"
+        },
+        {
+            "id": 13,
+            "type": "army",
+            "nation": "standard-turkey"
+        },
+        {
+            "id": 14,
+            "type": "fleet",
+            "nation": "standard-austria-hungary"
+        },
+        {
+            "id": 15,
+            "type": "army",
+            "nation": "standard-italy"
+        },
+        {
+            "id": 16,
+            "type": "army",
+            "nation": "standard-austria-hungary"
+        },
+        {
+            "id": 17,
+            "type": "army",
+            "nation": "standard-russia"
+        },
+        {
+            "id": 18,
+            "type": "army",
+            "nation": "standard-germany"
+        },
+        {
+            "id": 19,
+            "type": "army",
+            "nation": "standard-france"
+        },
+        {
+            "id": 20,
+            "type": "army",
+            "nation": "standard-austria-hungary"
+        },
+        {
+            "id": 21,
+            "type": "army",
+            "nation": "standard-russia"
+        },
+        {
+            "id": 22,
+            "type": "fleet",
+            "nation": "standard-russia"
+        }
+    ],
+    "status": "active",
+    "participants": [
+        {
+            "username": "joseflowers",
+            "id": 1
+        },
+        {
+            "username": "kennethtrujillo",
+            "id": 2
+        },
+        {
+            "username": "markhoward",
+            "id": 3
+        },
+        {
+            "username": "christopherpalmer",
+            "id": 4
+        },
+        {
+            "username": "shannonmanning",
+            "id": 5
+        },
+        {
+            "username": "melaniesimmons",
+            "id": 6
+        },
+        {
+            "username": "someuser",
+            "id": 8
+        }
+    ]
 }
 }
