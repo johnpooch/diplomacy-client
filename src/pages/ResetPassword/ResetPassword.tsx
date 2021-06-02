@@ -27,7 +27,11 @@ export const ResetPassword: React.FC<ReduxProps & RouteComponentProps> = ({
   return (
     <FormContainer>
       <FormWrapper title="Reset Password">
-        <Form button={sumbitButton} errors={errors} onSubmit={onSubmit}>
+        <Form
+          button={sumbitButton}
+          errors={errors}
+          onSubmit={(data) => onSubmit({ ...data, token })}
+        >
           <FormFieldWrapper
             name="password"
             label="Password"
