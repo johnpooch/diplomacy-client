@@ -8,7 +8,7 @@ import UserCircle from './UserCircle';
 export default {
   title: 'UserCircle',
   component: UserCircle,
-};
+} as Meta;
 
 const Template: Story<ComponentProps<typeof UserCircle>> = (args) => (
   <UserCircle {...args} />

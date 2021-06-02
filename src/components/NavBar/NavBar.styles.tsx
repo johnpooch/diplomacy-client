@@ -1,5 +1,3 @@
-import { yellow } from '@material-ui/core/colors';
-
 import { makeStyles } from '../MaterialUI';
 
 export default makeStyles((theme) => {
