@@ -3,7 +3,6 @@ import React from 'react';
 import GameParticipant from '../GameParticipant/GameParticipant';
 import UserSpace from '../UserSpace/UserSpace';
 
-import StyledGameParticipantList from './GameParticipantList.styles';
 import { GameParticipantListComponentProps } from './GameParticipantList.types';
 
 const GameParticipantList: React.FC<GameParticipantListComponentProps> = ({
@@ -11,7 +10,7 @@ const GameParticipantList: React.FC<GameParticipantListComponentProps> = ({
   participants,
 }) => {
   return (
-    <StyledGameParticipantList>
+    <div>
       {participants.map((p) => (
         <GameParticipant
           username={p.username}
@@ -21,7 +20,7 @@ const GameParticipantList: React.FC<GameParticipantListComponentProps> = ({
         />
       ))}
       {joinable && <UserSpace />}
-    </StyledGameParticipantList>
+    </div>
   );
 };
 

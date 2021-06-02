@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTheme } from 'styled-components';
 
 import { Typography } from '../../MaterialUI';
 import FieldError from '../FieldError/FieldError';
@@ -9,8 +8,7 @@ import { FormFieldWrapperComponentProps } from './FormFieldWrapper.types';
 
 const FormFieldWrapper: React.FC<FormFieldWrapperComponentProps> = React.forwardRef(
   ({ errors, field, label, name }, ref) => {
-    const theme = useTheme();
-    const classes = useStyles(theme);
+    const classes = useStyles();
 
     // Create form field element from field object
     const { fieldClass, ...fieldProps } = field;

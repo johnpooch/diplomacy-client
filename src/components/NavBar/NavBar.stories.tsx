@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable react/jsx-props-no-spreading */
 import { Meta, Story } from '@storybook/react';
 import React, { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';

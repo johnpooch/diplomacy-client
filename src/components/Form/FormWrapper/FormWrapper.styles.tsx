@@ -30,21 +30,3 @@ export default makeStyles((theme) => {
     },
   };
 });
-
-// export default styled(Paper)`
-//   background-color: ${(p) => p.theme.colors.surface};
-//   h2 {
-//   }
-//   button {
-//     width: 100%;
-//   }
-//   .form-links {
-//     border-top: ${(p) => p.theme.colors.primary.light}
-//       ${(p) => p.theme.borderWidths[0]} solid;
-//     padding: ${(p) => p.theme.space[3]} ${(p) => p.theme.space[3]} 0
-//       ${(p) => p.theme.space[3]};
-//     > *:not(:last-child) {
-//       margin-bottom: ${(p) => p.theme.space[2]};
-//     }
-//   }
-// `;

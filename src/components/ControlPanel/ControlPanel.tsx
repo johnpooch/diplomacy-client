@@ -6,7 +6,7 @@ import { Orders, Participants } from '../Icon';
 import { Box, Tab, Tabs, Typography } from '../MaterialUI';
 import NationStateSummary from '../NationStateSummary/NationStateSummary';
 import Order from '../Order';
-import OrderHistorySection from '../OrderHistorySection';
+import OrderHistory from '../OrderHistory';
 
 import useStyles from './ControlPanel.styles';
 import {
@@ -103,7 +103,14 @@ const ControlPanel: React.FC<ControlPanelComponentProps> = ({
           ) : (
             <>
               <Typography variant="h6">Order History</Typography>
-              <OrderHistorySection nationStates={nationStates} />
+              <div>
+                {nationStates.map((nationState) => (
+                  <OrderHistory
+                    key={nationState.id}
+                    nationState={nationState}
+                  />
+                ))}
+              </div>
             </>
           )}
         </TabPanel>

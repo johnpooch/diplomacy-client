@@ -71,21 +71,6 @@ describe('Browse Games', () => {
     await userSeesElement(activeGameTitle, Selectors.BrowseGameTitle);
   });
 
-  // it('navigate to game detail view when active game is clicked', async () => {
-  //   useHandlers(
-  //     [urlConf.getGameDetail, getGameDetail.success],
-  //     [urlConf.getGameFilterChoices, getGameFilterChoices.success],
-  //     [urlConf.listGames, listGames.successActiveGame],
-  //     [urlConf.listVariants, listVariants.success]
-  //   );
-  //   renderApp();
-  //   userClicksElement('Logout', Selectors.MenuButton);
-  //   await userSeesElement('Login', Selectors.FormHeader);
-  //   const gameLink = await waitFor(() => screen.getByTitle(activeGameTitle));
-  //   fireEvent.click(gameLink);
-  //   await waitFor(() => screen.getByText('England'));
-  // });
-
   it('display error on listGames server error', async () => {
     useHandlers(
       [urlConf.getGameFilterChoices, getGameFilterChoices.success],
