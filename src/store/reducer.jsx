@@ -7,6 +7,7 @@ import auth from './auth';
 import choices from './choices';
 import entities from './entities';
 import errors from './errors';
+import ui from './ui';
 
 export default (history) =>
   combineReducers({
@@ -17,4 +18,5 @@ export default (history) =>
     choices,
     entities,
     errors,
+    ui,
   });
