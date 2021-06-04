@@ -4,7 +4,17 @@ import { Link } from 'react-router-dom';
 import { GameStatus } from '../../game/types';
 import { PrimaryButton } from '../Button/Button';
 import GameParticipantList from '../GameParticipantList/GameParticipantList';
-import { Card, CardActions, CardContent, Typography } from '../MaterialUI';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from '../MaterialUI';
 import TurnSummary from '../TurnSummary';
 
 import useStyles from './GameCard.styles';
@@ -47,10 +57,27 @@ const GameCard: React.FC<GameCardComponentProps> = ({
       <CardContent className={classes.content}>
         {getHeader()}
         {turn && <TurnSummary turn={turn} />}
-        <Typography variant="body2" className={classes.rules}>
-          {variant} {bull} Orders {rules.orderDeadline} {bull} Retreat{' '}
-          {rules.retreatDeadline} {bull} Build {rules.buildDeadline}
-        </Typography>
+        <Table
+          aria-label="game settings"
+          size="small"
+          className={classes.table}
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell padding="none">Variant</TableCell>
+              <TableCell padding="none">Deadlines</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell padding="none">{variant}</TableCell>
+              <TableCell padding="none">
+                Order {rules.orderDeadline} {bull} Retreat{' '}
+                {rules.retreatDeadline} {bull} Build {rules.buildDeadline}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </CardContent>
       <CardActions className={classes.actions}>
         <GameParticipantList participants={participants} joinable={joinable} />
