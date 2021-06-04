@@ -3,6 +3,7 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import namedCoastData from '../data/standard/namedCoasts.json';
 import territoryData from '../data/standard/territories.json';
+import { OrderType } from '../game/types';
 
 import { alertSelectors } from './alerts';
 import { gameSelectors } from './games';
@@ -241,6 +242,8 @@ const selectGameDetail = createSelector(
   turnSelectors.selectAll,
   territorySelectors.selectEntities,
   userSelectors.selectEntities,
+  pieceSelectors.selectEntities,
+  pieceStateSelectors.selectAll,
   (
     username,
     game,
@@ -249,7 +252,9 @@ const selectGameDetail = createSelector(
     allNations,
     allTurns,
     territoryEntities,
-    users
+    users,
+    allPieces,
+    allPieceStates
   ) => {
     const { activeTurnId, loading, loaded } = game;
 
@@ -283,8 +288,21 @@ const selectGameDetail = createSelector(
 
     const { previousTurn, nextTurn } = turn;
 
+    const turnPieces = allPieceStates
+      .filter((ps) => ps.turn === turn.id)
+      .map((ps) => {
+        return { ...ps, type: allPieces[ps.piece].type };
+      });
+
     const turnOrders = allOrders.filter((o) => o.turn === turn.id);
     const orders = turnOrders.map((o) => {
+      const orderPiece = turnPieces.find((ps) => ps.territory === o.source);
+      let pieceType = null;
+      if (o.type === OrderType.BUILD) {
+        pieceType = o.pieceType || (orderPiece && orderPiece.type);
+      } else if (orderPiece) {
+        pieceType = orderPiece.type;
+      }
       return {
         ...o,
         source: getTerritoryName(o.source),
@@ -292,29 +310,10 @@ const selectGameDetail = createSelector(
         aux: getTerritoryName(o.aux),
         targetCoast: getNamedCoastAbbreviation(o.targetCoast),
         orderType: o.type,
+        pieceType,
       };
     });
-
-    const getNationOrderHistories = () =>
-      game.participants.map((p) => {
-        const user = users[p];
-        const nationState = turnNationStates.find((ns) => ns.user === p);
-        const n = allNations[nationState.nation];
-        const nationOrders = orders
-          .filter((o) => o.nation === n.id)
-          .map((o) => {
-            return {
-              order: o,
-              outcome: { outcome: o.outcome, message: o.outcomeVerbose },
-            };
-          });
-        return {
-          username: user.username,
-          nation: { name: n.name, id: n.id },
-          orders: nationOrders,
-          numSupplyCenters: nationState.numSupplyCenters,
-        };
-      });
+    console.log(orders);
 
     const getNationStates = () => {
       return game.participants.map((p) => {
@@ -345,14 +344,11 @@ const selectGameDetail = createSelector(
 
     const nationStates = getNationStates();
 
-    const nationOrderHistories = isCurrentTurn ? [] : getNationOrderHistories();
-
     return {
       currentTurn: isCurrentTurn,
       currentTurnId: currentTurn.id,
       loaded,
       loading,
-      nationOrderHistories,
       nationStates,
       nextTurn,
       orders,
