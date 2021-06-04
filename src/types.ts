@@ -32,6 +32,12 @@ export interface BrowseGame {
   variant: string;
 }
 
+export enum BrowseGameFilterChoices {
+  USER = 'user',
+  ALL_GAMES = 'all-games',
+  NULL = '',
+}
+
 export interface NationDisplay {
   id: string;
   name: string;

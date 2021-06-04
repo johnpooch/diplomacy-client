@@ -8,5 +8,9 @@ export default makeStyles((theme) => {
         padding: 0,
       },
     },
+    browseGameFilter: {
+      maxWidth: '200px',
+      padding: theme.spacing(2, 0, 2, 1),
+    },
   };
 });
