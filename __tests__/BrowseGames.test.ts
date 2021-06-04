@@ -61,6 +61,21 @@ describe('Browse Games', () => {
     await userSeesElement(pendingGameTitle, Selectors.BrowseGameTitle);
   });
 
+  it('display browse games filter', async () => {
+    useHandlers(
+      [urlConf.listGames, listGames.successPendingGame],
+      [urlConf.listVariants, listVariants.success]
+    );
+    renderApp();
+    await userSeesElement(
+      'Browse game filter',
+      Selectors.Select,
+      screen.getByTitle
+    );
+    await userSeesElement('All games', Selectors.SelectOption);
+    await userSeesElement('My games', Selectors.SelectOption);
+  });
+
   it('display active game correctly', async () => {
     useHandlers(
       [urlConf.listGames, listGames.successActiveGame],
