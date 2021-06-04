@@ -24,6 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import NativeSelect from '@material-ui/core/NativeSelect';
 import Paper from '@material-ui/core/Paper';
 import Snackbar, { SnackbarOrigin } from '@material-ui/core/Snackbar';
 import {
@@ -63,6 +64,7 @@ export {
   MenuItem,
   MenuList,
   MuiThemeProvider,
+  NativeSelect,
   Paper,
   Snackbar,
   SnackbarOrigin,

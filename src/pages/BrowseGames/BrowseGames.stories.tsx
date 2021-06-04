@@ -3,6 +3,7 @@ import React, { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router';
 
 import * as GameCardStories from '../../components/GameCard/GameCard.stories';
+import { BrowseGameFilterChoices } from '../../types';
 
 import { BrowseGames } from './BrowseGames';
 
@@ -19,10 +20,12 @@ const Template: Story<ComponentProps<typeof BrowseGames>> = (args) => (
 const defaultArgs = {
   alerts: [],
   alertsClear: () => null,
+  browseGameFilter: BrowseGameFilterChoices.USER,
   errors: [],
   loadBrowseGames: () => null,
   logout: () => null,
   loading: false,
+  setBrowseGameFilter: (option) => console.log(option),
 };
 
 export const Default: Story = Template.bind({});

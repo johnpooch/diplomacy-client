@@ -6,6 +6,7 @@ import { gameDetailActions } from './gameDetail';
 import { gameActions } from './games';
 import { nationStateActions } from './nationStates';
 import { orderActions } from './orders';
+import { uiSlice } from './ui';
 import { variantActions } from './variants';
 
 const postLoadGameDetail = (dispatch, urlParams) => {
@@ -111,9 +112,13 @@ const leaveGame = (gameSlug) => {
 };
 
 const loadBrowseGames = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { id } = state.auth.user;
+    const { browseGameFilter } = state.ui;
+    const queryParams = browseGameFilter === 'user' ? { participants: id } : {};
     dispatch(variantActions.listVariants({})).then(() => {
-      dispatch(gameActions.listGames({}));
+      dispatch(gameActions.listGames({ queryParams }));
     });
   };
 };
@@ -173,6 +178,12 @@ const setActiveTurn = (turnId) => {
   };
 };
 
+const setBrowseGameFilter = (option) => {
+  return (dispatch) => {
+    dispatch(uiSlice.actions.setBrowseGameFilter(option));
+  };
+};
+
 export default {
   alertsClear,
   cancelOrder,
@@ -191,4 +202,5 @@ export default {
   resetPassword,
   resetPasswordConfirm,
   setActiveTurn,
+  setBrowseGameFilter,
 };

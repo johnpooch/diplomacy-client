@@ -108,6 +108,8 @@ export enum Selectors {
   ControlPanelHeader = 'h6',
   MenuButton = 'span',
   Paragraph = 'p',
+  Select = 'div.MuiSelect-root',
+  SelectOption = 'option',
 }
 
 export const userClicksElement = (
